@@ -1,0 +1,1 @@
+{"scenario":"flow-return-value-finally-effects","result":"ok","error":null,"entries":[{"label":"return-value","values":["start",1]}],"unhandledRejections":[]}

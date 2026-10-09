@@ -1,0 +1,1 @@
+{"scenario":"watch/scope-stops-watch","result":"ok","error":null,"entries":[{"label":"log","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":[1],"len":1}]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"ex-object-literal-precedence","result":"ok","error":null,"entries":[{"label":"literal-precedence","values":[{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[["a",3],["b","yes"],["c",true],["d",{"$":"undef"}]]}]}],"unhandledRejections":[]}

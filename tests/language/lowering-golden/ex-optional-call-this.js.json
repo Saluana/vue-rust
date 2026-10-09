@@ -1,0 +1,1 @@
+{"scenario":"ex-optional-call-this","result":"ok","error":null,"entries":[{"label":"opt-this","values":["obj","obj",{"$":"undef"},"obj"]}],"unhandledRejections":[]}

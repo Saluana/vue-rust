@@ -1,0 +1,1 @@
+{"scenario":"exceptions/finally-overrides-throw","result":"ok","error":null,"entries":[{"label":"swallow","values":["kept"]},{"label":"cleanup","values":[]},{"label":"caught","values":[{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[["code",7]]}]}],"unhandledRejections":[]}

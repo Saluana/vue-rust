@@ -1,0 +1,1 @@
+{"scenario":"switch-default-fallthrough-only","result":"ok","error":null,"entries":[{"label":"default-first","values":["d;a;"]}],"unhandledRejections":[]}

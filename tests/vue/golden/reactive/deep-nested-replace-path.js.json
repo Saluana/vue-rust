@@ -1,0 +1,1 @@
+{"scenario":"reactive/deep-nested-replace-path","result":"ok","error":null,"entries":[{"label":"replace","values":[2,2,2]},{"label":"new-path","values":[3,3]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"computed/diamond-single-recompute","result":"ok","error":null,"entries":[{"label":"init","values":[4,1]},{"label":"after","values":[16,2]}],"unhandledRejections":[]}

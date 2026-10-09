@@ -1,0 +1,1 @@
+{"scenario":"ds-object-patterns","result":"ok","error":null,"entries":[{"label":"pieces","values":[1,null,"cdef",{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[["d",4]]}]},{"label":"nested","values":["deep","x"]},{"label":"assign-pattern","values":["first","set"]},{"label":"from-string","values":[4]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"exc-error-kinds","result":"ok","error":null,"entries":[{"label":"kinds","values":["ReferenceError;TypeError;TypeError;RangeError:custom;"]}],"unhandledRejections":[]}

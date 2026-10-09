@@ -1,0 +1,1 @@
+{"scenario":"computed/writable-setter-roundtrip","result":"ok","error":null,"entries":[{"label":"get","values":["Ada Lovelace"]},{"label":"after-set","values":["Grace Hopper","Grace","Hopper"]}],"unhandledRejections":[]}

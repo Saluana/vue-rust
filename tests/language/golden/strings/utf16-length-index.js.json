@@ -1,0 +1,1 @@
+{"scenario":"strings/utf16-length-index","result":"ok","error":null,"entries":[{"label":"length","values":[4,2,3]},{"label":"units","values":[55357,56832,98]},{"label":"index","values":[true,true,"b"]}],"unhandledRejections":[]}

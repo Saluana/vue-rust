@@ -1,0 +1,1 @@
+{"scenario":"lexical/do-while-continue","result":"ok","error":null,"entries":[{"label":"do-while","values":[5,{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":[1,3,5],"len":3}]},{"label":"while-break","values":[1]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"effect/scope-stops-watchers","result":"ok","error":null,"entries":[{"label":"before-stop","values":[2]},{"label":"after-stop","values":[2,3]}],"unhandledRejections":[]}

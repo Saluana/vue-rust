@@ -1,0 +1,1 @@
+{"scenario":"obj-numeric-accessor-keys","result":"ok","error":null,"entries":[{"label":"index-keys","values":["zero","one","one",{"$":"undef"}]},{"label":"order","values":["ten","nine","x"]}],"unhandledRejections":[]}

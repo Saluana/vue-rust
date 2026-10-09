@@ -1,0 +1,1 @@
+{"scenario":"fn-names-length","result":"ok","error":null,"entries":[{"label":"names","values":["inner","arrow","m","f","function"]},{"label":"lengths","values":[0,0,1,0]},{"label":"getter-name","values":["get g"]}],"unhandledRejections":[]}

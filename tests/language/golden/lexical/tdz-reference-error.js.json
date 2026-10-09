@@ -1,0 +1,1 @@
+{"scenario":"lexical/tdz-reference-error","result":"ok","error":null,"entries":[{"label":"before","values":[1]},{"label":"caught","values":["ReferenceError",true]},{"label":"after","values":[2]}],"unhandledRejections":[]}

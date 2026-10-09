@@ -1,0 +1,1 @@
+{"scenario":"promises/unhandled-rejection","result":"ok","error":null,"entries":[{"label":"run-done","values":[true]}],"unhandledRejections":[{"$":"obj","id":1,"cls":"Error","proto":"other","props":[],"name":"Error","message":"first lost"},{"$":"obj","id":2,"cls":"Error","proto":"other","props":[],"name":"TypeError","message":"second lost"}]}

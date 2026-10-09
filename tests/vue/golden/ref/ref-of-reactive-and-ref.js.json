@@ -1,0 +1,1 @@
+{"scenario":"ref/ref-of-reactive-and-ref","result":"ok","error":null,"entries":[{"label":"proxy-kept","values":[true]},{"label":"ref-of-ref","values":[true,true]},{"label":"same-proxy-write","values":[1]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"scope-closure-depth","result":"ok","error":null,"entries":[{"label":"depth","values":["abc"]},{"label":"bump","values":[2,2]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"scope-switch-closure","result":"ok","error":null,"entries":[{"label":"switch-capture","values":["one","two"]}],"unhandledRejections":[]}

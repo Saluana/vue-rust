@@ -1,0 +1,69 @@
+WP-G0D evidence: counter cargo test
+Claim: "Four Rust runtime tests pass" (root README; generated/tests/runtime.rs)
+Result: PASSED. tests/runtime.rs: 4 passed, 0 failed, 0 ignored. Lib and bin unit tests: 0. Doc-tests: 0. Exit status 0.
+Fresh target dir before this run. Finished 2026-10-09T04:32:23Z UTC, wall 17 s.
+Command (cwd = repo root): source scripts/env.sh; export CARGO_TARGET_DIR=$VN_ROOT/target/g0d; cargo test --locked --manifest-path generated/Cargo.toml
+Toolchain: rustc 1.99.0 (b940084d7 2026-09-28); cargo 1.99.0 (5f94df478 2026-08-27); host aarch64-apple-darwin; macOS 27.0.1 (26A434); 12 CPUs
+Crates: 154 downloaded into toolchain/cargo (project CARGO_HOME), 124 compiled. 0 warnings.
+Raw output: last 60 lines of the full 310-line log.
+----- raw output -----
+   Compiling bytemuck_derive v1.12.1
+   Compiling thiserror-impl v2.0.21
+   Compiling foreign-types-macros v0.2.4
+   Compiling objc2-app-kit v0.2.2
+   Compiling foreign-types v0.5.0
+   Compiling core-graphics v0.23.2
+   Compiling bytemuck v1.25.2
+   Compiling objc2-app-kit v0.3.2
+   Compiling font-types v0.12.6
+   Compiling color v0.3.3
+   Compiling emath v0.36.2
+   Compiling ecolor v0.36.2
+   Compiling read-fonts v0.41.0
+   Compiling peniko v0.6.1
+   Compiling vello_common v0.1.0
+   Compiling vello_cpu v0.1.0
+   Compiling accesskit_macos v0.26.3
+   Compiling half v2.7.1
+   Compiling tiff v0.11.3
+   Compiling accesskit_winit v0.32.2
+   Compiling image v0.25.10
+   Compiling skrifa v0.44.0
+   Compiling harfrust v0.12.0
+   Compiling arboard v3.6.1
+   Compiling epaint v0.36.2
+   Compiling egui v0.36.2
+   Compiling egui_glow v0.36.2
+   Compiling egui-winit v0.36.2
+   Compiling eframe v0.36.2
+   Compiling vue-rust-demo v0.0.1 (/Users/brendon/Documents/vue-rust-lab/generated)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 15.98s
+     Running unittests src/lib.rs (target/g0d/debug/deps/vue_rust_demo-f669ee325355be9d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (target/g0d/debug/deps/vue_rust_demo-25d3848ccdc8b99a)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/runtime.rs (target/g0d/debug/deps/runtime-c25637924eb510b9)
+
+running 4 tests
+test components_have_independent_state ... ok
+test state_and_computed_are_native_rust ... ok
+test headless_renderer_produces_real_paint_shapes ... ok
+test real_pointer_click_updates_ref_and_conditional_rendering ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+   Doc-tests vue_rust_demo
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+exit=0 wall_s=17

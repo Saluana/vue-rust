@@ -1,0 +1,21 @@
+# Workspace for the vue-native runtime crates. Generated applications live in their own output
+# directories; fixtures and examples are excluded so they can keep independent manifests/lockfiles.
+[workspace]
+resolver = "3"
+members = ["crates/*"]
+exclude = ["generated", "tests/fixtures", "examples", "build", "target", "toolchain", "node_modules", "experiments"]
+
+[workspace.package]
+edition = "2024"
+rust-version = "1.99"
+license = "UNLICENSED"
+publish = false
+
+# Disk is scarce on the development machine: no debuginfo, no incremental caches.
+[profile.dev]
+debug = 0
+[profile.test]
+debug = 0
+[profile.release]
+debug = 0
+codegen-units = 16

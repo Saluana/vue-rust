@@ -1,0 +1,1 @@
+{"scenario":"ex-conditional-seq","result":"ok","error":null,"entries":[{"label":"cond","values":["yes","no","no","yes"]},{"label":"seq","values":[3]},{"label":"nested-cond","values":["b"]}],"unhandledRejections":[]}

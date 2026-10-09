@@ -1,0 +1,1 @@
+{"scenario":"effect/scope-stop-idempotent","result":"ok","error":null,"entries":[{"label":"disposed","values":[1]},{"label":"still","values":[1]}],"unhandledRejections":[]}

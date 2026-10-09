@@ -1,0 +1,1 @@
+{"scenario":"computed/unchanged-result-no-retrigger","result":"ok","error":null,"entries":[{"label":"same-parity","values":[1]},{"label":"changed-parity","values":[2,0]}],"unhandledRejections":[]}

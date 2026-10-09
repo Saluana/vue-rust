@@ -1,0 +1,1 @@
+{"scenario":"ref/deep-wrap-object","result":"ok","error":null,"entries":[{"label":"deep","values":[true,true,true,2,2]}],"unhandledRejections":[]}

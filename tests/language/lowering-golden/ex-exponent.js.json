@@ -1,0 +1,1 @@
+{"scenario":"ex-exponent","result":"ok","error":null,"entries":[{"label":"pow","values":[512,4,-4,0.5,1,1,1e+21]}],"unhandledRejections":[]}

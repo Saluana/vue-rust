@@ -1,0 +1,1915 @@
+{
+  "schemaVersion": 1,
+  "source": "planning/vue-native-framework/design.md",
+  "sourceSha256": "18774bd03b27e59dde8fb0688b05692d2a842d97daddae5c99e6944d146f2d43",
+  "rowCount": 126,
+  "rows": [
+    {
+      "id": "L01",
+      "section": "8.1",
+      "title": "lexical bindings/control flow",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C only const refs",
+      "contract": "`let/const/var`, block/function scope, TDZ versus var hoisting, if/switch/loops, break/continue/return; explicit MIR",
+      "tests": "T02 scope/shadow/loop-order/TDZ/var-before-initialization; reject `with`, sloppy scripts and Annex B legacy forms",
+      "rawRow": "| L01 lexical bindings/control flow | P; C only const refs | `let/const/var`, block/function scope, TDZ versus var hoisting, if/switch/loops, break/continue/return; explicit MIR | T02 scope/shadow/loop-order/TDZ/var-before-initialization; reject `with`, sloppy scripts and Annex B legacy forms |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L02",
+      "section": "8.1",
+      "title": "functions/closures",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C zero-argument named handlers only",
+      "contract": "Parameters/defaults/rest, arrow lexical `this`, ordinary call `this`, captured mutable cells, recursion",
+      "tests": "T02 alias capture, per-loop capture, callback reentry, escaping closure; no ownership annotations",
+      "rawRow": "| L02 functions/closures | P; C zero-argument named handlers only | Parameters/defaults/rest, arrow lexical `this`, ordinary call `this`, captured mutable cells, recursion | T02 alias capture, per-loop capture, callback reentry, escaping closure; no ownership annotations |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L03",
+      "section": "8.1",
+      "title": "identity/aliasing",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Heap identity for objects/functions, distinct proxy wrapper IDs, shared references",
+      "tests": "T02 shared mutation, cycles, strict equality and collection keys; no copy-on-call semantics",
+      "rawRow": "| L03 identity/aliasing | P; — | Heap identity for objects/functions, distinct proxy wrapper IDs, shared references | T02 shared mutation, cycles, strict equality and collection keys; no copy-on-call semantics |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L04",
+      "section": "8.1",
+      "title": "objects/properties",
+      "statusText": "P subset",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Plain/null-prototype objects, dynamic own data keys, accessors in object literals, spread/destructure/delete/has/own enumeration order",
+      "tests": "T02 getter side effects/order and integer/string/symbol keys; property descriptor mutation excluded",
+      "rawRow": "| L04 objects/properties | P subset; — | Plain/null-prototype objects, dynamic own data keys, accessors in object literals, spread/destructure/delete/has/own enumeration order | T02 getter side effects/order and integer/string/symbol keys; property descriptor mutation excluded |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L05",
+      "section": "8.1",
+      "title": "prototypes/classes",
+      "statusText": "X general",
+      "statuses": [
+        "X"
+      ],
+      "primary": "X",
+      "prototype": null,
+      "contract": "Built-in prototype behavior for supported methods only; no user class/new-function constructors, prototype replacement, `__proto__` mutation, reflection-based extension",
+      "tests": "T02 precise class/prototype errors; **major npm limitation**; do not freeze ordinary objects and claim unrestricted JS",
+      "rawRow": "| L05 prototypes/classes | X general; — | Built-in prototype behavior for supported methods only; no user class/new-function constructors, prototype replacement, `__proto__` mutation, reflection-based extension | T02 precise class/prototype errors; **major npm limitation**; do not freeze ordinary objects and claim unrestricted JS |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L06",
+      "section": "8.1",
+      "title": "null/undefined",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Separate tags; missing keys→undefined; optional chaining/nullish coalescing preserve evaluation order",
+      "tests": "T02 missing versus explicit null, optional argument effects, serialization",
+      "rawRow": "| L06 null/undefined | P; — | Separate tags; missing keys→undefined; optional chaining/nullish coalescing preserve evaluation order | T02 missing versus explicit null, optional argument effects, serialization |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L07",
+      "section": "8.1",
+      "title": "truthiness/coercion",
+      "statusText": "P bounded domain",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C booleans only",
+      "contract": "Implement JS primitive ToBoolean/ToNumber/ToString, strict/loose equality and operand-returning logical operators",
+      "tests": "T02 `0`, `-0`, NaN, empty string, null, undefined, `[]`; user custom coercion/unsupported prototypes rejected",
+      "rawRow": "| L07 truthiness/coercion | P bounded domain; C booleans only | Implement JS primitive ToBoolean/ToNumber/ToString, strict/loose equality and operand-returning logical operators | T02 `0`, `-0`, NaN, empty string, null, undefined, `[]`; user custom coercion/unsupported prototypes rejected |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L08",
+      "section": "8.1",
+      "title": "numbers/operators",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C partial f64",
+      "contract": "IEEE-754 double, signed zero/NaN/infinity, integer bitwise conversion, exponent/remainder; JS decimal parsing/printing/`toFixed(0..100)`",
+      "tests": "T02 threshold/exponent/tie/negative-zero cases; replace Rust Display/format shortcuts. BigInt X",
+      "rawRow": "| L08 numbers/operators | P; C partial f64 | IEEE-754 double, signed zero/NaN/infinity, integer bitwise conversion, exponent/remainder; JS decimal parsing/printing/`toFixed(0..100)` | T02 threshold/exponent/tie/negative-zero cases; replace Rust Display/format shortcuts. BigInt X |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L09",
+      "section": "8.1",
+      "title": "strings",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C Rust String subset",
+      "contract": "UTF-16 code-unit semantics including lone surrogates; method allowlist; encode/replacement rules only at host boundary",
+      "tests": "T02 indexing/length/slice/iteration emoji/combining/surrogates; renderer uses grapheme clusters separately",
+      "rawRow": "| L09 strings | P; C Rust String subset | UTF-16 code-unit semantics including lone surrogates; method allowlist; encode/replacement rules only at host boundary | T02 indexing/length/slice/iteration emoji/combining/surrogates; renderer uses grapheme clusters separately |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L10",
+      "section": "8.1",
+      "title": "arrays",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Sparse slots distinct from undefined, length semantics, supported iteration/mutation/callback methods",
+      "tests": "T02 holes/splice/sort/comparator exceptions and iteration mutations; no accidental Rust Vec semantics",
+      "rawRow": "| L10 arrays | P; — | Sparse slots distinct from undefined, length semantics, supported iteration/mutation/callback methods | T02 holes/splice/sort/comparator exceptions and iteration mutations; no accidental Rust Vec semantics |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L11",
+      "section": "8.1",
+      "title": "Map/Set",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Insertion order, SameValueZero keys, object key identity, mutation during iteration",
+      "tests": "T02 NaN/-0/object keys and delete/reinsert; WeakMap/WeakSet/WeakRef/finalizers X initially",
+      "rawRow": "| L11 Map/Set | P; — | Insertion order, SameValueZero keys, object key identity, mutation during iteration | T02 NaN/-0/object keys and delete/reinsert; WeakMap/WeakSet/WeakRef/finalizers X initially |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L12",
+      "section": "8.1",
+      "title": "symbols",
+      "statusText": "P subset",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Unique symbols, registry symbols and supported iterator symbols for injection/keys",
+      "tests": "T02 uniqueness/module registry; unsupported well-known symbol protocols fail at use",
+      "rawRow": "| L12 symbols | P subset; — | Unique symbols, registry symbols and supported iterator symbols for injection/keys | T02 uniqueness/module registry; unsupported well-known symbol protocols fail at use |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L13",
+      "section": "8.1",
+      "title": "exceptions",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "`throw`, `try/catch/finally`, non-Error thrown values, source stack; explicit abrupt completion",
+      "tests": "T02 finally overrides return/throw; no Rust unwinding for JS errors",
+      "rawRow": "| L13 exceptions | P; — | `throw`, `try/catch/finally`, non-Error thrown values, source stack; explicit abrupt completion | T02 finally overrides return/throw; no Rust unwinding for JS errors |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L14",
+      "section": "8.1",
+      "title": "promises",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Pending/fulfilled/rejected, then/catch/finally/all/allSettled/race/any, thenable assimilation and microtask jobs",
+      "tests": "T05 recursive thenables, multiple resolutions, unhandled rejection timing; hostile thenables bounded by explicit watchdog",
+      "rawRow": "| L14 promises | P; — | Pending/fulfilled/rejected, then/catch/finally/all/allSettled/race/any, thenable assimilation and microtask jobs | T05 recursive thenables, multiple resolutions, unhandled rejection timing; hostile thenables bounded by explicit watchdog |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L15",
+      "section": "8.1",
+      "title": "async/await",
+      "statusText": "P functions",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Compiled suspension frames retain locals/roots and completion stack",
+      "tests": "T05 rejection/finally/cancellation races; user generators and async generators X; top-level SFC await E with Suspense",
+      "rawRow": "| L15 async/await | P functions; — | Compiled suspension frames retain locals/roots and completion stack | T05 rejection/finally/cancellation races; user generators and async generators X; top-level SFC await E with Suspense |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L16",
+      "section": "8.1",
+      "title": "modules",
+      "statusText": "P ESM",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C only vue named imports",
+      "contract": "Static ESM, live binding cells, namespace reads, cycles/TDZ, singleton per realm",
+      "tests": "T02 cyclic initialization/order; CommonJS/require, Node built-ins and module-level top-level await X initially",
+      "rawRow": "| L16 modules | P ESM; C only vue named imports | Static ESM, live binding cells, namespace reads, cycles/TDZ, singleton per realm | T02 cyclic initialization/order; CommonJS/require, Node built-ins and module-level top-level await X initially |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L17",
+      "section": "8.1",
+      "title": "dynamic imports",
+      "statusText": "P literals",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Static graph, deferred ESM evaluation returning promises; native and first production web profile link application code ahead of time in one binary/module",
+      "tests": "T05 namespace identity, evaluation once and rejection/order; physical WASM code splitting E; computed specifiers, remote native code and runtime compilation X",
+      "rawRow": "| L17 dynamic imports | P literals; — | Static graph, deferred ESM evaluation returning promises; native and first production web profile link application code ahead of time in one binary/module | T05 namespace identity, evaluation once and rejection/order; physical WASM code splitting E; computed specifiers, remote native code and runtime compilation X |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L18",
+      "section": "8.1",
+      "title": "standard libraries",
+      "statusText": "P explicit registry",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "JSON, selected Math/Number/String/Array/Object operations; Uint8Array/ArrayBuffer for IO with specified bounds",
+      "tests": "T02 each overload incl JSON errors/order; Date/Intl/RegExp broad parity E, other typed arrays/DataView X until inventoried",
+      "rawRow": "| L18 standard libraries | P explicit registry; — | JSON, selected Math/Number/String/Array/Object operations; Uint8Array/ArrayBuffer for IO with specified bounds | T02 each overload incl JSON errors/order; Date/Intl/RegExp broad parity E, other typed arrays/DataView X until inventoried |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L19",
+      "section": "8.1",
+      "title": "nondeterminism",
+      "statusText": "A",
+      "statuses": [
+        "A"
+      ],
+      "primary": "A",
+      "prototype": null,
+      "contract": "Built-in clock/random providers and `@vue-native/platform` locale/crypto services; real outcomes treated as external inputs",
+      "tests": "T02 seeded test provider, T22 cryptographic APIs; Math.random never used for secrets; SSR time/random state serialized or opt-in client-only",
+      "rawRow": "| L19 nondeterminism | A; — | Built-in clock/random providers and `@vue-native/platform` locale/crypto services; real outcomes treated as external inputs | T02 seeded test provider, T22 cryptographic APIs; Math.random never used for secrets; SSR time/random state serialized or opt-in client-only |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L20",
+      "section": "8.1",
+      "title": "metaprogramming",
+      "statusText": "X",
+      "statuses": [
+        "X"
+      ],
+      "primary": "X",
+      "prototype": null,
+      "contract": "`eval`, Function constructors, user Proxy, arbitrary Reflect, dynamic codegen and native addons rejected",
+      "tests": "T10 transitive/dynamic reachability errors; internal reactive proxy model does not expose general JS Proxy",
+      "rawRow": "| L20 metaprogramming | X; — | `eval`, Function constructors, user Proxy, arbitrary Reflect, dynamic codegen and native addons rejected | T10 transitive/dynamic reachability errors; internal reactive proxy model does not expose general JS Proxy |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "L21",
+      "section": "8.1",
+      "title": "method allowlist governance",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Versioned compiler/runtime declaration manifest for every standard method/overload; fail unknown calls when closed-world resolution proves forbidden; dynamic call target checked at runtime",
+      "tests": "T02 unqualified property call gets source error, never a native panic; implementation must not declare all JS library coverage",
+      "rawRow": "| L21 method allowlist governance | P; — | Versioned compiler/runtime declaration manifest for every standard method/overload; fail unknown calls when closed-world resolution proves forbidden; dynamic call target checked at runtime | T02 unqualified property call gets source error, never a native panic; implementation must not declare all JS library coverage |",
+      "sectionTitle": "JavaScript language and values (R02, R05, R10)"
+    },
+    {
+      "id": "S01",
+      "section": "8.2",
+      "title": "template + setup JS/TS",
+      "statusText": "P all",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C limited",
+      "contract": "Block offsets, duplicate block errors, comments, whitespace and inferred component names",
+      "tests": "Equivalent JS/typed SFC behavior; Unicode diagnostic span",
+      "rawRow": "| S01 template + setup JS/TS | P all; C limited | Block offsets, duplicate block errors, comments, whitespace and inferred component names | Equivalent JS/typed SFC behavior; Unicode diagnostic span |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S02",
+      "section": "8.2",
+      "title": "normal script",
+      "statusText": "P restricted",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Module-scope imports/named exports alongside setup; disallow conflicting default Options API objects",
+      "tests": "Singleton module init vs per-instance setup; `data/methods/mixins` rejected",
+      "rawRow": "| S02 normal script | P restricted; — | Module-scope imports/named exports alongside setup; disallow conflicting default Options API objects | Singleton module init vs per-instance setup; `data/methods/mixins` rejected |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S03",
+      "section": "8.2",
+      "title": "external blocks",
+      "statusText": "P template/style src",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Static project-root resolution and dependency edges",
+      "tests": "File edits invalidate users; setup `src` and prohibited combinations rejected according to Vue restrictions",
+      "rawRow": "| S03 external blocks | P template/style src; — | Static project-root resolution and dependency edges | File edits invalidate users; setup `src` and prohibited combinations rejected according to Vue restrictions |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S04",
+      "section": "8.2",
+      "title": "preprocessors/custom blocks",
+      "statusText": "X default, E trusted plugins",
+      "statuses": [
+        "X",
+        "E"
+      ],
+      "primary": "X",
+      "prototype": null,
+      "contract": "No arbitrary transforms installed implicitly",
+      "tests": "Precise lang/custom-block error; later transforms must supply chained source maps",
+      "rawRow": "| S04 preprocessors/custom blocks | X default, E trusted plugins; — | No arbitrary transforms installed implicitly | Precise lang/custom-block error; later transforms must supply chained source maps |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S05",
+      "section": "8.2",
+      "title": "imports",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C unaliased ref/computed only",
+      "contract": "Aliases, `.vue` components, namespace imports, local code/assets and qualified npm; static graph",
+      "tests": "Rename import; missing transitive module; package conditions and casing",
+      "rawRow": "| S05 imports | P; C unaliased ref/computed only | Aliases, `.vue` components, namespace imports, local code/assets and qualified npm; static graph | Rename import; missing transitive module; package conditions and casing |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S06",
+      "section": "8.2",
+      "title": "defineProps / withDefaults",
+      "statusText": "P macro",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Runtime/type forms, imported type resolution, hoisting, validators/default factories",
+      "tests": "Defaults per instance; missing vs undefined, boolean casting, invalid hoist; no arbitrary type evaluator",
+      "rawRow": "| S06 defineProps / withDefaults | P macro; — | Runtime/type forms, imported type resolution, hoisting, validators/default factories | Defaults per instance; missing vs undefined, boolean casting, invalid hoist; no arbitrary type evaluator |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S07",
+      "section": "8.2",
+      "title": "reactive props destructuring",
+      "statusText": "P macro transform",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Pin 3.5 semantics, defaults and reference rewrites within setup",
+      "tests": "Destructured prop used by watcher updates correctly; invalid watch-source warning",
+      "rawRow": "| S07 reactive props destructuring | P macro transform; — | Pin 3.5 semantics, defaults and reference rewrites within setup | Destructured prop used by watcher updates correctly; invalid watch-source warning |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S08",
+      "section": "8.2",
+      "title": "defineEmits",
+      "statusText": "P macro",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Runtime declarations/validators and typed overloads/named tuples",
+      "tests": "Correct payload, validation warning, undeclared listener fallthrough",
+      "rawRow": "| S08 defineEmits | P macro; — | Runtime declarations/validators and typed overloads/named tuples | Correct payload, validation warning, undeclared listener fallthrough |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S09",
+      "section": "8.2",
+      "title": "defineModel",
+      "statusText": "P macro",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Named/multiple models, defaults, required, get/set transformers and modifiers",
+      "tests": "Parent-child update order, absent parent default behavior, trim/number custom model",
+      "rawRow": "| S09 defineModel | P macro; — | Named/multiple models, defaults, required, get/set transformers and modifiers | Parent-child update order, absent parent default behavior, trim/number custom model |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S10",
+      "section": "8.2",
+      "title": "defineExpose",
+      "statusText": "P macro",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Explicit public instance projection",
+      "tests": "Closed by default; parent ref sees exposed/unwrapped values only",
+      "rawRow": "| S10 defineExpose | P macro; — | Explicit public instance projection | Closed by default; parent ref sees exposed/unwrapped values only |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S11",
+      "section": "8.2",
+      "title": "defineOptions",
+      "statusText": "P limited macro",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "`name` and `inheritAttrs` metadata only; unsupported option keys error",
+      "tests": "Name diagnostics and attr fallthrough; Options API escape rejected",
+      "rawRow": "| S11 defineOptions | P limited macro; — | `name` and `inheritAttrs` metadata only; unsupported option keys error | Name diagnostics and attr fallthrough; Options API escape rejected |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S12",
+      "section": "8.2",
+      "title": "defineSlots",
+      "statusText": "P type macro",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Slot names/props type checking; no runtime emitted object fabrication",
+      "tests": "Invalid slot payload/name mapped to template",
+      "rawRow": "| S12 defineSlots | P type macro; — | Slot names/props type checking; no runtime emitted object fabrication | Invalid slot payload/name mapped to template |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S13",
+      "section": "8.2",
+      "title": "setup generics",
+      "statusText": "P type feature",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Generic SFC virtual declarations, inference/explicit arguments",
+      "tests": "Generic props/slots inference in consumer; runtime behavior identical after erasure",
+      "rawRow": "| S13 setup generics | P type feature; — | Generic SFC virtual declarations, inference/explicit arguments | Generic props/slots inference in consumer; runtime behavior identical after erasure |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S14",
+      "section": "8.2",
+      "title": "top-level await",
+      "statusText": "E",
+      "statuses": [
+        "E"
+      ],
+      "primary": "E",
+      "prototype": null,
+      "contract": "Requires async setup/context restoration and experimental Suspense boundary",
+      "tests": "Rejection, unmount-before-resolve and context restore; production error until separate experimental qualification",
+      "rawRow": "| S14 top-level await | E; — | Requires async setup/context restoration and experimental Suspense boundary | Rejection, unmount-before-resolve and context restore; production error until separate experimental qualification |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S15",
+      "section": "8.2",
+      "title": "TS primitive/union/intersection/literal/tuple types",
+      "statusText": "P build-time",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C `lang=ts` only",
+      "contract": "Qualified TS checker; erase annotations; runtime uses Value domain",
+      "tests": "Union narrowing, nullable props, tuple index errors; annotations never native layout promises",
+      "rawRow": "| S15 TS primitive/union/intersection/literal/tuple types | P build-time; C `lang=ts` only | Qualified TS checker; erase annotations; runtime uses Value domain | Union narrowing, nullable props, tuple index errors; annotations never native layout promises |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S16",
+      "section": "8.2",
+      "title": "interfaces/aliases/generics/overloads",
+      "statusText": "P build-time",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Structural checks and overload declarations; one runtime implementation",
+      "tests": "Overload resolution, constraints and recursive type timeout diagnostics",
+      "rawRow": "| S16 interfaces/aliases/generics/overloads | P build-time; — | Structural checks and overload declarations; one runtime implementation | Overload resolution, constraints and recursive type timeout diagnostics |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S17",
+      "section": "8.2",
+      "title": "keyof/typeof/indexed/mapped/conditional/template types",
+      "statusText": "P checker subject to macro resolver limits",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Type checker owns types; Vue macro AST conversion has narrower limits",
+      "tests": "Unsupported whole conditional props object reports macro limitation, not accepted stale metadata",
+      "rawRow": "| S17 keyof/typeof/indexed/mapped/conditional/template types | P checker subject to macro resolver limits; — | Type checker owns types; Vue macro AST conversion has narrower limits | Unsupported whole conditional props object reports macro limitation, not accepted stale metadata |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S18",
+      "section": "8.2",
+      "title": "`as`, satisfies, const/non-null assertions",
+      "statusText": "P erased",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Validate then erase; boundary validation unchanged",
+      "tests": "Unsound cast still receives JS error/validation failure, never unsafe Rust cast",
+      "rawRow": "| S18 `as`, satisfies, const/non-null assertions | P erased; — | Validate then erase; boundary validation unchanged | Unsound cast still receives JS error/validation failure, never unsafe Rust cast |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S19",
+      "section": "8.2",
+      "title": "type-only imports/exports, `.d.ts`, JSDoc",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Erased edges still in type-cache graph; native profile ambient libraries",
+      "tests": "Changed imported type invalidates; declaration doesn't authorize unavailable runtime package",
+      "rawRow": "| S19 type-only imports/exports, `.d.ts`, JSDoc | P; — | Erased edges still in type-cache graph; native profile ambient libraries | Changed imported type invalidates; declaration doesn't authorize unavailable runtime package |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S20",
+      "section": "8.2",
+      "title": "enums/const enums/namespaces/parameter properties",
+      "statusText": "X initially",
+      "statuses": [
+        "X"
+      ],
+      "primary": "X",
+      "prototype": null,
+      "contract": "Runtime-producing TS forms need explicit lowering, not blind erasure",
+      "tests": "Per-construct source error; use union constants/functions instead",
+      "rawRow": "| S20 enums/const enums/namespaces/parameter properties | X initially; — | Runtime-producing TS forms need explicit lowering, not blind erasure | Per-construct source error; use union constants/functions instead |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S21",
+      "section": "8.2",
+      "title": "classes/decorators/JSX/TSX",
+      "statusText": "X production profile",
+      "statuses": [
+        "X"
+      ],
+      "primary": "X",
+      "prototype": null,
+      "contract": "Runtime semantics/compiler transforms not implemented",
+      "tests": "Source errors even if TypeScript accepts; template SFC alternative",
+      "rawRow": "| S21 classes/decorators/JSX/TSX | X production profile; — | Runtime semantics/compiler transforms not implemented | Source errors even if TypeScript accepts; template SFC alternative |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S22",
+      "section": "8.2",
+      "title": "type utility and augmentation APIs",
+      "statusText": "P types only, limited",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "PropType, MaybeRef, MaybeRefOrGetter, ExtractPropTypes, ExtractPublicPropTypes, ComponentCustomProps, profile-specific CSSProperties",
+      "tests": "T03 utility inference; ComponentCustomProperties/Options cannot enable excluded Options API or arbitrary globals",
+      "rawRow": "| S22 type utility and augmentation APIs | P types only, limited; — | PropType, MaybeRef, MaybeRefOrGetter, ExtractPropTypes, ExtractPublicPropTypes, ComponentCustomProps, profile-specific CSSProperties | T03 utility inference; ComponentCustomProperties/Options cannot enable excluded Options API or arbitrary globals |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S23",
+      "section": "8.2",
+      "title": "TS build config",
+      "statusText": "A",
+      "statuses": [
+        "A"
+      ],
+      "primary": "A",
+      "prototype": null,
+      "contract": "Strict checks, ESM resolution, native libs omit DOM/Node; web extension has separate lib set",
+      "tests": "Native `document` error, web import permitted only in explicit extension; unknown compiler-affecting config rejected",
+      "rawRow": "| S23 TS build config | A; — | Strict checks, ESM resolution, native libs omit DOM/Node; web extension has separate lib set | Native `document` error, web import permitted only in explicit extension; unknown compiler-affecting config rejected |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S24",
+      "section": "8.2",
+      "title": "explicit resource management",
+      "statusText": "X initial profile",
+      "statuses": [
+        "X"
+      ],
+      "primary": "X",
+      "prototype": null,
+      "contract": "`using`, `await using`, Disposable/AsyncDisposable runtime protocols require additional completion lowering; do not erase them",
+      "tests": "T03 reject declarations with spans; use supported try/finally and explicit service disposal. See [TypeScript 5.2 resource management](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-2.html)",
+      "rawRow": "| S24 explicit resource management | X initial profile; — | `using`, `await using`, Disposable/AsyncDisposable runtime protocols require additional completion lowering; do not erase them | T03 reject declarations with spans; use supported try/finally and explicit service disposal. See [TypeScript 5.2 resource management](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-2.html) |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "S25",
+      "section": "8.2",
+      "title": "additional type/module forms",
+      "statusText": "P erased type features, X runtime legacy modules",
+      "statuses": [
+        "P",
+        "X"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "TS utility types, readonly/unique symbol/const type parameters, type predicates and assertion signatures checked; `import =`/`export =` runtime forms excluded; ambient globals cannot grant host capabilities",
+      "tests": "T03 inference/narrowing/erasure fixtures and incompatible module diagnostics; newer TS runtime syntax stays excluded until manifest revision",
+      "rawRow": "| S25 additional type/module forms | P erased type features, X runtime legacy modules; — | TS utility types, readonly/unique symbol/const type parameters, type predicates and assertion signatures checked; `import =`/`export =` runtime forms excluded; ambient globals cannot grant host capabilities | T03 inference/narrowing/erasure fixtures and incompatible module diagnostics; newer TS runtime syntax stays excluded until manifest revision |",
+      "sectionTitle": "SFC syntax, compiler macros and TypeScript (R03)"
+    },
+    {
+      "id": "V01",
+      "section": "8.3",
+      "title": "ref",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C primitive subset",
+      "contract": "Deep wrapping, `.value`, Object.is-style change behavior; template unwrapping context",
+      "tests": "T04 same write, NaN/-0, nested refs and instance separation",
+      "rawRow": "| V01 ref | P; C primitive subset | Deep wrapping, `.value`, Object.is-style change behavior; template unwrapping context | T04 same write, NaN/-0, nested refs and instance separation |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V02",
+      "section": "8.3",
+      "title": "shallowRef / triggerRef",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Identity-only outer tracking; explicit trigger",
+      "tests": "T04 nested mutation inert, trigger reruns effect",
+      "rawRow": "| V02 shallowRef / triggerRef | P; — | Identity-only outer tracking; explicit trigger | T04 nested mutation inert, trigger reruns effect |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V03",
+      "section": "8.3",
+      "title": "reactive",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Deep cached wrappers; arrays/Map/Set instrumentation",
+      "tests": "T04 add/delete/iterate/length, collection ref non-unwrapping",
+      "rawRow": "| V03 reactive | P; — | Deep cached wrappers; arrays/Map/Set instrumentation | T04 add/delete/iterate/length, collection ref non-unwrapping |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V04",
+      "section": "8.3",
+      "title": "readonly",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Deep readonly wrapper and dev warning/no mutation",
+      "tests": "T04 writes through readonly, original mutation visibility",
+      "rawRow": "| V04 readonly | P; — | Deep readonly wrapper and dev warning/no mutation | T04 writes through readonly, original mutation visibility |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V05",
+      "section": "8.3",
+      "title": "shallowReactive / shallowReadonly",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Root-only wrapping; preserve nested identity",
+      "tests": "T04 nested ref/object untouched",
+      "rawRow": "| V05 shallowReactive / shallowReadonly | P; — | Root-only wrapping; preserve nested identity | T04 nested ref/object untouched |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V06",
+      "section": "8.3",
+      "title": "computed",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C uncached pure getter",
+      "contract": "Cached lazy getter, writable setter, old-value parameter, computed stability",
+      "tests": "T04 read twice once, branch changes, equal results, writable round trip",
+      "rawRow": "| V06 computed | P; C uncached pure getter | Cached lazy getter, writable setter, old-value parameter, computed stability | T04 read twice once, branch changes, equal results, writable round trip |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V07",
+      "section": "8.3",
+      "title": "isRef / unref",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Introspection and one-level unwrapping",
+      "tests": "T04 plain/ref/computed values",
+      "rawRow": "| V07 isRef / unref | P; — | Introspection and one-level unwrapping | T04 plain/ref/computed values |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V08",
+      "section": "8.3",
+      "title": "toRef / toRefs / toValue",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Property-linked refs, normalization/getter forms and optional keys",
+      "tests": "T04 bidirectional property alias; missing property; getter evaluation",
+      "rawRow": "| V08 toRef / toRefs / toValue | P; — | Property-linked refs, normalization/getter forms and optional keys | T04 bidirectional property alias; missing property; getter evaluation |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V09",
+      "section": "8.3",
+      "title": "isProxy / isReactive / isReadonly / isShallow",
+      "statusText": "P subject to pinned-export audit",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Wrapper mode flags; no guesses based on Rust type",
+      "tests": "T04 nested readonly/reactive wrappers and raw values",
+      "rawRow": "| V09 isProxy / isReactive / isReadonly / isShallow | P subject to pinned-export audit; — | Wrapper mode flags; no guesses based on Rust type | T04 nested readonly/reactive wrappers and raw values |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V10",
+      "section": "8.3",
+      "title": "toRaw / markRaw",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Raw identity escape, excluded wrapping flag",
+      "tests": "T04 raw alias writes don't spuriously notify; identity hazards preserved/documented",
+      "rawRow": "| V10 toRaw / markRaw | P; — | Raw identity escape, excluded wrapping flag | T04 raw alias writes don't spuriously notify; identity hazards preserved/documented |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V11",
+      "section": "8.3",
+      "title": "customRef",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Compiled factory closures receive track/trigger hooks",
+      "tests": "T04 debounced ref with explicit timer service; disposal and repeated reads",
+      "rawRow": "| V11 customRef | P; — | Compiled factory closures receive track/trigger hooks | T04 debounced ref with explicit timer service; disposal and repeated reads |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V12",
+      "section": "8.3",
+      "title": "effectScope / getCurrentScope / onScopeDispose",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Nested/detached scopes, stop semantics and warning rules",
+      "tests": "T04 detached scope survives parent; explicit stop cleans subscriptions",
+      "rawRow": "| V12 effectScope / getCurrentScope / onScopeDispose | P; — | Nested/detached scopes, stop semantics and warning rules | T04 detached scope survives parent; explicit stop cleans subscriptions |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V13",
+      "section": "8.3",
+      "title": "watchEffect / watchPostEffect / watchSyncEffect",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Track synchronous reads only, appropriate flush lane and cleanup",
+      "tests": "T05 dependency after await not tracked; sync vs post ordering",
+      "rawRow": "| V13 watchEffect / watchPostEffect / watchSyncEffect | P; — | Track synchronous reads only, appropriate flush lane and cleanup | T05 dependency after await not tracked; sync vs post ordering |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V14",
+      "section": "8.3",
+      "title": "watch",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Ref/getter/reactive/multi-source, old/new values, immediate/once/deep including numeric depth",
+      "tests": "T05 nested traversal cycles, deep same-object identity, source arrays",
+      "rawRow": "| V14 watch | P; — | Ref/getter/reactive/multi-source, old/new values, immediate/once/deep including numeric depth | T05 nested traversal cycles, deep same-object identity, source arrays |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V15",
+      "section": "8.3",
+      "title": "watch handles",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "stop/pause/resume and scope auto-stop",
+      "tests": "T05 writes while paused coalesce as reference; stop prevents queued delivery",
+      "rawRow": "| V15 watch handles | P; — | stop/pause/resume and scope auto-stop | T05 writes while paused coalesce as reference; stop prevents queued delivery |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V16",
+      "section": "8.3",
+      "title": "onWatcherCleanup / callback onCleanup",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Respect synchronous registration restriction for onWatcherCleanup; bound callback behavior separately",
+      "tests": "T05 cleanup before rerun/stop; invalid post-await registration",
+      "rawRow": "| V16 onWatcherCleanup / callback onCleanup | P; — | Respect synchronous registration restriction for onWatcherCleanup; bound callback behavior separately | T05 cleanup before rerun/stop; invalid post-await registration |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V17",
+      "section": "8.3",
+      "title": "scheduler / nextTick",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Dedup and reference order, callbacks and promise returns",
+      "tests": "T05 nested jobs, parent/child pre/post, writes within nextTick; host commit≠paint",
+      "rawRow": "| V17 scheduler / nextTick | P; — | Dedup and reference order, callbacks and promise returns | T05 nested jobs, parent/child pre/post, writes within nextTick; host commit≠paint |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V18",
+      "section": "8.3",
+      "title": "mount/update hooks",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "onBeforeMount/onMounted/onBeforeUpdate/onUpdated tied to tree commits",
+      "tests": "T06 child/parent order; SSR excludes client mount hooks",
+      "rawRow": "| V18 mount/update hooks | P; — | onBeforeMount/onMounted/onBeforeUpdate/onUpdated tied to tree commits | T06 child/parent order; SSR excludes client mount hooks |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V19",
+      "section": "8.3",
+      "title": "unmount hooks",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "onBeforeUnmount/onUnmounted with deterministic effect disposal",
+      "tests": "T06 refs/jobs/services around removal",
+      "rawRow": "| V19 unmount hooks | P; — | onBeforeUnmount/onUnmounted with deterministic effect disposal | T06 refs/jobs/services around removal |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V20",
+      "section": "8.3",
+      "title": "onErrorCaptured",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Ancestor propagation, `false` stop and app handler fallback",
+      "tests": "T06 setup/render/event/async errors; panic separate",
+      "rawRow": "| V20 onErrorCaptured | P; — | Ancestor propagation, `false` stop and app handler fallback | T06 setup/render/event/async errors; panic separate |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V21",
+      "section": "8.3",
+      "title": "onRenderTracked / onRenderTriggered",
+      "statusText": "P dev only",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Source-oriented dependency events",
+      "tests": "T04 event fields and absence in release",
+      "rawRow": "| V21 onRenderTracked / onRenderTriggered | P dev only; — | Source-oriented dependency events | T04 event fields and absence in release |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V22",
+      "section": "8.3",
+      "title": "onActivated / onDeactivated",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "KeepAlive cache lifecycle distinct from unmount",
+      "tests": "T06 cached state, nested activation order and eviction",
+      "rawRow": "| V22 onActivated / onDeactivated | P; — | KeepAlive cache lifecycle distinct from unmount | T06 cached state, nested activation order and eviction |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V23",
+      "section": "8.3",
+      "title": "onServerPrefetch",
+      "statusText": "W SSR",
+      "statuses": [
+        "W"
+      ],
+      "primary": "W",
+      "prototype": null,
+      "contract": "Request-owned promises before serialization",
+      "tests": "T18 timeout/error/isolation; native use diagnosed as server-only",
+      "rawRow": "| V23 onServerPrefetch | W SSR; — | Request-owned promises before serialization | T18 timeout/error/isolation; native use diagnosed as server-only |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V24",
+      "section": "8.3",
+      "title": "provide / inject / hasInjectionContext",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "String/symbol keys, nearest provider, lazy default factory, app context",
+      "tests": "T06 shadowing, missing/default, reactive identity; sibling/window boundaries",
+      "rawRow": "| V24 provide / inject / hasInjectionContext | P; — | String/symbol keys, nearest provider, lazy default factory, app context | T06 shadowing, missing/default, reactive identity; sibling/window boundaries |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V25",
+      "section": "8.3",
+      "title": "useAttrs / useSlots",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Current attrs/slot functions with reference reactivity restrictions",
+      "tests": "T06 attr updates/fallthrough and slot closure scope",
+      "rawRow": "| V25 useAttrs / useSlots | P; — | Current attrs/slot functions with reference reactivity restrictions | T06 attr updates/fallthrough and slot closure scope |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V26",
+      "section": "8.3",
+      "title": "useModel",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Shared runtime implementation behind defineModel",
+      "tests": "T06 getter/setter/modifier tuple behavior",
+      "rawRow": "| V26 useModel | P; — | Shared runtime implementation behind defineModel | T06 getter/setter/modifier tuple behavior |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V27",
+      "section": "8.3",
+      "title": "useTemplateRef",
+      "statusText": "A native, P DOM",
+      "statuses": [
+        "A",
+        "P"
+      ],
+      "primary": "A",
+      "prototype": null,
+      "contract": "Native returns typed host handle; DOM returns qualified element handle",
+      "tests": "T06 null before/after mount, list refs, focus action and exposed instance",
+      "rawRow": "| V27 useTemplateRef | A native, P DOM; — | Native returns typed host handle; DOM returns qualified element handle | T06 null before/after mount, list refs, focus action and exposed instance |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V28",
+      "section": "8.3",
+      "title": "useId",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "App prefix + deterministic instance identity; SSR stable allocation",
+      "tests": "T06 uniqueness; T18 server/client consistency and concurrent requests",
+      "rawRow": "| V28 useId | P; — | App prefix + deterministic instance identity; SSR stable allocation | T06 uniqueness; T18 server/client consistency and concurrent requests |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "V29",
+      "section": "8.3",
+      "title": "setup context and composition setup",
+      "statusText": "P restricted",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "SFC setup primary; allow statically analyzable `defineComponent({setup, name, inheritAttrs})` paired with an SFC template",
+      "tests": "T06 props/context/expose; reject data/methods/this-based Options API; function-form render-returning components excluded",
+      "rawRow": "| V29 setup context and composition setup | P restricted; — | SFC setup primary; allow statically analyzable `defineComponent({setup, name, inheritAttrs})` paired with an SFC template | T06 props/context/expose; reject data/methods/this-based Options API; function-form render-returning components excluded |",
+      "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
+    },
+    {
+      "id": "U01",
+      "section": "8.4",
+      "title": "interpolation / v-text",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C interpolation only",
+      "contract": "JS stringification; text nodes never markup",
+      "tests": "T07 arrays/objects/null formatting and hostile strings; no Rust Display substitution",
+      "rawRow": "| U01 interpolation / v-text | P; C interpolation only | JS stringification; text nodes never markup | T07 arrays/objects/null formatting and hostile strings; no Rust Display substitution |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U02",
+      "section": "8.4",
+      "title": "expressions",
+      "statusText": "P profile",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C small operators",
+      "contract": "Scoped expressions, globals allowlist, template ref unwrapping",
+      "tests": "T07 optional chain/side-effect order; reject unsupported globals/statement locations",
+      "rawRow": "| U02 expressions | P profile; C small operators | Scoped expressions, globals allowlist, template ref unwrapping | T07 optional chain/side-effect order; reject unsupported globals/statement locations |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U03",
+      "section": "8.4",
+      "title": "static/dynamic bindings",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C button disabled only",
+      "contract": "Attributes/properties/class/style, object spread, dynamic arguments and same-name shorthand",
+      "tests": "T07 boolean/absent attrs and dynamic argument changes; regress ignored dynamic click bug",
+      "rawRow": "| U03 static/dynamic bindings | P; C button disabled only | Attributes/properties/class/style, object spread, dynamic arguments and same-name shorthand | T07 boolean/absent attrs and dynamic argument changes; regress ignored dynamic click bug |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U04",
+      "section": "8.4",
+      "title": "DOM `.prop/.attr/.camel` binding modifiers",
+      "statusText": "W for DOM-specific behavior",
+      "statuses": [
+        "W"
+      ],
+      "primary": "W",
+      "prototype": null,
+      "contract": "DOM property/attribute distinction; native semantic fields explicitly mapped",
+      "tests": "T07 native unsupported property diagnostic; DOM property versus string attr",
+      "rawRow": "| U04 DOM `.prop/.attr/.camel` binding modifiers | W for DOM-specific behavior; — | DOM property/attribute distinction; native semantic fields explicitly mapped | T07 native unsupported property diagnostic; DOM property versus string attr |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U05",
+      "section": "8.4",
+      "title": "event handlers",
+      "statusText": "A native/P DOM",
+      "statuses": [
+        "A",
+        "P"
+      ],
+      "primary": "A",
+      "prototype": "C click only",
+      "contract": "Named/inline/object/dynamic events, `$event`, normalized host events, capture/bubble",
+      "tests": "T07 propagation path and component emits; DOM Event object APIs web-only",
+      "rawRow": "| U05 event handlers | A native/P DOM; C click only | Named/inline/object/dynamic events, `$event`, normalized host events, capture/bubble | T07 propagation path and component emits; DOM Event object APIs web-only |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U06",
+      "section": "8.4",
+      "title": "event modifiers",
+      "statusText": "A native/P DOM",
+      "statuses": [
+        "A",
+        "P"
+      ],
+      "primary": "A",
+      "prototype": null,
+      "contract": "stop/prevent/self/once/capture, key/system/exact/mouse filters; passive only on supported web listeners",
+      "tests": "T07 modifier order, passive+prevent error, key vs IME, touch-generated click",
+      "rawRow": "| U06 event modifiers | A native/P DOM; — | stop/prevent/self/once/capture, key/system/exact/mouse filters; passive only on supported web listeners | T07 modifier order, passive+prevent error, key vs IME, touch-generated click |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U07",
+      "section": "8.4",
+      "title": "text/textarea v-model",
+      "statusText": "P observable value flow",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C string input",
+      "contract": "Editing buffer with composition state, lazy/trim, caret preservation",
+      "tests": "T07 composition-end, paste, selection, lazy change; T09 host editing",
+      "rawRow": "| U07 text/textarea v-model | P observable value flow; C string input | Editing buffer with composition state, lazy/trim, caret preservation | T07 composition-end, paste, selection, lazy change; T09 host editing |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U08",
+      "section": "8.4",
+      "title": "numeric v-model",
+      "statusText": "A native/P web",
+      "statuses": [
+        "A",
+        "P"
+      ],
+      "primary": "A",
+      "prototype": "Q drag control",
+      "contract": "Explicit native numeric textbox with buffer; Vue number parse/empty-string behavior, validity separate from value",
+      "tests": "T07 empty/invalid/exponent/locale/min/max/step; no clamp silently replacing Vue model value",
+      "rawRow": "| U08 numeric v-model | A native/P web; Q drag control | Explicit native numeric textbox with buffer; Vue number parse/empty-string behavior, validity separate from value | T07 empty/invalid/exponent/locale/min/max/step; no clamp silently replacing Vue model value |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U09",
+      "section": "8.4",
+      "title": "checkbox/radio/select models",
+      "statusText": "P value semantics",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Boolean/custom true-false, arrays/sets, radio values, single/multiple select",
+      "tests": "T07 non-string option identity and change ordering; native presentation differs",
+      "rawRow": "| U09 checkbox/radio/select models | P value semantics; — | Boolean/custom true-false, arrays/sets, radio values, single/multiple select | T07 non-string option identity and change ordering; native presentation differs |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U10",
+      "section": "8.4",
+      "title": "file/range/date input variants",
+      "statusText": "A explicit controls",
+      "statuses": [
+        "A"
+      ],
+      "primary": "A",
+      "prototype": null,
+      "contract": "Range slider qualifies separately; files use scoped handle picker; date via explicit platform component",
+      "tests": "T07 cancellation and model type; unsupported HTML type errors, no generic catch-all input",
+      "rawRow": "| U10 file/range/date input variants | A explicit controls; — | Range slider qualifies separately; files use scoped handle picker; date via explicit platform component | T07 cancellation and model type; unsupported HTML type errors, no generic catch-all input |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U11",
+      "section": "8.4",
+      "title": "component props/emits/model",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Readonly prop view, default factories/validators, case rules, model updates",
+      "tests": "T06 Boolean/default order, declared emits vs fallthrough, parent mutation",
+      "rawRow": "| U11 component props/emits/model | P; — | Readonly prop view, default factories/validators, case rules, model updates | T06 Boolean/default order, declared emits vs fallthrough, parent mutation |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U12",
+      "section": "8.4",
+      "title": "slots / v-slot / slot element",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Default/named/scoped/dynamic slots, fallbacks and slot owner tracking",
+      "tests": "T06 parent state in reused slot, missing slot, conditional fallback",
+      "rawRow": "| U12 slots / v-slot / slot element | P; — | Default/named/scoped/dynamic slots, fallbacks and slot owner tracking | T06 parent state in reused slot, missing slot, conditional fallback |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U13",
+      "section": "8.4",
+      "title": "attrs/class/style fallthrough",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Single-root merge, multi-root explicit attrs, inheritAttrs false",
+      "tests": "T06 warning and merge precedence; stable attrs contract",
+      "rawRow": "| U13 attrs/class/style fallthrough | P; — | Single-root merge, multi-root explicit attrs, inheritAttrs false | T06 warning and merge precedence; stable attrs contract |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U14",
+      "section": "8.4",
+      "title": "v-if / v-else-if / v-else",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C bool v-if only",
+      "contract": "Branch identity, lazy mount, scope disposal",
+      "tests": "T07 truthiness, branch state reset and sibling validation",
+      "rawRow": "| U14 v-if / v-else-if / v-else | P; C bool v-if only | Branch identity, lazy mount, scope disposal | T07 truthiness, branch state reset and sibling validation |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U15",
+      "section": "8.4",
+      "title": "v-show",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Preserve instance, remove from layout/hit testing/AT while hidden",
+      "tests": "T07 focus evacuation, restored visibility; no unmount hooks",
+      "rawRow": "| U15 v-show | P; — | Preserve instance, remove from layout/hit testing/AT while hidden | T07 focus evacuation, restored visibility; no unmount hooks |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U16",
+      "section": "8.4",
+      "title": "v-for",
+      "statusText": "P profile",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Arrays, own-object keys, integer range, strings, supported iterables; scoped aliases",
+      "tests": "T07 index/key/value order, array holes, destructuring, precedence with v-if",
+      "rawRow": "| U16 v-for | P profile; — | Arrays, own-object keys, integer range, strings, supported iterables; scoped aliases | T07 index/key/value order, array holes, destructuring, precedence with v-if |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U17",
+      "section": "8.4",
+      "title": "key / keyed reconciliation",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Stable primitive keys; duplicate invalid keys diagnostic; unkeyed behavior documented",
+      "tests": "T06 insert/move/delete preserves input state and focus; list refs cleanup",
+      "rawRow": "| U17 key / keyed reconciliation | P; — | Stable primitive keys; duplicate invalid keys diagnostic; unkeyed behavior documented | T06 insert/move/delete preserves input state and focus; list refs cleanup |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U18",
+      "section": "8.4",
+      "title": "ref attribute / function refs",
+      "statusText": "A native/P DOM",
+      "statuses": [
+        "A",
+        "P"
+      ],
+      "primary": "A",
+      "prototype": null,
+      "contract": "Stable component/host handles, null on disposal and updated lists",
+      "tests": "T06 reorder/function ref timing; no native HTMLElement pretence",
+      "rawRow": "| U18 ref attribute / function refs | A native/P DOM; — | Stable component/host handles, null on disposal and updated lists | T06 reorder/function ref timing; no native HTMLElement pretence |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U19",
+      "section": "8.4",
+      "title": "component / is",
+      "statusText": "P static module set",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Dynamic type lookup and replacement; qualified native tags",
+      "tests": "T06 state disposal/cache; arbitrary HTML `is` custom-element behavior W/X",
+      "rawRow": "| U19 component / is | P static module set; — | Dynamic type lookup and replacement; qualified native tags | T06 state disposal/cache; arbitrary HTML `is` custom-element behavior W/X |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U20",
+      "section": "8.4",
+      "title": "defineAsyncComponent",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Bundled loader, delay/timeout/loading/error/retry, request dedup",
+      "tests": "T06 resolve/reject/unmount race; Suspense interaction E",
+      "rawRow": "| U20 defineAsyncComponent | P; — | Bundled loader, delay/timeout/loading/error/retry, request dedup | T06 resolve/reject/unmount race; Suspense interaction E |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U21",
+      "section": "8.4",
+      "title": "KeepAlive",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Include/exclude names, max LRU, activation scopes and cache disposal",
+      "tests": "T06 LRU resource cleanup; services pause policy explicit, not implicit cancellation of promises",
+      "rawRow": "| U21 KeepAlive | P; — | Include/exclude names, max LRU, activation scopes and cache disposal | T06 LRU resource cleanup; services pause policy explicit, not implicit cancellation of promises |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U22",
+      "section": "8.4",
+      "title": "Teleport",
+      "statusText": "A native/P DOM",
+      "statuses": [
+        "A",
+        "P"
+      ],
+      "primary": "A",
+      "prototype": null,
+      "contract": "Native named overlay roots in same window; DOM selector/element targets, disabled/defer",
+      "tests": "T07 event/injection ancestry retained; cross-window teleport X",
+      "rawRow": "| U22 Teleport | A native/P DOM; — | Native named overlay roots in same window; DOM selector/element targets, disabled/defer | T07 event/injection ancestry retained; cross-window teleport X |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U23",
+      "section": "8.4",
+      "title": "Transition",
+      "statusText": "A native/P DOM",
+      "statuses": [
+        "A",
+        "P"
+      ],
+      "primary": "A",
+      "prototype": null,
+      "contract": "Enter/leave hooks, cancellation/modes; native supported opacity/transform timeline",
+      "tests": "T07 ordering/rapid reversal/reduced motion; arbitrary CSS animation behavior W",
+      "rawRow": "| U23 Transition | A native/P DOM; — | Enter/leave hooks, cancellation/modes; native supported opacity/transform timeline | T07 ordering/rapid reversal/reduced motion; arbitrary CSS animation behavior W |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U24",
+      "section": "8.4",
+      "title": "TransitionGroup",
+      "statusText": "A native/P DOM",
+      "statuses": [
+        "A",
+        "P"
+      ],
+      "primary": "A",
+      "prototype": null,
+      "contract": "Keyed enter/leave/move, layout snapshots for supported transforms",
+      "tests": "T07 reorder while focused/scrolling; performance budget with 1k rows",
+      "rawRow": "| U24 TransitionGroup | A native/P DOM; — | Keyed enter/leave/move, layout snapshots for supported transforms | T07 reorder while focused/scrolling; performance budget with 1k rows |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U25",
+      "section": "8.4",
+      "title": "Suspense",
+      "statusText": "E all",
+      "statuses": [
+        "E"
+      ],
+      "primary": "E",
+      "prototype": null,
+      "contract": "Explicit experimental profile only, including nested async setup and fallbacks",
+      "tests": "T06 pending/error/unmount/context restoration; no stable promise",
+      "rawRow": "| U25 Suspense | E all; — | Explicit experimental profile only, including nested async setup and fallbacks | T06 pending/error/unmount/context restoration; no stable promise |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U26",
+      "section": "8.4",
+      "title": "custom directives",
+      "statusText": "A native/W DOM directives",
+      "statuses": [
+        "A",
+        "W"
+      ],
+      "primary": "A",
+      "prototype": null,
+      "contract": "Hooks exposed with typed host handle and old/new values; no direct unsandboxed native pointers",
+      "tests": "T07 hooks/disposal; HTMLElement manipulation rejected native",
+      "rawRow": "| U26 custom directives | A native/W DOM directives; — | Hooks exposed with typed host handle and old/new values; no direct unsandboxed native pointers | T07 hooks/disposal; HTMLElement manipulation rejected native |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U27",
+      "section": "8.4",
+      "title": "v-pre / v-once / v-memo",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Literal skip, once cache, dependency-memoized subtree per pinned behavior",
+      "tests": "T07 skipped expression, event closure freshness and keyed list memo",
+      "rawRow": "| U27 v-pre / v-once / v-memo | P; — | Literal skip, once cache, dependency-memoized subtree per pinned behavior | T07 skipped expression, event closure freshness and keyed list memo |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U28",
+      "section": "8.4",
+      "title": "v-cloak",
+      "statusText": "P web, documented no-op native",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "Web loading selector supported; native never exposes raw template",
+      "tests": "T07 no moustache flash under delayed load",
+      "rawRow": "| U28 v-cloak | P web, documented no-op native; — | Web loading selector supported; native never exposes raw template | T07 no moustache flash under delayed load |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U29",
+      "section": "8.4",
+      "title": "v-html",
+      "statusText": "X shared/native, W explicit web-only profile",
+      "statuses": [
+        "X",
+        "W"
+      ],
+      "primary": "X",
+      "prototype": null,
+      "contract": "Trusted HTML insertion retains Vue raw behavior; no implicit sanitizer claimed equivalent",
+      "tests": "T22 XSS/CSP/Trusted Types; T07 raw content not compiled; trusted extension separately qualified",
+      "rawRow": "| U29 v-html | X shared/native, W explicit web-only profile | Trusted HTML insertion retains Vue raw behavior; no implicit sanitizer claimed equivalent | T22 XSS/CSP/Trusted Types; T07 raw content not compiled; trusted extension separately qualified |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U30",
+      "section": "8.4",
+      "title": "template fragments/comments/whitespace",
+      "statusText": "P",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": "C limited",
+      "contract": "Multiple roots, fragment ranges, comments and compiler whitespace mode",
+      "tests": "T07 conditional/list fragment boundaries; T18 hydration matching",
+      "rawRow": "| U30 template fragments/comments/whitespace | P; C limited | Multiple roots, fragment ranges, comments and compiler whitespace mode | T07 conditional/list fragment boundaries; T18 hydration matching |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U31",
+      "section": "8.4",
+      "title": "semantic tags",
+      "statusText": "A native/P DOM subset",
+      "statuses": [
+        "A",
+        "P"
+      ],
+      "primary": "A",
+      "prototype": "C 11 tags + Q hr",
+      "contract": "Map main/section/headings/text/form/label/button/input/list/link/image to semantic nodes",
+      "tests": "T09 label-for, links, roles; unknown tags error; inline/block behavior must match declared subset",
+      "rawRow": "| U31 semantic tags | A native/P DOM subset; C 11 tags + Q hr | Map main/section/headings/text/form/label/button/input/list/link/image to semantic nodes | T09 label-for, links, roles; unknown tags error; inline/block behavior must match declared subset |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "U32",
+      "section": "8.4",
+      "title": "browser widgets/content",
+      "statusText": "W or X",
+      "statuses": [
+        "W",
+        "X"
+      ],
+      "primary": "W",
+      "prototype": null,
+      "contract": "iframe/video/audio/contenteditable/canvas/SVG DOM trees not universal native tags",
+      "tests": "T07 actionable alternative; image/SVG assets supported separately; no webview insertion",
+      "rawRow": "| U32 browser widgets/content | W or X; — | iframe/video/audio/contenteditable/canvas/SVG DOM trees not universal native tags | T07 actionable alternative; image/SVG assets supported separately; no webview insertion |",
+      "sectionTitle": "Components and templates (R06–R09)"
+    },
+    {
+      "id": "A01",
+      "section": "8.5",
+      "title": "createApp, mount, unmount, onUnmount",
+      "statusText": "P with native mount root adaptation",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "P with native mount root adaptation; separate app realm and cleanup",
+      "tests": "T06 multiple apps and repeat unmount; DOM selector versus native window root",
+      "rawRow": "| A01 createApp, mount, unmount, onUnmount | P with native mount root adaptation; separate app realm and cleanup | T06 multiple apps and repeat unmount; DOM selector versus native window root |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A02",
+      "section": "8.5",
+      "title": "app.component / app.directive",
+      "statusText": "P build-known registration before mount",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "P build-known registration before mount; dynamic arbitrary registry mutation X",
+      "tests": "T06 resolution/name collision and unsupported late registration",
+      "rawRow": "| A02 app.component / app.directive | P build-known registration before mount; dynamic arbitrary registry mutation X | T06 resolution/name collision and unsupported late registration |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A03",
+      "section": "8.5",
+      "title": "app.provide / runWithContext",
+      "statusText": "P with synchronous injection context rules",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "P with synchronous injection context rules",
+      "tests": "T06 async continuation doesn't inherit unspecified context",
+      "rawRow": "| A03 app.provide / runWithContext | P with synchronous injection context rules | T06 async continuation doesn't inherit unspecified context |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A04",
+      "section": "8.5",
+      "title": "app.use",
+      "statusText": "P only qualified build-bundled plugins",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "P only qualified build-bundled plugins; idempotent install",
+      "tests": "T12 duplicate installation, plugin errors, capability expansion denied",
+      "rawRow": "| A04 app.use | P only qualified build-bundled plugins; idempotent install | T12 duplicate installation, plugin errors, capability expansion denied |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A05",
+      "section": "8.5",
+      "title": "app.version / version",
+      "statusText": "A: report reference Vue version plus separate framework profile/version metadata",
+      "statuses": [
+        "A"
+      ],
+      "primary": "A",
+      "prototype": null,
+      "contract": "A: report reference Vue version plus separate framework profile/version metadata",
+      "tests": "T01 no suggestion runtime is official Vue; reproducible compatibility metadata",
+      "rawRow": "| A05 app.version / version | A: report reference Vue version plus separate framework profile/version metadata | T01 no suggestion runtime is official Vue; reproducible compatibility metadata |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A06",
+      "section": "8.5",
+      "title": "config.errorHandler / warnHandler / throwUnhandledErrorInProduction",
+      "statusText": "P supported error policy with source stacks",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "P supported error policy with source stacks",
+      "tests": "T06 warnings dev-only; caught vs uncaught error behavior",
+      "rawRow": "| A06 config.errorHandler / warnHandler / throwUnhandledErrorInProduction | P supported error policy with source stacks | T06 warnings dev-only; caught vs uncaught error behavior |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A07",
+      "section": "8.5",
+      "title": "config.performance / idPrefix",
+      "statusText": "A profiler events / P stable ID prefix",
+      "statuses": [
+        "A",
+        "P"
+      ],
+      "primary": "A",
+      "prototype": null,
+      "contract": "A profiler events / P stable ID prefix",
+      "tests": "T23 trace labels; T18 SSR root uniqueness",
+      "rawRow": "| A07 config.performance / idPrefix | A profiler events / P stable ID prefix | T23 trace labels; T18 SSR root uniqueness |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A08",
+      "section": "8.5",
+      "title": "config.compilerOptions",
+      "statusText": "A compile-time config only",
+      "statuses": [
+        "A"
+      ],
+      "primary": "A",
+      "prototype": null,
+      "contract": "A compile-time config only; runtime mutation rejected",
+      "tests": "T10 whitespace/custom-tag options in build cache; no runtime template compiler",
+      "rawRow": "| A08 config.compilerOptions | A compile-time config only; runtime mutation rejected | T10 whitespace/custom-tag options in build cache; no runtime template compiler |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A09",
+      "section": "8.5",
+      "title": "globalProperties / optionMergeStrategies / app.mixin",
+      "statusText": "X",
+      "statuses": [
+        "X"
+      ],
+      "primary": "X",
+      "prototype": null,
+      "contract": "X; Options API/prototype-like global mutation excluded",
+      "tests": "T03/T12 explicit migration diagnostic",
+      "rawRow": "| A09 globalProperties / optionMergeStrategies / app.mixin | X; Options API/prototype-like global mutation excluded | T03/T12 explicit migration diagnostic |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A10",
+      "section": "8.5",
+      "title": "defineComponent",
+      "statusText": "P setup-only descriptor with template linkage",
+      "statuses": [
+        "P"
+      ],
+      "primary": "P",
+      "prototype": null,
+      "contract": "P setup-only descriptor with template linkage; function-form render return X",
+      "tests": "T03 recognize Composition API setup; reject Options fields",
+      "rawRow": "| A10 defineComponent | P setup-only descriptor with template linkage; function-form render return X | T03 recognize Composition API setup; reject Options fields |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A11",
+      "section": "8.5",
+      "title": "h / mergeProps / cloneVNode / isVNode / resolveComponent / resolveDirective / withDirectives / withModifiers",
+      "statusText": "X public render-function API first production profile",
+      "statuses": [
+        "X"
+      ],
+      "primary": "X",
+      "prototype": null,
+      "contract": "X public render-function API first production profile",
+      "tests": "T12 per-export rejection; compiler may use internal equivalents without advertising API support",
+      "rawRow": "| A11 h / mergeProps / cloneVNode / isVNode / resolveComponent / resolveDirective / withDirectives / withModifiers | X public render-function API first production profile | T12 per-export rejection; compiler may use internal equivalents without advertising API support |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A12",
+      "section": "8.5",
+      "title": "defineCustomElement / useHost / useShadowRoot / $host",
+      "statusText": "X native/shared, E web custom-element extension",
+      "statuses": [
+        "X",
+        "E"
+      ],
+      "primary": "X",
+      "prototype": null,
+      "contract": "X native/shared, E web custom-element extension",
+      "tests": "T12 exact exclusion and web shadow-boundary investigation",
+      "rawRow": "| A12 defineCustomElement / useHost / useShadowRoot / $host | X native/shared, E web custom-element extension | T12 exact exclusion and web shadow-boundary investigation |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A13",
+      "section": "8.5",
+      "title": "createRenderer / createHydrationRenderer",
+      "statusText": "X public Vue JS host API",
+      "statuses": [
+        "X"
+      ],
+      "primary": "X",
+      "prototype": null,
+      "contract": "X public Vue JS host API; internal Rust renderer protocol instead",
+      "tests": "T12 explain incompatible extension ABI; backend implementers use versioned Rust contracts",
+      "rawRow": "| A13 createRenderer / createHydrationRenderer | X public Vue JS host API; internal Rust renderer protocol instead | T12 explain incompatible extension ABI; backend implementers use versioned Rust contracts |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A14",
+      "section": "8.5",
+      "title": "createSSRApp / useSSRContext / onServerPrefetch",
+      "statusText": "W Rust SSR adapter matching supported component semantics",
+      "statuses": [
+        "W"
+      ],
+      "primary": "W",
+      "prototype": null,
+      "contract": "W Rust SSR adapter matching supported component semantics",
+      "tests": "T18 request-local injections, server-only branches and hook failures",
+      "rawRow": "| A14 createSSRApp / useSSRContext / onServerPrefetch | W Rust SSR adapter matching supported component semantics | T18 request-local injections, server-only branches and hook failures |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A15",
+      "section": "8.5",
+      "title": "renderToString / stream variants",
+      "statusText": "A own Rust SSR interface",
+      "statuses": [
+        "A"
+      ],
+      "primary": "A",
+      "prototype": null,
+      "contract": "A own Rust SSR interface; no drop-in Node Readable/Writable promise",
+      "tests": "T18 encoded HTML/status/backpressure/abort; Vue renderToNodeStream/pipeToNodeWritable etc not exported as native APIs",
+      "rawRow": "| A15 renderToString / stream variants | A own Rust SSR interface; no drop-in Node Readable/Writable promise | T18 encoded HTML/status/backpressure/abort; Vue renderToNodeStream/pipeToNodeWritable etc not exported as native APIs |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A16",
+      "section": "8.5",
+      "title": "data-allow-mismatch",
+      "statusText": "W qualified narrow hydration policy",
+      "statuses": [
+        "W"
+      ],
+      "primary": "W",
+      "prototype": null,
+      "contract": "W qualified narrow hydration policy",
+      "tests": "T18 allowed text mismatch doesn't suppress unrelated identity/security faults",
+      "rawRow": "| A16 data-allow-mismatch | W qualified narrow hydration policy | T18 allowed text mismatch doesn't suppress unrelated identity/security faults |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A17",
+      "section": "8.5",
+      "title": "compile-time Vue flags",
+      "statusText": "A profile controls",
+      "statuses": [
+        "A"
+      ],
+      "primary": "A",
+      "prototype": null,
+      "contract": "A profile controls; Options API always off; devtools and hydration diagnostics explicit",
+      "tests": "T10 release excludes debug listeners; flag changes invalidate builds",
+      "rawRow": "| A17 compile-time Vue flags | A profile controls; Options API always off; devtools and hydration diagnostics explicit | T10 release excludes debug listeners; flag changes invalidate builds |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A18",
+      "section": "8.5",
+      "title": "Options API and instance `$` APIs",
+      "statusText": "X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`",
+      "statuses": [
+        "X"
+      ],
+      "primary": "X",
+      "prototype": null,
+      "contract": "X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`",
+      "tests": "T03 per-export/property diagnostics; template/component refs expose only declared interface",
+      "rawRow": "| A18 Options API and instance `$` APIs | X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el` | T03 per-export/property diagnostics; template/component refs expose only declared interface |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    },
+    {
+      "id": "A19",
+      "section": "8.5",
+      "title": "experimental/removed APIs",
+      "statusText": "E for current Suspense/Vapor investigations, X for removed reactivity transform `$ref`",
+      "statuses": [
+        "E",
+        "X"
+      ],
+      "primary": "E",
+      "prototype": null,
+      "contract": "E for current Suspense/Vapor investigations, X for removed reactivity transform `$ref`",
+      "tests": "T01 stability label plus compile error outside experimental profile; no “latest docs” auto-enablement",
+      "rawRow": "| A19 experimental/removed APIs | E for current Suspense/Vapor investigations, X for removed reactivity transform `$ref` | T01 stability label plus compile error outside experimental profile; no “latest docs” auto-enablement |",
+      "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
+    }
+  ]
+}

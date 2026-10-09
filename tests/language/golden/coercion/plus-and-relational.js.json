@@ -1,0 +1,1 @@
+{"scenario":"coercion/plus-and-relational","result":"ok","error":null,"entries":[{"label":"plus","values":["12","34","33","123"]},{"label":"minus","values":[3,10,{"$":"num","v":"NaN"},1,{"$":"num","v":"NaN"}]},{"label":"compare","values":[true,false,true,false]},{"label":"empty","values":["","12","[object Object]"]}],"unhandledRejections":[]}

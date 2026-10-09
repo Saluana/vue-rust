@@ -1,0 +1,1 @@
+{"scenario":"reactive/readonly-write-ignored","result":"ok","error":null,"entries":[{"label":"after-writes","values":[1,true,1]},{"label":"raw-visible","values":[3]}],"unhandledRejections":[]}

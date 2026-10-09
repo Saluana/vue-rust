@@ -1,0 +1,1 @@
+{ "@vue-native/platform": { "identity": "identity", "pair": "pair", "box": "box", "answer": { "number": 42 }, "label": { "string": "native" }, "on": { "bool": true } } }

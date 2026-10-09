@@ -1,0 +1,1 @@
+{"scenario":"ref/shallow-assign-identity","result":"ok","error":null,"entries":[{"label":"same-object","values":[true,1]},{"label":"after","values":[true,2]}],"unhandledRejections":[]}

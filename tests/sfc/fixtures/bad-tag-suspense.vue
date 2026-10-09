@@ -1,0 +1,3 @@
+<template>
+  <Suspense></Suspense>
+</template>

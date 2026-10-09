@@ -1,0 +1,1 @@
+{"scenario":"computed/throw-and-recover","result":"ok","error":null,"entries":[{"label":"ok","values":[1]},{"label":"caught","values":[true,"Error"]},{"label":"recovered","values":[5]}],"unhandledRejections":[]}

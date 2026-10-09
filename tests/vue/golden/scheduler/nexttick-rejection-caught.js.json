@@ -1,0 +1,1 @@
+{"scenario":"scheduler/nexttick-rejection-caught","result":"ok","error":null,"entries":[{"label":"caught","values":[true]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"fn-closure-state","result":"ok","error":null,"entries":[{"label":"a","values":[1,2,2]},{"label":"b","values":[11,2,11]},{"label":"shared","values":[2]}],"unhandledRejections":[]}

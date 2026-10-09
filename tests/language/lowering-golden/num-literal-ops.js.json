@@ -1,0 +1,1 @@
+{"scenario":"num-literal-ops","result":"ok","error":null,"entries":[{"label":"int-div","values":[3.5,-3.5,1,-1,2.0000000000000004]},{"label":"float","values":[0.30000000000000004,0.3333333333333333,33.333333333333336,5e-324,{"$":"num","v":"Infinity"}]}],"unhandledRejections":[]}

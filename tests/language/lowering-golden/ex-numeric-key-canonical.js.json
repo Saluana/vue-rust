@@ -1,0 +1,1 @@
+{"scenario":"ex-numeric-key-canonical","result":"ok","error":null,"entries":[{"label":"canonical-keys","values":[{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[["2","c"],["2.0","d"]]}]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"exc-finally-after-return-object","result":"ok","error":null,"entries":[{"label":"return-object","values":[true,1]}],"unhandledRejections":[]}

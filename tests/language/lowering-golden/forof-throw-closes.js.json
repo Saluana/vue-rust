@@ -1,0 +1,1 @@
+{"scenario":"forof-throw-closes","result":"throw","error":"ignored-by-throw-completion","entries":[{"label":"forof-throw","values":["body 2","r;"]}],"unhandledRejections":[]}

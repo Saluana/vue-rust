@@ -1,0 +1,1 @@
+{"scenario":"reactive/get-set-has-tracking","result":"ok","error":null,"entries":[{"label":"log","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["a=1","has-b=false","a=2","has-b=true"],"len":4}]}],"unhandledRejections":[]}

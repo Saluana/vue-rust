@@ -1,0 +1,1 @@
+{"scenario":"effect/scope-run-returns-and-current","result":"ok","error":null,"entries":[{"label":"outside","values":[true]},{"label":"inside","values":[true]},{"label":"returned","values":[42,true]},{"label":"stopped-run","values":[true]}],"unhandledRejections":[]}

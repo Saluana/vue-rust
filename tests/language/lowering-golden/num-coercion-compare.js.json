@@ -1,0 +1,1 @@
+{"scenario":"num-coercion-compare","result":"ok","error":null,"entries":[{"label":"mixed","values":[true,false,true,true,true]},{"label":"nan-check","values":[false,true]}],"unhandledRejections":[]}

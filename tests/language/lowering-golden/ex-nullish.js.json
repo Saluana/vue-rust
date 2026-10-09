@@ -1,0 +1,1 @@
+{"scenario":"ex-nullish","result":"ok","error":null,"entries":[{"label":"nullish","values":[0,"","d","d",false,{"$":"num","v":"NaN"}]},{"label":"nullish-member","values":[0,6]}],"unhandledRejections":[]}

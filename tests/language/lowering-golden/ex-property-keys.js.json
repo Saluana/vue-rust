@@ -1,0 +1,1 @@
+{"scenario":"ex-property-keys","result":"ok","error":null,"entries":[{"label":"keys","values":[{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[["0","zero"],["1","str"],["1.5","frac"],["true","bool"],["null","nul"]]}]}],"unhandledRejections":[]}

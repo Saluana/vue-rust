@@ -1,0 +1,1 @@
+{"scenario":"computed/old-value-parameter","result":"ok","error":null,"entries":[{"label":"first","values":[10]},{"label":"second","values":[20,{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":[{"$":"undef"},10],"len":2}]}],"unhandledRejections":[]}

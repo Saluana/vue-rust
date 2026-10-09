@@ -1,0 +1,1 @@
+{"scenario":"ds-declaration-forms","result":"ok","error":null,"entries":[{"label":"params","values":["1|undefined|9|0","1|why|zz|2"]},{"label":"decl-pattern","values":[0,"n"]}],"unhandledRejections":[]}

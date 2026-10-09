@@ -1,0 +1,6526 @@
+{
+  "schemaVersion": 1,
+  "default": "deny",
+  "kinds": [
+    "global",
+    "ctor",
+    "static",
+    "proto",
+    "const",
+    "symbol",
+    "prop"
+  ],
+  "targets": [
+    "native",
+    "web",
+    "test"
+  ],
+  "entries": [
+    {
+      "kind": "global",
+      "path": "Atomics",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Atomics is not supported. Shared memory is outside the profile."
+    },
+    {
+      "kind": "global",
+      "path": "Buffer",
+      "status": "X",
+      "row": "S23",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4010",
+      "note": null,
+      "hint": "Use the @vue-native platform services."
+    },
+    {
+      "kind": "global",
+      "path": "Intl",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Use the platform locale service."
+    },
+    {
+      "kind": "global",
+      "path": "JSON",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Namespace object (WP-B6).",
+      "hint": null
+    },
+    {
+      "kind": "global",
+      "path": "Math",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Namespace object. Only the listed operations exist (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "global",
+      "path": "Reflect",
+      "status": "X",
+      "row": "L20",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4004",
+      "note": null,
+      "hint": "Use the direct operation, such as property access or Object.keys."
+    },
+    {
+      "kind": "global",
+      "path": "__dirname",
+      "status": "X",
+      "row": "S23",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4010",
+      "note": null,
+      "hint": "Use the @vue-native platform services."
+    },
+    {
+      "kind": "global",
+      "path": "__filename",
+      "status": "X",
+      "row": "S23",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4010",
+      "note": null,
+      "hint": "Use the @vue-native platform services."
+    },
+    {
+      "kind": "global",
+      "path": "clearInterval",
+      "status": "X",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Use the platform timers service."
+    },
+    {
+      "kind": "global",
+      "path": "clearTimeout",
+      "status": "X",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Use the platform timers service."
+    },
+    {
+      "kind": "global",
+      "path": "console",
+      "status": "X",
+      "row": "L21",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Use the platform logging service."
+    },
+    {
+      "kind": "global",
+      "path": "crypto",
+      "status": "X",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Use the platform crypto service."
+    },
+    {
+      "kind": "global",
+      "path": "document",
+      "status": "X",
+      "row": "S23",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4011",
+      "note": null,
+      "hint": "Browser DOM globals are not part of the profile. Use the @vue-native platform services."
+    },
+    {
+      "kind": "global",
+      "path": "eval",
+      "status": "X",
+      "row": "L20",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4001",
+      "note": null,
+      "hint": "Write the logic directly as code."
+    },
+    {
+      "kind": "global",
+      "path": "exports",
+      "status": "X",
+      "row": "L16",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4009",
+      "note": null,
+      "hint": "Use import and export."
+    },
+    {
+      "kind": "global",
+      "path": "fetch",
+      "status": "X",
+      "row": "L21",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Use the HTTP service (design section 11)."
+    },
+    {
+      "kind": "global",
+      "path": "global",
+      "status": "X",
+      "row": "S23",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4010",
+      "note": null,
+      "hint": "Use the @vue-native platform services."
+    },
+    {
+      "kind": "global",
+      "path": "globalThis",
+      "status": "X",
+      "row": "L20",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4013",
+      "note": "Installed for the runtime by WP-B1. Excluded for user code: a reachable global object would bypass static path checks.",
+      "hint": "Access to the global object is not supported. Import the value you need."
+    },
+    {
+      "kind": "global",
+      "path": "isFinite",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "global",
+      "path": "isNaN",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "global",
+      "path": "localStorage",
+      "status": "X",
+      "row": "S23",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4011",
+      "note": null,
+      "hint": "Use the Settings service (design section 11)."
+    },
+    {
+      "kind": "global",
+      "path": "location",
+      "status": "X",
+      "row": "S23",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4011",
+      "note": null,
+      "hint": "Use the Navigation service (design section 11)."
+    },
+    {
+      "kind": "global",
+      "path": "module",
+      "status": "X",
+      "row": "L16",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4009",
+      "note": null,
+      "hint": "Use import and export."
+    },
+    {
+      "kind": "global",
+      "path": "navigator",
+      "status": "X",
+      "row": "S23",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4011",
+      "note": null,
+      "hint": "Browser DOM globals are not part of the profile. Use the @vue-native platform services."
+    },
+    {
+      "kind": "global",
+      "path": "parseFloat",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Same function object as Number.parseFloat (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "global",
+      "path": "parseInt",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Same function object as Number.parseInt (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "global",
+      "path": "performance",
+      "status": "A",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Host clock object. Only performance.now is in the profile (L19).",
+      "hint": null
+    },
+    {
+      "kind": "global",
+      "path": "process",
+      "status": "X",
+      "row": "S23",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4010",
+      "note": null,
+      "hint": "Use the @vue-native platform services."
+    },
+    {
+      "kind": "global",
+      "path": "queueMicrotask",
+      "status": "X",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Use Promise.resolve().then(...)."
+    },
+    {
+      "kind": "global",
+      "path": "require",
+      "status": "X",
+      "row": "L16",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4009",
+      "note": null,
+      "hint": "Use import and export."
+    },
+    {
+      "kind": "global",
+      "path": "sessionStorage",
+      "status": "X",
+      "row": "S23",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4011",
+      "note": null,
+      "hint": "Use the Settings service (design section 11)."
+    },
+    {
+      "kind": "global",
+      "path": "setInterval",
+      "status": "X",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Use the platform timers service."
+    },
+    {
+      "kind": "global",
+      "path": "setTimeout",
+      "status": "X",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Use the platform timers service."
+    },
+    {
+      "kind": "global",
+      "path": "structuredClone",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "structuredClone is not supported. Copy the value explicitly."
+    },
+    {
+      "kind": "global",
+      "path": "testHost",
+      "status": "A",
+      "row": "L19",
+      "targets": [
+        "test"
+      ],
+      "code": null,
+      "note": "Test host global installed by the test harness (docs/dev/trace-format.md).",
+      "hint": null
+    },
+    {
+      "kind": "global",
+      "path": "trace",
+      "status": "A",
+      "row": "L19",
+      "targets": [
+        "test"
+      ],
+      "code": null,
+      "note": "Test host global installed by the test harness (docs/dev/trace-format.md).",
+      "hint": null
+    },
+    {
+      "kind": "global",
+      "path": "window",
+      "status": "X",
+      "row": "S23",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4011",
+      "note": null,
+      "hint": "Browser DOM globals are not part of the profile. Use the @vue-native platform services."
+    },
+    {
+      "kind": "ctor",
+      "path": "AbortController",
+      "status": "X",
+      "row": "L21",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "AbortController is not supported. Use the cancellation of the platform service in use."
+    },
+    {
+      "kind": "ctor",
+      "path": "AggregateError",
+      "status": "P",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Used by Promise.any (L14).",
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "Array",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Call and construct. RangeError for invalid lengths (WP-B2).",
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "ArrayBuffer",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Bytes for IO with specified bounds (L18).",
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "BigInt",
+      "status": "X",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4005",
+      "note": null,
+      "hint": "Use a Number with documented bounds."
+    },
+    {
+      "kind": "ctor",
+      "path": "BigInt64Array",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4014",
+      "note": null,
+      "hint": "Use Uint8Array with explicit bounds."
+    },
+    {
+      "kind": "ctor",
+      "path": "BigUint64Array",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4014",
+      "note": null,
+      "hint": "Use Uint8Array with explicit bounds."
+    },
+    {
+      "kind": "ctor",
+      "path": "Boolean",
+      "status": "P",
+      "row": "L07",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Function and wrapper constructor (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "DataView",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4014",
+      "note": null,
+      "hint": "Use Uint8Array with explicit bounds."
+    },
+    {
+      "kind": "ctor",
+      "path": "Date",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "ctor",
+      "path": "Error",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "EvalError",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "No eval in the profile, so the runtime never throws it (L20).",
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "FinalizationRegistry",
+      "status": "X",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4007",
+      "note": null,
+      "hint": "Use Map or Set and remove entries explicitly."
+    },
+    {
+      "kind": "ctor",
+      "path": "Float32Array",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4014",
+      "note": null,
+      "hint": "Use Uint8Array with explicit bounds."
+    },
+    {
+      "kind": "ctor",
+      "path": "Float64Array",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4014",
+      "note": null,
+      "hint": "Use Uint8Array with explicit bounds."
+    },
+    {
+      "kind": "ctor",
+      "path": "Function",
+      "status": "X",
+      "row": "L20",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4002",
+      "note": null,
+      "hint": "The Function constructor is not supported. Write the function directly."
+    },
+    {
+      "kind": "ctor",
+      "path": "Headers",
+      "status": "X",
+      "row": "L21",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Use the HTTP service (design section 11)."
+    },
+    {
+      "kind": "ctor",
+      "path": "Int16Array",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4014",
+      "note": null,
+      "hint": "Use Uint8Array with explicit bounds."
+    },
+    {
+      "kind": "ctor",
+      "path": "Int32Array",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4014",
+      "note": null,
+      "hint": "Use Uint8Array with explicit bounds."
+    },
+    {
+      "kind": "ctor",
+      "path": "Int8Array",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4014",
+      "note": null,
+      "hint": "Use Uint8Array with explicit bounds."
+    },
+    {
+      "kind": "ctor",
+      "path": "Iterator",
+      "status": "X",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Iterator helpers are not supported. Use for...of or Array.from."
+    },
+    {
+      "kind": "ctor",
+      "path": "Map",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Construct only. Map(...) without new throws TypeError (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "Number",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Call returns ToNumber. Construct returns a wrapper (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "Object",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Callable and constructible. Object(v) is ToObject for non-nullish values (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "Promise",
+      "status": "P",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "Proxy",
+      "status": "X",
+      "row": "L20",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4003",
+      "note": null,
+      "hint": "Use ref, reactive or computed from the Vue API."
+    },
+    {
+      "kind": "ctor",
+      "path": "RangeError",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "ReferenceError",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "RegExp",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4006",
+      "note": null,
+      "hint": "Not promised for production (L18). Use String methods or a host validation service."
+    },
+    {
+      "kind": "ctor",
+      "path": "Request",
+      "status": "X",
+      "row": "L21",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Use the HTTP service (design section 11)."
+    },
+    {
+      "kind": "ctor",
+      "path": "Response",
+      "status": "X",
+      "row": "L21",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Use the HTTP service (design section 11)."
+    },
+    {
+      "kind": "ctor",
+      "path": "Set",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Construct only (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "SharedArrayBuffer",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Shared memory is not supported. Use ArrayBuffer with explicit bounds."
+    },
+    {
+      "kind": "ctor",
+      "path": "String",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Call returns ToString, with the symbol description rule. Construct returns a wrapper (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "Symbol",
+      "status": "P",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Callable and not constructible. new Symbol() throws TypeError (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "SyntaxError",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "TextDecoder",
+      "status": "A",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Platform-provided UTF-8 codec (L19 host provider). Input bytes are design L18 bytes for IO.",
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "TextEncoder",
+      "status": "A",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Platform-provided UTF-8 codec (L19 host provider). The bytes it produces are design L18 bytes for IO.",
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "TypeError",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "URIError",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "No URI functions in the profile, so the runtime never throws it.",
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "URL",
+      "status": "X",
+      "row": "L21",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "URL objects are not supported. Pass the URL as a string to the HTTP service."
+    },
+    {
+      "kind": "ctor",
+      "path": "URLSearchParams",
+      "status": "X",
+      "row": "L21",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "URL objects are not supported. Build query strings explicitly."
+    },
+    {
+      "kind": "ctor",
+      "path": "Uint16Array",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4014",
+      "note": null,
+      "hint": "Use Uint8Array with explicit bounds."
+    },
+    {
+      "kind": "ctor",
+      "path": "Uint32Array",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4014",
+      "note": null,
+      "hint": "Use Uint8Array with explicit bounds."
+    },
+    {
+      "kind": "ctor",
+      "path": "Uint8Array",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Bytes for IO with specified bounds (L18). No builtin WP implements typed arrays yet.",
+      "hint": null
+    },
+    {
+      "kind": "ctor",
+      "path": "Uint8ClampedArray",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4014",
+      "note": null,
+      "hint": "Use Uint8Array with explicit bounds."
+    },
+    {
+      "kind": "ctor",
+      "path": "WeakMap",
+      "status": "X",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4007",
+      "note": null,
+      "hint": "Use Map or Set and remove entries explicitly."
+    },
+    {
+      "kind": "ctor",
+      "path": "WeakRef",
+      "status": "X",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4007",
+      "note": null,
+      "hint": "Use Map or Set and remove entries explicitly."
+    },
+    {
+      "kind": "ctor",
+      "path": "WeakSet",
+      "status": "X",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4007",
+      "note": null,
+      "hint": "Use Map or Set and remove entries explicitly."
+    },
+    {
+      "kind": "ctor",
+      "path": "WebSocket",
+      "status": "X",
+      "row": "S23",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4011",
+      "note": null,
+      "hint": "Use the WebSockets service (design section 11)."
+    },
+    {
+      "kind": "ctor",
+      "path": "Worker",
+      "status": "X",
+      "row": "L21",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Use background work (design section 11)."
+    },
+    {
+      "kind": "ctor",
+      "path": "XMLHttpRequest",
+      "status": "X",
+      "row": "S23",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4011",
+      "note": null,
+      "hint": "Use the HTTP service (design section 11)."
+    },
+    {
+      "kind": "static",
+      "path": "Array.from",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Iterables, array-likes and strings by code point (WP-B2).",
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Array.isArray",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "True for arrays (WP-B2).",
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Array.of",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Date.UTC",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "static",
+      "path": "Date.now",
+      "status": "A",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Host clock provider (L19). The test host's fake clock in tests.",
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Date.parse",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "static",
+      "path": "JSON.parse",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Strict JSON grammar. Nesting limit 1000, RangeError (WP-B6).",
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "JSON.stringify",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Map.groupBy",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.abs",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.acos",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.acosh",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.asin",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.asinh",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.atan",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.atan2",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.atanh",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.cbrt",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.ceil",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.clz32",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.cos",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.cosh",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.exp",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.expm1",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.f16round",
+      "status": "X",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Half-precision rounding is not supported. Use Math.fround."
+    },
+    {
+      "kind": "static",
+      "path": "Math.floor",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.fround",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.hypot",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.imul",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.log",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.log10",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.log1p",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.log2",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.max",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.min",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.pow",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.random",
+      "status": "A",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Host random provider (L19). Seeded and deterministic in tests; never used for secrets.",
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.round",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.sign",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.sin",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.sinh",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.sqrt",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.tan",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.tanh",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Math.trunc",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Number.isFinite",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Number.isInteger",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Number.isNaN",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Number.isSafeInteger",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Number.parseFloat",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Same function object as the global parseFloat (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Number.parseInt",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Same function object as the global parseInt (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.assign",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.create",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Only undefined as the properties argument. Any other value throws TypeError (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.defineProperties",
+      "status": "X",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4008",
+      "note": null,
+      "hint": "Property descriptor mutation is not supported. Use plain object literals or explicit properties."
+    },
+    {
+      "kind": "static",
+      "path": "Object.defineProperty",
+      "status": "X",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4008",
+      "note": null,
+      "hint": "Property descriptor mutation is not supported. Use plain object literals or explicit properties."
+    },
+    {
+      "kind": "static",
+      "path": "Object.entries",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.freeze",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.fromEntries",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.getOwnPropertyDescriptor",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Descriptor reading only (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.getOwnPropertyDescriptors",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Descriptor reading only (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.getOwnPropertyNames",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.getOwnPropertySymbols",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.getPrototypeOf",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Reads the prototype only (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.groupBy",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "ES2024 (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.hasOwn",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.is",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.isExtensible",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.isFrozen",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.isSealed",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.keys",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.preventExtensions",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.seal",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Object.setPrototypeOf",
+      "status": "X",
+      "row": "L05",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4008",
+      "note": null,
+      "hint": "Prototype replacement is not supported. Use plain object literals or explicit properties."
+    },
+    {
+      "kind": "static",
+      "path": "Object.values",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Promise.all",
+      "status": "P",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Promise.allSettled",
+      "status": "P",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Promise.any",
+      "status": "P",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Promise.race",
+      "status": "P",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Promise.reject",
+      "status": "P",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Promise.resolve",
+      "status": "P",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Promise.try",
+      "status": "X",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Promise.try is not supported. Wrap the call in an async function or use new Promise."
+    },
+    {
+      "kind": "static",
+      "path": "Promise.withResolvers",
+      "status": "P",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "String.fromCharCode",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "String.fromCodePoint",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "RangeError for invalid code points (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Symbol.for",
+      "status": "P",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Symbol.keyFor",
+      "status": "P",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Uint8Array.from",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "Uint8Array.of",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "static",
+      "path": "performance.now",
+      "status": "A",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Host clock provider (L19). The test host's fake clock in tests.",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "%ArrayIteratorPrototype%.next",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Live length. Once exhausted, it stays exhausted (WP-B2).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "%ArrayIteratorPrototype%[Symbol.toStringTag]",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "'Array Iterator' (WP-B2).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "%IteratorPrototype%[Symbol.iterator]",
+      "status": "P",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Returns this (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "%MapIteratorPrototype%.next",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Live iteration under mutation (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "%MapIteratorPrototype%[Symbol.toStringTag]",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "'Map Iterator' (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "%SetIteratorPrototype%.next",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Live iteration under mutation (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "%SetIteratorPrototype%[Symbol.toStringTag]",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "'Set Iterator' (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "%StringIteratorPrototype%.next",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Iterates by code point (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "%StringIteratorPrototype%[Symbol.toStringTag]",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "'String Iterator' (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "AggregateError.prototype.message",
+      "status": "P",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "AggregateError.prototype.name",
+      "status": "P",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.at",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.concat",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.copyWithin",
+      "status": "X",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "copyWithin is not supported. Use slice, map or a new array."
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.entries",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.every",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.fill",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.filter",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.find",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.findIndex",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.findLast",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.findLastIndex",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.flat",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.flatMap",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.forEach",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.includes",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.indexOf",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.join",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.keys",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.lastIndexOf",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.length",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Length semantics come from the kernel (WP-B2).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.map",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.pop",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.push",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.reduce",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.reduceRight",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.reverse",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.shift",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.slice",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.some",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.sort",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Stable merge sort. Default order compares UTF-16 code units, undefined last (WP-B2).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.splice",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.toLocaleString",
+      "status": "X",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Locale-dependent formatting is not supported. Use the platform locale service."
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.toReversed",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.toSorted",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.toSpliced",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.toString",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.unshift",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.values",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype.with",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype[Symbol.iterator]",
+      "status": "P",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Array.prototype[Symbol.unscopables]",
+      "status": "X",
+      "row": "L01",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "The with statement is rejected, so unscopables are not supported."
+    },
+    {
+      "kind": "proto",
+      "path": "ArrayBuffer.prototype.byteLength",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "ArrayBuffer.prototype.slice",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Boolean.prototype.toString",
+      "status": "P",
+      "row": "L07",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Boolean.prototype.valueOf",
+      "status": "P",
+      "row": "L07",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getDate",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getDay",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getFullYear",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getHours",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getMilliseconds",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getMinutes",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getMonth",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getSeconds",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getTime",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getTimezoneOffset",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getUTCDate",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getUTCDay",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getUTCFullYear",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getUTCHours",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getUTCMilliseconds",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getUTCMinutes",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getUTCMonth",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getUTCSeconds",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.getYear",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setDate",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setFullYear",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setHours",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setMilliseconds",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setMinutes",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setMonth",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setSeconds",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setTime",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setUTCDate",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setUTCFullYear",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setUTCHours",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setUTCMilliseconds",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setUTCMinutes",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setUTCMonth",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setUTCSeconds",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.setYear",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.toDateString",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.toGMTString",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.toISOString",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.toJSON",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.toLocaleDateString",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.toLocaleString",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.toLocaleTimeString",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.toString",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.toTimeString",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.toUTCString",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype.valueOf",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Date.prototype[Symbol.toPrimitive]",
+      "status": "E",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Not promised for production (L18). Date.now gives the current time (L19)."
+    },
+    {
+      "kind": "proto",
+      "path": "Error.prototype.message",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Error.prototype.name",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Error.prototype.toString",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "EvalError.prototype.message",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "EvalError.prototype.name",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Function.prototype.apply",
+      "status": "P",
+      "row": "L02",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Function.prototype.bind",
+      "status": "P",
+      "row": "L02",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Bound functions are named 'bound f' with the correct length (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Function.prototype.call",
+      "status": "P",
+      "row": "L02",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Function.prototype.length",
+      "status": "P",
+      "row": "L02",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Function.prototype.name",
+      "status": "P",
+      "row": "L02",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Function.prototype.toString",
+      "status": "P",
+      "row": "L02",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Shape 'function name() { [native code] }'. Compiled functions use the same shape (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Function.prototype[Symbol.hasInstance]",
+      "status": "P",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Default instanceof behaviour (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Map.prototype.clear",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Map.prototype.delete",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Map.prototype.entries",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Map.prototype.forEach",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Map.prototype.get",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Map.prototype.has",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Map.prototype.keys",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Map.prototype.set",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Map.prototype.size",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Accessor on the prototype (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Map.prototype.values",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Map.prototype[Symbol.iterator]",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Same entries as Map.prototype.entries (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Map.prototype[Symbol.toStringTag]",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "'Map' (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Number.prototype.toExponential",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Number.prototype.toFixed",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Digits 0 to 100 only.",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Number.prototype.toLocaleString",
+      "status": "X",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Locale-dependent number formatting is not supported. Use the platform locale service."
+    },
+    {
+      "kind": "proto",
+      "path": "Number.prototype.toPrecision",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Number.prototype.toString",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Uses the finished number.rs entry points (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Number.prototype.valueOf",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Object.prototype.__defineGetter__",
+      "status": "X",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Legacy accessor definition is not supported. Use getters in object literals."
+    },
+    {
+      "kind": "proto",
+      "path": "Object.prototype.__defineSetter__",
+      "status": "X",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Legacy accessor definition is not supported. Use setters in object literals."
+    },
+    {
+      "kind": "proto",
+      "path": "Object.prototype.__lookupGetter__",
+      "status": "X",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Legacy accessor lookup is not supported."
+    },
+    {
+      "kind": "proto",
+      "path": "Object.prototype.__lookupSetter__",
+      "status": "X",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Legacy accessor lookup is not supported."
+    },
+    {
+      "kind": "proto",
+      "path": "Object.prototype.__proto__",
+      "status": "X",
+      "row": "L05",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN2017",
+      "note": null,
+      "hint": "Prototype access is not supported. Use ordinary properties."
+    },
+    {
+      "kind": "proto",
+      "path": "Object.prototype.constructor",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Object.prototype.hasOwnProperty",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Object.prototype.isPrototypeOf",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Object.prototype.propertyIsEnumerable",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Object.prototype.toLocaleString",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Calls toString. No locale formatting (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Object.prototype.toString",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Honours Symbol.toStringTag (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Object.prototype.valueOf",
+      "status": "P",
+      "row": "L04",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Promise.prototype.catch",
+      "status": "P",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Promise.prototype.finally",
+      "status": "P",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Promise.prototype.then",
+      "status": "P",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "RangeError.prototype.message",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "RangeError.prototype.name",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "ReferenceError.prototype.message",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "ReferenceError.prototype.name",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.add",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.clear",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.delete",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.difference",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "ES2025 set algebra (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.entries",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.forEach",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.has",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.intersection",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "ES2025 set algebra (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.isDisjointFrom",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "ES2025 set algebra (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.isSubsetOf",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "ES2025 set algebra (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.isSupersetOf",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "ES2025 set algebra (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.keys",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.size",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Accessor on the prototype (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.symmetricDifference",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "ES2025 set algebra (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.union",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "ES2025 set algebra. V8 is the oracle (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype.values",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Set.prototype[Symbol.iterator]",
+      "status": "P",
+      "row": "L11",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Same values as Set.prototype.values (WP-B4).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.at",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.charAt",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.charCodeAt",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.codePointAt",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.concat",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.endsWith",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.includes",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.indexOf",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.isWellFormed",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.lastIndexOf",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.length",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "UTF-16 code units (L09).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.localeCompare",
+      "status": "X",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Locale-sensitive comparison is not supported. Compare strings with < and >."
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.match",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Regular expressions are not supported. Use string patterns with indexOf or includes."
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.matchAll",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Regular expressions are not supported. Use string patterns with indexOf or includes."
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.normalize",
+      "status": "X",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Unicode normalization is not supported."
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.padEnd",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.padStart",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.repeat",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.replace",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "String patterns only. The replacement may be a function or use $ patterns (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.replaceAll",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "String patterns only (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.search",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Regular expressions are not supported. Use string patterns with indexOf or includes."
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.slice",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.split",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "String separators only. An undefined separator and a limit are supported (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.startsWith",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.substr",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.substring",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.toLocaleLowerCase",
+      "status": "X",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Locale-sensitive case mapping is not supported. Use toLowerCase."
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.toLocaleUpperCase",
+      "status": "X",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Locale-sensitive case mapping is not supported. Use toUpperCase."
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.toLowerCase",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Default Unicode case mapping. Not locale-sensitive.",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.toString",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.toUpperCase",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Default Unicode case mapping. Not locale-sensitive.",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.toWellFormed",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.trim",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.trimEnd",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.trimStart",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype.valueOf",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "String.prototype[Symbol.iterator]",
+      "status": "P",
+      "row": "L09",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Iterates by code point (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Symbol.prototype.description",
+      "status": "P",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Symbol.prototype.toString",
+      "status": "P",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Symbol.prototype.valueOf",
+      "status": "P",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Symbol.prototype[Symbol.toPrimitive]",
+      "status": "P",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Symbol.prototype[Symbol.toStringTag]",
+      "status": "P",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "SyntaxError.prototype.message",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "SyntaxError.prototype.name",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "TextDecoder.prototype.decode",
+      "status": "A",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "UTF-8 decoding by the platform codec (L19).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "TextDecoder.prototype.encoding",
+      "status": "A",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Always 'utf-8' (L19).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "TextDecoder.prototype.fatal",
+      "status": "A",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Invalid UTF-8 handling by the platform codec (L19).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "TextDecoder.prototype.ignoreBOM",
+      "status": "A",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Byte order mark handling by the platform codec (L19).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "TextEncoder.prototype.encode",
+      "status": "A",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "UTF-8 encoding by the platform codec (L19).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "TextEncoder.prototype.encodeInto",
+      "status": "A",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "UTF-8 encoding by the platform codec (L19).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "TextEncoder.prototype.encoding",
+      "status": "A",
+      "row": "L19",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Always 'utf-8' (L19).",
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "TypeError.prototype.message",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "TypeError.prototype.name",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "URIError.prototype.message",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "URIError.prototype.name",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.at",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.buffer",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.byteLength",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.entries",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.every",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.fill",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.filter",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.find",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.findIndex",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.forEach",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.includes",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.indexOf",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.join",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.keys",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.length",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.map",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.reduce",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.reverse",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.set",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.slice",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.some",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.sort",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.subarray",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype.values",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "proto",
+      "path": "Uint8Array.prototype[Symbol.iterator]",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Infinity",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Non-writable global value (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "JSON[Symbol.toStringTag]",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "'JSON' (WP-B6).",
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Math.E",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Math.LN10",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Math.LN2",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Math.LOG10E",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Math.LOG2E",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Math.PI",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Math.SQRT1_2",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Math.SQRT2",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Math[Symbol.toStringTag]",
+      "status": "P",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "'Math' (WP-B3).",
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "NaN",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Non-writable global value (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Number.EPSILON",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Number.MAX_SAFE_INTEGER",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Number.MAX_VALUE",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Number.MIN_SAFE_INTEGER",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Number.MIN_VALUE",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Number.NEGATIVE_INFINITY",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Number.NaN",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "Number.POSITIVE_INFINITY",
+      "status": "P",
+      "row": "L08",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "const",
+      "path": "undefined",
+      "status": "P",
+      "row": "L06",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Non-writable global value (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "symbol",
+      "path": "Symbol.asyncDispose",
+      "status": "X",
+      "row": "S24",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4015",
+      "note": null,
+      "hint": "Symbol.asyncDispose is not supported. Use try/finally with an explicit cleanup call."
+    },
+    {
+      "kind": "symbol",
+      "path": "Symbol.asyncIterator",
+      "status": "P",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "The symbol is supported. Async generators are not (L15).",
+      "hint": null
+    },
+    {
+      "kind": "symbol",
+      "path": "Symbol.dispose",
+      "status": "X",
+      "row": "S24",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": "VN4015",
+      "note": null,
+      "hint": "Symbol.dispose is not supported. Use try/finally with an explicit cleanup call."
+    },
+    {
+      "kind": "symbol",
+      "path": "Symbol.hasInstance",
+      "status": "P",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "symbol",
+      "path": "Symbol.isConcatSpreadable",
+      "status": "X",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Symbol.isConcatSpreadable is not supported. concat spreads real arrays only."
+    },
+    {
+      "kind": "symbol",
+      "path": "Symbol.iterator",
+      "status": "P",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Iterator protocol only (WP-B1).",
+      "hint": null
+    },
+    {
+      "kind": "symbol",
+      "path": "Symbol.match",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Regular expression protocols are not supported. Use string patterns."
+    },
+    {
+      "kind": "symbol",
+      "path": "Symbol.matchAll",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Regular expression protocols are not supported. Use string patterns."
+    },
+    {
+      "kind": "symbol",
+      "path": "Symbol.replace",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Regular expression protocols are not supported. Use string patterns."
+    },
+    {
+      "kind": "symbol",
+      "path": "Symbol.search",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Regular expression protocols are not supported. Use string patterns."
+    },
+    {
+      "kind": "symbol",
+      "path": "Symbol.species",
+      "status": "X",
+      "row": "L10",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Built-in results are always plain arrays. Symbol.species is not supported."
+    },
+    {
+      "kind": "symbol",
+      "path": "Symbol.split",
+      "status": "X",
+      "row": "L18",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "Regular expression protocols are not supported. Use string patterns."
+    },
+    {
+      "kind": "symbol",
+      "path": "Symbol.toPrimitive",
+      "status": "P",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "symbol",
+      "path": "Symbol.toStringTag",
+      "status": "P",
+      "row": "L12",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": null
+    },
+    {
+      "kind": "symbol",
+      "path": "Symbol.unscopables",
+      "status": "X",
+      "row": "L01",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": null,
+      "hint": "The with statement is rejected, so unscopables are not supported."
+    },
+    {
+      "kind": "prop",
+      "path": "AggregateError#errors",
+      "status": "P",
+      "row": "L14",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Own array of errors, set by the constructor and by Promise.any.",
+      "hint": null
+    },
+    {
+      "kind": "prop",
+      "path": "Error#cause",
+      "status": "P",
+      "row": "L13",
+      "targets": [
+        "native",
+        "web",
+        "test"
+      ],
+      "code": null,
+      "note": "Own property set from options.cause by the Error constructors.",
+      "hint": null
+    }
+  ]
+}

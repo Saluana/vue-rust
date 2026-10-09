@@ -1,0 +1,1 @@
+{"scenario":"closure-this-arrow-nest","result":"ok","error":null,"entries":[{"label":"arrow-nest","values":["o"]}],"unhandledRejections":[]}

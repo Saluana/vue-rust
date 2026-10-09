@@ -1,0 +1,1 @@
+{"scenario":"flow-throw-in-finally","result":"ok","error":null,"entries":[{"label":"replaced-throw","values":["second"]}],"unhandledRejections":[]}

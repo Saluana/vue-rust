@@ -1,0 +1,1 @@
+{"scenario":"str-escapes","result":"ok","error":null,"entries":[{"label":"escapes","values":["tab\there\nnew \"quote\" \\ back A B",31]},{"label":"unicode-long","values":["😀",2]}],"unhandledRejections":[]}

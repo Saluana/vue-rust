@@ -1,0 +1,1 @@
+{"scenario":"fn-defaults-rest","result":"ok","error":null,"entries":[{"label":"defaults","values":["0-undefined-undefined","0+undefined+undefined","2+a+b"]},{"label":"pick","values":["1:2:undefined","1:2:3","1:0:null"]},{"label":"param-tdz","values":["ReferenceError"]},{"label":"lengths","values":[1,0]}],"unhandledRejections":[]}

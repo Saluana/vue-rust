@@ -1,0 +1,1 @@
+{"scenario":"ex-relational","result":"ok","error":null,"entries":[{"label":"rel","values":[true,true,false,true,true,false,false,false]},{"label":"rel-mixed","values":[true,true,true]}],"unhandledRejections":[]}

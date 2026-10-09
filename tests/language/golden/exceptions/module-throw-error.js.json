@@ -1,0 +1,1 @@
+{"scenario":"exceptions/module-throw-error","result":"throw","error":{"$":"obj","id":1,"cls":"Error","proto":"other","props":[],"name":"Error","message":"module boom"},"entries":[{"label":"loading","values":["module"]}],"unhandledRejections":[]}

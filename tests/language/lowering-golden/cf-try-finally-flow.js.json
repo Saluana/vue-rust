@@ -1,0 +1,1 @@
+{"scenario":"cf-try-finally-flow","result":"ok","error":null,"entries":[{"label":"f","values":["try","finally","kept","f1;"]}],"unhandledRejections":[]}

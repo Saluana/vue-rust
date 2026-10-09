@@ -1,0 +1,1 @@
+{"scenario":"fn-closure-over-params-loop","result":"ok","error":null,"entries":[{"label":"params-loop","values":[100,102]}],"unhandledRejections":[]}

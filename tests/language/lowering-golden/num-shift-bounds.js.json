@@ -1,0 +1,1 @@
+{"scenario":"num-shift-bounds","result":"ok","error":null,"entries":[{"label":"shift","values":[1,2,-4,4,-2147483648]}],"unhandledRejections":[]}

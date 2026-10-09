@@ -1,0 +1,1 @@
+{"scenario":"exceptions/module-throw-string","result":"throw","error":"module failed","entries":[{"label":"before-throw","values":[1]}],"unhandledRejections":[]}

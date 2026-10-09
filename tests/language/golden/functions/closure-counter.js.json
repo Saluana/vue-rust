@@ -1,0 +1,1 @@
+{"scenario":"functions/closure-counter","result":"ok","error":null,"entries":[{"label":"a1","values":[1]},{"label":"a2","values":[2]},{"label":"b1","values":[11]},{"label":"peek","values":[2,11]}],"unhandledRejections":[]}

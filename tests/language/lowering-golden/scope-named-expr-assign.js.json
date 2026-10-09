@@ -1,0 +1,1 @@
+{"scenario":"scope-named-expr-assign","result":"ok","error":null,"entries":[{"label":"named-expr","values":[120]},{"label":"self-const","values":["TypeError"]}],"unhandledRejections":[]}

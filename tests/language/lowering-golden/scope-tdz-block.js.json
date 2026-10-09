@@ -1,0 +1,1 @@
+{"scenario":"scope-tdz-block","result":"ok","error":null,"entries":[{"label":"tdz-block","values":["ReferenceError","outer"]}],"unhandledRejections":[]}

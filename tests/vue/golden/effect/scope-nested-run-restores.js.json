@@ -1,0 +1,1 @@
+{"scenario":"effect/scope-nested-run-restores","result":"ok","error":null,"entries":[{"label":"inner-current","values":[true]},{"label":"outer-restored","values":[true]},{"label":"caught-same","values":[true]},{"label":"after-throw","values":[true]},{"label":"outside","values":[true]}],"unhandledRejections":[]}

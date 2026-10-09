@@ -1,0 +1,1 @@
+{"scenario":"switch-numeric-strict","result":"ok","error":null,"entries":[{"label":"strict-switch","values":["int","str","bool","int"]}],"unhandledRejections":[]}

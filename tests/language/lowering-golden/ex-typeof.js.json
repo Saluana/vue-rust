@@ -1,0 +1,1 @@
+{"scenario":"ex-typeof","result":"throw","error":{"$":"obj","id":1,"cls":"Error","proto":"other","props":[],"name":"ReferenceError","message":"Cannot access 'tdzLater' before initialization"},"entries":[{"label":"typeof","values":["number","string","boolean","undefined","object","object","function"]},{"label":"undeclared","values":["undefined",true]}],"unhandledRejections":[]}

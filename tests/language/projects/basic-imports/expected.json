@@ -1,0 +1,1 @@
+{"result":"ok","error":null,"entries":[{"label":"answer","values":[42]},{"label":"greet","values":["hello Ada"]},{"label":"origin","values":[7]},{"label":"double","values":[42]},{"label":"util","values":[12]},{"label":"keys","values":["KIND,twice"]}],"unhandledRejections":[]}

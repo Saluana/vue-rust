@@ -1,0 +1,68 @@
+WP-G0D evidence: counter WASM library build
+Claim: "WASM library compiled and wasm-bindgen glue generated successfully" (root README).
+Result: PASSED for the library build (exit 0, 0 warnings, 0 errors). wasm-bindgen glue generation: NOT RUN (out of WP-G0D scope; the README step needs wasm-bindgen-cli 0.2.129).
+Artifact: target/g0d/wasm32-unknown-unknown/debug/vue_rust_demo.wasm, 123,028,923 bytes, WebAssembly binary module version 0x1 (MVP), sha256 0bf5845ff0cb4b910b8837f8fc50673ad43e7394c14dd7f58b5e34cbf1ef1181. Debug build with debuginfo.
+Command: cargo build --locked --manifest-path generated/Cargo.toml --lib --target wasm32-unknown-unknown   (same env as rust-counter-test.txt)
+Finished 2026-10-09T04:33:43Z UTC, wall 22 s.
+Raw output: last 60 lines of the full 111-line log.
+----- raw output -----
+   Compiling crc32fast v1.5.2
+   Compiling adler2 v2.0.1
+   Compiling hashbrown v0.17.1
+   Compiling lock_api v0.4.14
+   Compiling wasm-bindgen v0.2.129
+   Compiling syn v3.0.6
+   Compiling slotmap v1.1.1
+   Compiling parking_lot v0.12.5
+   Compiling miniz_oxide v0.9.1
+   Compiling euclid v0.22.14
+   Compiling self_cell v1.3.0
+   Compiling nohash-hasher v0.2.0
+   Compiling epaint_default_fonts v0.36.2
+   Compiling unicode-segmentation v1.13.3
+   Compiling profiling v1.0.18
+   Compiling either v1.19.0
+   Compiling uuid v1.27.0
+   Compiling flate2 v1.1.10
+   Compiling miniz_oxide v0.8.9
+   Compiling itertools v0.15.0
+   Compiling guillotiere v0.7.0
+   Compiling accesskit v0.24.1
+   Compiling fdeflate v0.3.7
+   Compiling pxfm v0.1.30
+   Compiling litrs v1.0.0
+   Compiling byteorder-lite v0.1.0
+   Compiling png v0.18.1
+   Compiling raw-window-handle v0.6.2
+   Compiling static_assertions v1.1.0
+   Compiling percent-encoding v2.3.2
+   Compiling document-features v0.2.12
+   Compiling wasm-bindgen-macro-support v0.2.129
+   Compiling moxcms v0.8.1
+   Compiling bytemuck_derive v1.12.1
+   Compiling thiserror-impl v2.0.21
+   Compiling bytemuck v1.25.2
+   Compiling color v0.3.3
+   Compiling font-types v0.12.6
+   Compiling emath v0.36.2
+   Compiling ecolor v0.36.2
+   Compiling read-fonts v0.41.0
+   Compiling peniko v0.6.1
+   Compiling vello_common v0.1.0
+   Compiling image v0.25.10
+   Compiling vello_cpu v0.1.0
+   Compiling wasm-bindgen-macro v0.2.129
+   Compiling js-sys v0.3.106
+   Compiling harfrust v0.12.0
+   Compiling skrifa v0.44.0
+   Compiling epaint v0.36.2
+   Compiling web-sys v0.3.106
+   Compiling web-time v1.1.0
+   Compiling wasm-bindgen-futures v0.4.79
+   Compiling glow v0.17.0
+   Compiling egui v0.36.2
+   Compiling egui_glow v0.36.2
+   Compiling eframe v0.36.2
+   Compiling vue-rust-demo v0.0.1 (/Users/brendon/Documents/vue-rust-lab/generated)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 21.80s
+exit=0 wall_s=22

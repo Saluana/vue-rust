@@ -1,0 +1,1 @@
+{"scenario":"ex-template-literals","result":"ok","error":null,"entries":[{"label":"tmpl","values":["hello vue!","4 items","1e+21|0|0.30000000000000004"]},{"label":"tmpl-nest","values":["ab3cd","multi\nline",""]}],"unhandledRejections":[]}

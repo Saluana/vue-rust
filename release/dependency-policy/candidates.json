@@ -1,0 +1,375 @@
+{
+  "schema": 1,
+  "snapshot": "2026-10-08",
+  "ruleForVerified": "verified only when every locked package in the component graph has a LICENSE file present locally (sha256 and first line recorded) and a license field in its package.json; for Rust, a LICENSE file in the cache for every locked crate in the graph. Cargo.toml license metadata alone does not count. Everything else is unresolved.",
+  "licenseSignalSource": "design.md §15 table, quoted verbatim (checked by the generator)",
+  "components": [
+    {
+      "name": "Vue 3.5.43 packages (vue, @vue/compiler-sfc, @vue/compiler-dom, @vue/runtime-core, @vue/reactivity and the other @vue/* packages in the lock)",
+      "role": "Oracle for Vue semantics: SFC/template compilation (compiler-sfc, compiler-dom) and runtime behaviour reference",
+      "licenseSignal": "MIT; preserve required notice and credit modified/reused logic; lock every Vue package to reference patch",
+      "source": "npm registry.npmjs.org; pinned exactly in package.json and package-lock.json (integrity present for every entry)",
+      "status": "verified",
+      "evidence": "Local LICENSE files read: vue@3.5.43 (license MIT, node_modules/vue/LICENSE sha256 1bb85cc9b13b81ef41c81c51866172fc345e0503c86726a6755b796590b70175); @vue/compiler-sfc@3.5.43 (license MIT, node_modules/@vue/compiler-sfc/LICENSE sha256 1bb85cc9b13b81ef41c81c51866172fc345e0503c86726a6755b796590b70175); @vue/shared@3.5.43 (license MIT, node_modules/@vue/shared/LICENSE sha256 1bb85cc9b13b81ef41c81c51866172fc345e0503c86726a6755b796590b70175). The vue/LICENSE copyright line: \"Copyright (c) 2018-present, Yuxi (Evan) You\". Every one of the 23 locked npm packages has a LICENSE file; see npmLockedGraph."
+    },
+    {
+      "name": "@babel/parser 7.29.9 with its locked transitive packages @babel/types, @babel/helper-string-parser, @babel/helper-validator-identifier",
+      "role": "JavaScript/TypeScript parser used by @vue/compiler-sfc and the frontend (Babel AST)",
+      "licenseSignal": "[MIT](https://github.com/babel/babel/blob/main/LICENSE); verify distributed package notice and transitive dependencies",
+      "source": "npm registry.npmjs.org; pinned exactly in package.json and package-lock.json",
+      "status": "verified",
+      "evidence": "Local LICENSE files read: @babel/parser@7.29.9 (license MIT, node_modules/@babel/parser/LICENSE sha256 2e97627cb278aa7556fb9e8817368302301a595b6c7582512b8d74c57b773652); @babel/types@7.29.8 (license MIT, node_modules/@babel/types/LICENSE sha256 117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76); @babel/helper-string-parser@7.29.7 (license MIT, node_modules/@babel/helper-string-parser/LICENSE sha256 117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76); @babel/helper-validator-identifier@7.29.7 (license MIT, node_modules/@babel/helper-validator-identifier/LICENSE sha256 117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76). @babel/parser/LICENSE carries the MIT permission and warranty text and the notice \"Copyright (C) 2012-2014 by various contributors (see AUTHORS)\". Its package.json license field is MIT. Transitive packages are covered by npmLockedGraph."
+    },
+    {
+      "name": "egui/eframe family: eframe, egui, egui-wgpu, egui-winit, egui_glow, epaint_default_fonts (prototype lock versions)",
+      "role": "Candidate immediate-mode GUI and native host (window, input, painter)",
+      "licenseSignal": "Common permissive licenses but **verify each selected exact crate and feature**; generated license manifest must include fonts/platform backends",
+      "source": "crates.io, pinned in generated/Cargo.lock (prototype) with checksums",
+      "status": "unresolved",
+      "evidence": "eframe: eframe 0.36.2 (lock checksum 55ad41fac6e3149a...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/eframe-0.36.2; Cargo.toml license \"MIT OR Apache-2.0\"; no LICENSE file in crate directory (metadata only) || egui: egui 0.36.2 (lock checksum dc938cc27cd91141...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui-0.36.2; Cargo.toml license \"MIT OR Apache-2.0\"; no LICENSE file in crate directory (metadata only) || egui-wgpu: egui-wgpu 0.36.2 (lock checksum 5cef1f6d1bba40b0...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui-wgpu-0.36.2; Cargo.toml license \"MIT OR Apache-2.0\"; no LICENSE file in crate directory (metadata only) || egui-winit: egui-winit 0.36.2 (lock checksum 98466000559d66ba...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui-winit-0.36.2; Cargo.toml license \"MIT OR Apache-2.0\"; no LICENSE file in crate directory (metadata only) || egui_glow: egui_glow 0.36.2 (lock checksum 606ed4167daf341e...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/egui_glow-0.36.2; Cargo.toml license \"MIT OR Apache-2.0\"; no LICENSE file in crate directory (metadata only) || epaint_default_fonts: epaint_default_fonts 0.36.2 (lock checksum 773fa9c96dd0dbef...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/epaint_default_fonts-0.36.2; Cargo.toml license \"(MIT OR Apache-2.0) AND OFL-1.1 AND Ubuntu-font-1.0\"; no LICENSE file in crate directory (metadata only) || generated/Cargo.lock registry packages: 364; present in toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f: 172. Rust graphs are therefore incomplete. || No Rust component is verified: the locked Rust graph is not fully present locally (see cargoLockCoverage). || Bundled font licences (epaint_default_fonts) were not checked."
+    },
+    {
+      "name": "winit 0.30.13",
+      "role": "Window and event loop candidate (native host)",
+      "licenseSignal": "Common permissive licenses but **verify each selected exact crate and feature**; generated license manifest must include fonts/platform backends",
+      "source": "crates.io, pinned in generated/Cargo.lock with checksum",
+      "status": "unresolved",
+      "evidence": "winit 0.30.13 (lock checksum a6755fa58a9f8350...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/winit-0.30.13; Cargo.toml license \"Apache-2.0\"; LICENSE sha256 6dc0e068dcf3a5bc8e054205b85b7720e1d49265bbc64bf515d2cf79197df69a || generated/Cargo.lock registry packages: 364; present in toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f: 172. Rust graphs are therefore incomplete. No Rust component is verified: the locked Rust graph is not fully present locally (see cargoLockCoverage)."
+    },
+    {
+      "name": "wgpu 30.0.1 with wgpu-core, wgpu-hal, wgpu-types and wgpu-naga-bridge",
+      "role": "GPU abstraction used by egui-wgpu",
+      "licenseSignal": "Common permissive licenses but **verify each selected exact crate and feature**; generated license manifest must include fonts/platform backends",
+      "source": "crates.io, pinned in generated/Cargo.lock with checksums",
+      "status": "unresolved",
+      "evidence": "wgpu 30.0.1 (lock checksum 527ccdf43dd5b2e8...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-30.0.1; Cargo.toml license \"MIT OR Apache-2.0\"; LICENSE.APACHE sha256 a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9, LICENSE.MIT sha256 dc0d97139e8205818c703741c7be7cb3b96888bd5917b8d6fc6133731e403c21 || wgpu-core 30.0.1 (lock checksum 14c018fce9b6270a...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-core-30.0.1; Cargo.toml license \"MIT OR Apache-2.0\"; LICENSE.APACHE sha256 a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9, LICENSE.MIT sha256 dc0d97139e8205818c703741c7be7cb3b96888bd5917b8d6fc6133731e403c21 || wgpu-hal 30.0.1 (lock checksum b6b7fb58561a792b...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-hal-30.0.1; Cargo.toml license \"MIT OR Apache-2.0\"; LICENSE.APACHE sha256 a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9, LICENSE.MIT sha256 dc0d97139e8205818c703741c7be7cb3b96888bd5917b8d6fc6133731e403c21 || wgpu-types 30.0.1 (lock checksum 99dad6f1fbdbbdb4...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-types-30.0.1; Cargo.toml license \"MIT OR Apache-2.0\"; LICENSE.APACHE sha256 a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9, LICENSE.MIT sha256 dc0d97139e8205818c703741c7be7cb3b96888bd5917b8d6fc6133731e403c21 || wgpu-naga-bridge 30.0.1 (lock checksum d2f62e73117bb7a6...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/wgpu-naga-bridge-30.0.1; Cargo.toml license \"MIT OR Apache-2.0\"; LICENSE.APACHE sha256 a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9, LICENSE.MIT sha256 dc0d97139e8205818c703741c7be7cb3b96888bd5917b8d6fc6133731e403c21 || generated/Cargo.lock registry packages: 364; present in toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f: 172. Rust graphs are therefore incomplete. || No Rust component is verified: the locked Rust graph is not fully present locally (see cargoLockCoverage)."
+    },
+    {
+      "name": "Taffy (layout)",
+      "role": "Flexbox/grid layout candidate for the native UI layer (vn-ui)",
+      "licenseSignal": "Common permissive licenses but **verify each selected exact crate and feature**; generated license manifest must include fonts/platform backends",
+      "source": "not pinned",
+      "status": "unresolved",
+      "evidence": "taffy: not in generated/Cargo.lock; no taffy-* directory in toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f. No Rust component is verified: the locked Rust graph is not fully present locally (see cargoLockCoverage)."
+    },
+    {
+      "name": "Parley (text layout) and Vello (2D renderer) candidates",
+      "role": "Text layout and vector rendering candidates",
+      "licenseSignal": "Common permissive licenses but **verify each selected exact crate and feature**; generated license manifest must include fonts/platform backends",
+      "source": "crates.io for the pinned crates; parley and top-level vello are not pinned",
+      "status": "unresolved",
+      "evidence": "vello_common 0.1.0 (lock checksum b2e9aed918117e81...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/vello_common-0.1.0; Cargo.toml license \"Apache-2.0 OR MIT\"; LICENSE-APACHE sha256 a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9, LICENSE-MIT sha256 adf157330f722fe7cfd5964a2a6974eff851b718228c6735724a11706e6f4dec || vello_cpu 0.1.0 (lock checksum ac7349e1f55f6b80...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/vello_cpu-0.1.0; Cargo.toml license \"Apache-2.0 OR MIT\"; LICENSE-APACHE sha256 a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9, LICENSE-MIT sha256 adf157330f722fe7cfd5964a2a6974eff851b718228c6735724a11706e6f4dec || harfrust 0.12.0 (lock checksum c03d949a14aa089b...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/harfrust-0.12.0; Cargo.toml license \"MIT\"; LICENSE sha256 3a7c3f0b887abb7c638faf022d29257418458614c6724b120ceeffb279f9c7d2 || parley: not in generated/Cargo.lock || vello: not in generated/Cargo.lock || generated/Cargo.lock registry packages: 364; present in toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f: 172. Rust graphs are therefore incomplete. || No Rust component is verified: the locked Rust graph is not fully present locally (see cargoLockCoverage)."
+    },
+    {
+      "name": "Blitz/Stylo stack",
+      "role": "HTML/CSS engine candidate (web-compatible CSS subset; design §9)",
+      "licenseSignal": "Blitz states MIT/Apache choices; Stylo and transitive files can have additional obligations. Review exact graph/MPL-covered files and modifications; don't call the whole graph MIT",
+      "source": "not pinned",
+      "status": "unresolved",
+      "evidence": "Blitz and Stylo crates: blitz: not in generated/Cargo.lock; stylo: not in generated/Cargo.lock; no matching directory in toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f. No Rust component is verified: the locked Rust graph is not fully present locally (see cargoLockCoverage)."
+    },
+    {
+      "name": "AccessKit 0.24.1 family (accesskit, accesskit_winit, accesskit_macos, accesskit_consumer, accesskit_unix, accesskit_windows, accesskit_atspi_common)",
+      "role": "Accessibility tree bridge to platform assistive technology",
+      "licenseSignal": "MIT/Apache choice with Chromium-derived BSD notices in repository; include applicable notices",
+      "source": "crates.io, pinned in generated/Cargo.lock with checksums",
+      "status": "unresolved",
+      "evidence": "accesskit 0.24.1 (lock checksum d3b7f7f85a7e5f68...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/accesskit-0.24.1; Cargo.toml license \"MIT OR Apache-2.0\"; no LICENSE file in crate directory (metadata only) || accesskit_winit 0.32.2 (lock checksum 1fe9a94394896352...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/accesskit_winit-0.32.2; Cargo.toml license \"Apache-2.0\"; no LICENSE file in crate directory (metadata only) || accesskit_macos 0.26.3 (lock checksum ce02dc63b43f0c92...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/accesskit_macos-0.26.3; Cargo.toml license \"MIT OR Apache-2.0\"; no LICENSE file in crate directory (metadata only) || accesskit_consumer 0.35.0 (lock checksum 53cf47daed85312e...): NOT in local cache | accesskit_consumer 0.36.0 (lock checksum 25e0d7e25d06f4dc...): NOT in local cache | accesskit_consumer 0.38.0 (lock checksum 5d10a236f96f87d7...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/accesskit_consumer-0.38.0; Cargo.toml license \"MIT OR Apache-2.0\"; no LICENSE file in crate directory (metadata only) || accesskit_unix 0.21.1 (lock checksum b016ca8db0ea0ea2...): NOT in local cache || accesskit_windows 0.32.1 (lock checksum eff7009f1a532e91...): NOT in local cache || accesskit_atspi_common 0.18.1 (lock checksum 1e8c61bee90b42a7...): NOT in local cache || generated/Cargo.lock registry packages: 364; present in toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f: 172. Rust graphs are therefore incomplete. || No Rust component is verified: the locked Rust graph is not fully present locally (see cargoLockCoverage). || Chromium-derived notices named by design §15 are in the upstream repository, not in these crate directories, so they were not checked."
+    },
+    {
+      "name": "Slint and Qt alternatives",
+      "role": "Alternative native UI toolkits (not selected)",
+      "licenseSignal": "Slint GPL/royalty-free/commercial choices; Qt module/license choices. Review framework embedding/redistribution and static linking before selecting; no blanket royalty-free assurance",
+      "source": "not pinned",
+      "status": "unresolved",
+      "evidence": "No slint or qt package in generated/Cargo.lock or the cargo cache; no Slint or Qt artifact in the repository. No Rust component is verified: the locked Rust graph is not fully present locally (see cargoLockCoverage)."
+    },
+    {
+      "name": "SQLite source and Rust binding (none selected)",
+      "role": "Embedded database candidate (design §15 row covers SQLite source and binding separately)",
+      "licenseSignal": "Separate SQLite source licensing from binding/native dependencies; inspect crypto notices and each font/icon redistribution permission",
+      "source": "not pinned",
+      "status": "unresolved",
+      "evidence": "No sqlite crate or *sqlite* package in generated/Cargo.lock or the cargo cache; no SQLite source in the repository. No Rust component is verified: the locked Rust graph is not fully present locally (see cargoLockCoverage)."
+    },
+    {
+      "name": "TLS library (none selected)",
+      "role": "Transport security for networking (R22 network policy)",
+      "licenseSignal": "Separate SQLite source licensing from binding/native dependencies; inspect crypto notices and each font/icon redistribution permission",
+      "source": "not pinned",
+      "status": "unresolved",
+      "evidence": "No rustls, ring, native-tls, openssl or aws-lc crate in generated/Cargo.lock (checked by name). No Rust component is verified: the locked Rust graph is not fully present locally (see cargoLockCoverage)."
+    },
+    {
+      "name": "Font, image and SVG libraries (partial set present)",
+      "role": "Decoders for fonts (skrifa, read-fonts, font-types), images (image, png, tiff, zune-jpeg) and path geometry (kurbo)",
+      "licenseSignal": "Separate SQLite source licensing from binding/native dependencies; inspect crypto notices and each font/icon redistribution permission",
+      "source": "crates.io, pinned in generated/Cargo.lock with checksums",
+      "status": "unresolved",
+      "evidence": "skrifa 0.44.0 (lock checksum 819ab7d62b1d3e72...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/skrifa-0.44.0; Cargo.toml license \"MIT OR Apache-2.0\"; LICENSE-APACHE sha256 eba684204073ed715c4abb48129acdfd2bff8ae48339e6a7da3b341d3027b7f0, LICENSE-MIT sha256 7b4c9a3946dfcea7967582760e963e27799e225dcf20565c8ef55324bb017427 || read-fonts 0.41.0 (lock checksum 046a7d674daf4598...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/read-fonts-0.41.0; Cargo.toml license \"MIT OR Apache-2.0\"; LICENSE-APACHE sha256 eba684204073ed715c4abb48129acdfd2bff8ae48339e6a7da3b341d3027b7f0, LICENSE-MIT sha256 7b4c9a3946dfcea7967582760e963e27799e225dcf20565c8ef55324bb017427 || font-types 0.12.6 (lock checksum 6c92d9081c7ab3bd...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/font-types-0.12.6; Cargo.toml license \"MIT OR Apache-2.0\"; LICENSE-APACHE sha256 eba684204073ed715c4abb48129acdfd2bff8ae48339e6a7da3b341d3027b7f0, LICENSE-MIT sha256 7b4c9a3946dfcea7967582760e963e27799e225dcf20565c8ef55324bb017427 || image 0.25.10 (lock checksum 85ab80394333c02f...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/image-0.25.10; Cargo.toml license \"MIT OR Apache-2.0\"; LICENSE-APACHE sha256 0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594, LICENSE-MIT sha256 c77a4cf9da729987d0fe7ccd811e3bd27393914ddf3d23467c18cc22954513b3 || png 0.18.1 (lock checksum 60769b8b31b2a9f2...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/png-0.18.1; Cargo.toml license \"MIT OR Apache-2.0\"; LICENSE-APACHE sha256 a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2, LICENSE-MIT sha256 eaf40297c75da471f7cda1f3458e8d91b4b2ec866e609527a13acfa93b638652 || tiff 0.11.3 (lock checksum b63feaf3343d35b6...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tiff-0.11.3; Cargo.toml license \"MIT\"; LICENSE sha256 20c097d0de27e2adc179140a3d542091951a030699c7e1c78655f2a2d08d4e3e || zune-jpeg 0.5.15 (lock checksum 27bc9d5b815bc103...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zune-jpeg-0.5.15; Cargo.toml license \"MIT OR Apache-2.0 OR Zlib\"; LICENSE-APACHE sha256 c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4, LICENSE-MIT sha256 d30047bca3b516639339a3c279bb84c3483124fb5a9dafe3c75056a85090e745, LICENSE-ZLIB sha256 d201d14804d3bcd3b944147173175e4abfbd838b7c8069b6bd3452496bf13e6c || kurbo 0.13.1 (lock checksum 4b60dfc32f652b92...): cache toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f/kurbo-0.13.1; Cargo.toml license \"Apache-2.0 OR MIT\"; LICENSE-APACHE sha256 cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30, LICENSE-MIT sha256 23c23145f6eac25c28cdcc03d38506a5712a9a8cffb5bd5301457f6173ea696e || resvg: not in generated/Cargo.lock || usvg: not in generated/Cargo.lock || resvg: not in generated/Cargo.lock || generated/Cargo.lock registry packages: 364; present in toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f: 172. Rust graphs are therefore incomplete. || No Rust component is verified: the locked Rust graph is not fully present locally (see cargoLockCoverage). || No SVG parser or rasteriser is pinned (resvg and usvg are absent). Font file redistribution licences are not checked."
+    },
+    {
+      "name": "Test262, WPT and upstream Vue test fixtures",
+      "role": "Conformance corpora for compiler and runtime tests (test-only, but may be distributed)",
+      "licenseSignal": "Check fixture licenses/attribution before copying; test-only source may still be distributed with repository",
+      "source": "not present",
+      "status": "unresolved",
+      "evidence": "No Test262, WPT or upstream Vue test files were found in tests/ (only compiler.test.mjs and tests/fixtures/prototype) or in the cargo cache. Nothing was copied."
+    },
+    {
+      "name": "vue-native framework source (this repository)",
+      "role": "Project source ownership and right to license",
+      "licenseSignal": "The repository has no framework LICENSE file in the inspected inventory; authorship/right-to-license must be established before distributing it.",
+      "source": "this working tree (not a git repository)",
+      "status": "unresolved",
+      "evidence": "No LICENSE, LICENCE or COPYING file in the repository root. package.json has no license field. Cargo.toml [workspace.package] sets license = \"UNLICENSED\", which is not a licence grant. No naming or trademark review was performed (design §15)."
+    }
+  ],
+  "npmLockedGraph": {
+    "lockFile": "package-lock.json",
+    "lockfileVersion": 3,
+    "packageCount": 23,
+    "allHaveLicenseFile": true,
+    "allHaveIntegrity": true,
+    "allHaveLicenseField": true,
+    "entries": [
+      {
+        "name": "@babel/helper-string-parser",
+        "version": "7.29.7",
+        "license": "MIT",
+        "licenseFile": "node_modules/@babel/helper-string-parser/LICENSE",
+        "licenseFileSha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "licenseFirstLine": "MIT License",
+        "resolved": "https://registry.npmjs.org/@babel/helper-string-parser/-/helper-string-parser-7.29.7.tgz",
+        "integrity": "sha512-Pb5ijPrZ89GDH8223L4UP8i6QApWxs04RbPQJTeWDV0/keR2E36MeKnyr6LYmUUvqRRI+Iv87SuF1W6ErINzYw=="
+      },
+      {
+        "name": "@babel/helper-validator-identifier",
+        "version": "7.29.7",
+        "license": "MIT",
+        "licenseFile": "node_modules/@babel/helper-validator-identifier/LICENSE",
+        "licenseFileSha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "licenseFirstLine": "MIT License",
+        "resolved": "https://registry.npmjs.org/@babel/helper-validator-identifier/-/helper-validator-identifier-7.29.7.tgz",
+        "integrity": "sha512-qehxGkRj55h/ff8EMaJ+cYhyaKlHIxqYDn682wQD7RNp9UujOQsHog2uS0r2vzr4pW+sXf90NeeayjcNaX3fFg=="
+      },
+      {
+        "name": "@babel/parser",
+        "version": "7.29.9",
+        "license": "MIT",
+        "licenseFile": "node_modules/@babel/parser/LICENSE",
+        "licenseFileSha256": "2e97627cb278aa7556fb9e8817368302301a595b6c7582512b8d74c57b773652",
+        "licenseFirstLine": "Copyright (C) 2012-2014 by various contributors (see AUTHORS)",
+        "resolved": "https://registry.npmjs.org/@babel/parser/-/parser-7.29.9.tgz",
+        "integrity": "sha512-CjXrNHTnvqBVqHgdBysY3vk2T8tpJHb5/RMeHJBTyVa9xgugCB0CJTx/3oO8RV2QRQP391RWpB7D6hLjm8V9uA=="
+      },
+      {
+        "name": "@babel/types",
+        "version": "7.29.8",
+        "license": "MIT",
+        "licenseFile": "node_modules/@babel/types/LICENSE",
+        "licenseFileSha256": "117da2af0d4ce0fe1c8e19b5cff9dcd806adf973d328d27b11d4448c4ff24f76",
+        "licenseFirstLine": "MIT License",
+        "resolved": "https://registry.npmjs.org/@babel/types/-/types-7.29.8.tgz",
+        "integrity": "sha512-Vj1jF3cPfxg7OAfoI7QnVKLoILlm2JF9pnVHrX8qx7AHMiYWT+NDAA7jChlNgRS4WTLc/fD1lXLmPixluj+3Gg=="
+      },
+      {
+        "name": "@jridgewell/sourcemap-codec",
+        "version": "1.6.0",
+        "license": "MIT",
+        "licenseFile": "node_modules/@jridgewell/sourcemap-codec/LICENSE",
+        "licenseFileSha256": "769d154fbde32a915af110b1123650bc79f4cbe675acc66e005265bf069c6c6c",
+        "licenseFirstLine": "Copyright 2024 Justin Ridgewell <justin@ridgewell.name>",
+        "resolved": "https://registry.npmjs.org/@jridgewell/sourcemap-codec/-/sourcemap-codec-1.6.0.tgz",
+        "integrity": "sha512-T7jf+5zgsZHwNJ4lvQ7/aezbyk0nNX+zJVWpmHA7VYsEx7a7qr5Rg5IbtJFqkgze5Y2sruq1RUY8Q837Od7iFw=="
+      },
+      {
+        "name": "@vue/compiler-core",
+        "version": "3.5.43",
+        "license": "MIT",
+        "licenseFile": "node_modules/@vue/compiler-core/LICENSE",
+        "licenseFileSha256": "1bb85cc9b13b81ef41c81c51866172fc345e0503c86726a6755b796590b70175",
+        "licenseFirstLine": "The MIT License (MIT)",
+        "resolved": "https://registry.npmjs.org/@vue/compiler-core/-/compiler-core-3.5.43.tgz",
+        "integrity": "sha512-zdiLhnbe1QQqgDT8xZMpNmyqZ3qlI+/Q/FHQco57Kwl/b05HhCzN6eVGN9QU9rbga4CrS0H5SYY8VGHZCt/1Hg=="
+      },
+      {
+        "name": "@vue/compiler-dom",
+        "version": "3.5.43",
+        "license": "MIT",
+        "licenseFile": "node_modules/@vue/compiler-dom/LICENSE",
+        "licenseFileSha256": "1bb85cc9b13b81ef41c81c51866172fc345e0503c86726a6755b796590b70175",
+        "licenseFirstLine": "The MIT License (MIT)",
+        "resolved": "https://registry.npmjs.org/@vue/compiler-dom/-/compiler-dom-3.5.43.tgz",
+        "integrity": "sha512-PEZoAk3NQmsn/ejMzSOCyTYqwGqczrWm70PuhBKjjv1+TCoQAaO/zOqNwjV+honlNstT5ILxtc+8r8UUfj+iEQ=="
+      },
+      {
+        "name": "@vue/compiler-sfc",
+        "version": "3.5.43",
+        "license": "MIT",
+        "licenseFile": "node_modules/@vue/compiler-sfc/LICENSE",
+        "licenseFileSha256": "1bb85cc9b13b81ef41c81c51866172fc345e0503c86726a6755b796590b70175",
+        "licenseFirstLine": "The MIT License (MIT)",
+        "resolved": "https://registry.npmjs.org/@vue/compiler-sfc/-/compiler-sfc-3.5.43.tgz",
+        "integrity": "sha512-FCbrG3XNCRl+js3huuKx4IVHBLTvMkJhVepjbxSPu1gn4yWLaYtGNQdjJGZaMytXB6qb76qQDDmDSLy/vkmleQ=="
+      },
+      {
+        "name": "@vue/compiler-ssr",
+        "version": "3.5.43",
+        "license": "MIT",
+        "licenseFile": "node_modules/@vue/compiler-ssr/LICENSE",
+        "licenseFileSha256": "1bb85cc9b13b81ef41c81c51866172fc345e0503c86726a6755b796590b70175",
+        "licenseFirstLine": "The MIT License (MIT)",
+        "resolved": "https://registry.npmjs.org/@vue/compiler-ssr/-/compiler-ssr-3.5.43.tgz",
+        "integrity": "sha512-GF62orf7KiJX9RqrHNGrYBudsQGD0OhJ5nDs90O8UiDuS40+YMYomiXu6w6EuvtXuRDc3MSNis3EaaSKAVSWpg=="
+      },
+      {
+        "name": "@vue/reactivity",
+        "version": "3.5.43",
+        "license": "MIT",
+        "licenseFile": "node_modules/@vue/reactivity/LICENSE",
+        "licenseFileSha256": "1bb85cc9b13b81ef41c81c51866172fc345e0503c86726a6755b796590b70175",
+        "licenseFirstLine": "The MIT License (MIT)",
+        "resolved": "https://registry.npmjs.org/@vue/reactivity/-/reactivity-3.5.43.tgz",
+        "integrity": "sha512-G/c9GyOZNI2jVaaS6OX1EF1SSFSv7H0ERqNTl4+DTFMlZmB5eVAB53aLQNam/7NL2NPtaDD7RdVrzf8uJzMuOA=="
+      },
+      {
+        "name": "@vue/runtime-core",
+        "version": "3.5.43",
+        "license": "MIT",
+        "licenseFile": "node_modules/@vue/runtime-core/LICENSE",
+        "licenseFileSha256": "1bb85cc9b13b81ef41c81c51866172fc345e0503c86726a6755b796590b70175",
+        "licenseFirstLine": "The MIT License (MIT)",
+        "resolved": "https://registry.npmjs.org/@vue/runtime-core/-/runtime-core-3.5.43.tgz",
+        "integrity": "sha512-hU6U6VnVhBGQDpvlnnDlIB8ZGJBiOcgk2lh/0InltHiz3D8oSkluvuvY+do1G2H3+udeKFsmaBlgVYP7gXQzEw=="
+      },
+      {
+        "name": "@vue/runtime-dom",
+        "version": "3.5.43",
+        "license": "MIT",
+        "licenseFile": "node_modules/@vue/runtime-dom/LICENSE",
+        "licenseFileSha256": "1bb85cc9b13b81ef41c81c51866172fc345e0503c86726a6755b796590b70175",
+        "licenseFirstLine": "The MIT License (MIT)",
+        "resolved": "https://registry.npmjs.org/@vue/runtime-dom/-/runtime-dom-3.5.43.tgz",
+        "integrity": "sha512-Bb2Jc0YjjJdMt1SJmb9b2L/IWd3I8lIT9x9eS/xvvP9CiVgna0ffua74xKRmt4/uSJ+0r4iN8ex1jrqkhQGWQw=="
+      },
+      {
+        "name": "@vue/server-renderer",
+        "version": "3.5.43",
+        "license": "MIT",
+        "licenseFile": "node_modules/@vue/server-renderer/LICENSE",
+        "licenseFileSha256": "1bb85cc9b13b81ef41c81c51866172fc345e0503c86726a6755b796590b70175",
+        "licenseFirstLine": "The MIT License (MIT)",
+        "resolved": "https://registry.npmjs.org/@vue/server-renderer/-/server-renderer-3.5.43.tgz",
+        "integrity": "sha512-l2Ygjv9NehV94PSBxNWsAHC0j/eIIKbn92mBuWXAPGLnn6HfJ6MH5ubsd+Nk0YoZ5FRuxWI1P2VSoh+dbPQhCQ=="
+      },
+      {
+        "name": "@vue/shared",
+        "version": "3.5.43",
+        "license": "MIT",
+        "licenseFile": "node_modules/@vue/shared/LICENSE",
+        "licenseFileSha256": "1bb85cc9b13b81ef41c81c51866172fc345e0503c86726a6755b796590b70175",
+        "licenseFirstLine": "The MIT License (MIT)",
+        "resolved": "https://registry.npmjs.org/@vue/shared/-/shared-3.5.43.tgz",
+        "integrity": "sha512-uksS7YGMR5NZyr4JNq0Rp+QyLns0ueaz20KwzIPW9R0LH1Vnt4E+XUM29PNseEbf1www2gOuhuDi5AKOIXag9Q=="
+      },
+      {
+        "name": "csstype",
+        "version": "3.2.3",
+        "license": "MIT",
+        "licenseFile": "node_modules/csstype/LICENSE",
+        "licenseFileSha256": "11d55bd4541c75ee7879547ac49089c489163dae49551389713c3d026cab383e",
+        "licenseFirstLine": "Copyright (c) 2017-2018 Fredrik Nicol",
+        "resolved": "https://registry.npmjs.org/csstype/-/csstype-3.2.3.tgz",
+        "integrity": "sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ=="
+      },
+      {
+        "name": "entities",
+        "version": "7.0.1",
+        "license": "BSD-2-Clause",
+        "licenseFile": "node_modules/entities/LICENSE",
+        "licenseFileSha256": "cb992345949ccd6e8394b2cd6c465f7b897c864f845937dbf64e8997f389e164",
+        "licenseFirstLine": "Copyright (c) Felix Böhm",
+        "resolved": "https://registry.npmjs.org/entities/-/entities-7.0.1.tgz",
+        "integrity": "sha512-TWrgLOFUQTH994YUyl1yT4uyavY5nNB5muff+RtWaqNVCAK408b5ZnnbNAUEWLTCpum9w6arT70i1XdQ4UeOPA=="
+      },
+      {
+        "name": "estree-walker",
+        "version": "2.0.2",
+        "license": "MIT",
+        "licenseFile": "node_modules/estree-walker/LICENSE",
+        "licenseFileSha256": "8a6dcbabe7179f9c8489c08a7d874d0f1e093ae7449e03756ccf87cb9d0e296e",
+        "licenseFirstLine": "Copyright (c) 2015-20 [these people](https://github.com/Rich-Harris/estree-walker/graphs/contributors)",
+        "resolved": "https://registry.npmjs.org/estree-walker/-/estree-walker-2.0.2.tgz",
+        "integrity": "sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w=="
+      },
+      {
+        "name": "magic-string",
+        "version": "0.30.21",
+        "license": "MIT",
+        "licenseFile": "node_modules/magic-string/LICENSE",
+        "licenseFileSha256": "1cbe51b907662f6cb1492b16c359384a595180bf0e4d101603ed525e75c4e484",
+        "licenseFirstLine": "Copyright 2018 Rich Harris",
+        "resolved": "https://registry.npmjs.org/magic-string/-/magic-string-0.30.21.tgz",
+        "integrity": "sha512-vd2F4YUyEXKGcLHoq+TEyCjxueSeHnFxyyjNp80yg0XV4vUhnDer/lvvlqM/arB5bXQN5K2/3oinyCRyx8T2CQ=="
+      },
+      {
+        "name": "nanoid",
+        "version": "3.3.20",
+        "license": "MIT",
+        "licenseFile": "node_modules/nanoid/LICENSE",
+        "licenseFileSha256": "da4db1480d9beea3483a2eda5c53b22238d0827d57da162b48f122e04d2d9987",
+        "licenseFirstLine": "The MIT License (MIT)",
+        "resolved": "https://registry.npmjs.org/nanoid/-/nanoid-3.3.20.tgz",
+        "integrity": "sha512-uKdg2G3GNCKQn9byYOpxbGqrT2fGO5KRt5J/8b3pok8rT6qxGWF6hxMyJiEYtAf+FVyYuD9hRaDqX5uPFYJ4ZQ=="
+      },
+      {
+        "name": "picocolors",
+        "version": "1.1.1",
+        "license": "ISC",
+        "licenseFile": "node_modules/picocolors/LICENSE",
+        "licenseFileSha256": "6582629e2979466878f6014313dcc2f3756c9616148682227ce3063dde310750",
+        "licenseFirstLine": "ISC License",
+        "resolved": "https://registry.npmjs.org/picocolors/-/picocolors-1.1.1.tgz",
+        "integrity": "sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA=="
+      },
+      {
+        "name": "postcss",
+        "version": "8.5.29",
+        "license": "MIT",
+        "licenseFile": "node_modules/postcss/LICENSE",
+        "licenseFileSha256": "5be1f3465bba68a626777f984878814aaf35e7ef8e9fd314d469bcf887050fb8",
+        "licenseFirstLine": "The MIT License (MIT)",
+        "resolved": "https://registry.npmjs.org/postcss/-/postcss-8.5.29.tgz",
+        "integrity": "sha512-49cGhUbXj8Qenv0iTMxA1cFBzxXoctpC9Ujd77t1WcbJIr6nF/eI7g/8MgxrYldFRuAXvja7xQRwavoW7kgrxQ=="
+      },
+      {
+        "name": "source-map-js",
+        "version": "1.2.2",
+        "license": "BSD-3-Clause",
+        "licenseFile": "node_modules/source-map-js/LICENSE",
+        "licenseFileSha256": "6cb0631f71c7749763fd3dd1d5bee52dd1070ec17f2edc1710079ad070bd2fbd",
+        "licenseFirstLine": "Copyright (c) 2009-2011, Mozilla Foundation and contributors",
+        "resolved": "https://registry.npmjs.org/source-map-js/-/source-map-js-1.2.2.tgz",
+        "integrity": "sha512-KGj/8Y43x35aZVDtt+J4mK1hoLGHULMYfSkODJNQjNDC3oW1PqPoxMwo0pLUsWM/UEGzON/NxeHywEfNXNP3Vw=="
+      },
+      {
+        "name": "vue",
+        "version": "3.5.43",
+        "license": "MIT",
+        "licenseFile": "node_modules/vue/LICENSE",
+        "licenseFileSha256": "1bb85cc9b13b81ef41c81c51866172fc345e0503c86726a6755b796590b70175",
+        "licenseFirstLine": "The MIT License (MIT)",
+        "resolved": "https://registry.npmjs.org/vue/-/vue-3.5.43.tgz",
+        "integrity": "sha512-o5qZoksdnjIKvW1srZ3ab7pcDNYAerBjRe54D0LBLfRdCYFrSgBHVXokMas35czQc0//lmx4/tuY4ZNQ+Rf2Ng=="
+      }
+    ]
+  },
+  "cargoLockCoverage": {
+    "lockFile": "generated/Cargo.lock",
+    "registryPackages": 364,
+    "presentInCache": 172,
+    "cacheDir": "toolchain/cargo/registry/src/index.crates.io-1949cf8c6b5b557f",
+    "note": "Cache contents change as builds run; re-run the check before relying on a Rust entry."
+  }
+}

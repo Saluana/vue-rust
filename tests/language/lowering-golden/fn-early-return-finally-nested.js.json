@@ -1,0 +1,1 @@
+{"scenario":"fn-early-return-finally-nested","result":"ok","error":null,"entries":[{"label":"f-fin","values":[0]},{"label":"f-fin","values":[1]},{"label":"early","values":["early","late"]}],"unhandledRejections":[]}

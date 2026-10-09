@@ -1,0 +1,1 @@
+{"scenario":"ex-numeric-literals","result":"ok","error":null,"entries":[{"label":"literals","values":[31,15,5,1000000,1000,0.5,5,1e-7,200]},{"label":"big","values":[123456789012345680000,0.1,1.5e-10,9007199254740992]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"reactive/is-flags-nested","result":"ok","error":null,"entries":[{"label":"readonly-of-reactive","values":[true,true,true]},{"label":"reactive-of-readonly","values":[true,false,true,1]}],"unhandledRejections":[]}

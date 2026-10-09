@@ -1,0 +1,1 @@
+{"result":"ok","error":null,"entries":[{"label":"first","values":[1]},{"label":"second","values":["two"]},{"label":"all","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["a","b"],"len":2}]},{"label":"shapes","values":[9]},{"label":"def","values":["dflt"]}],"unhandledRejections":[]}

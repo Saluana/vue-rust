@@ -1,0 +1,1 @@
+{"scenario":"scope-var-redeclare","result":"ok","error":null,"entries":[{"label":"redeclared","values":[2]},{"label":"param-var","values":["kept"]},{"label":"var-block","values":["second"]}],"unhandledRejections":[]}

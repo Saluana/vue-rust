@@ -1,0 +1,30 @@
+   Compiling vue-rust-demo v0.0.1 (/workspace/shared/vue-rust-prototype/generated)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.68s
+     Running unittests src/lib.rs (generated/target/debug/deps/vue_rust_demo-df2a472e8bccf0b5)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/main.rs (generated/target/debug/deps/vue_rust_demo-8c34fc6cb4a1c70b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/runtime.rs (generated/target/debug/deps/runtime-e96f1e18bf40215f)
+
+running 4 tests
+test components_have_independent_state ... ok
+test state_and_computed_are_native_rust ... ok
+test headless_renderer_produces_real_paint_shapes ... ok
+test real_pointer_click_updates_ref_and_conditional_rendering ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+   Doc-tests vue_rust_demo
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

@@ -1,0 +1,1 @@
+{"scenario":"stdlib/number-string-statics","result":"ok","error":null,"entries":[{"label":"number","values":[true,false,false,false,true]},{"label":"parse","values":[12,0,31,8,1,1000]},{"label":"stringify","values":["null","1,2,3","[object Object]","1,,"]},{"label":"char-codes","values":["Hi",72,98]}],"unhandledRejections":[]}

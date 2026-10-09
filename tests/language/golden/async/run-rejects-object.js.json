@@ -1,0 +1,1 @@
+{"scenario":"async/run-rejects-object","result":"throw","error":{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[["kind","timeout"],["at",10]]},"entries":[{"label":"after-advance","values":[10]}],"unhandledRejections":[]}

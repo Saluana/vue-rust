@@ -1,0 +1,239 @@
+{
+  "zip": {
+    "path": "/Users/brendon/Downloads/quick-quote-source.zip",
+    "sha256": "470e78787014e2dbbdc8fdf9cf2107fc48caa574d8c02aa59823689e9bba3a0e",
+    "bytes": 104048
+  },
+  "workspaceCompilerSha256": "24224cdbcc536bfcbaa970bd4595190c974bc26998fc3f8d814685064d31afad",
+  "zipCompilerSha256": "d904d626d8f1072b3198b5d9956e309bdec6acbba2137cfbce7c8db65a9a18e9",
+  "workspaceCompilerClaim": {
+    "source": "planning/vue-native-framework/requirements.md",
+    "sha256": "24224cdbcc536bfcbaa970bd4595190c974bc26998fc3f8d814685064d31afad",
+    "matches": true
+  },
+  "node": "v26.5.1",
+  "files": [
+    {
+      "path": "counter/README.md",
+      "sha256": "a67a66ba8f94498f6099176853c7c55cea9a2e6210961c6e9eb1495928c01d04",
+      "bytes": 7664,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/compiler/cli.mjs",
+      "sha256": "3e6e3a5698c48ca944e4835e13d7f75746304b0782dbad69dce44239e437f014",
+      "bytes": 2508,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/compiler/compile.mjs",
+      "sha256": "24224cdbcc536bfcbaa970bd4595190c974bc26998fc3f8d814685064d31afad",
+      "bytes": 11676,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/evidence/compiler-tests.txt",
+      "sha256": "79d1051e8df527b0ffb671bb79d87c04bf8bc60513f6b71caa22138d1720a60b",
+      "bytes": 2002,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/evidence/rust-tests.txt",
+      "sha256": "ec604c058e029f922ce63993e9041ea63cccbbd919f477cda4c29d229ce63d9a",
+      "bytes": 1130,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/evidence/verification.txt",
+      "sha256": "30e79f6131773bb80633d386851fdf03e7cf1a233dae497139f2fa1b26f9ceec",
+      "bytes": 970,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/evidence/wasm-build.txt",
+      "sha256": "ab02251ff59c3018b13283498d2d470244e9c852ed6aee7116c588f3eee641e1",
+      "bytes": 155,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/examples/Counter.vue",
+      "sha256": "3b170e9a8ecf60635b2472b8a81a8dce321768fa4310d5109f9cdd04656e57e1",
+      "bytes": 671,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/generated/Cargo.lock",
+      "sha256": "643ee5eb1f108744b3c1b01af541096576b4eb60b01eb1bc95a0bbd6787f64d0",
+      "bytes": 94071,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/generated/Cargo.toml",
+      "sha256": "ee28e8f784110746ed40e528bac95a8af37f5b6fa4e51928f4054aa1770d7ca4",
+      "bytes": 415,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/generated/index.html",
+      "sha256": "868aa79aca434f9f1c2b4c906d248fe977a0119694ee1f72bd2a4339750f06a8",
+      "bytes": 464,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/generated/src/app.rs",
+      "sha256": "59ee93e8a9b26bd85d0528f1aa542a904c615e8816891610b5a2a515d6a67ae1",
+      "bytes": 1393,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/generated/src/lib.rs",
+      "sha256": "065a23b87d116dd074309984514a3570f85b319ddb49111cb0729a39f1654a38",
+      "bytes": 533,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/generated/src/main.rs",
+      "sha256": "e115676a6e8a08843584fc48f5822b405156f10607dd10e6614177383f3ab842",
+      "bytes": 247,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/generated/tests/runtime.rs",
+      "sha256": "ce2a513e568376bd97f6bf9ec21d89e1a67fc4e02f180e479c73b2153d8f5562",
+      "bytes": 2566,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/package-lock.json",
+      "sha256": "f03261cdd03fcaee1fa3586f7194b47c5cc474f7b20cb90d10b8b42d7cbebaa7",
+      "bytes": 10666,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/package.json",
+      "sha256": "f76d34aa3d52c41248cbdfea0474efe11d0831b5688b47dac8e9561b794ddb16",
+      "bytes": 472,
+      "origin": "workspace"
+    },
+    {
+      "path": "counter/tests/compiler.test.mjs",
+      "sha256": "f9504c8ab1007ed66520e6af8500daa24ef58a84dd20ed7022463bc15d746b77",
+      "bytes": 3533,
+      "origin": "workspace"
+    },
+    {
+      "path": "quick-quote/compiler/cli.mjs",
+      "sha256": "3e6e3a5698c48ca944e4835e13d7f75746304b0782dbad69dce44239e437f014",
+      "bytes": 2508,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/compiler/compile.mjs",
+      "sha256": "d904d626d8f1072b3198b5d9956e309bdec6acbba2137cfbce7c8db65a9a18e9",
+      "bytes": 13681,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/evidence/quote-edited-hours.png",
+      "sha256": "4619eb29723d3e588098ae74e65864664541fdba87a15826eb6a67310ac2f0fd",
+      "bytes": 59795,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/evidence/quote-hedging.png",
+      "sha256": "71103c37604c85f0535344ba1f0ade25c4ff9e18293586787689b1c27cc55fa0",
+      "bytes": 60329,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/examples/Counter.vue",
+      "sha256": "3b170e9a8ecf60635b2472b8a81a8dce321768fa4310d5109f9cdd04656e57e1",
+      "bytes": 671,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/examples/Quote.vue",
+      "sha256": "b366e45e5513fcf0fe8d58608500810996c09b78ddeb102680d755200b2b912b",
+      "bytes": 2135,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/package-lock.json",
+      "sha256": "02613728017ae803b1da46960fd364716224968f634b53d6b8d0c345f3af5dd3",
+      "bytes": 7847,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/package.json",
+      "sha256": "8769788b9a3675302bf52d68238d54137493200115a8ca93924964b398b3b347",
+      "bytes": 424,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/quote-app/Cargo.lock",
+      "sha256": "643ee5eb1f108744b3c1b01af541096576b4eb60b01eb1bc95a0bbd6787f64d0",
+      "bytes": 94071,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/quote-app/Cargo.toml",
+      "sha256": "ee28e8f784110746ed40e528bac95a8af37f5b6fa4e51928f4054aa1770d7ca4",
+      "bytes": 415,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/quote-app/README.md",
+      "sha256": "3011d0746b3eecf50b0c37a1c8d614cb6c3b2aa6e9a2b5e60f6c71efae72e7ed",
+      "bytes": 1855,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/quote-app/index.html",
+      "sha256": "868aa79aca434f9f1c2b4c906d248fe977a0119694ee1f72bd2a4339750f06a8",
+      "bytes": 464,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/quote-app/src/app.rs",
+      "sha256": "2222efa50f16c82b39f927f6ee196d7d28b928a1080620cf90e03d743a29b78a",
+      "bytes": 3793,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/quote-app/src/lib.rs",
+      "sha256": "065a23b87d116dd074309984514a3570f85b319ddb49111cb0729a39f1654a38",
+      "bytes": 533,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/quote-app/src/main.rs",
+      "sha256": "f510dadd3a561a9e3e948704093e1198c0f8582bdcf2e3d8dbf95f80874867c6",
+      "bytes": 1060,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/quote-app/tests/quote.rs",
+      "sha256": "d36ad044e2efd137b6f594e02b4f6f1bc9ddbf168e68b5a8c6343b0599e43a12",
+      "bytes": 643,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/quote-compiler-tests.log",
+      "sha256": "f450053e2d194ffa54df1dbc5a222c0c73a91a84aab9a62a3067e9902e885dc7",
+      "bytes": 2159,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/quote-tests.log",
+      "sha256": "22e130fb898d75e27465fd44fcd779ae7fd5e01b4bc10cf82f5547e7467d1097",
+      "bytes": 2641,
+      "origin": "zip"
+    },
+    {
+      "path": "quick-quote/tests/compiler.test.mjs",
+      "sha256": "58011746e558d8983537b60ef5d70b1d7fcfc48c88eade7b563374c354220441",
+      "bytes": 4095,
+      "origin": "zip"
+    }
+  ]
+}

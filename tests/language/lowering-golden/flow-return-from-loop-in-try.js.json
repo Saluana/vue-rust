@@ -1,0 +1,1 @@
+{"scenario":"flow-return-from-loop-in-try","result":"ok","error":null,"entries":[{"label":"loop-finally","values":[3]},{"label":"return-from-loop","values":["stop at 3"]}],"unhandledRejections":[]}

@@ -1,0 +1,24 @@
+# WP-G0E — Standard-library & globals allowlist manifest (design L18/L21; closed world, default-deny)
+
+Read `docs/dev/AGENT-CONTRACT.md`, `docs/compatibility/README.md`, `compiler/profile/index.mjs` (finished by WP-G0B), design.md §8.1 (rows L06–L21), and the builtin WP specs
+`docs/dev/wp/WP-B1-object-function-symbol.md`, `WP-B2-array.md`, `WP-B3-string-number-math.md`, `WP-B4-map-set.md`, `WP-B6-json.md` (+ the Promise/async plan in the paragraph below). WP id `g0e`, no cargo.
+**Owned paths:** `compiler/profile/stdlib.source.json`, `compiler/profile/stdlib.json` (generated), `compiler/profile/stdlib.mjs`, `tooling/manifest/build-stdlib.mjs`, `tests/profile/stdlib*.test.mjs`,
+`docs/compatibility/stdlib.md` (generated). You may extend `compiler/profile/index.mjs` ONLY to re-export the new lookups (append-only; keep every existing export and behaviour; tests in `tests/profile/` must keep passing).
+
+## Why
+Today an unknown global (`console`, `window`, `setTimeout`, `fetch`) or an unsupported static member (`Object.defineProperty`, `Math.random`) passes the profile checks. The profile is closed-world: anything not listed is unsupported with a precise diagnostic. This manifest is the single source of truth for
+what built-ins the compiler may reference and the runtime must provide; a later Rust test will diff the installed builtins against it.
+
+## Deliver
+1. `compiler/profile/stdlib.source.json` (hand-authored, reviewed): entries `{ kind: 'global'|'ctor'|'static'|'proto'|'const'|'symbol', path: 'Object.keys' | 'Array.prototype.map' | 'Math.PI' | 'Symbol.iterator' | 'globalThis' …, status: 'P'|'A'|'W'|'X'|'E', row: 'L18'…, targets: ['native','web','test'], note }`.
+   Include **every** method/static/constant the B-specs list as supported (P), plus the Promise API (`Promise` ctor, `then catch finally`, `resolve reject all allSettled race any withResolvers`), Error types (`Error TypeError RangeError ReferenceError SyntaxError EvalError URIError AggregateError`, `Error.prototype.toString`, `cause`), `Object.prototype.*`, `Function.prototype.call/apply/bind/toString`,
+   `Symbol.*`, `Boolean`, iterator protocol members, `globalThis`, `undefined`, `NaN`, `Infinity`, `parseInt parseFloat isNaN isFinite`; **web-only** (W) entries for browser globals the web target allows through its extension (`window`, `document`, `fetch`, `setTimeout`… keep to a short, justified list or leave them out and say so); the test-only host globals `trace`, `testHost` (targets: `['test']`).
+   Explicit **X entries with hints** for the names people will reach for: `console` (use the platform logging service), `setTimeout/setInterval/clearTimeout` (use timers service), `fetch/XMLHttpRequest/WebSocket` (services), `require/module/exports/process/Buffer`, `window/document/navigator/localStorage` (native), `Date`, `RegExp`, `Intl`, `BigInt`, `Proxy`, `Reflect`, `WeakMap/WeakSet/WeakRef/FinalizationRegistry`, `ArrayBuffer`-family other than `Uint8Array` (E), `Atomics/SharedArrayBuffer`, `eval`, `Function`, `structuredClone`, `queueMicrotask` (A: provide as a platform global? decide: X with hint to use `Promise.resolve().then`), `Math.random` (X: platform random service), `Array.prototype.copyWithin`, `Object.defineProperty/defineProperties/setPrototypeOf/getOwnPropertyDescriptors?` (decide each, document), `Array.prototype[Symbol.unscopables]`, `Symbol.species/isConcatSpreadable/match*/unscopables`.
+   Each X has a `hint`. Use design.md for the rule behind each decision and cite the row id.
+2. `tooling/manifest/build-stdlib.mjs` → deterministic `compiler/profile/stdlib.json` (+ `--check`), and `docs/compatibility/stdlib.md` (human table).
+3. `compiler/profile/stdlib.mjs`: `lookupStdlib(kind, path)`, `isStdlibSupported(path, target)`, `listSupported(kind?)`, `resolveGlobal(name, target) → {status, hint}|null`. Unknown → null (= unsupported). Provide `memberPath(node)` helper to turn a Babel `MemberExpression` chain of identifiers (`Object.keys`, `Math.PI`) into a dotted path or null, for the compiler to use.
+4. Tests: every supported entry of the B-specs present exactly once; no duplicates; all X entries have hints; O2's `TARGETS` (tooling/oracle/builtin-corpus.mjs) ⊆ manifest P entries; deterministic regeneration; negative control (remove an entry → test detecting a missing B-spec method fails); `lookupStdlib('static','Object.defineProperty')` is X with the C1a code mapping (VN4008) noted.
+5. Document in the report the places the compiler front half should now consult it (C1a `scope.mjs` globalsUsed → VN4xxx diagnostics for X/unknown globals; C1a member-call checks for static paths) — **do not edit C1a files**; the coordinator will schedule the integration.
+
+## Acceptance
+`node --test "tests/profile/*.test.mjs"` (old + new) green; generator deterministic; counts reported (supported / excluded entries by kind).

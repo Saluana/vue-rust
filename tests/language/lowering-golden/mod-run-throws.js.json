@@ -1,0 +1,1 @@
+{"scenario":"mod-run-throws","result":"throw","error":{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[["reason","run"]]},"entries":[{"label":"before-run","values":[1]},{"label":"inside-run","values":[2]}],"unhandledRejections":[]}

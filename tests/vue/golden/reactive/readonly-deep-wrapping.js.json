@@ -1,0 +1,1 @@
+{"scenario":"reactive/readonly-deep-wrapping","result":"ok","error":null,"entries":[{"label":"deep-flags","values":[true,true,false]},{"label":"deep-value","values":[1,1]}],"unhandledRejections":[]}

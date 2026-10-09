@@ -1,0 +1,1 @@
+{"scenario":"reactive/array-mutators-run-counts","result":"ok","error":null,"entries":[{"label":"after-push","values":[2]},{"label":"after-pop","values":[3]},{"label":"after-unshift","values":[4]},{"label":"after-shift","values":[5,1]}],"unhandledRejections":[]}

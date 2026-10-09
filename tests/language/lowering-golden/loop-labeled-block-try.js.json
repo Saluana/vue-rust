@@ -1,0 +1,1 @@
+{"scenario":"loop-labeled-block-try","result":"ok","error":null,"entries":[{"label":"labeled-block-try","values":["in-try;fin;"]}],"unhandledRejections":[]}

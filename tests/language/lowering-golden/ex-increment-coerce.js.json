@@ -1,0 +1,1 @@
+{"scenario":"ex-increment-coerce","result":"ok","error":null,"entries":[{"label":"postfix-string","values":[5,6,"number"]},{"label":"null-increment","values":[0,1]},{"label":"precision","values":[9007199254740992]}],"unhandledRejections":[]}

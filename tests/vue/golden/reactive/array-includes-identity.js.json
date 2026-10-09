@@ -1,0 +1,1 @@
+{"scenario":"reactive/array-includes-identity","result":"ok","error":null,"entries":[{"label":"reactive-search","values":[true,true,0,0,0]},{"label":"raw-array-search","values":[false,true]}],"unhandledRejections":[]}

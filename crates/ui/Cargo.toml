@@ -1,0 +1,16 @@
+# vn-ui: typed CSS values, shorthand expansion, computed style and the user-agent stylesheet for the documented
+# subset (WP-U1b, design.md section 9.2). Depends on vn-css and vn-dom by path; standard library otherwise, no unsafe.
+[package]
+name = "vn-ui"
+version = "0.0.1"
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lib]
+name = "vn_ui"
+path = "src/lib.rs"
+
+[dependencies]
+vn-css = { path = "../css" }
+vn-dom = { path = "../dom" }

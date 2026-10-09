@@ -1,0 +1,1 @@
+{"scenario":"ex-eval-order-compound","result":"ok","error":null,"entries":[{"label":"order-compound","values":["tostr;rhs;tostr;",3]}],"unhandledRejections":[]}

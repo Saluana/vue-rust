@@ -1,0 +1,1 @@
+{"scenario":"watch/onwatchercleanup-outside-noop","result":"ok","error":null,"entries":[{"label":"outside","values":[{"$":"undef"},false]}],"unhandledRejections":[]}

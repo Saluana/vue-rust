@@ -1,0 +1,1 @@
+{"scenario":"exceptions/nested-rethrow","result":"ok","error":null,"entries":[{"label":"inner-sees","values":[true]},{"label":"outer-finally","values":[]},{"label":"outer-catch","values":[true,"disk"]}],"unhandledRejections":[]}

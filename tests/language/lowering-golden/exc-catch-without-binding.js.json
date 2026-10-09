@@ -1,0 +1,1 @@
+{"scenario":"exc-catch-without-binding","result":"ok","error":null,"entries":[{"label":"count","values":[111]}],"unhandledRejections":[]}

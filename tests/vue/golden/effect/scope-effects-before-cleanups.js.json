@@ -1,0 +1,1 @@
+{"scenario":"effect/scope-effects-before-cleanups","result":"ok","error":null,"entries":[{"label":"order","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["effect-run","before-stop","cleanup","after-stop-99"],"len":4}]}],"unhandledRejections":[]}

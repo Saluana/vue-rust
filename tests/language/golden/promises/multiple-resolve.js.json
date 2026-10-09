@@ -1,0 +1,1 @@
+{"scenario":"promises/multiple-resolve","result":"ok","error":null,"entries":[{"label":"multi","values":["first","inner"]}],"unhandledRejections":[]}

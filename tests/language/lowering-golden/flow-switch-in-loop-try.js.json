@@ -1,0 +1,1 @@
+{"scenario":"flow-switch-in-loop-try","result":"ok","error":null,"entries":[{"label":"switch-try","values":["f0;one;after;f1;def;after;f2;"]}],"unhandledRejections":[]}

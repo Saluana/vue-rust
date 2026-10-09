@@ -1,0 +1,1 @@
+{"scenario":"loop-nested-switch-continue","result":"ok","error":null,"entries":[{"label":"nested-switch","values":["d0;end0;two;end2;d3;end3;"]}],"unhandledRejections":[]}

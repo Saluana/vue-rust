@@ -1,0 +1,1 @@
+{"scenario":"exc-throw-in-callback","result":"ok","error":null,"entries":[{"label":"callback-throw","values":["stop","012"]}],"unhandledRejections":[]}

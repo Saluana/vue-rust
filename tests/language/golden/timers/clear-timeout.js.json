@@ -1,0 +1,1 @@
+{"scenario":"timers/clear-timeout","result":"ok","error":null,"entries":[{"label":"cleared","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["b"],"len":1},true,10]}],"unhandledRejections":[]}

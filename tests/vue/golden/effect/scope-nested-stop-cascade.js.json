@@ -1,0 +1,1 @@
+{"scenario":"effect/scope-nested-stop-cascade","result":"ok","error":null,"entries":[{"label":"order","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["parent-1","parent-2","child-1","child-2"],"len":4}]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"watch/watcheffect-sync-pre-post","result":"ok","error":null,"entries":[{"label":"log","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["pre:0","sync:0","post:0","module-done","sync:1","after-write","pre:1","post:1"],"len":8}]}],"unhandledRejections":[]}

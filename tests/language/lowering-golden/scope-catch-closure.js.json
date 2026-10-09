@@ -1,0 +1,1 @@
+{"scenario":"scope-catch-closure","result":"ok","error":null,"entries":[{"label":"catch-capture","values":["e0","e1"]}],"unhandledRejections":[]}

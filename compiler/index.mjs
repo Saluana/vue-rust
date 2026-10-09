@@ -1,0 +1,23 @@
+// compileModule (WP-C1b): JavaScript/TypeScript module source -> Rust source. Stages: parse, scope analysis and profile
+// check (compiler/frontend), HIR lowering (compiler/hir), emission (compiler/emit). Any error diagnostic stops the
+// pipeline and no Rust is produced. Warnings are returned with the result.
+import { checkSource } from './frontend/check.mjs';
+import { lowerToHir, HIR_VERSION } from './hir/index.mjs';
+import { emitModule } from './emit/index.mjs';
+
+export { HIR_VERSION };
+
+// compileModule(source, { filename, lang, specifier, origin, target, resolve })
+// -> { rust, hir, diagnostics, requests }. rust is null when diagnostics contain an error.
+export function compileModule(source, options = {}) {
+  const { filename = '<input>', lang = 'js', specifier, origin = 'user', target = 'native', resolve } = options;
+  if (typeof specifier !== 'string' || specifier === '') throw new TypeError('compileModule: options.specifier is required');
+  const { ast, analysis, diagnostics } = checkSource(source, { filename, lang, target });
+  if (!ast || diagnostics.some((d) => d.severity === 'error')) {
+    return { rust: null, hir: null, diagnostics, requests: [] };
+  }
+  const lowered = lowerToHir(ast, analysis, { source, filename, specifier, origin, lang, resolve });
+  if (lowered.hir === null) return { rust: null, hir: null, diagnostics: [...diagnostics, ...lowered.diagnostics], requests: [] };
+  const rust = emitModule(lowered.hir);
+  return { rust, hir: lowered.hir, diagnostics, requests: lowered.hir.requests };
+}

@@ -1,0 +1,2 @@
+<template><p class="a">x</p></template>
+<style module>.a { color: red }</style>

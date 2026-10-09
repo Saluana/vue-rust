@@ -1,0 +1,1 @@
+{"scenario":"ref/toref-default-and-getter","result":"ok","error":null,"entries":[{"label":"default","values":["fallback",11]},{"label":"getter-updated","values":[12]},{"label":"assign-threw","values":[true]}],"unhandledRejections":[]}

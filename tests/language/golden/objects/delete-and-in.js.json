@@ -1,0 +1,1 @@
+{"scenario":"objects/delete-and-in","result":"ok","error":null,"entries":[{"label":"before","values":[true,true,false]},{"label":"after","values":[false,{"$":"undef"},{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["b"],"len":1}]},{"label":"inherited-in","values":[true]}],"unhandledRejections":[]}

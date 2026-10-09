@@ -1,0 +1,1 @@
+{"scenario":"symbols/registry-for","result":"ok","error":null,"entries":[{"label":"registry","values":[true,false,"app.key"]},{"label":"ids","values":[{"$":"sym","id":1,"desc":"app.key"},{"$":"sym","id":1,"desc":"app.key"}]},{"label":"lookup","values":["registered",1]}],"unhandledRejections":[]}

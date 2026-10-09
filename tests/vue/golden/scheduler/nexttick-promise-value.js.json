@@ -1,0 +1,1 @@
+{"scenario":"scheduler/nexttick-promise-value","result":"ok","error":null,"entries":[{"label":"resolved","values":["value-from-fn"]},{"label":"ordered","values":[7,{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["sync","fn"],"len":2}]}],"unhandledRejections":[]}

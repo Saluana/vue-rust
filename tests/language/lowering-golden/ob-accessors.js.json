@@ -1,0 +1,1 @@
+{"scenario":"ob-accessors","result":"ok","error":null,"entries":[{"label":"get","values":[68,"ro"]},{"label":"set","values":[100,212]},{"label":"getter-only-error","values":["TypeError"]},{"label":"computed-getter","values":["dynamic"]}],"unhandledRejections":[]}

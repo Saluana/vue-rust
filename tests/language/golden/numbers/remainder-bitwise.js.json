@@ -1,0 +1,1 @@
+{"scenario":"numbers/remainder-bitwise","result":"ok","error":null,"entries":[{"label":"rem","values":[2,-2,1.5,{"$":"num","v":"-0"}]},{"label":"bits","values":[1,7,6,-6,-2147483648,4294967295,-1]},{"label":"convert","values":[3,0,-2147483648,4294967295]}],"unhandledRejections":[]}

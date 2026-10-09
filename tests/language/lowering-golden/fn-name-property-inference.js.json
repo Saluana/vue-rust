@@ -1,0 +1,1 @@
+{"scenario":"fn-name-property-inference","result":"ok","error":null,"entries":[{"label":"names","values":["arrowName","assigned","method","computed"]},{"label":"default-name","values":["destr"]}],"unhandledRejections":[]}

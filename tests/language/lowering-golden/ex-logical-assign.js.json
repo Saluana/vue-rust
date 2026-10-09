@@ -1,0 +1,1 @@
+{"scenario":"ex-logical-assign","result":"ok","error":null,"entries":[{"label":"logical","values":[5,3,"set",9,"changed",1,0]}],"unhandledRejections":[]}

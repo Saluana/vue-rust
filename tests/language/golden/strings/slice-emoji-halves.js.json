@@ -1,0 +1,1 @@
+{"scenario":"strings/slice-emoji-halves","result":"ok","error":null,"entries":[{"label":"slice","values":[1,true,56832]},{"label":"substring","values":["y","\ud83d","x\ud83d"]},{"label":"upper","values":[1,"ABC"]}],"unhandledRejections":[]}

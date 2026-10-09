@@ -1,0 +1,7 @@
+{
+  "suite": "globals",
+  "cases": [
+    {"id":"value/nan","target":"NaN","get":1,"pre":[],"post":{"ret":{"$":"num","v":"NaN"},"throw":null,"state":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":[],"len":0}]}},
+    {"id":"value/infinity","target":"Infinity","get":1,"pre":[],"post":{"ret":{"$":"num","v":"Infinity"},"throw":null,"state":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":[],"len":0}]}}
+  ]
+}

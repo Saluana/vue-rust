@@ -1,0 +1,1 @@
+{"scenario":"numbers/to-fixed-ties","result":"ok","error":null,"entries":[{"label":"fixed","values":["1.00","1.4","3","-3"]},{"label":"fixed-more","values":["1","2","1e+21","0.000"]},{"label":"fixed-neg-zero","values":["-0.00","0.0"]}],"unhandledRejections":[]}

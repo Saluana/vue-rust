@@ -1,0 +1,1 @@
+{"scenario":"ref/customref-track-trigger-counts","result":"ok","error":null,"entries":[{"label":"read-outside","values":[0,1]},{"label":"set-no-trigger","values":[1,1,4]},{"label":"after-trigger","values":[2,4,4]}],"unhandledRejections":[]}

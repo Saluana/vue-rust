@@ -1,0 +1,1 @@
+{"scenario":"reactive/nested-cache-identity","result":"ok","error":null,"entries":[{"label":"cached","values":[true,true,false]},{"label":"readonly-wrap","values":[false,true,true,true]},{"label":"readonly-of-raw","values":[false,false]}],"unhandledRejections":[]}

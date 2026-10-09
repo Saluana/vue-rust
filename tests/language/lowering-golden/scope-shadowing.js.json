@@ -1,0 +1,1 @@
+{"scenario":"scope-shadowing","result":"ok","error":null,"entries":[{"label":"inner","values":["block"]},{"label":"deepest","values":["deeper"]},{"label":"inner-again","values":["block"]},{"label":"outer","values":["outer"]},{"label":"loop","values":[0]},{"label":"loop","values":[10]},{"label":"after-loop","values":["outer"]}],"unhandledRejections":[]}

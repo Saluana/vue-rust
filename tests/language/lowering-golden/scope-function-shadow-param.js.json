@@ -1,0 +1,1 @@
+{"scenario":"scope-function-shadow-param","result":"ok","error":null,"entries":[{"label":"param-shadow","values":["arg!","global"]},{"label":"default-closure-sees-param","values":["changed"]}],"unhandledRejections":[]}

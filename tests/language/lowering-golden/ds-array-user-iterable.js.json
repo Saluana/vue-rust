@@ -1,0 +1,1 @@
+{"scenario":"ds-array-user-iterable","result":"ok","error":null,"entries":[{"label":"pattern-two","values":[10,20,"x;"]},{"label":"pattern-holes","values":[10,30,{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":[],"len":0},"x;"]},{"label":"assign-pattern","values":[10,20]}],"unhandledRejections":[]}

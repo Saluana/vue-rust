@@ -1,0 +1,1 @@
+{"scenario":"objects/destructuring-rest","result":"ok","error":null,"entries":[{"label":"pieces","values":[1,null,"cdef",{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[["d",4]]}]},{"label":"array-pattern","values":["none","third"]}],"unhandledRejections":[]}

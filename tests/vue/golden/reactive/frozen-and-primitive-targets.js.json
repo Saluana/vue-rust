@@ -1,0 +1,1 @@
+{"scenario":"reactive/frozen-and-primitive-targets","result":"ok","error":null,"entries":[{"label":"frozen","values":[true]},{"label":"primitive","values":[5,"s",null]}],"unhandledRejections":[]}

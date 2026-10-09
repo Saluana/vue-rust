@@ -1,0 +1,3437 @@
+{
+  "schemaVersion": 1,
+  "vueVersion": "3.5.43",
+  "method": "runtime = Object.keys(await import('vue')) minus interopArtifacts; macros = vue type declarations with JSDoc 'compiler macro'; compilerInternal = official compiler helper tables/call sites, status X, no exclusion",
+  "typeFiles": [
+    "node_modules/@vue/reactivity/dist/reactivity.d.ts",
+    "node_modules/@vue/runtime-core/dist/runtime-core.d.ts",
+    "node_modules/@vue/runtime-dom/dist/runtime-dom.d.ts",
+    "node_modules/@vue/shared/dist/shared.d.ts",
+    "node_modules/vue/dist/vue.d.ts"
+  ],
+  "counts": {
+    "runtimeExports": 171,
+    "compileTimeMacros": 7,
+    "classified": 171,
+    "unclassified": 0,
+    "interopExcluded": 2,
+    "compilerInternal": 40,
+    "compilerHelperExcluded": 17
+  },
+  "interopArtifacts": [
+    {
+      "name": "__esModule",
+      "reason": "CJS interop marker that Node adds to the ESM namespace of a require()d CJS module. Not a Vue export: absent from require('vue') keys."
+    },
+    {
+      "name": "module.exports",
+      "reason": "Node CJS namespace export name that exposes the raw module.exports object. Not a Vue export: absent from require('vue') keys."
+    }
+  ],
+  "devProdIdentical": true,
+  "appSurface": [
+    {
+      "name": "app.component",
+      "present": true
+    },
+    {
+      "name": "app.directive",
+      "present": true
+    },
+    {
+      "name": "app.mixin",
+      "present": true
+    },
+    {
+      "name": "app.mount",
+      "present": true
+    },
+    {
+      "name": "app.onUnmount",
+      "present": true
+    },
+    {
+      "name": "app.provide",
+      "present": true
+    },
+    {
+      "name": "app.runWithContext",
+      "present": true
+    },
+    {
+      "name": "app.unmount",
+      "present": true
+    },
+    {
+      "name": "app.use",
+      "present": true
+    },
+    {
+      "name": "app.version",
+      "present": true
+    },
+    {
+      "name": "app.config.compilerOptions",
+      "present": true
+    },
+    {
+      "name": "app.config.errorHandler",
+      "present": true
+    },
+    {
+      "name": "app.config.globalProperties",
+      "present": true
+    },
+    {
+      "name": "app.config.idPrefix",
+      "present": false
+    },
+    {
+      "name": "app.config.optionMergeStrategies",
+      "present": true
+    },
+    {
+      "name": "app.config.performance",
+      "present": true
+    },
+    {
+      "name": "app.config.throwUnhandledErrorInProduction",
+      "present": false
+    },
+    {
+      "name": "app.config.warnHandler",
+      "present": true
+    }
+  ],
+  "documentedNames": [
+    {
+      "name": "$el",
+      "rows": [
+        "A18"
+      ],
+      "category": "$-prefixed name: instance property, template variable or removed macro (not checked here)",
+      "present": null
+    },
+    {
+      "name": "$event",
+      "rows": [
+        "U05"
+      ],
+      "category": "$-prefixed name: instance property, template variable or removed macro (not checked here)",
+      "present": null
+    },
+    {
+      "name": "$forceUpdate",
+      "rows": [
+        "A18"
+      ],
+      "category": "$-prefixed name: instance property, template variable or removed macro (not checked here)",
+      "present": null
+    },
+    {
+      "name": "$host",
+      "rows": [
+        "A12"
+      ],
+      "category": "$-prefixed name: instance property, template variable or removed macro (not checked here)",
+      "present": null
+    },
+    {
+      "name": "$parent",
+      "rows": [
+        "A18"
+      ],
+      "category": "$-prefixed name: instance property, template variable or removed macro (not checked here)",
+      "present": null
+    },
+    {
+      "name": "$ref",
+      "rows": [
+        "A19"
+      ],
+      "category": "$-prefixed name: instance property, template variable or removed macro (not checked here)",
+      "present": null
+    },
+    {
+      "name": "$root",
+      "rows": [
+        "A18"
+      ],
+      "category": "$-prefixed name: instance property, template variable or removed macro (not checked here)",
+      "present": null
+    },
+    {
+      "name": "$watch",
+      "rows": [
+        "A18"
+      ],
+      "category": "$-prefixed name: instance property, template variable or removed macro (not checked here)",
+      "present": null
+    },
+    {
+      "name": "ArrayBuffer",
+      "rows": [
+        "L18"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript global (L18); not a vue export."
+    },
+    {
+      "name": "AsyncDisposable",
+      "rows": [
+        "S24"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "Resource-management protocol type/global (S24: X); not a vue export."
+    },
+    {
+      "name": "BigInt",
+      "rows": [
+        "L08"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript global (L08: BigInt X); not a vue export."
+    },
+    {
+      "name": "CommonJS",
+      "rows": [
+        "L16"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "language-term",
+      "drift": false,
+      "note": "Module-format name (L16: CommonJS X); not an API."
+    },
+    {
+      "name": "ComponentCustomProperties",
+      "rows": [
+        "S22"
+      ],
+      "category": "type-only export (vue types)",
+      "present": null
+    },
+    {
+      "name": "ComponentCustomProps",
+      "rows": [
+        "S22"
+      ],
+      "category": "type-only export (vue types)",
+      "present": null
+    },
+    {
+      "name": "DataView",
+      "rows": [
+        "L18"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript global (L18: DataView X); not a vue export."
+    },
+    {
+      "name": "ExtractPropTypes",
+      "rows": [
+        "S22"
+      ],
+      "category": "type-only export (vue types)",
+      "present": null
+    },
+    {
+      "name": "ExtractPublicPropTypes",
+      "rows": [
+        "S22"
+      ],
+      "category": "type-only export (vue types)",
+      "present": null
+    },
+    {
+      "name": "KeepAlive",
+      "rows": [
+        "U21",
+        "V22"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "MaybeRef",
+      "rows": [
+        "S22"
+      ],
+      "category": "type-only export (vue types)",
+      "present": null
+    },
+    {
+      "name": "MaybeRefOrGetter",
+      "rows": [
+        "S22"
+      ],
+      "category": "type-only export (vue types)",
+      "present": null
+    },
+    {
+      "name": "NaN",
+      "rows": [
+        "L07",
+        "L08",
+        "L11",
+        "V01"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-value",
+      "drift": false,
+      "note": "ECMAScript numeric value (L07, L08); not a vue export."
+    },
+    {
+      "name": "PropType",
+      "rows": [
+        "S22"
+      ],
+      "category": "type-only export (vue types)",
+      "present": null
+    },
+    {
+      "name": "RegExp",
+      "rows": [
+        "L18"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript global (L18: broad parity E); not a vue export."
+    },
+    {
+      "name": "SameValueZero",
+      "rows": [
+        "L11"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-abstract-operation",
+      "drift": false,
+      "note": "ECMAScript key-equality operation used by Map/Set (L11); not a vue export."
+    },
+    {
+      "name": "ToBoolean",
+      "rows": [
+        "L07"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-abstract-operation",
+      "drift": false,
+      "note": "ECMAScript coercion operation (L07); not a vue export."
+    },
+    {
+      "name": "ToNumber",
+      "rows": [
+        "L07"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-abstract-operation",
+      "drift": false,
+      "note": "ECMAScript coercion operation (L07); not a vue export."
+    },
+    {
+      "name": "ToString",
+      "rows": [
+        "L07"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-abstract-operation",
+      "drift": false,
+      "note": "ECMAScript coercion operation (L07); not a vue export."
+    },
+    {
+      "name": "TransitionGroup",
+      "rows": [
+        "U24"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "TypeScript",
+      "rows": [
+        "S21",
+        "S24"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "language-term",
+      "drift": false,
+      "note": "Language name used in S21/S24 text; not an API."
+    },
+    {
+      "name": "Uint8Array",
+      "rows": [
+        "L18"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript typed array (L18: Uint8Array for IO with bounds); not a vue export."
+    },
+    {
+      "name": "WeakMap",
+      "rows": [
+        "L11"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript global (L11: X initially); not a vue export."
+    },
+    {
+      "name": "WeakRef",
+      "rows": [
+        "L11"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript global (L11: X initially); not a vue export."
+    },
+    {
+      "name": "WeakSet",
+      "rows": [
+        "L11"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript global (L11: X initially); not a vue export."
+    },
+    {
+      "name": "allSettled",
+      "rows": [
+        "L14"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-builtin-method",
+      "drift": false,
+      "note": "Promise.allSettled (L14); not a vue export."
+    },
+    {
+      "name": "app.component",
+      "rows": [
+        "A02"
+      ],
+      "category": "app instance surface",
+      "present": true
+    },
+    {
+      "name": "app.config.compilerOptions",
+      "rows": [
+        "A08"
+      ],
+      "category": "app instance surface",
+      "present": true
+    },
+    {
+      "name": "app.config.errorHandler",
+      "rows": [
+        "A06"
+      ],
+      "category": "app instance surface",
+      "present": true
+    },
+    {
+      "name": "app.config.performance",
+      "rows": [
+        "A07"
+      ],
+      "category": "app instance surface",
+      "present": true
+    },
+    {
+      "name": "app.directive",
+      "rows": [
+        "A02"
+      ],
+      "category": "app instance surface",
+      "present": true
+    },
+    {
+      "name": "app.mixin",
+      "rows": [
+        "A09"
+      ],
+      "category": "app instance surface",
+      "present": true
+    },
+    {
+      "name": "app.provide",
+      "rows": [
+        "A03"
+      ],
+      "category": "app instance surface",
+      "present": true
+    },
+    {
+      "name": "app.use",
+      "rows": [
+        "A04"
+      ],
+      "category": "app instance surface",
+      "present": true
+    },
+    {
+      "name": "app.version",
+      "rows": [
+        "A05"
+      ],
+      "category": "app instance surface",
+      "present": true
+    },
+    {
+      "name": "cloneVNode",
+      "rows": [
+        "A11"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "createApp",
+      "rows": [
+        "A01"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "createHydrationRenderer",
+      "rows": [
+        "A13"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "createRenderer",
+      "rows": [
+        "A13"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "createSSRApp",
+      "rows": [
+        "A14"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "customRef",
+      "rows": [
+        "V11"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "defineAsyncComponent",
+      "rows": [
+        "U20"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "defineComponent",
+      "rows": [
+        "A10",
+        "V29"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "defineCustomElement",
+      "rows": [
+        "A12"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "defineEmits",
+      "rows": [
+        "S08"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "defineExpose",
+      "rows": [
+        "S10"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "defineModel",
+      "rows": [
+        "S09",
+        "V26"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "defineOptions",
+      "rows": [
+        "S11"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "defineProps",
+      "rows": [
+        "S06"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "defineSlots",
+      "rows": [
+        "S12"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "effectScope",
+      "rows": [
+        "V12"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "getCurrentScope",
+      "rows": [
+        "V12"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "globalProperties",
+      "rows": [
+        "A09"
+      ],
+      "category": "app config key (bare name in design)",
+      "present": true
+    },
+    {
+      "name": "hasInjectionContext",
+      "rows": [
+        "V24"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "idPrefix",
+      "rows": [
+        "A07"
+      ],
+      "category": "app config key (bare name in design)",
+      "present": false
+    },
+    {
+      "name": "inheritAttrs",
+      "rows": [
+        "S11",
+        "U13",
+        "V29"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "component-option",
+      "drift": false,
+      "note": "Component option (U13; S11 defineOptions); not a module export."
+    },
+    {
+      "name": "isProxy",
+      "rows": [
+        "V09"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "isReactive",
+      "rows": [
+        "V09"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "isReadonly",
+      "rows": [
+        "V09"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "isRef",
+      "rows": [
+        "V07"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "isShallow",
+      "rows": [
+        "V09"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "isVNode",
+      "rows": [
+        "A11"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "markRaw",
+      "rows": [
+        "V10"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "mergeProps",
+      "rows": [
+        "A11"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "nextTick",
+      "rows": [
+        "V17"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "onActivated",
+      "rows": [
+        "V22"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "onBeforeMount",
+      "rows": [
+        "V18"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "onBeforeUnmount",
+      "rows": [
+        "V19"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "onBeforeUpdate",
+      "rows": [
+        "V18"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "onCleanup",
+      "rows": [
+        "V16"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "callback-parameter",
+      "drift": false,
+      "note": "Parameter of watch and watchEffect callbacks (V16); not a module export."
+    },
+    {
+      "name": "onDeactivated",
+      "rows": [
+        "V22"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "onErrorCaptured",
+      "rows": [
+        "V20"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "onMounted",
+      "rows": [
+        "V18"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "onRenderTracked",
+      "rows": [
+        "V21"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "onRenderTriggered",
+      "rows": [
+        "V21"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "onScopeDispose",
+      "rows": [
+        "V12"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "onServerPrefetch",
+      "rows": [
+        "A14",
+        "V23"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "onUnmount",
+      "rows": [
+        "A01"
+      ],
+      "category": "app instance method (bare name in design)",
+      "present": true
+    },
+    {
+      "name": "onUnmounted",
+      "rows": [
+        "V19"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "onUpdated",
+      "rows": [
+        "V18"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "onWatcherCleanup",
+      "rows": [
+        "V16"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "optionMergeStrategies",
+      "rows": [
+        "A09"
+      ],
+      "category": "app config key (bare name in design)",
+      "present": true
+    },
+    {
+      "name": "pipeToNodeWritable",
+      "rows": [
+        "A15"
+      ],
+      "category": "vue/server-renderer export (not in vue)",
+      "present": null
+    },
+    {
+      "name": "renderToNodeStream",
+      "rows": [
+        "A15"
+      ],
+      "category": "vue/server-renderer export (not in vue)",
+      "present": null
+    },
+    {
+      "name": "renderToString",
+      "rows": [
+        "A15"
+      ],
+      "category": "vue/server-renderer export (not in vue)",
+      "present": null
+    },
+    {
+      "name": "resolveComponent",
+      "rows": [
+        "A11"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "resolveDirective",
+      "rows": [
+        "A11"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "runWithContext",
+      "rows": [
+        "A03"
+      ],
+      "category": "app instance method (bare name in design)",
+      "present": true
+    },
+    {
+      "name": "shallowReactive",
+      "rows": [
+        "V05"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "shallowReadonly",
+      "rows": [
+        "V05"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "shallowRef",
+      "rows": [
+        "V02"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "throwUnhandledErrorInProduction",
+      "rows": [
+        "A06"
+      ],
+      "category": "app config key (bare name in design)",
+      "present": false
+    },
+    {
+      "name": "toFixed",
+      "rows": [
+        "L08"
+      ],
+      "category": "not found",
+      "present": null,
+      "verdict": "ecmascript-builtin-method",
+      "drift": false,
+      "note": "Number.prototype.toFixed (L08); not a vue export."
+    },
+    {
+      "name": "toRaw",
+      "rows": [
+        "V10"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "toRef",
+      "rows": [
+        "V08"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "toRefs",
+      "rows": [
+        "V08"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "toValue",
+      "rows": [
+        "V08"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "triggerRef",
+      "rows": [
+        "V02"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "useAttrs",
+      "rows": [
+        "V25"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "useHost",
+      "rows": [
+        "A12"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "useId",
+      "rows": [
+        "V28"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "useModel",
+      "rows": [
+        "V26"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "useSSRContext",
+      "rows": [
+        "A14"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "useShadowRoot",
+      "rows": [
+        "A12"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "useSlots",
+      "rows": [
+        "V25"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "useTemplateRef",
+      "rows": [
+        "V27"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "warnHandler",
+      "rows": [
+        "A06"
+      ],
+      "category": "app config key (bare name in design)",
+      "present": true
+    },
+    {
+      "name": "watchEffect",
+      "rows": [
+        "V13"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "watchPostEffect",
+      "rows": [
+        "V13"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "watchSyncEffect",
+      "rows": [
+        "V13"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "withDefaults",
+      "rows": [
+        "S06"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "withDirectives",
+      "rows": [
+        "A11"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "withModifiers",
+      "rows": [
+        "A11"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    }
+  ],
+  "compilerHelpers": [
+    {
+      "name": "BaseTransition",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 1,
+      "status": "X",
+      "compilerInternal": false,
+      "reason": "Emitted only for a user-written <BaseTransition> tag (compiler-core tag map). The profile rejects that tag (U23 promises Transition only), so generated code must not import it."
+    },
+    {
+      "name": "Fragment",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 4,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "KeepAlive",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 3,
+      "status": "P",
+      "compilerInternal": false,
+      "reason": "Emitted only for a user-written <KeepAlive> tag. Public component (U21, P): user code may use it directly, so no internal flag."
+    },
+    {
+      "name": "Suspense",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "E",
+      "compilerInternal": false,
+      "reason": "Emitted only for a user-written <Suspense> tag. Suspense is E (U25) and rejected by the production profile, so generated code must not import it."
+    },
+    {
+      "name": "Teleport",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 4,
+      "status": "A",
+      "compilerInternal": false,
+      "reason": "Emitted only for a user-written <Teleport> tag. Public component (U22, A): user code may use it directly, so no internal flag."
+    },
+    {
+      "name": "Transition",
+      "sources": [
+        "compiler-dom registerRuntimeHelpers"
+      ],
+      "emissionSites": 2,
+      "status": "A",
+      "compilerInternal": false,
+      "reason": "Emitted only for a user-written <Transition> tag (compiler-dom). Public component (U23, A): no internal flag."
+    },
+    {
+      "name": "TransitionGroup",
+      "sources": [
+        "compiler-dom registerRuntimeHelpers"
+      ],
+      "emissionSites": 1,
+      "status": "A",
+      "compilerInternal": false,
+      "reason": "Emitted only for a user-written <TransitionGroup> tag (compiler-dom). Public component (U24, A): no internal flag."
+    },
+    {
+      "name": "camelize",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "capitalize",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 0,
+      "status": "X",
+      "compilerInternal": false,
+      "reason": "Helper-map entry with no emission site in @vue/compiler-core 3.5.43 (only the map and the export reference it)."
+    },
+    {
+      "name": "createBlock",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 1,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "createCommentVNode",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 4,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "createElementBlock",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 1,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "createElementVNode",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "createPropsRestProxy",
+      "sources": [
+        "compiler-sfc ctx.helper"
+      ],
+      "emissionSites": 1,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "createSlots",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 1,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "createStaticVNode",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 1,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "createTextVNode",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "createVNode",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "defineComponent",
+      "sources": [
+        "compiler-sfc ctx.helper"
+      ],
+      "emissionSites": 1,
+      "status": "P",
+      "compilerInternal": false,
+      "reason": "Public API (A10, P): supported for user code. Emitted as the default export of script setup, so no internal flag."
+    },
+    {
+      "name": "guardReactiveProps",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 4,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "isMemoSame",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 1,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "isRef",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 3,
+      "status": "P",
+      "compilerInternal": false,
+      "reason": "Public reactivity helper (V07, P): supported for user code. The compiler also emits it, so no internal flag."
+    },
+    {
+      "name": "mergeDefaults",
+      "sources": [
+        "compiler-sfc ctx.helper"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "mergeModels",
+      "sources": [
+        "compiler-sfc ctx.helper"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "mergeProps",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 3,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "normalizeClass",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "normalizeProps",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 4,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "normalizeStyle",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "openBlock",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 6,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "popScopeId",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 0,
+      "status": "X",
+      "compilerInternal": false,
+      "reason": "Helper-map entry with no emission site in @vue/compiler-core 3.5.43 (only the map and the export reference it)."
+    },
+    {
+      "name": "pushScopeId",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 0,
+      "status": "X",
+      "compilerInternal": false,
+      "reason": "Helper-map entry with no emission site in @vue/compiler-core 3.5.43 (only the map and the export reference it)."
+    },
+    {
+      "name": "renderList",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "renderSlot",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 1,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "resolveComponent",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 3,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "resolveDirective",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "resolveDynamicComponent",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "resolveFilter",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": false,
+      "reason": "Emitted only for the removed | filter syntax (compiler-core wrapFilter, COMPILER_FILTERS). The profile rejects filter syntax (no filter API in design.md), so generated code never imports it."
+    },
+    {
+      "name": "setBlockTracking",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 3,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "toDisplayString",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "toHandlerKey",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "toHandlers",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "unref",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 3,
+      "status": "P",
+      "compilerInternal": false,
+      "reason": "Public reactivity helper (V07, P): supported for user code. The compiler also emits it for setup refs, so no internal flag."
+    },
+    {
+      "name": "useCssVars",
+      "sources": [
+        "compiler-sfc CSS_VARS_HELPER"
+      ],
+      "emissionSites": 3,
+      "status": "P",
+      "compilerInternal": false,
+      "reason": "Public CSS contract (design 9.2, P): supported for user code. Emitted for v-bind() in <style>, so no internal flag."
+    },
+    {
+      "name": "useModel",
+      "sources": [
+        "compiler-sfc ctx.helper"
+      ],
+      "emissionSites": 1,
+      "status": "P",
+      "compilerInternal": false,
+      "reason": "Public API (V26, P): supported for user code. Emitted by defineModel, so no internal flag."
+    },
+    {
+      "name": "useSlots",
+      "sources": [
+        "compiler-sfc ctx.helper"
+      ],
+      "emissionSites": 1,
+      "status": "P",
+      "compilerInternal": false,
+      "reason": "Public API (V25, P): supported for user code. Emitted when script setup calls defineSlots(), so no internal flag."
+    },
+    {
+      "name": "vModelCheckbox",
+      "sources": [
+        "compiler-dom registerRuntimeHelpers"
+      ],
+      "emissionSites": 1,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "vModelDynamic",
+      "sources": [
+        "compiler-dom registerRuntimeHelpers"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "vModelRadio",
+      "sources": [
+        "compiler-dom registerRuntimeHelpers"
+      ],
+      "emissionSites": 1,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "vModelSelect",
+      "sources": [
+        "compiler-dom registerRuntimeHelpers"
+      ],
+      "emissionSites": 1,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "vModelText",
+      "sources": [
+        "compiler-dom registerRuntimeHelpers"
+      ],
+      "emissionSites": 1,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "vShow",
+      "sources": [
+        "compiler-dom registerRuntimeHelpers"
+      ],
+      "emissionSites": 1,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "withAsyncContext",
+      "sources": [
+        "compiler-sfc ctx.helper"
+      ],
+      "emissionSites": 1,
+      "status": "E",
+      "compilerInternal": false,
+      "reason": "Emitted for top-level await in script setup. Top-level await is E (S14) and rejected by the production profile, so generated code must not import it."
+    },
+    {
+      "name": "withCtx",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "withDirectives",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "withKeys",
+      "sources": [
+        "compiler-dom registerRuntimeHelpers"
+      ],
+      "emissionSites": 1,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "withMemo",
+      "sources": [
+        "compiler-core helperNameMap"
+      ],
+      "emissionSites": 2,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    },
+    {
+      "name": "withModifiers",
+      "sources": [
+        "compiler-dom registerRuntimeHelpers"
+      ],
+      "emissionSites": 1,
+      "status": "X",
+      "compilerInternal": true,
+      "reason": null
+    }
+  ],
+  "exports": [
+    {
+      "name": "BaseTransition",
+      "sources": [
+        "runtime"
+      ],
+      "row": "U23",
+      "status": "X",
+      "note": "Low-level base of Transition; only Transition (U23) is promised. Emitted only for a user-written <BaseTransition> tag, which the profile rejects.",
+      "compilerInternal": false
+    },
+    {
+      "name": "BaseTransitionPropsValidators",
+      "sources": [
+        "runtime"
+      ],
+      "row": "U23",
+      "status": "X",
+      "note": "Internal props validators of BaseTransition.",
+      "compilerInternal": false
+    },
+    {
+      "name": "Comment",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "DeprecationTypes",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A17",
+      "status": "X",
+      "note": "Compat-build enum. design.md makes no promise for the compat build, so it is unsupported by default.",
+      "compilerInternal": false
+    },
+    {
+      "name": "EffectScope",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V12",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "ErrorCodes",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A06",
+      "status": "X",
+      "note": "Internal error-code enum.",
+      "compilerInternal": false
+    },
+    {
+      "name": "ErrorTypeStrings",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A06",
+      "status": "X",
+      "note": "Internal error type strings.",
+      "compilerInternal": false
+    },
+    {
+      "name": "Fragment",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "KeepAlive",
+      "sources": [
+        "runtime"
+      ],
+      "row": "U21",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "ReactiveEffect",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V12",
+      "status": "X",
+      "note": "Low-level effect class; watchEffect (V13) is the promised surface.",
+      "compilerInternal": false
+    },
+    {
+      "name": "Static",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "Suspense",
+      "sources": [
+        "runtime"
+      ],
+      "row": "U25",
+      "status": "E",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "Teleport",
+      "sources": [
+        "runtime"
+      ],
+      "row": "U22",
+      "status": "A",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "Text",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "TrackOpTypes",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V21",
+      "status": "X",
+      "note": "Debugger event op-type enum; internal.",
+      "compilerInternal": false
+    },
+    {
+      "name": "Transition",
+      "sources": [
+        "runtime"
+      ],
+      "row": "U23",
+      "status": "A",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "TransitionGroup",
+      "sources": [
+        "runtime"
+      ],
+      "row": "U24",
+      "status": "A",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "TriggerOpTypes",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V21",
+      "status": "X",
+      "note": "Debugger event op-type enum; internal.",
+      "compilerInternal": false
+    },
+    {
+      "name": "VueElement",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A12",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "assertNumber",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "callWithAsyncErrorHandling",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A06",
+      "status": "X",
+      "note": "Internal error-handling helper.",
+      "compilerInternal": false
+    },
+    {
+      "name": "callWithErrorHandling",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A06",
+      "status": "X",
+      "note": "Internal error-handling helper.",
+      "compilerInternal": false
+    },
+    {
+      "name": "camelize",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "capitalize",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "cloneVNode",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "compatUtils",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A17",
+      "status": "X",
+      "note": "Compat-build utility. design.md makes no promise for the compat build, so it is unsupported by default.",
+      "compilerInternal": false
+    },
+    {
+      "name": "compile",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A08",
+      "status": "X",
+      "note": "Runtime template compiler. A08 and design.md: no runtime template compiler; compile-time configuration only.",
+      "compilerInternal": false
+    },
+    {
+      "name": "computed",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V06",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "createApp",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A01",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "createBlock",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "createCommentVNode",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "createElementBlock",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "createElementVNode",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "createHydrationRenderer",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A13",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "createPropsRestProxy",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "createRenderer",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A13",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "createSSRApp",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A14",
+      "status": "W",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "createSlots",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "createStaticVNode",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "createTextVNode",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "createVNode",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "customRef",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V11",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "defineAsyncComponent",
+      "sources": [
+        "runtime"
+      ],
+      "row": "U20",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "defineComponent",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A10",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "defineCustomElement",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A12",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "defineEmits",
+      "sources": [
+        "runtime",
+        "types"
+      ],
+      "row": "S08",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "defineExpose",
+      "sources": [
+        "runtime",
+        "types"
+      ],
+      "row": "S10",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "defineModel",
+      "sources": [
+        "runtime",
+        "types"
+      ],
+      "row": "S09",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "defineOptions",
+      "sources": [
+        "runtime",
+        "types"
+      ],
+      "row": "S11",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "defineProps",
+      "sources": [
+        "runtime",
+        "types"
+      ],
+      "row": "S06",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "defineSSRCustomElement",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A12",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "defineSlots",
+      "sources": [
+        "runtime",
+        "types"
+      ],
+      "row": "S12",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "devtools",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A17",
+      "status": "X",
+      "note": "Devtools hook object (plumbing). Devtools support is a build-time profile control (A17), not this export.",
+      "compilerInternal": false
+    },
+    {
+      "name": "effect",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V12",
+      "status": "X",
+      "note": "Low-level effect primitive; watchEffect (V13) is the promised surface.",
+      "compilerInternal": false
+    },
+    {
+      "name": "effectScope",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V12",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "getCurrentInstance",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A18",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "getCurrentScope",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V12",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "getCurrentWatcher",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V16",
+      "status": "X",
+      "note": "Returns the active watcher; not in the promised surface.",
+      "compilerInternal": false
+    },
+    {
+      "name": "getTransitionRawChildren",
+      "sources": [
+        "runtime"
+      ],
+      "row": "U23",
+      "status": "X",
+      "note": "Internal transition helper.",
+      "compilerInternal": false
+    },
+    {
+      "name": "guardReactiveProps",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "h",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "handleError",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A06",
+      "status": "X",
+      "note": "Internal error dispatch helper; A06 errorHandler is the promised hook.",
+      "compilerInternal": false
+    },
+    {
+      "name": "hasInjectionContext",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V24",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "hydrate",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A13",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "hydrateOnIdle",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A14",
+      "status": "X",
+      "note": "Lazy-hydration strategy for SSR. X is the conservative default; W (A14/A16) would make it supported on web. Coordinator to confirm.",
+      "compilerInternal": false
+    },
+    {
+      "name": "hydrateOnInteraction",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A14",
+      "status": "X",
+      "note": "Lazy-hydration strategy for SSR. X is the conservative default; W (A14/A16) would make it supported on web. Coordinator to confirm.",
+      "compilerInternal": false
+    },
+    {
+      "name": "hydrateOnMediaQuery",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A14",
+      "status": "X",
+      "note": "Lazy-hydration strategy for SSR. X is the conservative default; W (A14/A16) would make it supported on web. Coordinator to confirm.",
+      "compilerInternal": false
+    },
+    {
+      "name": "hydrateOnVisible",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A14",
+      "status": "X",
+      "note": "Lazy-hydration strategy for SSR. X is the conservative default; W (A14/A16) would make it supported on web. Coordinator to confirm.",
+      "compilerInternal": false
+    },
+    {
+      "name": "initCustomFormatter",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A17",
+      "status": "X",
+      "note": "Devtools formatter plumbing. Devtools support is a build-time profile control (A17), not this export.",
+      "compilerInternal": false
+    },
+    {
+      "name": "initDirectivesForSSR",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A14",
+      "status": "X",
+      "note": "Internal SSR directive helper.",
+      "compilerInternal": false
+    },
+    {
+      "name": "inject",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V24",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "isMemoSame",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "isProxy",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V09",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "isReactive",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V09",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "isReadonly",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V09",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "isRef",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V07",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "isRuntimeOnly",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A17",
+      "status": "X",
+      "note": "Build-profile introspection; not promised.",
+      "compilerInternal": false
+    },
+    {
+      "name": "isShallow",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V09",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "isVNode",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "markRaw",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V10",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "mergeDefaults",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "mergeModels",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "mergeProps",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "nextTick",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V17",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "nodeOps",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A13",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "normalizeClass",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "normalizeProps",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "normalizeStyle",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "onActivated",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V22",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "onBeforeMount",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V18",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "onBeforeUnmount",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V19",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "onBeforeUpdate",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V18",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "onDeactivated",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V22",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "onErrorCaptured",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V20",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "onMounted",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V18",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "onRenderTracked",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V21",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "onRenderTriggered",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V21",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "onScopeDispose",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V12",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "onServerPrefetch",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V23",
+      "status": "W",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "onUnmounted",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V19",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "onUpdated",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V18",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "onWatcherCleanup",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V16",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "openBlock",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "patchProp",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A13",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "popScopeId",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "provide",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V24",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "proxyRefs",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V07",
+      "status": "X",
+      "note": "Internal template-unwrapping proxy; isRef/unref (V07) are the promised surface.",
+      "compilerInternal": false
+    },
+    {
+      "name": "pushScopeId",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "queuePostFlushCb",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V17",
+      "status": "X",
+      "note": "Internal scheduler queue; nextTick (V17) is the promised surface.",
+      "compilerInternal": false
+    },
+    {
+      "name": "reactive",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V03",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "readonly",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V04",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "ref",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V01",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "registerRuntimeCompiler",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A08",
+      "status": "X",
+      "note": "Runtime template compiler registration. A08 and design.md: no runtime template compiler.",
+      "compilerInternal": false
+    },
+    {
+      "name": "render",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A13",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "renderList",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "renderSlot",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "resolveComponent",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "resolveDirective",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "resolveDynamicComponent",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "resolveFilter",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": "Deprecated Vue 2 filter helper. Emitted only for the removed | filter syntax; the profile rejects filter syntax, so this name is not compilerInternal.",
+      "compilerInternal": false
+    },
+    {
+      "name": "resolveTransitionHooks",
+      "sources": [
+        "runtime"
+      ],
+      "row": "U23",
+      "status": "X",
+      "note": "Internal transition helper.",
+      "compilerInternal": false
+    },
+    {
+      "name": "setBlockTracking",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "setDevtoolsHook",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A17",
+      "status": "X",
+      "note": "Devtools hook installer (plumbing). Devtools support is a build-time profile control (A17), not this export.",
+      "compilerInternal": false
+    },
+    {
+      "name": "setTransitionHooks",
+      "sources": [
+        "runtime"
+      ],
+      "row": "U23",
+      "status": "X",
+      "note": "Internal transition helper.",
+      "compilerInternal": false
+    },
+    {
+      "name": "shallowReactive",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V05",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "shallowReadonly",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V05",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "shallowRef",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V02",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "ssrContextKey",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A14",
+      "status": "W",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "ssrUtils",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A14",
+      "status": "X",
+      "note": "Internal SSR utilities.",
+      "compilerInternal": false
+    },
+    {
+      "name": "stop",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V12",
+      "status": "X",
+      "note": "Raw effect stop; watch handles (V15) are the promised surface.",
+      "compilerInternal": false
+    },
+    {
+      "name": "toDisplayString",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "toHandlerKey",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "toHandlers",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "toRaw",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V10",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "toRef",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V08",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "toRefs",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V08",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "toValue",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V08",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "transformVNodeArgs",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "triggerRef",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V02",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "unref",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V07",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "useAttrs",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V25",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "useCssModule",
+      "sources": [
+        "runtime"
+      ],
+      "row": "U03",
+      "status": "P",
+      "note": "CSS contract, design 9.2 (SFC scoping: CSS modules class maps). @vue/compiler-sfc 3.5.43 has no reference to useCssModule, so it is not compilerInternal.",
+      "compilerInternal": false
+    },
+    {
+      "name": "useCssVars",
+      "sources": [
+        "runtime"
+      ],
+      "row": "U03",
+      "status": "P",
+      "note": "CSS contract, design 9.2 (SFC scoping: useCssVars / CSS v-bind expressions). useCssVars is emitted by the SFC compiler for v-bind() in <style>.",
+      "compilerInternal": false
+    },
+    {
+      "name": "useHost",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A12",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "useId",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V28",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "useModel",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V26",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "useSSRContext",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A14",
+      "status": "W",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "useShadowRoot",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A12",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "useSlots",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V25",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "useTemplateRef",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V27",
+      "status": "A",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "useTransitionState",
+      "sources": [
+        "runtime"
+      ],
+      "row": "U23",
+      "status": "X",
+      "note": "Internal transition state helper.",
+      "compilerInternal": false
+    },
+    {
+      "name": "vModelCheckbox",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "vModelDynamic",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "vModelRadio",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "vModelSelect",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "vModelText",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "vShow",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "version",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A05",
+      "status": "A",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "warn",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A06",
+      "status": "X",
+      "note": "Internal warning emitter; the A06 warnHandler is the promised hook.",
+      "compilerInternal": false
+    },
+    {
+      "name": "watch",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V14",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "watchEffect",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V13",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "watchPostEffect",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V13",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "watchSyncEffect",
+      "sources": [
+        "runtime"
+      ],
+      "row": "V13",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "withAsyncContext",
+      "sources": [
+        "runtime"
+      ],
+      "row": "S14",
+      "status": "E",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "withCtx",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "withDefaults",
+      "sources": [
+        "runtime",
+        "types"
+      ],
+      "row": "S06",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "withDirectives",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "withKeys",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "withMemo",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "withModifiers",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": true
+    },
+    {
+      "name": "withScopeId",
+      "sources": [
+        "runtime"
+      ],
+      "row": "A11",
+      "status": "X",
+      "note": null,
+      "compilerInternal": false
+    }
+  ]
+}

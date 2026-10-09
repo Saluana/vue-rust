@@ -1,0 +1,1 @@
+{"scenario":"fn-hoisting-scopes","result":"ok","error":null,"entries":[{"label":"hoisted-fn","values":["function",20]},{"label":"var-before","values":["undefined",{"$":"undef"}]},{"label":"var-after","values":[2]},{"label":"inner-var","values":["undefined",true]},{"label":"outer","values":["inner"]},{"label":"block-fn","values":["block"]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"cf-try-catch-scopes","result":"ok","error":null,"entries":[{"label":"catch","values":["a;c:boom;fin;"]},{"label":"rethrown","values":[7,"a;c:boom;fin;inner-fin;"]},{"label":"catch-scope","values":[42,43]},{"label":"engine","values":["TypeError",true]}],"unhandledRejections":[]}

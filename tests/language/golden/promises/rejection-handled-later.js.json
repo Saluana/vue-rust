@@ -1,0 +1,1 @@
+{"scenario":"promises/rejection-handled-later","result":"ok","error":null,"entries":[{"label":"handled","values":["handled later"]}],"unhandledRejections":[]}

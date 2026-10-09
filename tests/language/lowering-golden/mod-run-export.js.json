@@ -1,0 +1,1 @@
+{"scenario":"mod-run-export","result":"ok","error":null,"entries":[{"label":"module-init","values":["module","function"]},{"label":"run-called","values":[true]}],"unhandledRejections":[]}

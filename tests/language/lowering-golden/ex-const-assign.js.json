@@ -1,0 +1,1 @@
+{"scenario":"ex-const-assign","result":"ok","error":null,"entries":[{"label":"const-error","values":["TypeError"]},{"label":"const-kept","values":[1]}],"unhandledRejections":[]}

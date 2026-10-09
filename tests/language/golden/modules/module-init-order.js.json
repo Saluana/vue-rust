@@ -1,0 +1,1 @@
+{"scenario":"modules/module-init-order","result":"ok","error":null,"entries":[{"label":"step-1","values":["function","hoisted"]},{"label":"step-2","values":["after declaration"]}],"unhandledRejections":[]}

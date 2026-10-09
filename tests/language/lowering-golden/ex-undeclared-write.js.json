@@ -1,0 +1,1 @@
+{"scenario":"ex-undeclared-write","result":"ok","error":null,"entries":[{"label":"write-error","values":["ReferenceError"]},{"label":"no-global","values":["undefined"]}],"unhandledRejections":[]}

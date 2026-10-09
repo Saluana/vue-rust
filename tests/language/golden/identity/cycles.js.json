@@ -1,0 +1,1 @@
+{"scenario":"identity/cycles","result":"ok","error":null,"entries":[{"label":"cycle","values":[{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[["name","root"],["child",{"$":"obj","id":2,"cls":"Object","proto":"Object.prototype","props":[["name","kid"],["parent",{"$":"ref","id":1}]]}]]}]}],"unhandledRejections":[]}

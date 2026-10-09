@@ -1,0 +1,1 @@
+{"scenario":"mod-tdz-function-call","result":"ok","error":null,"entries":[{"label":"call-before-init","values":["ReferenceError"]},{"label":"after-init","values":["now"]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"loop-let-body-capture","result":"ok","error":null,"entries":[{"label":"body-capture","values":[0,11,22]},{"label":"while-capture","values":[0,1]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"ex-tagged-free-templates","result":"ok","error":null,"entries":[{"label":"nested-template","values":["[<x>]","ab","${escaped}"]}],"unhandledRejections":[]}

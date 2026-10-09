@@ -1,0 +1,1 @@
+{"scenario":"exc-typeerror-instanceof","result":"ok","error":null,"entries":[{"label":"kind","values":["TypeError:true"]}],"unhandledRejections":[]}

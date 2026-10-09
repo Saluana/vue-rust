@@ -1,0 +1,1 @@
+{"scenario":"ref/nan-and-negative-zero","result":"ok","error":null,"entries":[{"label":"runs","values":[2,1,{"$":"num","v":"-0"},{"$":"num","v":"NaN"}]}],"unhandledRejections":[]}

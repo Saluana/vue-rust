@@ -1,0 +1,1 @@
+{"scenario":"scheduler/pre-jobs-queue-order","result":"ok","error":null,"entries":[{"label":"first-order","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["y","x"],"len":2}]},{"label":"second-order","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["x","y"],"len":2}]}],"unhandledRejections":[]}

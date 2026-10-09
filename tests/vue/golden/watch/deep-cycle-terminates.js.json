@@ -1,0 +1,1 @@
+{"scenario":"watch/deep-cycle-terminates","result":"ok","error":null,"entries":[{"label":"cycle","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["changed"],"len":1},2]}],"unhandledRejections":[]}

@@ -1,0 +1,2835 @@
+{
+  "schemaVersion": 1,
+  "description": "Hand-authored expansion of the grouped design rows into individually named entries. Each entry names one API, construct, directive, macro or option and gives its status, which must be one of the row's statuses or X/E (stricter). kind 'vue' and 'macro' entries must agree with vue-exports.json (row and status); 'app' method entries are checked against a real app instance. Lookups use (kind, name); see docs/compatibility/README.md.",
+  "kinds": [
+    "vue",
+    "macro",
+    "syntax",
+    "builtin",
+    "module",
+    "ts",
+    "type",
+    "sfc",
+    "option",
+    "directive",
+    "modifier",
+    "attribute",
+    "component",
+    "element",
+    "native-tag",
+    "app",
+    "instance",
+    "flag",
+    "api",
+    "config"
+  ],
+  "entries": [
+    {
+      "name": "let",
+      "kind": "syntax",
+      "row": "L01",
+      "status": "P"
+    },
+    {
+      "name": "const",
+      "kind": "syntax",
+      "row": "L01",
+      "status": "P"
+    },
+    {
+      "name": "var",
+      "kind": "syntax",
+      "row": "L01",
+      "status": "P",
+      "note": "Var hoisting versus TDZ is covered by T02."
+    },
+    {
+      "name": "if",
+      "kind": "syntax",
+      "row": "L01",
+      "status": "P"
+    },
+    {
+      "name": "switch",
+      "kind": "syntax",
+      "row": "L01",
+      "status": "P"
+    },
+    {
+      "name": "for",
+      "kind": "syntax",
+      "row": "L01",
+      "status": "P"
+    },
+    {
+      "name": "while",
+      "kind": "syntax",
+      "row": "L01",
+      "status": "P"
+    },
+    {
+      "name": "do",
+      "kind": "syntax",
+      "row": "L01",
+      "status": "P"
+    },
+    {
+      "name": "break",
+      "kind": "syntax",
+      "row": "L01",
+      "status": "P"
+    },
+    {
+      "name": "continue",
+      "kind": "syntax",
+      "row": "L01",
+      "status": "P"
+    },
+    {
+      "name": "return",
+      "kind": "syntax",
+      "row": "L01",
+      "status": "P"
+    },
+    {
+      "name": "with",
+      "kind": "syntax",
+      "row": "L01",
+      "status": "X",
+      "note": "Rejected by L01."
+    },
+    {
+      "name": "sloppy script",
+      "kind": "syntax",
+      "row": "L01",
+      "status": "X",
+      "note": "Non-module sloppy scripts are rejected by L01."
+    },
+    {
+      "name": "annex-b",
+      "kind": "syntax",
+      "row": "L01",
+      "status": "X",
+      "note": "Annex B legacy forms are rejected by L01."
+    },
+    {
+      "name": "function",
+      "kind": "syntax",
+      "row": "L02",
+      "status": "P"
+    },
+    {
+      "name": "=>",
+      "kind": "syntax",
+      "row": "L02",
+      "status": "P",
+      "note": "Arrow functions with lexical this."
+    },
+    {
+      "name": "rest parameters",
+      "kind": "syntax",
+      "row": "L02",
+      "status": "P"
+    },
+    {
+      "name": "default parameters",
+      "kind": "syntax",
+      "row": "L02",
+      "status": "P"
+    },
+    {
+      "name": "delete",
+      "kind": "syntax",
+      "row": "L04",
+      "status": "P"
+    },
+    {
+      "name": "in",
+      "kind": "syntax",
+      "row": "L04",
+      "status": "P"
+    },
+    {
+      "name": "object spread",
+      "kind": "syntax",
+      "row": "L04",
+      "status": "P"
+    },
+    {
+      "name": "object accessor",
+      "kind": "syntax",
+      "row": "L04",
+      "status": "P",
+      "note": "Getters and setters in object literals only."
+    },
+    {
+      "name": "Object.defineProperty",
+      "kind": "builtin",
+      "row": "L04",
+      "status": "X",
+      "note": "Property descriptor mutation is excluded (L04)."
+    },
+    {
+      "name": "class",
+      "kind": "syntax",
+      "row": "L05",
+      "status": "X",
+      "note": "User class declarations are excluded (L05)."
+    },
+    {
+      "name": "extends",
+      "kind": "syntax",
+      "row": "L05",
+      "status": "X",
+      "note": "User class inheritance is excluded (L05)."
+    },
+    {
+      "name": "new",
+      "kind": "syntax",
+      "row": "L05",
+      "status": "X",
+      "note": "User constructors and new-function constructors are excluded (L05)."
+    },
+    {
+      "name": "__proto__",
+      "kind": "builtin",
+      "row": "L05",
+      "status": "X",
+      "note": "Prototype mutation is excluded (L05)."
+    },
+    {
+      "name": "Object.setPrototypeOf",
+      "kind": "builtin",
+      "row": "L05",
+      "status": "X",
+      "note": "Prototype replacement is excluded (L05)."
+    },
+    {
+      "name": "null",
+      "kind": "syntax",
+      "row": "L06",
+      "status": "P"
+    },
+    {
+      "name": "undefined",
+      "kind": "syntax",
+      "row": "L06",
+      "status": "P"
+    },
+    {
+      "name": "?.",
+      "kind": "syntax",
+      "row": "L06",
+      "status": "P"
+    },
+    {
+      "name": "??",
+      "kind": "syntax",
+      "row": "L06",
+      "status": "P"
+    },
+    {
+      "name": "==",
+      "kind": "syntax",
+      "row": "L07",
+      "status": "P"
+    },
+    {
+      "name": "===",
+      "kind": "syntax",
+      "row": "L07",
+      "status": "P"
+    },
+    {
+      "name": "!=",
+      "kind": "syntax",
+      "row": "L07",
+      "status": "P"
+    },
+    {
+      "name": "!==",
+      "kind": "syntax",
+      "row": "L07",
+      "status": "P"
+    },
+    {
+      "name": "&&",
+      "kind": "syntax",
+      "row": "L07",
+      "status": "P"
+    },
+    {
+      "name": "||",
+      "kind": "syntax",
+      "row": "L07",
+      "status": "P"
+    },
+    {
+      "name": "!",
+      "kind": "syntax",
+      "row": "L07",
+      "status": "P"
+    },
+    {
+      "name": "custom coercion",
+      "kind": "syntax",
+      "row": "L07",
+      "status": "X",
+      "note": "User valueOf/toString and unsupported prototypes are rejected (L07)."
+    },
+    {
+      "name": "+",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": "-",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": "*",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": "/",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": "%",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": "**",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": "<",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": ">",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": "<=",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": ">=",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": "&",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": "|",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": "^",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": "~",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": "<<",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": ">>",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": ">>>",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "P"
+    },
+    {
+      "name": "Number.prototype.toFixed",
+      "kind": "builtin",
+      "row": "L08",
+      "status": "P",
+      "note": "Digits 0..100 only."
+    },
+    {
+      "name": "BigInt",
+      "kind": "builtin",
+      "row": "L08",
+      "status": "X"
+    },
+    {
+      "name": "bigint literal",
+      "kind": "syntax",
+      "row": "L08",
+      "status": "X"
+    },
+    {
+      "name": "String",
+      "kind": "builtin",
+      "row": "L09",
+      "status": "P",
+      "note": "Method allowlist governed by L21."
+    },
+    {
+      "name": "Array",
+      "kind": "builtin",
+      "row": "L10",
+      "status": "P",
+      "note": "Method allowlist governed by L21."
+    },
+    {
+      "name": "array hole",
+      "kind": "syntax",
+      "row": "L10",
+      "status": "P"
+    },
+    {
+      "name": "Map",
+      "kind": "builtin",
+      "row": "L11",
+      "status": "P"
+    },
+    {
+      "name": "Set",
+      "kind": "builtin",
+      "row": "L11",
+      "status": "P"
+    },
+    {
+      "name": "WeakMap",
+      "kind": "builtin",
+      "row": "L11",
+      "status": "X"
+    },
+    {
+      "name": "WeakSet",
+      "kind": "builtin",
+      "row": "L11",
+      "status": "X"
+    },
+    {
+      "name": "WeakRef",
+      "kind": "builtin",
+      "row": "L11",
+      "status": "X"
+    },
+    {
+      "name": "FinalizationRegistry",
+      "kind": "builtin",
+      "row": "L11",
+      "status": "X",
+      "note": "Finalizers are excluded initially (L11)."
+    },
+    {
+      "name": "Symbol",
+      "kind": "builtin",
+      "row": "L12",
+      "status": "P",
+      "note": "Subset: unique symbols and registry symbols."
+    },
+    {
+      "name": "Symbol.for",
+      "kind": "builtin",
+      "row": "L12",
+      "status": "P"
+    },
+    {
+      "name": "Symbol.iterator",
+      "kind": "builtin",
+      "row": "L12",
+      "status": "P",
+      "note": "Supported iterator protocol only."
+    },
+    {
+      "name": "throw",
+      "kind": "syntax",
+      "row": "L13",
+      "status": "P"
+    },
+    {
+      "name": "try",
+      "kind": "syntax",
+      "row": "L13",
+      "status": "P"
+    },
+    {
+      "name": "catch",
+      "kind": "syntax",
+      "row": "L13",
+      "status": "P"
+    },
+    {
+      "name": "finally",
+      "kind": "syntax",
+      "row": "L13",
+      "status": "P"
+    },
+    {
+      "name": "Promise",
+      "kind": "builtin",
+      "row": "L14",
+      "status": "P"
+    },
+    {
+      "name": "Promise.all",
+      "kind": "builtin",
+      "row": "L14",
+      "status": "P"
+    },
+    {
+      "name": "Promise.allSettled",
+      "kind": "builtin",
+      "row": "L14",
+      "status": "P"
+    },
+    {
+      "name": "Promise.race",
+      "kind": "builtin",
+      "row": "L14",
+      "status": "P"
+    },
+    {
+      "name": "Promise.any",
+      "kind": "builtin",
+      "row": "L14",
+      "status": "P"
+    },
+    {
+      "name": "Promise.prototype.then",
+      "kind": "builtin",
+      "row": "L14",
+      "status": "P"
+    },
+    {
+      "name": "Promise.prototype.catch",
+      "kind": "builtin",
+      "row": "L14",
+      "status": "P"
+    },
+    {
+      "name": "Promise.prototype.finally",
+      "kind": "builtin",
+      "row": "L14",
+      "status": "P"
+    },
+    {
+      "name": "async function",
+      "kind": "syntax",
+      "row": "L15",
+      "status": "P"
+    },
+    {
+      "name": "await",
+      "kind": "syntax",
+      "row": "L15",
+      "status": "P"
+    },
+    {
+      "name": "function*",
+      "kind": "syntax",
+      "row": "L15",
+      "status": "X",
+      "note": "User generators are excluded (L15)."
+    },
+    {
+      "name": "async function*",
+      "kind": "syntax",
+      "row": "L15",
+      "status": "X",
+      "note": "User async generators are excluded (L15)."
+    },
+    {
+      "name": "import",
+      "kind": "module",
+      "row": "L16",
+      "status": "P",
+      "note": "Static ESM."
+    },
+    {
+      "name": "export",
+      "kind": "module",
+      "row": "L16",
+      "status": "P",
+      "note": "Static ESM."
+    },
+    {
+      "name": "require",
+      "kind": "module",
+      "row": "L16",
+      "status": "X",
+      "note": "CommonJS is excluded (L16)."
+    },
+    {
+      "name": "module.exports",
+      "kind": "module",
+      "row": "L16",
+      "status": "X",
+      "note": "CommonJS is excluded (L16)."
+    },
+    {
+      "name": "node built-in modules",
+      "kind": "module",
+      "row": "L16",
+      "status": "X"
+    },
+    {
+      "name": "module-level top-level await",
+      "kind": "module",
+      "row": "L16",
+      "status": "X"
+    },
+    {
+      "name": "import()",
+      "kind": "module",
+      "row": "L17",
+      "status": "P",
+      "note": "Literal specifiers only."
+    },
+    {
+      "name": "import() computed specifier",
+      "kind": "module",
+      "row": "L17",
+      "status": "X"
+    },
+    {
+      "name": "JSON",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "P"
+    },
+    {
+      "name": "Math",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "P",
+      "note": "Selected operations only (explicit registry, L21)."
+    },
+    {
+      "name": "Number",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "P",
+      "note": "Selected operations only."
+    },
+    {
+      "name": "Object",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "P",
+      "note": "Selected operations only."
+    },
+    {
+      "name": "Uint8Array",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "P",
+      "note": "IO with specified bounds."
+    },
+    {
+      "name": "ArrayBuffer",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "P",
+      "note": "IO with specified bounds."
+    },
+    {
+      "name": "Date",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "E",
+      "note": "Broad parity is experimental (L18)."
+    },
+    {
+      "name": "Intl",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "E",
+      "note": "Broad parity is experimental (L18)."
+    },
+    {
+      "name": "RegExp",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "E",
+      "note": "Broad parity is experimental (L18)."
+    },
+    {
+      "name": "DataView",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "X"
+    },
+    {
+      "name": "Int8Array",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "X"
+    },
+    {
+      "name": "Uint8ClampedArray",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "X"
+    },
+    {
+      "name": "Int16Array",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "X"
+    },
+    {
+      "name": "Uint16Array",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "X"
+    },
+    {
+      "name": "Int32Array",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "X"
+    },
+    {
+      "name": "Uint32Array",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "X"
+    },
+    {
+      "name": "Float32Array",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "X"
+    },
+    {
+      "name": "Float64Array",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "X"
+    },
+    {
+      "name": "BigInt64Array",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "X"
+    },
+    {
+      "name": "BigUint64Array",
+      "kind": "builtin",
+      "row": "L18",
+      "status": "X"
+    },
+    {
+      "name": "Math.random",
+      "kind": "builtin",
+      "row": "L19",
+      "status": "A",
+      "note": "Comes from the injected random provider; never used for secrets."
+    },
+    {
+      "name": "Date.now",
+      "kind": "builtin",
+      "row": "L19",
+      "status": "A",
+      "note": "Comes from the injected clock provider."
+    },
+    {
+      "name": "eval",
+      "kind": "builtin",
+      "row": "L20",
+      "status": "X"
+    },
+    {
+      "name": "Function",
+      "kind": "builtin",
+      "row": "L20",
+      "status": "X",
+      "note": "Function constructors are excluded (L20)."
+    },
+    {
+      "name": "Proxy",
+      "kind": "builtin",
+      "row": "L20",
+      "status": "X",
+      "note": "User Proxy is excluded (L20)."
+    },
+    {
+      "name": "Reflect",
+      "kind": "builtin",
+      "row": "L20",
+      "status": "X",
+      "note": "Arbitrary Reflect is excluded (L20)."
+    },
+    {
+      "name": "<script setup>",
+      "kind": "sfc",
+      "row": "S01",
+      "status": "P"
+    },
+    {
+      "name": "<template>",
+      "kind": "sfc",
+      "row": "S01",
+      "status": "P"
+    },
+    {
+      "name": "<script>",
+      "kind": "sfc",
+      "row": "S02",
+      "status": "P",
+      "note": "Restricted: module-scope declarations only."
+    },
+    {
+      "name": "data",
+      "kind": "option",
+      "row": "S02",
+      "status": "X",
+      "note": "Options API data is rejected (S02)."
+    },
+    {
+      "name": "methods",
+      "kind": "option",
+      "row": "S02",
+      "status": "X",
+      "note": "Options API methods are rejected (S02)."
+    },
+    {
+      "name": "mixins",
+      "kind": "option",
+      "row": "S02",
+      "status": "X",
+      "note": "Options API mixins are rejected (S02)."
+    },
+    {
+      "name": "template src",
+      "kind": "sfc",
+      "row": "S03",
+      "status": "P"
+    },
+    {
+      "name": "style src",
+      "kind": "sfc",
+      "row": "S03",
+      "status": "P"
+    },
+    {
+      "name": "custom block",
+      "kind": "sfc",
+      "row": "S04",
+      "status": "X"
+    },
+    {
+      "name": "preprocessor (lang=)",
+      "kind": "sfc",
+      "row": "S04",
+      "status": "X"
+    },
+    {
+      "name": "trusted transform plugin",
+      "kind": "sfc",
+      "row": "S04",
+      "status": "E"
+    },
+    {
+      "name": "import alias",
+      "kind": "module",
+      "row": "S05",
+      "status": "P"
+    },
+    {
+      "name": "namespace import",
+      "kind": "module",
+      "row": "S05",
+      "status": "P"
+    },
+    {
+      "name": ".vue import",
+      "kind": "module",
+      "row": "S05",
+      "status": "P"
+    },
+    {
+      "name": "qualified npm import",
+      "kind": "module",
+      "row": "S05",
+      "status": "P",
+      "note": "Static graph; package conditions and casing are checked."
+    },
+    {
+      "name": "defineProps",
+      "kind": "macro",
+      "row": "S06",
+      "status": "P"
+    },
+    {
+      "name": "withDefaults",
+      "kind": "macro",
+      "row": "S06",
+      "status": "P"
+    },
+    {
+      "name": "props destructure",
+      "kind": "syntax",
+      "row": "S07",
+      "status": "P",
+      "note": "Reactive props destructuring transform for defineProps."
+    },
+    {
+      "name": "defineEmits",
+      "kind": "macro",
+      "row": "S08",
+      "status": "P"
+    },
+    {
+      "name": "defineModel",
+      "kind": "macro",
+      "row": "S09",
+      "status": "P"
+    },
+    {
+      "name": "defineExpose",
+      "kind": "macro",
+      "row": "S10",
+      "status": "P"
+    },
+    {
+      "name": "defineOptions",
+      "kind": "macro",
+      "row": "S11",
+      "status": "P",
+      "note": "Only name and inheritAttrs; other keys are errors (S11)."
+    },
+    {
+      "name": "defineSlots",
+      "kind": "macro",
+      "row": "S12",
+      "status": "P"
+    },
+    {
+      "name": "script setup generic",
+      "kind": "ts",
+      "row": "S13",
+      "status": "P"
+    },
+    {
+      "name": "top-level await",
+      "kind": "syntax",
+      "row": "S14",
+      "status": "E",
+      "note": "Requires the experimental Suspense profile (S14)."
+    },
+    {
+      "name": "union type",
+      "kind": "ts",
+      "row": "S15",
+      "status": "P"
+    },
+    {
+      "name": "intersection type",
+      "kind": "ts",
+      "row": "S15",
+      "status": "P"
+    },
+    {
+      "name": "literal type",
+      "kind": "ts",
+      "row": "S15",
+      "status": "P"
+    },
+    {
+      "name": "tuple type",
+      "kind": "ts",
+      "row": "S15",
+      "status": "P"
+    },
+    {
+      "name": "interface",
+      "kind": "ts",
+      "row": "S16",
+      "status": "P"
+    },
+    {
+      "name": "type alias",
+      "kind": "ts",
+      "row": "S16",
+      "status": "P"
+    },
+    {
+      "name": "generic",
+      "kind": "ts",
+      "row": "S16",
+      "status": "P"
+    },
+    {
+      "name": "overload",
+      "kind": "ts",
+      "row": "S16",
+      "status": "P"
+    },
+    {
+      "name": "keyof",
+      "kind": "ts",
+      "row": "S17",
+      "status": "P"
+    },
+    {
+      "name": "typeof",
+      "kind": "ts",
+      "row": "S17",
+      "status": "P"
+    },
+    {
+      "name": "indexed access type",
+      "kind": "ts",
+      "row": "S17",
+      "status": "P"
+    },
+    {
+      "name": "mapped type",
+      "kind": "ts",
+      "row": "S17",
+      "status": "P"
+    },
+    {
+      "name": "conditional type",
+      "kind": "ts",
+      "row": "S17",
+      "status": "P"
+    },
+    {
+      "name": "template literal type",
+      "kind": "ts",
+      "row": "S17",
+      "status": "P"
+    },
+    {
+      "name": "as",
+      "kind": "ts",
+      "row": "S18",
+      "status": "P",
+      "note": "Erased after validation."
+    },
+    {
+      "name": "satisfies",
+      "kind": "ts",
+      "row": "S18",
+      "status": "P",
+      "note": "Erased after validation."
+    },
+    {
+      "name": "as const",
+      "kind": "ts",
+      "row": "S18",
+      "status": "P"
+    },
+    {
+      "name": "non-null assertion",
+      "kind": "ts",
+      "row": "S18",
+      "status": "P"
+    },
+    {
+      "name": "import type",
+      "kind": "ts",
+      "row": "S19",
+      "status": "P"
+    },
+    {
+      "name": "export type",
+      "kind": "ts",
+      "row": "S19",
+      "status": "P"
+    },
+    {
+      "name": ".d.ts",
+      "kind": "ts",
+      "row": "S19",
+      "status": "P"
+    },
+    {
+      "name": "JSDoc type annotations",
+      "kind": "ts",
+      "row": "S19",
+      "status": "P"
+    },
+    {
+      "name": "enum",
+      "kind": "ts",
+      "row": "S20",
+      "status": "X",
+      "note": "Use union constants or functions instead."
+    },
+    {
+      "name": "const enum",
+      "kind": "ts",
+      "row": "S20",
+      "status": "X"
+    },
+    {
+      "name": "namespace",
+      "kind": "ts",
+      "row": "S20",
+      "status": "X"
+    },
+    {
+      "name": "parameter property",
+      "kind": "ts",
+      "row": "S20",
+      "status": "X"
+    },
+    {
+      "name": "decorator",
+      "kind": "syntax",
+      "row": "S21",
+      "status": "X"
+    },
+    {
+      "name": "JSX",
+      "kind": "ts",
+      "row": "S21",
+      "status": "X"
+    },
+    {
+      "name": "TSX",
+      "kind": "ts",
+      "row": "S21",
+      "status": "X"
+    },
+    {
+      "name": "PropType",
+      "kind": "type",
+      "row": "S22",
+      "status": "P"
+    },
+    {
+      "name": "MaybeRef",
+      "kind": "type",
+      "row": "S22",
+      "status": "P"
+    },
+    {
+      "name": "MaybeRefOrGetter",
+      "kind": "type",
+      "row": "S22",
+      "status": "P"
+    },
+    {
+      "name": "ExtractPropTypes",
+      "kind": "type",
+      "row": "S22",
+      "status": "P"
+    },
+    {
+      "name": "ExtractPublicPropTypes",
+      "kind": "type",
+      "row": "S22",
+      "status": "P"
+    },
+    {
+      "name": "ComponentCustomProps",
+      "kind": "type",
+      "row": "S22",
+      "status": "P"
+    },
+    {
+      "name": "CSSProperties",
+      "kind": "type",
+      "row": "S22",
+      "status": "P",
+      "note": "Profile-specific CSS property set."
+    },
+    {
+      "name": "ComponentCustomProperties",
+      "kind": "type",
+      "row": "S22",
+      "status": "X",
+      "note": "Cannot enable excluded Options API or arbitrary globals (S22)."
+    },
+    {
+      "name": "tsconfig",
+      "kind": "config",
+      "row": "S23",
+      "status": "A",
+      "note": "Strict checks and ESM resolution; native libraries omit DOM and Node."
+    },
+    {
+      "name": "using",
+      "kind": "syntax",
+      "row": "S24",
+      "status": "X"
+    },
+    {
+      "name": "await using",
+      "kind": "syntax",
+      "row": "S24",
+      "status": "X"
+    },
+    {
+      "name": "Disposable",
+      "kind": "ts",
+      "row": "S24",
+      "status": "X"
+    },
+    {
+      "name": "readonly modifier",
+      "kind": "ts",
+      "row": "S25",
+      "status": "P"
+    },
+    {
+      "name": "unique symbol",
+      "kind": "ts",
+      "row": "S25",
+      "status": "P"
+    },
+    {
+      "name": "const type parameter",
+      "kind": "ts",
+      "row": "S25",
+      "status": "P"
+    },
+    {
+      "name": "type predicate",
+      "kind": "ts",
+      "row": "S25",
+      "status": "P"
+    },
+    {
+      "name": "assertion signature",
+      "kind": "ts",
+      "row": "S25",
+      "status": "P"
+    },
+    {
+      "name": "TS utility types",
+      "kind": "ts",
+      "row": "S25",
+      "status": "P"
+    },
+    {
+      "name": "import =",
+      "kind": "module",
+      "row": "S25",
+      "status": "X"
+    },
+    {
+      "name": "export =",
+      "kind": "module",
+      "row": "S25",
+      "status": "X"
+    },
+    {
+      "name": "ref",
+      "kind": "vue",
+      "row": "V01",
+      "status": "P"
+    },
+    {
+      "name": "shallowRef",
+      "kind": "vue",
+      "row": "V02",
+      "status": "P"
+    },
+    {
+      "name": "triggerRef",
+      "kind": "vue",
+      "row": "V02",
+      "status": "P"
+    },
+    {
+      "name": "reactive",
+      "kind": "vue",
+      "row": "V03",
+      "status": "P"
+    },
+    {
+      "name": "readonly",
+      "kind": "vue",
+      "row": "V04",
+      "status": "P"
+    },
+    {
+      "name": "shallowReactive",
+      "kind": "vue",
+      "row": "V05",
+      "status": "P"
+    },
+    {
+      "name": "shallowReadonly",
+      "kind": "vue",
+      "row": "V05",
+      "status": "P"
+    },
+    {
+      "name": "computed",
+      "kind": "vue",
+      "row": "V06",
+      "status": "P"
+    },
+    {
+      "name": "isRef",
+      "kind": "vue",
+      "row": "V07",
+      "status": "P"
+    },
+    {
+      "name": "unref",
+      "kind": "vue",
+      "row": "V07",
+      "status": "P"
+    },
+    {
+      "name": "toRef",
+      "kind": "vue",
+      "row": "V08",
+      "status": "P"
+    },
+    {
+      "name": "toRefs",
+      "kind": "vue",
+      "row": "V08",
+      "status": "P"
+    },
+    {
+      "name": "toValue",
+      "kind": "vue",
+      "row": "V08",
+      "status": "P"
+    },
+    {
+      "name": "isProxy",
+      "kind": "vue",
+      "row": "V09",
+      "status": "P"
+    },
+    {
+      "name": "isReactive",
+      "kind": "vue",
+      "row": "V09",
+      "status": "P"
+    },
+    {
+      "name": "isReadonly",
+      "kind": "vue",
+      "row": "V09",
+      "status": "P"
+    },
+    {
+      "name": "isShallow",
+      "kind": "vue",
+      "row": "V09",
+      "status": "P"
+    },
+    {
+      "name": "toRaw",
+      "kind": "vue",
+      "row": "V10",
+      "status": "P"
+    },
+    {
+      "name": "markRaw",
+      "kind": "vue",
+      "row": "V10",
+      "status": "P"
+    },
+    {
+      "name": "customRef",
+      "kind": "vue",
+      "row": "V11",
+      "status": "P"
+    },
+    {
+      "name": "effectScope",
+      "kind": "vue",
+      "row": "V12",
+      "status": "P"
+    },
+    {
+      "name": "getCurrentScope",
+      "kind": "vue",
+      "row": "V12",
+      "status": "P"
+    },
+    {
+      "name": "onScopeDispose",
+      "kind": "vue",
+      "row": "V12",
+      "status": "P"
+    },
+    {
+      "name": "EffectScope",
+      "kind": "vue",
+      "row": "V12",
+      "status": "P"
+    },
+    {
+      "name": "watchEffect",
+      "kind": "vue",
+      "row": "V13",
+      "status": "P"
+    },
+    {
+      "name": "watchPostEffect",
+      "kind": "vue",
+      "row": "V13",
+      "status": "P"
+    },
+    {
+      "name": "watchSyncEffect",
+      "kind": "vue",
+      "row": "V13",
+      "status": "P"
+    },
+    {
+      "name": "watch",
+      "kind": "vue",
+      "row": "V14",
+      "status": "P"
+    },
+    {
+      "name": "watchHandle.stop",
+      "kind": "api",
+      "row": "V15",
+      "status": "P",
+      "note": "Method on the handle returned by watch."
+    },
+    {
+      "name": "watchHandle.pause",
+      "kind": "api",
+      "row": "V15",
+      "status": "P",
+      "note": "Method on the handle returned by watch."
+    },
+    {
+      "name": "watchHandle.resume",
+      "kind": "api",
+      "row": "V15",
+      "status": "P",
+      "note": "Method on the handle returned by watch."
+    },
+    {
+      "name": "onWatcherCleanup",
+      "kind": "vue",
+      "row": "V16",
+      "status": "P"
+    },
+    {
+      "name": "onCleanup",
+      "kind": "syntax",
+      "row": "V16",
+      "status": "P",
+      "note": "Callback parameter of watch and watchEffect."
+    },
+    {
+      "name": "nextTick",
+      "kind": "vue",
+      "row": "V17",
+      "status": "P"
+    },
+    {
+      "name": "onBeforeMount",
+      "kind": "vue",
+      "row": "V18",
+      "status": "P"
+    },
+    {
+      "name": "onMounted",
+      "kind": "vue",
+      "row": "V18",
+      "status": "P"
+    },
+    {
+      "name": "onBeforeUpdate",
+      "kind": "vue",
+      "row": "V18",
+      "status": "P"
+    },
+    {
+      "name": "onUpdated",
+      "kind": "vue",
+      "row": "V18",
+      "status": "P"
+    },
+    {
+      "name": "onBeforeUnmount",
+      "kind": "vue",
+      "row": "V19",
+      "status": "P"
+    },
+    {
+      "name": "onUnmounted",
+      "kind": "vue",
+      "row": "V19",
+      "status": "P"
+    },
+    {
+      "name": "onErrorCaptured",
+      "kind": "vue",
+      "row": "V20",
+      "status": "P"
+    },
+    {
+      "name": "onRenderTracked",
+      "kind": "vue",
+      "row": "V21",
+      "status": "P",
+      "note": "Development builds only."
+    },
+    {
+      "name": "onRenderTriggered",
+      "kind": "vue",
+      "row": "V21",
+      "status": "P",
+      "note": "Development builds only."
+    },
+    {
+      "name": "onActivated",
+      "kind": "vue",
+      "row": "V22",
+      "status": "P"
+    },
+    {
+      "name": "onDeactivated",
+      "kind": "vue",
+      "row": "V22",
+      "status": "P"
+    },
+    {
+      "name": "onServerPrefetch",
+      "kind": "vue",
+      "row": "V23",
+      "status": "W"
+    },
+    {
+      "name": "provide",
+      "kind": "vue",
+      "row": "V24",
+      "status": "P"
+    },
+    {
+      "name": "inject",
+      "kind": "vue",
+      "row": "V24",
+      "status": "P"
+    },
+    {
+      "name": "hasInjectionContext",
+      "kind": "vue",
+      "row": "V24",
+      "status": "P"
+    },
+    {
+      "name": "useAttrs",
+      "kind": "vue",
+      "row": "V25",
+      "status": "P"
+    },
+    {
+      "name": "useSlots",
+      "kind": "vue",
+      "row": "V25",
+      "status": "P"
+    },
+    {
+      "name": "useModel",
+      "kind": "vue",
+      "row": "V26",
+      "status": "P"
+    },
+    {
+      "name": "useTemplateRef",
+      "kind": "vue",
+      "row": "V27",
+      "status": "A",
+      "note": "Native typed handle; DOM element handle on web."
+    },
+    {
+      "name": "useId",
+      "kind": "vue",
+      "row": "V28",
+      "status": "P"
+    },
+    {
+      "name": "setup",
+      "kind": "option",
+      "row": "V29",
+      "status": "P",
+      "note": "Only through defineComponent or an SFC; other Options API keys are rejected (V29)."
+    },
+    {
+      "name": "interpolation",
+      "kind": "syntax",
+      "row": "U01",
+      "status": "P"
+    },
+    {
+      "name": "v-text",
+      "kind": "directive",
+      "row": "U01",
+      "status": "P"
+    },
+    {
+      "name": "template expression",
+      "kind": "syntax",
+      "row": "U02",
+      "status": "P",
+      "note": "Scoped expressions with the globals allowlist."
+    },
+    {
+      "name": "v-bind",
+      "kind": "directive",
+      "row": "U03",
+      "status": "P",
+      "note": "Attributes, properties, class, style, object spread and dynamic arguments."
+    },
+    {
+      "name": ".prop",
+      "kind": "modifier",
+      "row": "U04",
+      "status": "W",
+      "note": "DOM property binding."
+    },
+    {
+      "name": ".attr",
+      "kind": "modifier",
+      "row": "U04",
+      "status": "W",
+      "note": "DOM attribute binding."
+    },
+    {
+      "name": ".camel",
+      "kind": "modifier",
+      "row": "U04",
+      "status": "W",
+      "note": "DOM attribute camel-casing."
+    },
+    {
+      "name": "v-on",
+      "kind": "directive",
+      "row": "U05",
+      "status": "A",
+      "note": "Adapted on native, P on DOM."
+    },
+    {
+      "name": "$event",
+      "kind": "syntax",
+      "row": "U05",
+      "status": "P",
+      "note": "Normalized host event object."
+    },
+    {
+      "name": ".stop",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "A"
+    },
+    {
+      "name": ".prevent",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "A"
+    },
+    {
+      "name": ".self",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "A"
+    },
+    {
+      "name": ".once",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "A"
+    },
+    {
+      "name": ".capture",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "A"
+    },
+    {
+      "name": ".exact",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "A"
+    },
+    {
+      "name": ".enter",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "A",
+      "note": "Key filter."
+    },
+    {
+      "name": ".esc",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "A",
+      "note": "Key filter."
+    },
+    {
+      "name": ".left",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "A",
+      "note": "Mouse filter."
+    },
+    {
+      "name": ".right",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "A",
+      "note": "Mouse filter."
+    },
+    {
+      "name": ".middle",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "A",
+      "note": "Mouse filter."
+    },
+    {
+      "name": ".ctrl",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "A",
+      "note": "System modifier filter."
+    },
+    {
+      "name": ".shift",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "A",
+      "note": "System modifier filter."
+    },
+    {
+      "name": ".alt",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "A",
+      "note": "System modifier filter."
+    },
+    {
+      "name": ".meta",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "A",
+      "note": "System modifier filter."
+    },
+    {
+      "name": ".passive",
+      "kind": "modifier",
+      "row": "U06",
+      "status": "X",
+      "note": "Passive applies only to supported web listeners (U06); rejected otherwise."
+    },
+    {
+      "name": "v-model (text, textarea)",
+      "kind": "directive",
+      "row": "U07",
+      "status": "P"
+    },
+    {
+      "name": ".lazy",
+      "kind": "modifier",
+      "row": "U07",
+      "status": "P"
+    },
+    {
+      "name": ".trim",
+      "kind": "modifier",
+      "row": "U07",
+      "status": "P"
+    },
+    {
+      "name": ".number",
+      "kind": "modifier",
+      "row": "U08",
+      "status": "A",
+      "note": "Explicit native numeric textbox; empty and invalid values handled per U08."
+    },
+    {
+      "name": "v-model (checkbox)",
+      "kind": "directive",
+      "row": "U09",
+      "status": "P"
+    },
+    {
+      "name": "v-model (radio)",
+      "kind": "directive",
+      "row": "U09",
+      "status": "P"
+    },
+    {
+      "name": "v-model (select)",
+      "kind": "directive",
+      "row": "U09",
+      "status": "P"
+    },
+    {
+      "name": "v-model (range)",
+      "kind": "directive",
+      "row": "U10",
+      "status": "A",
+      "note": "Range slider qualifies separately."
+    },
+    {
+      "name": "v-model (file)",
+      "kind": "directive",
+      "row": "U10",
+      "status": "A",
+      "note": "Scoped handle picker."
+    },
+    {
+      "name": "v-model (date)",
+      "kind": "directive",
+      "row": "U10",
+      "status": "A",
+      "note": "Explicit platform component."
+    },
+    {
+      "name": "input (other HTML types)",
+      "kind": "element",
+      "row": "U10",
+      "status": "X",
+      "note": "No generic catch-all input; unsupported types are errors."
+    },
+    {
+      "name": "v-slot",
+      "kind": "directive",
+      "row": "U12",
+      "status": "P"
+    },
+    {
+      "name": "slot",
+      "kind": "element",
+      "row": "U12",
+      "status": "P"
+    },
+    {
+      "name": "slot fallback content",
+      "kind": "syntax",
+      "row": "U12",
+      "status": "P"
+    },
+    {
+      "name": "inheritAttrs",
+      "kind": "option",
+      "row": "U13",
+      "status": "P",
+      "note": "Single-root merge and inheritAttrs false."
+    },
+    {
+      "name": "v-if",
+      "kind": "directive",
+      "row": "U14",
+      "status": "P"
+    },
+    {
+      "name": "v-else-if",
+      "kind": "directive",
+      "row": "U14",
+      "status": "P"
+    },
+    {
+      "name": "v-else",
+      "kind": "directive",
+      "row": "U14",
+      "status": "P"
+    },
+    {
+      "name": "v-show",
+      "kind": "directive",
+      "row": "U15",
+      "status": "P"
+    },
+    {
+      "name": "v-for",
+      "kind": "directive",
+      "row": "U16",
+      "status": "P"
+    },
+    {
+      "name": "key",
+      "kind": "attribute",
+      "row": "U17",
+      "status": "P"
+    },
+    {
+      "name": "ref",
+      "kind": "attribute",
+      "row": "U18",
+      "status": "A",
+      "note": "Stable component or host handles; function refs."
+    },
+    {
+      "name": "component",
+      "kind": "component",
+      "row": "U19",
+      "status": "P",
+      "note": "Dynamic lookup in a static module set."
+    },
+    {
+      "name": "is",
+      "kind": "attribute",
+      "row": "U19",
+      "status": "P",
+      "note": "Static module set only."
+    },
+    {
+      "name": "is (custom element)",
+      "kind": "attribute",
+      "row": "U19",
+      "status": "X",
+      "note": "Arbitrary HTML custom elements are excluded (U19)."
+    },
+    {
+      "name": "defineAsyncComponent",
+      "kind": "vue",
+      "row": "U20",
+      "status": "P"
+    },
+    {
+      "name": "KeepAlive",
+      "kind": "vue",
+      "row": "U21",
+      "status": "P"
+    },
+    {
+      "name": "Teleport",
+      "kind": "vue",
+      "row": "U22",
+      "status": "A"
+    },
+    {
+      "name": "Transition",
+      "kind": "vue",
+      "row": "U23",
+      "status": "A"
+    },
+    {
+      "name": "TransitionGroup",
+      "kind": "vue",
+      "row": "U24",
+      "status": "A"
+    },
+    {
+      "name": "Suspense",
+      "kind": "vue",
+      "row": "U25",
+      "status": "E"
+    },
+    {
+      "name": "custom directive",
+      "kind": "directive",
+      "row": "U26",
+      "status": "A",
+      "note": "Typed host handle with old and new values; no native pointers."
+    },
+    {
+      "name": "custom directive (DOM-specific)",
+      "kind": "directive",
+      "row": "U26",
+      "status": "W"
+    },
+    {
+      "name": "v-pre",
+      "kind": "directive",
+      "row": "U27",
+      "status": "P"
+    },
+    {
+      "name": "v-once",
+      "kind": "directive",
+      "row": "U27",
+      "status": "P"
+    },
+    {
+      "name": "v-memo",
+      "kind": "directive",
+      "row": "U27",
+      "status": "P"
+    },
+    {
+      "name": "v-cloak",
+      "kind": "directive",
+      "row": "U28",
+      "status": "P",
+      "note": "Loading selector on web; documented no-op on native."
+    },
+    {
+      "name": "v-html",
+      "kind": "directive",
+      "row": "U29",
+      "status": "X",
+      "note": "Conservative: X by default. W applies only to an explicit web-only profile (open question)."
+    },
+    {
+      "name": "template fragment",
+      "kind": "syntax",
+      "row": "U30",
+      "status": "P"
+    },
+    {
+      "name": "HTML comment",
+      "kind": "syntax",
+      "row": "U30",
+      "status": "P"
+    },
+    {
+      "name": "whitespace condense mode",
+      "kind": "syntax",
+      "row": "U30",
+      "status": "P"
+    },
+    {
+      "name": "contenteditable",
+      "kind": "attribute",
+      "row": "U32",
+      "status": "X"
+    },
+    {
+      "name": "createApp",
+      "kind": "vue",
+      "row": "A01",
+      "status": "P"
+    },
+    {
+      "name": "app.mount",
+      "kind": "app",
+      "row": "A01",
+      "status": "P"
+    },
+    {
+      "name": "app.unmount",
+      "kind": "app",
+      "row": "A01",
+      "status": "P"
+    },
+    {
+      "name": "app.onUnmount",
+      "kind": "app",
+      "row": "A01",
+      "status": "P"
+    },
+    {
+      "name": "app.component",
+      "kind": "app",
+      "row": "A02",
+      "status": "P",
+      "note": "Build-known registration before mount."
+    },
+    {
+      "name": "app.directive",
+      "kind": "app",
+      "row": "A02",
+      "status": "P",
+      "note": "Build-known registration before mount."
+    },
+    {
+      "name": "dynamic registry mutation",
+      "kind": "app",
+      "row": "A02",
+      "status": "X"
+    },
+    {
+      "name": "app.provide",
+      "kind": "app",
+      "row": "A03",
+      "status": "P"
+    },
+    {
+      "name": "app.runWithContext",
+      "kind": "app",
+      "row": "A03",
+      "status": "P"
+    },
+    {
+      "name": "app.use",
+      "kind": "app",
+      "row": "A04",
+      "status": "P",
+      "note": "Qualified build-bundled plugins only; idempotent."
+    },
+    {
+      "name": "app.version",
+      "kind": "app",
+      "row": "A05",
+      "status": "A"
+    },
+    {
+      "name": "version",
+      "kind": "vue",
+      "row": "A05",
+      "status": "A"
+    },
+    {
+      "name": "app.config.errorHandler",
+      "kind": "app",
+      "row": "A06",
+      "status": "P"
+    },
+    {
+      "name": "app.config.warnHandler",
+      "kind": "app",
+      "row": "A06",
+      "status": "P"
+    },
+    {
+      "name": "app.config.throwUnhandledErrorInProduction",
+      "kind": "app",
+      "row": "A06",
+      "status": "P"
+    },
+    {
+      "name": "app.config.performance",
+      "kind": "app",
+      "row": "A07",
+      "status": "A",
+      "note": "Profiler events."
+    },
+    {
+      "name": "app.config.idPrefix",
+      "kind": "app",
+      "row": "A07",
+      "status": "P"
+    },
+    {
+      "name": "app.config.compilerOptions",
+      "kind": "app",
+      "row": "A08",
+      "status": "A",
+      "note": "Compile-time only; runtime mutation is rejected."
+    },
+    {
+      "name": "app.config.globalProperties",
+      "kind": "app",
+      "row": "A09",
+      "status": "X"
+    },
+    {
+      "name": "app.config.optionMergeStrategies",
+      "kind": "app",
+      "row": "A09",
+      "status": "X"
+    },
+    {
+      "name": "app.mixin",
+      "kind": "app",
+      "row": "A09",
+      "status": "X"
+    },
+    {
+      "name": "defineComponent",
+      "kind": "vue",
+      "row": "A10",
+      "status": "P"
+    },
+    {
+      "name": "h",
+      "kind": "vue",
+      "row": "A11",
+      "status": "X"
+    },
+    {
+      "name": "mergeProps",
+      "kind": "vue",
+      "row": "A11",
+      "status": "X"
+    },
+    {
+      "name": "cloneVNode",
+      "kind": "vue",
+      "row": "A11",
+      "status": "X"
+    },
+    {
+      "name": "isVNode",
+      "kind": "vue",
+      "row": "A11",
+      "status": "X"
+    },
+    {
+      "name": "resolveComponent",
+      "kind": "vue",
+      "row": "A11",
+      "status": "X"
+    },
+    {
+      "name": "resolveDirective",
+      "kind": "vue",
+      "row": "A11",
+      "status": "X"
+    },
+    {
+      "name": "withDirectives",
+      "kind": "vue",
+      "row": "A11",
+      "status": "X"
+    },
+    {
+      "name": "withModifiers",
+      "kind": "vue",
+      "row": "A11",
+      "status": "X"
+    },
+    {
+      "name": "defineCustomElement",
+      "kind": "vue",
+      "row": "A12",
+      "status": "X"
+    },
+    {
+      "name": "useHost",
+      "kind": "vue",
+      "row": "A12",
+      "status": "X"
+    },
+    {
+      "name": "useShadowRoot",
+      "kind": "vue",
+      "row": "A12",
+      "status": "X"
+    },
+    {
+      "name": "$host",
+      "kind": "instance",
+      "row": "A12",
+      "status": "X"
+    },
+    {
+      "name": "createRenderer",
+      "kind": "vue",
+      "row": "A13",
+      "status": "X"
+    },
+    {
+      "name": "createHydrationRenderer",
+      "kind": "vue",
+      "row": "A13",
+      "status": "X"
+    },
+    {
+      "name": "createSSRApp",
+      "kind": "vue",
+      "row": "A14",
+      "status": "W"
+    },
+    {
+      "name": "useSSRContext",
+      "kind": "vue",
+      "row": "A14",
+      "status": "W"
+    },
+    {
+      "name": "renderToString",
+      "kind": "api",
+      "row": "A15",
+      "status": "A",
+      "note": "Exported by vue/server-renderer, not by vue; the native SSR interface is our own Rust API."
+    },
+    {
+      "name": "renderToNodeStream",
+      "kind": "api",
+      "row": "A15",
+      "status": "X",
+      "note": "Node Readable streams are not native APIs (A15)."
+    },
+    {
+      "name": "pipeToNodeWritable",
+      "kind": "api",
+      "row": "A15",
+      "status": "X",
+      "note": "Node Writable pipes are not native APIs (A15)."
+    },
+    {
+      "name": "data-allow-mismatch",
+      "kind": "attribute",
+      "row": "A16",
+      "status": "W"
+    },
+    {
+      "name": "__VUE_OPTIONS_API__",
+      "kind": "flag",
+      "row": "A17",
+      "status": "X",
+      "note": "Options API is always off. Documented Vue flag; the pinned dist does not reference it (bundlers substitute it)."
+    },
+    {
+      "name": "__VUE_PROD_DEVTOOLS__",
+      "kind": "flag",
+      "row": "A17",
+      "status": "X",
+      "note": "Release builds exclude debug listeners. Documented Vue flag; the pinned dist does not reference it."
+    },
+    {
+      "name": "__VUE_PROD_HYDRATION_MISMATCH_DETAILS__",
+      "kind": "flag",
+      "row": "A17",
+      "status": "A",
+      "note": "Profile-controlled. Documented Vue flag; the pinned dist does not reference it."
+    },
+    {
+      "name": "getCurrentInstance",
+      "kind": "vue",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "$watch",
+      "kind": "instance",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "$forceUpdate",
+      "kind": "instance",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "$parent",
+      "kind": "instance",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "$root",
+      "kind": "instance",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "$el",
+      "kind": "instance",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "computed",
+      "kind": "option",
+      "row": "A18",
+      "status": "X",
+      "note": "Options API key; the Composition API computed is V06."
+    },
+    {
+      "name": "watch",
+      "kind": "option",
+      "row": "A18",
+      "status": "X",
+      "note": "Options API key; the Composition API watch is V14."
+    },
+    {
+      "name": "props",
+      "kind": "option",
+      "row": "A18",
+      "status": "X",
+      "note": "Options API key; use defineProps (S06)."
+    },
+    {
+      "name": "emits",
+      "kind": "option",
+      "row": "A18",
+      "status": "X",
+      "note": "Options API key; use defineEmits (S08)."
+    },
+    {
+      "name": "components",
+      "kind": "option",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "directives",
+      "kind": "option",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "extends",
+      "kind": "option",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "provide",
+      "kind": "option",
+      "row": "A18",
+      "status": "X",
+      "note": "Options API key; the Composition API provide is V24."
+    },
+    {
+      "name": "inject",
+      "kind": "option",
+      "row": "A18",
+      "status": "X",
+      "note": "Options API key; the Composition API inject is V24."
+    },
+    {
+      "name": "beforeCreate",
+      "kind": "option",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "created",
+      "kind": "option",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "beforeMount",
+      "kind": "option",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "mounted",
+      "kind": "option",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "beforeUpdate",
+      "kind": "option",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "updated",
+      "kind": "option",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "beforeUnmount",
+      "kind": "option",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "unmounted",
+      "kind": "option",
+      "row": "A18",
+      "status": "X"
+    },
+    {
+      "name": "vapor",
+      "kind": "api",
+      "row": "A19",
+      "status": "E",
+      "note": "Vapor investigation is experimental."
+    },
+    {
+      "name": "$ref",
+      "kind": "syntax",
+      "row": "A19",
+      "status": "X",
+      "note": "Removed reactivity transform."
+    },
+    {
+      "name": "main",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "section",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "div",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "header",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "footer",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "nav",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "article",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "aside",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "form",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "ul",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "ol",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "li",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "hr",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "h1",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "h2",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "h3",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "h4",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "h5",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "h6",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "p",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "span",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "label",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "strong",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "em",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "b",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "i",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "small",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "code",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "pre",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "br",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "a",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "button",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "input",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "textarea",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "select",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "option",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "img",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "A"
+    },
+    {
+      "name": "table",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "X",
+      "note": "Tables are excluded from the first profile; use the framework grid component instead (design 9.2, Layout)."
+    },
+    {
+      "name": "caption",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "X",
+      "note": "Tables are excluded from the first profile; use the framework grid component instead (design 9.2, Layout)."
+    },
+    {
+      "name": "colgroup",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "X",
+      "note": "Tables are excluded from the first profile; use the framework grid component instead (design 9.2, Layout)."
+    },
+    {
+      "name": "col",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "X",
+      "note": "Tables are excluded from the first profile; use the framework grid component instead (design 9.2, Layout)."
+    },
+    {
+      "name": "thead",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "X",
+      "note": "Tables are excluded from the first profile; use the framework grid component instead (design 9.2, Layout)."
+    },
+    {
+      "name": "tbody",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "X",
+      "note": "Tables are excluded from the first profile; use the framework grid component instead (design 9.2, Layout)."
+    },
+    {
+      "name": "tfoot",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "X",
+      "note": "Tables are excluded from the first profile; use the framework grid component instead (design 9.2, Layout)."
+    },
+    {
+      "name": "tr",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "X",
+      "note": "Tables are excluded from the first profile; use the framework grid component instead (design 9.2, Layout)."
+    },
+    {
+      "name": "th",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "X",
+      "note": "Tables are excluded from the first profile; use the framework grid component instead (design 9.2, Layout)."
+    },
+    {
+      "name": "td",
+      "kind": "native-tag",
+      "row": "U31",
+      "status": "X",
+      "note": "Tables are excluded from the first profile; use the framework grid component instead (design 9.2, Layout)."
+    },
+    {
+      "name": "svg",
+      "kind": "native-tag",
+      "row": "U32",
+      "status": "X",
+      "note": "SVG DOM trees are not native tags; use an image asset (img) instead. SVG image assets are supported separately (design 9.2)."
+    },
+    {
+      "name": "video",
+      "kind": "native-tag",
+      "row": "U32",
+      "status": "X",
+      "note": "Media elements are a web-only extension (U32); use the web target instead."
+    },
+    {
+      "name": "audio",
+      "kind": "native-tag",
+      "row": "U32",
+      "status": "X",
+      "note": "Media elements are a web-only extension (U32); use the web target instead."
+    },
+    {
+      "name": "canvas",
+      "kind": "native-tag",
+      "row": "U32",
+      "status": "X",
+      "note": "Canvas is not a universal native tag (U32); use an image asset (img) instead."
+    },
+    {
+      "name": "iframe",
+      "kind": "native-tag",
+      "row": "U32",
+      "status": "X",
+      "note": "Embedded web content is excluded (U32: no webview insertion); use a link (a) instead."
+    },
+    {
+      "kind": "element",
+      "name": "template",
+      "row": "U30",
+      "status": "P",
+      "note": "Template fragment element (U30). The SFC <template> block is S01."
+    },
+    {
+      "kind": "component",
+      "name": "transition",
+      "row": "U23",
+      "status": "A",
+      "note": "Template tag for Transition (U23)."
+    },
+    {
+      "kind": "component",
+      "name": "transition-group",
+      "row": "U24",
+      "status": "A",
+      "note": "Template tag for TransitionGroup (U24)."
+    },
+    {
+      "kind": "component",
+      "name": "keep-alive",
+      "row": "U21",
+      "status": "P",
+      "note": "Template tag for KeepAlive (U21)."
+    },
+    {
+      "kind": "component",
+      "name": "teleport",
+      "row": "U22",
+      "status": "A",
+      "note": "Template tag for Teleport (U22)."
+    },
+    {
+      "kind": "component",
+      "name": "suspense",
+      "row": "U25",
+      "status": "E",
+      "note": "Template tag for Suspense (U25); experimental and rejected by the production profile."
+    }
+  ]
+}

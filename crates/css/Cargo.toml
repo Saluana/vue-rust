@@ -1,0 +1,14 @@
+# vn-css: CSS tokenizer, parser, selectors, media queries and cascade for the documented CSS subset (WP-U1a).
+# Standard library only, no dependencies, not even dev-dependencies.
+[package]
+name = "vn-css"
+version = "0.0.1"
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lib]
+name = "vn_css"
+path = "src/lib.rs"
+
+[dependencies]

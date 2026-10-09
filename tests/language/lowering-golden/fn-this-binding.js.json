@@ -1,0 +1,1 @@
+{"scenario":"fn-this-binding","result":"ok","error":null,"entries":[{"label":"method","values":["outer/outer"]},{"label":"arrow-prop","values":["undefined"]},{"label":"plain-this","values":[true]},{"label":"nested-arrow","values":["x"]}],"unhandledRejections":[]}

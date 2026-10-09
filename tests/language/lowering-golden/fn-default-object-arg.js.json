@@ -1,0 +1,1 @@
+{"scenario":"fn-default-object-arg","result":"ok","error":null,"entries":[{"label":"config","values":["localhost:80","localhost:8080","h:80"]}],"unhandledRejections":[]}

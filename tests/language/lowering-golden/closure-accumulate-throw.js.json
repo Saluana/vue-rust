@@ -1,0 +1,1 @@
+{"scenario":"closure-accumulate-throw","result":"ok","error":null,"entries":[{"label":"limit","values":["over 4"]}],"unhandledRejections":[]}

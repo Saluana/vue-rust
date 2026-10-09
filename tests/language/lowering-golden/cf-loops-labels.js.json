@@ -1,0 +1,1 @@
+{"scenario":"cf-loops-labels","result":"ok","error":null,"entries":[{"label":"labels","values":["00;10;"]},{"label":"do","values":[5,"00;10;d1;d3;d5;"]},{"label":"while","values":[1]},{"label":"in-block","values":[1]}],"unhandledRejections":[]}

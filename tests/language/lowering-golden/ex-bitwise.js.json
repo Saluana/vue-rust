@@ -1,0 +1,1 @@
+{"scenario":"ex-bitwise","result":"ok","error":null,"entries":[{"label":"bits","values":[1,7,6,-6,0,-2147483648,4294967295,-4,15]},{"label":"convert","values":[3,-3,0,1,0]}],"unhandledRejections":[]}

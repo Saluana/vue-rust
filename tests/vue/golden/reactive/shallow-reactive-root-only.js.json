@@ -1,0 +1,1 @@
+{"scenario":"reactive/shallow-reactive-root-only","result":"ok","error":null,"entries":[{"label":"nested","values":[1,false,true]},{"label":"root-replace","values":[2,9]}],"unhandledRejections":[]}

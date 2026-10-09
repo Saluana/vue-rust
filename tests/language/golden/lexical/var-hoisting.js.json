@@ -1,0 +1,1 @@
+{"scenario":"lexical/var-hoisting","result":"ok","error":null,"entries":[{"label":"var-before","values":["undefined",{"$":"undef"}]},{"label":"var-after","values":[2]},{"label":"f-before","values":["undefined",true]},{"label":"f-after","values":["inner"]},{"label":"f-result","values":["inner"]},{"label":"hoisted-fn","values":["function","ok"]}],"unhandledRejections":[]}

@@ -1,0 +1,438 @@
+{
+  "oracle": "@vue/reactivity 3.5.43 production build (NODE_ENV=production)",
+  "cases": {
+    "effect-runs-and-skips-equal-writes": [
+      "run 0",
+      "after-create 1",
+      "run 1",
+      "after-equal-write 2",
+      "run 2",
+      "after-change 3"
+    ],
+    "effect-nan-and-negative-zero": [
+      "nan-run NaN",
+      "nan-runs 1",
+      "zero-run Infinity",
+      "zero-run -Infinity",
+      "zero-runs 2"
+    ],
+    "effect-cleanup-before-rerun-and-stop": [
+      "run 0",
+      "cleanup 0",
+      "run 1",
+      "cleanup 1",
+      "end"
+    ],
+    "effect-conditional-dependencies": [
+      "run a1",
+      "runs-1 1",
+      "run b2",
+      "runs-2 2",
+      "runs-3 2",
+      "run b3",
+      "runs-4 3"
+    ],
+    "effect-nested-effects": [
+      "outer 0",
+      "inner 10",
+      "count 1",
+      "inner 11",
+      "count2 2",
+      "outer 1",
+      "inner 11",
+      "count3 3",
+      "inner 12",
+      "inner 12",
+      "count4 5"
+    ],
+    "effect-stop-releases-links": [
+      "run 1",
+      "runs-after-stop 1",
+      "run 3",
+      "runs-manual 2",
+      "runs-final 2"
+    ],
+    "effect-pause-coalesces-writes": [
+      "run 0",
+      "paused-runs 1",
+      "run 3",
+      "resumed-runs 2",
+      "run 4",
+      "final-runs 3"
+    ],
+    "effect-scheduler-option": [
+      "run 0",
+      "scheduled",
+      "scheduled",
+      "runs-before-flush 1",
+      "run 2",
+      "runs-after-flush 2"
+    ],
+    "effect-on-stop-option": [
+      "run 0",
+      "on-stop",
+      "done"
+    ],
+    "effect-self-write-no-recursion": [
+      "run 0",
+      "runs 1 value 1"
+    ],
+    "effect-allow-recurse-reruns-itself": [
+      "run 0",
+      "after-create 1 1",
+      "run 0",
+      "run 1",
+      "run 2",
+      "run 3",
+      "after-flagged 5 3"
+    ],
+    "effect-dirty-getter": [
+      "run 0",
+      "dirty-before false",
+      "sched",
+      "dirty-after-write true",
+      "runs 1",
+      "run 1",
+      "dirty-after-run false"
+    ],
+    "effect-return-and-pause-tracking": [
+      "returned 3",
+      "runs-after-b 2",
+      "runs-after-a 3"
+    ],
+    "effect-throw-stops-effect": [
+      "caught TypeError runs 1",
+      "runs-after-write 1"
+    ],
+    "effect-stop-in-own-run": [
+      "run 0",
+      "run 1",
+      "runs 2"
+    ],
+    "effect-two-runners-one-stopped": [
+      "r1 0",
+      "r2 0",
+      "r2 1",
+      "end function function"
+    ],
+    "batch-subscription-order": [
+      "A 0",
+      "B 0",
+      "C 0",
+      "-- write",
+      "A 1",
+      "B 1",
+      "C 1"
+    ],
+    "batch-computed-and-effects-share-dep": [
+      "compute 0",
+      "E1 0",
+      "E2 0",
+      "-- write",
+      "compute 1",
+      "E1 10",
+      "E2 1"
+    ],
+    "batch-nested-writes-propagate": [
+      "mid-reader 0",
+      "writer 0",
+      "-- write",
+      "mid-reader 2",
+      "writer 1",
+      "end 2"
+    ],
+    "track-manual-array-length": [
+      "len-run 1",
+      "idx-run 1",
+      "idx-run 2",
+      "len-run 2",
+      "after-shrink 2 2"
+    ],
+    "track-add-iterate-and-delete": [
+      "iter 1",
+      "iter 2",
+      "iter 3",
+      "total 3"
+    ],
+    "track-clear-triggers-all": [
+      "r 1",
+      "r 2",
+      "total 2"
+    ],
+    "trigger-without-dependents": [
+      "ok",
+      "end 1"
+    ],
+    "scope-run-returns-and-current": [
+      "outside true",
+      "inside true",
+      "returned 42 true",
+      "stopped-run true"
+    ],
+    "scope-nested-stop-cascade": [
+      "order parent-1,parent-2,child-1,child-2"
+    ],
+    "scope-effects-before-cleanups": [
+      "effect 0",
+      "cleanup-1",
+      "cleanup-2",
+      "child-cleanup",
+      "done"
+    ],
+    "scope-detached-survives-parent": [
+      "detached-effect 0",
+      "detached-effect 1",
+      "after-parent-stop",
+      "detached-cleanup",
+      "detached-stopped"
+    ],
+    "scope-nested-run-restores-current": [
+      "outside true",
+      "in-outer true",
+      "in-inner true",
+      "back-in-outer true",
+      "after true"
+    ],
+    "scope-stop-idempotent": [
+      "dispose",
+      "active false",
+      "run-after-stop undefined"
+    ],
+    "scope-watch-stopped-with-scope": [
+      "cb 1",
+      "done"
+    ],
+    "scope-pause-resume-effects": [
+      "run 0",
+      "paused 1",
+      "run 2",
+      "resumed 2"
+    ],
+    "scope-on-off-current": [
+      "on true",
+      "off true"
+    ],
+    "scope-onscopedispose-without-scope": [
+      "ok true"
+    ],
+    "ref-primitive-get-set": [
+      "init 1",
+      "after 2",
+      "again 2"
+    ],
+    "ref-shallow-identity-nested-no-trigger": [
+      "identity true",
+      "read 0",
+      "runs-after-nested 1",
+      "read 1",
+      "runs-after-trigger 2",
+      "runs-after-same 2"
+    ],
+    "ref-trigger-ref-same-value": [
+      "read 5",
+      "read 5",
+      "runs 2"
+    ],
+    "ref-custom-track-trigger-counts": [
+      "read 0",
+      "read 3",
+      "counts 2 1 2"
+    ],
+    "ref-customref-set-always-triggers": [
+      "read a",
+      "read b",
+      "read b",
+      "writes 2 runs 3"
+    ],
+    "ref-toref-property-alias": [
+      "read 1",
+      "obj 5",
+      "via-ref 9",
+      "isref true"
+    ],
+    "ref-toref-getter-readonly-and-tovalue": [
+      "get 20",
+      "get2 30",
+      "threw TypeError",
+      "toValue 7 30 4"
+    ],
+    "ref-torefs-destructure": [
+      "keys a,b",
+      "isRef true true",
+      "obj.a 10",
+      "refs.b three",
+      "plain false"
+    ],
+    "ref-isref-unref-same-ref": [
+      "isRef true false false false true",
+      "unref 1 5 s",
+      "same-ref true"
+    ],
+    "ref-dep-per-instance": [
+      "read-a 0",
+      "after-b 1",
+      "read-a 1",
+      "after-a 2"
+    ],
+    "computed-lazy-cached": [
+      "before-read 0",
+      "reads 2 2 2 1",
+      "stale-read-not-yet 1",
+      "after-change 4 2"
+    ],
+    "computed-invalidation-chain": [
+      "eff 20",
+      "eff 30",
+      "calls 2 2 2"
+    ],
+    "computed-diamond-single-recompute": [
+      "d 4",
+      "d 7",
+      "d-calls 2"
+    ],
+    "computed-unchanged-result-no-retrigger": [
+      "even false",
+      "even true",
+      "runs 2"
+    ],
+    "computed-writable-roundtrip": [
+      "full Ada Lovelace",
+      "first Grace last Hopper full Grace Hopper"
+    ],
+    "computed-readonly-set-ignored": [
+      "value 2 readonly true"
+    ],
+    "computed-oldvalue-param": [
+      "getter-old undefined",
+      "v1 10",
+      "getter-old 10",
+      "v2 20"
+    ],
+    "computed-branch-switching": [
+      "pick A0",
+      "calls-1 1",
+      "pick B1",
+      "calls-2 2",
+      "calls-3 2",
+      "pick B2",
+      "calls-4 3"
+    ],
+    "computed-error-then-recover": [
+      "first RangeError",
+      "recovered 2"
+    ],
+    "computed-self-read-previous-value": [
+      "first 1 1",
+      "second 2 2"
+    ],
+    "computed-no-deps-evaluated-once": [
+      "a 5 5 1"
+    ],
+    "computed-new-object-retrigger": [
+      "p 0",
+      "p 0",
+      "runs 2"
+    ],
+    "computed-throw-cache-after-error": [
+      "results RangeError ok 1"
+    ],
+    "computed-scope-stop-keeps-cache": [
+      "a 1 1",
+      "b 1 1",
+      "c 6 2"
+    ],
+    "watch-getter-changes-only": [
+      "cb false true",
+      "cb true false",
+      "end"
+    ],
+    "watch-ref-old-new": [
+      "cb b a",
+      "cb c b",
+      "end"
+    ],
+    "watch-immediate": [
+      "cb 1 undef",
+      "after-create",
+      "cb 2 1",
+      "end"
+    ],
+    "watch-once": [
+      "cb 1",
+      "end function"
+    ],
+    "watch-deep-numeric-depth": [
+      "calls 0 1"
+    ],
+    "watch-deep-cycle-terminates": [
+      "cb 1",
+      "end 1"
+    ],
+    "watch-cleanup-before-rerun": [
+      "cb 1",
+      "cleanup 1",
+      "cb 2",
+      "end"
+    ],
+    "watch-onwatchercleanup-outside-noop": [
+      "current true"
+    ],
+    "watch-stop-inside-callback": [
+      "cb 1",
+      "cb 2",
+      "end"
+    ],
+    "watch-pause-resume-coalesces": [
+      "paused",
+      "cb 2 0",
+      "resumed",
+      "cb 3 2",
+      "end"
+    ],
+    "watch-array-of-sources": [
+      "cb 2|x 1|x",
+      "cb 2|y 2|x",
+      "end"
+    ],
+    "watch-throw-in-getter-then-change": [
+      "created RangeError",
+      "cb",
+      "end"
+    ],
+    "watch-throw-in-callback-reaches-writer": [
+      "writer-got RangeError",
+      "still-live 1"
+    ],
+    "watch-augment-job-and-call": [
+      "call 3",
+      "cb 1",
+      "job true"
+    ],
+    "watch-triggers-watch": [
+      "a-cb 1",
+      "b-cb 2",
+      "end 2"
+    ],
+    "watch-no-callback-cleanup-and-stop": [
+      "run 0",
+      "cleanup 0",
+      "run 1",
+      "cleanup 1",
+      "end"
+    ],
+    "watch-scheduler-option": [
+      "created",
+      "sched false",
+      "pending 1",
+      "cb 1 0",
+      "end"
+    ],
+    "watch-shallow-ref-set-only": [
+      "cb 2 false",
+      "end"
+    ],
+    "watch-effect-self-write-no-rerun": [
+      "runs 1 n 1"
+    ]
+  }
+}

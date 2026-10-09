@@ -1,0 +1,1 @@
+{"scenario":"ds-object-rest-keys","result":"ok","error":null,"entries":[{"label":"rest-keys","values":[1,"z",{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[["b",2],["c",3]]}]}],"unhandledRejections":[]}

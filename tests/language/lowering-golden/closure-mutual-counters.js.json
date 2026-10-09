@@ -1,0 +1,1 @@
+{"scenario":"closure-mutual-counters","result":"ok","error":null,"entries":[{"label":"mutual-counters","values":[10,2,2]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"mod-this-undefined","result":"ok","error":null,"entries":[{"label":"module-this","values":[true]},{"label":"arrow-this","values":[true]},{"label":"plain","values":[true]}],"unhandledRejections":[]}

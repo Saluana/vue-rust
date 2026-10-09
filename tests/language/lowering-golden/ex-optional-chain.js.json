@@ -1,0 +1,1 @@
+{"scenario":"ex-optional-chain","result":"ok","error":null,"entries":[{"label":"chain","values":[5,{"$":"undef"},{"$":"undef"},"called",{"$":"undef"}]},{"label":"short","values":[{"$":"undef"},""]}],"unhandledRejections":[]}

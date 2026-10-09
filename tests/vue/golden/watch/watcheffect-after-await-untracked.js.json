@@ -1,0 +1,1 @@
+{"scenario":"watch/watcheffect-after-await-untracked","result":"ok","error":null,"entries":[{"label":"runs","values":[1,2]}],"unhandledRejections":[]}

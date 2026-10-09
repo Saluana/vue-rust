@@ -1,0 +1,1 @@
+{"scenario":"cf-try-loop-jumps","result":"ok","error":null,"entries":[{"label":"loop-jumps","values":["t0;f0;f1;t2;f2;f3;"]},{"label":"find","values":["found 2",3]}],"unhandledRejections":[]}

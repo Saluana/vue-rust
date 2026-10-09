@@ -1,0 +1,1 @@
+{"scenario":"ex-assignment-in-condition","result":"ok","error":null,"entries":[{"label":"assign-cond","values":[3]},{"label":"assign-if","values":["set"]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"ex-unary-chain","result":"ok","error":null,"entries":[{"label":"unary-chain","values":[3,4,true,"string",{"$":"undef"}]}],"unhandledRejections":[]}

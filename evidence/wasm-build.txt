@@ -1,0 +1,2 @@
+   Compiling vue-rust-demo v0.0.1 (/workspace/shared/vue-rust-prototype/generated)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.04s

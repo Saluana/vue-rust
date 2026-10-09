@@ -1,0 +1,14 @@
+# vn-runtime: the Vue 3.5 runtime-core + runtime-dom behaviour ported to Rust over the vn-value runtime (see docs/dev/wp/WP-RT-*.md).
+[package]
+name = "vn-runtime"
+version = "0.0.1"
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+vn-value = { path = "../value" }
+vn-dom = { path = "../dom" }
+
+[dev-dependencies]
+vn-testkit = { path = "../testkit" }

@@ -1,0 +1,1 @@
+{"scenario":"flow-continue-in-catch","result":"ok","error":null,"entries":[{"label":"continue-catch","values":["ok0;f;tail;caught;f;ok2;f;tail;"]}],"unhandledRejections":[]}

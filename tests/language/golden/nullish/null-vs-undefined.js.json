@@ -1,0 +1,1 @@
+{"scenario":"nullish/null-vs-undefined","result":"ok","error":null,"entries":[{"label":"values","values":[null,{"$":"undef"},false,false]},{"label":"types","values":["object","undefined","object"]},{"label":"loose","values":[true,true]}],"unhandledRejections":[]}

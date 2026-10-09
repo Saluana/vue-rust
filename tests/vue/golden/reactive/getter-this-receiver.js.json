@@ -1,0 +1,1 @@
+{"scenario":"reactive/getter-this-receiver","result":"ok","error":null,"entries":[{"label":"seen","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["Ada Lovelace","Grace Lovelace","Grace Hopper","Grace Hopper"],"len":4},"Hopper"]}],"unhandledRejections":[]}

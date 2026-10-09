@@ -1,0 +1,1 @@
+{"scenario":"str-concat-chains","result":"ok","error":null,"entries":[{"label":"building","values":["0,1,2,",6]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"fn-iife-callbacks","result":"ok","error":null,"entries":[{"label":"iife","values":[42]},{"label":"callback","values":[42,4]},{"label":"curry","values":[6]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"ex-lone-surrogate","result":"ok","error":null,"entries":[{"label":"lone","values":["\ud800",1,"\ude00x",{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["😀","\ud800z"],"len":2}]}],"unhandledRejections":[]}

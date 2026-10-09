@@ -1,0 +1,1 @@
+{"scenario":"loop-while-complex","result":"ok","error":null,"entries":[{"label":"collatz","values":[0,5]},{"label":"do-no-braces","values":[8]},{"label":"infinite-break","values":[10]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"ex-void-delete","result":"ok","error":null,"entries":[{"label":"void","values":[{"$":"undef"},{"$":"undef"},{"$":"undef"}]},{"label":"delete","values":[true,{"$":"undef"},false,true,true]}],"unhandledRejections":[]}

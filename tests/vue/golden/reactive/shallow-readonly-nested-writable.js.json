@@ -1,0 +1,1 @@
+{"scenario":"reactive/shallow-readonly-nested-writable","result":"ok","error":null,"entries":[{"label":"top-write-ignored","values":[1,false]},{"label":"nested-write-applied","values":[5,false]}],"unhandledRejections":[]}

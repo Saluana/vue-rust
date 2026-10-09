@@ -1,0 +1,15 @@
+WP-G0D evidence: counter native executable, 5-second liveness check
+Result: the process was still running 5 s after launch (state S, RSS about 102 MB). It was then stopped with SIGTERM (wait status 143). It printed nothing.
+This is NOT visual verification. No window was inspected, no input was sent, nothing was clicked.
+Binary: target/g0d/debug/vue-rust-demo (sha256 b63a3869f030cb01d5deca5207fd8647d1e82fdcafb3d0a449fec395773a2d35).
+Script: scratchpad g0d-logs/run-counter-native.sh (starts the binary in the background, sleeps 5 s, checks ps state, sends SIGTERM, then SIGKILL only if still alive).
+Finished 2026-10-09T04:33:15Z UTC.
+----- raw output (counter-native-run.txt) -----
+date_utc=2026-10-09T04:33:08Z
+command: "/Users/brendon/Documents/vue-rust-lab/target/g0d/debug/vue-rust-demo"  (no arguments, no input sent)
+started pid=40596
+RESULT: process still running after 5 s (stat=S)
+40596 S    00:05 104528 /Users/brendon/Documents/vue-rust-lab/target/g0d/debug/vue-rust-demo
+process stopped after kill (stat='gone')
+final wait status=143
+stdout/stderr bytes captured: 0

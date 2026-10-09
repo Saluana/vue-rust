@@ -1,0 +1,1 @@
+{"scenario":"ob-methods-this","result":"ok","error":null,"entries":[{"label":"methods","values":[2,4]},{"label":"detached","values":["TypeError"]}],"unhandledRejections":[]}

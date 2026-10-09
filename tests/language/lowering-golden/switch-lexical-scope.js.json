@@ -1,0 +1,1 @@
+{"scenario":"switch-lexical-scope","result":"ok","error":null,"entries":[{"label":"switch-lex","values":["from-a","none"]}],"unhandledRejections":[]}

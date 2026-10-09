@@ -1,0 +1,1 @@
+{"scenario":"str-template-numbers","result":"ok","error":null,"entries":[{"label":"numbers-in-strings","values":["1e+21","1e-7","0","0.000001","123.456"]},{"label":"concat-numbers","values":["12","3","-1.5e+300","1.1805916207174113e+21"]}],"unhandledRejections":[]}

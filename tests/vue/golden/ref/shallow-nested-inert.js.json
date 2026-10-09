@@ -1,0 +1,1 @@
+{"scenario":"ref/shallow-nested-inert","result":"ok","error":null,"entries":[{"label":"shallow","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":[1],"len":1},{"$":"obj","id":2,"cls":"Array","proto":"other","props":[],"elems":[1,2],"len":2},false,true]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"ex-string-concat","result":"ok","error":null,"entries":[{"label":"concat","values":["123","345","33","nullx","undefinedy","true!"]},{"label":"coerce","values":[3,10,{"$":"num","v":"NaN"},12,0,{"$":"num","v":"NaN"}]}],"unhandledRejections":[]}

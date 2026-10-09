@@ -1,0 +1,1 @@
+{"scenario":"mod-default-export-expression","result":"ok","error":null,"entries":[{"label":"default-init","values":["ran"]},{"label":"run-after-default","values":[true]}],"unhandledRejections":[]}

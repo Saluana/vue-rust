@@ -1,0 +1,1 @@
+{"scenario":"exc-error-properties","result":"ok","error":null,"entries":[{"label":"error","values":["Error","msg","why",true]}],"unhandledRejections":[]}

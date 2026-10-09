@@ -1,0 +1,1 @@
+{"scenario":"str-index-length","result":"ok","error":null,"entries":[{"label":"index","values":[4,"a",true,true,"b",{"$":"undef"}]},{"label":"string-value","values":["a😀b!",true,true]}],"unhandledRejections":[]}

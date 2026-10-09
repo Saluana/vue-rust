@@ -1,0 +1,1 @@
+{"scenario":"loop-continue-closures","result":"ok","error":null,"entries":[{"label":"continue-capture","values":[1,3]}],"unhandledRejections":[]}

@@ -1,0 +1,453 @@
+{
+  "schemaVersion": 1,
+  "vueVersion": "3.5.43",
+  "description": "Hand-authored classification of every runtime export of the pinned vue package (and every compile-time macro declared in its type declarations) into exactly one design.md row. Values are a row ID (status = the row primary status) or {row, status?, note?, needsDecision?}. An explicit status must be a status of the row, or X/E (stricter). Exports absent from this map fall back to X with note \"unclassified: default-deny\". compilerHelperExclusions lists compiler helper-table names that are vue exports and are not compilerInternal, each with a reason. A helper is compilerInternal when it is a vue export with status X, is emitted by the official compiler (helper tables of compiler-core, compiler-dom and compiler-sfc with an emission site), and has no exclusion.",
+  "interopArtifacts": {
+    "__esModule": "CJS interop marker that Node adds to the ESM namespace of a require()d CJS module. Not a Vue export: absent from require('vue') keys.",
+    "module.exports": "Node CJS namespace export name that exposes the raw module.exports object. Not a Vue export: absent from require('vue') keys."
+  },
+  "exports": {
+    "BaseTransition": {
+      "row": "U23",
+      "status": "X",
+      "note": "Low-level base of Transition; only Transition (U23) is promised. Emitted only for a user-written <BaseTransition> tag, which the profile rejects."
+    },
+    "BaseTransitionPropsValidators": {
+      "row": "U23",
+      "status": "X",
+      "note": "Internal props validators of BaseTransition."
+    },
+    "Comment": "A11",
+    "DeprecationTypes": {
+      "row": "A17",
+      "status": "X",
+      "note": "Compat-build enum. design.md makes no promise for the compat build, so it is unsupported by default."
+    },
+    "EffectScope": "V12",
+    "ErrorCodes": {
+      "row": "A06",
+      "status": "X",
+      "note": "Internal error-code enum."
+    },
+    "ErrorTypeStrings": {
+      "row": "A06",
+      "status": "X",
+      "note": "Internal error type strings."
+    },
+    "Fragment": "A11",
+    "KeepAlive": "U21",
+    "ReactiveEffect": {
+      "row": "V12",
+      "status": "X",
+      "note": "Low-level effect class; watchEffect (V13) is the promised surface."
+    },
+    "Static": "A11",
+    "Suspense": "U25",
+    "Teleport": "U22",
+    "Text": "A11",
+    "TrackOpTypes": {
+      "row": "V21",
+      "status": "X",
+      "note": "Debugger event op-type enum; internal."
+    },
+    "Transition": "U23",
+    "TransitionGroup": "U24",
+    "TriggerOpTypes": {
+      "row": "V21",
+      "status": "X",
+      "note": "Debugger event op-type enum; internal."
+    },
+    "VueElement": "A12",
+    "assertNumber": "A11",
+    "callWithAsyncErrorHandling": {
+      "row": "A06",
+      "status": "X",
+      "note": "Internal error-handling helper."
+    },
+    "callWithErrorHandling": {
+      "row": "A06",
+      "status": "X",
+      "note": "Internal error-handling helper."
+    },
+    "camelize": "A11",
+    "capitalize": "A11",
+    "cloneVNode": "A11",
+    "compatUtils": {
+      "row": "A17",
+      "status": "X",
+      "note": "Compat-build utility. design.md makes no promise for the compat build, so it is unsupported by default."
+    },
+    "compile": {
+      "row": "A08",
+      "status": "X",
+      "note": "Runtime template compiler. A08 and design.md: no runtime template compiler; compile-time configuration only."
+    },
+    "computed": "V06",
+    "createApp": "A01",
+    "createBlock": "A11",
+    "createCommentVNode": "A11",
+    "createElementBlock": "A11",
+    "createElementVNode": "A11",
+    "createHydrationRenderer": "A13",
+    "createPropsRestProxy": "A11",
+    "createRenderer": "A13",
+    "createSSRApp": "A14",
+    "createSlots": "A11",
+    "createStaticVNode": "A11",
+    "createTextVNode": "A11",
+    "createVNode": "A11",
+    "customRef": "V11",
+    "defineAsyncComponent": "U20",
+    "defineComponent": "A10",
+    "defineCustomElement": "A12",
+    "defineEmits": "S08",
+    "defineExpose": "S10",
+    "defineModel": "S09",
+    "defineOptions": "S11",
+    "defineProps": "S06",
+    "defineSSRCustomElement": "A12",
+    "defineSlots": "S12",
+    "devtools": {
+      "row": "A17",
+      "status": "X",
+      "note": "Devtools hook object (plumbing). Devtools support is a build-time profile control (A17), not this export."
+    },
+    "effect": {
+      "row": "V12",
+      "status": "X",
+      "note": "Low-level effect primitive; watchEffect (V13) is the promised surface."
+    },
+    "effectScope": "V12",
+    "getCurrentInstance": "A18",
+    "getCurrentScope": "V12",
+    "getCurrentWatcher": {
+      "row": "V16",
+      "status": "X",
+      "note": "Returns the active watcher; not in the promised surface."
+    },
+    "getTransitionRawChildren": {
+      "row": "U23",
+      "status": "X",
+      "note": "Internal transition helper."
+    },
+    "guardReactiveProps": "A11",
+    "h": "A11",
+    "handleError": {
+      "row": "A06",
+      "status": "X",
+      "note": "Internal error dispatch helper; A06 errorHandler is the promised hook."
+    },
+    "hasInjectionContext": "V24",
+    "hydrate": "A13",
+    "hydrateOnIdle": {
+      "row": "A14",
+      "status": "X",
+      "note": "Lazy-hydration strategy for SSR. X is the conservative default; W (A14/A16) would make it supported on web. Coordinator to confirm.",
+      "needsDecision": true
+    },
+    "hydrateOnInteraction": {
+      "row": "A14",
+      "status": "X",
+      "note": "Lazy-hydration strategy for SSR. X is the conservative default; W (A14/A16) would make it supported on web. Coordinator to confirm.",
+      "needsDecision": true
+    },
+    "hydrateOnMediaQuery": {
+      "row": "A14",
+      "status": "X",
+      "note": "Lazy-hydration strategy for SSR. X is the conservative default; W (A14/A16) would make it supported on web. Coordinator to confirm.",
+      "needsDecision": true
+    },
+    "hydrateOnVisible": {
+      "row": "A14",
+      "status": "X",
+      "note": "Lazy-hydration strategy for SSR. X is the conservative default; W (A14/A16) would make it supported on web. Coordinator to confirm.",
+      "needsDecision": true
+    },
+    "initCustomFormatter": {
+      "row": "A17",
+      "status": "X",
+      "note": "Devtools formatter plumbing. Devtools support is a build-time profile control (A17), not this export."
+    },
+    "initDirectivesForSSR": {
+      "row": "A14",
+      "status": "X",
+      "note": "Internal SSR directive helper."
+    },
+    "inject": "V24",
+    "isMemoSame": "A11",
+    "isProxy": "V09",
+    "isReactive": "V09",
+    "isReadonly": "V09",
+    "isRef": "V07",
+    "isRuntimeOnly": {
+      "row": "A17",
+      "status": "X",
+      "note": "Build-profile introspection; not promised."
+    },
+    "isShallow": "V09",
+    "isVNode": "A11",
+    "markRaw": "V10",
+    "mergeDefaults": "A11",
+    "mergeModels": "A11",
+    "mergeProps": "A11",
+    "nextTick": "V17",
+    "nodeOps": "A13",
+    "normalizeClass": "A11",
+    "normalizeProps": "A11",
+    "normalizeStyle": "A11",
+    "onActivated": "V22",
+    "onBeforeMount": "V18",
+    "onBeforeUnmount": "V19",
+    "onBeforeUpdate": "V18",
+    "onDeactivated": "V22",
+    "onErrorCaptured": "V20",
+    "onMounted": "V18",
+    "onRenderTracked": "V21",
+    "onRenderTriggered": "V21",
+    "onScopeDispose": "V12",
+    "onServerPrefetch": "V23",
+    "onUnmounted": "V19",
+    "onUpdated": "V18",
+    "onWatcherCleanup": "V16",
+    "openBlock": "A11",
+    "patchProp": "A13",
+    "popScopeId": "A11",
+    "provide": "V24",
+    "proxyRefs": {
+      "row": "V07",
+      "status": "X",
+      "note": "Internal template-unwrapping proxy; isRef/unref (V07) are the promised surface."
+    },
+    "pushScopeId": "A11",
+    "queuePostFlushCb": {
+      "row": "V17",
+      "status": "X",
+      "note": "Internal scheduler queue; nextTick (V17) is the promised surface."
+    },
+    "reactive": "V03",
+    "readonly": "V04",
+    "ref": "V01",
+    "registerRuntimeCompiler": {
+      "row": "A08",
+      "status": "X",
+      "note": "Runtime template compiler registration. A08 and design.md: no runtime template compiler."
+    },
+    "render": "A13",
+    "renderList": "A11",
+    "renderSlot": "A11",
+    "resolveComponent": "A11",
+    "resolveDirective": "A11",
+    "resolveDynamicComponent": "A11",
+    "resolveFilter": {
+      "row": "A11",
+      "status": "X",
+      "note": "Deprecated Vue 2 filter helper. Emitted only for the removed | filter syntax; the profile rejects filter syntax, so this name is not compilerInternal."
+    },
+    "resolveTransitionHooks": {
+      "row": "U23",
+      "status": "X",
+      "note": "Internal transition helper."
+    },
+    "setBlockTracking": "A11",
+    "setDevtoolsHook": {
+      "row": "A17",
+      "status": "X",
+      "note": "Devtools hook installer (plumbing). Devtools support is a build-time profile control (A17), not this export."
+    },
+    "setTransitionHooks": {
+      "row": "U23",
+      "status": "X",
+      "note": "Internal transition helper."
+    },
+    "shallowReactive": "V05",
+    "shallowReadonly": "V05",
+    "shallowRef": "V02",
+    "ssrContextKey": "A14",
+    "ssrUtils": {
+      "row": "A14",
+      "status": "X",
+      "note": "Internal SSR utilities."
+    },
+    "stop": {
+      "row": "V12",
+      "status": "X",
+      "note": "Raw effect stop; watch handles (V15) are the promised surface."
+    },
+    "toDisplayString": "A11",
+    "toHandlerKey": "A11",
+    "toHandlers": "A11",
+    "toRaw": "V10",
+    "toRef": "V08",
+    "toRefs": "V08",
+    "toValue": "V08",
+    "transformVNodeArgs": "A11",
+    "triggerRef": "V02",
+    "unref": "V07",
+    "useAttrs": "V25",
+    "useCssModule": {
+      "row": "U03",
+      "note": "CSS contract, design 9.2 (SFC scoping: CSS modules class maps). @vue/compiler-sfc 3.5.43 has no reference to useCssModule, so it is not compilerInternal."
+    },
+    "useCssVars": {
+      "row": "U03",
+      "note": "CSS contract, design 9.2 (SFC scoping: useCssVars / CSS v-bind expressions). useCssVars is emitted by the SFC compiler for v-bind() in <style>."
+    },
+    "useHost": "A12",
+    "useId": "V28",
+    "useModel": "V26",
+    "useShadowRoot": "A12",
+    "useSlots": "V25",
+    "useSSRContext": "A14",
+    "useTemplateRef": "V27",
+    "useTransitionState": {
+      "row": "U23",
+      "status": "X",
+      "note": "Internal transition state helper."
+    },
+    "vModelCheckbox": "A11",
+    "vModelDynamic": "A11",
+    "vModelRadio": "A11",
+    "vModelSelect": "A11",
+    "vModelText": "A11",
+    "vShow": "A11",
+    "version": "A05",
+    "warn": {
+      "row": "A06",
+      "status": "X",
+      "note": "Internal warning emitter; the A06 warnHandler is the promised hook."
+    },
+    "watch": "V14",
+    "watchEffect": "V13",
+    "watchPostEffect": "V13",
+    "watchSyncEffect": "V13",
+    "withAsyncContext": "S14",
+    "withCtx": "A11",
+    "withDefaults": "S06",
+    "withDirectives": "A11",
+    "withKeys": "A11",
+    "withMemo": "A11",
+    "withModifiers": "A11",
+    "withScopeId": "A11"
+  },
+  "documentedNames": {
+    "ArrayBuffer": {
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript global (L18); not a vue export."
+    },
+    "AsyncDisposable": {
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "Resource-management protocol type/global (S24: X); not a vue export."
+    },
+    "BigInt": {
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript global (L08: BigInt X); not a vue export."
+    },
+    "CommonJS": {
+      "verdict": "language-term",
+      "drift": false,
+      "note": "Module-format name (L16: CommonJS X); not an API."
+    },
+    "DataView": {
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript global (L18: DataView X); not a vue export."
+    },
+    "NaN": {
+      "verdict": "ecmascript-value",
+      "drift": false,
+      "note": "ECMAScript numeric value (L07, L08); not a vue export."
+    },
+    "RegExp": {
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript global (L18: broad parity E); not a vue export."
+    },
+    "SameValueZero": {
+      "verdict": "ecmascript-abstract-operation",
+      "drift": false,
+      "note": "ECMAScript key-equality operation used by Map/Set (L11); not a vue export."
+    },
+    "ToBoolean": {
+      "verdict": "ecmascript-abstract-operation",
+      "drift": false,
+      "note": "ECMAScript coercion operation (L07); not a vue export."
+    },
+    "ToNumber": {
+      "verdict": "ecmascript-abstract-operation",
+      "drift": false,
+      "note": "ECMAScript coercion operation (L07); not a vue export."
+    },
+    "ToString": {
+      "verdict": "ecmascript-abstract-operation",
+      "drift": false,
+      "note": "ECMAScript coercion operation (L07); not a vue export."
+    },
+    "TypeScript": {
+      "verdict": "language-term",
+      "drift": false,
+      "note": "Language name used in S21/S24 text; not an API."
+    },
+    "Uint8Array": {
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript typed array (L18: Uint8Array for IO with bounds); not a vue export."
+    },
+    "WeakMap": {
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript global (L11: X initially); not a vue export."
+    },
+    "WeakRef": {
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript global (L11: X initially); not a vue export."
+    },
+    "WeakSet": {
+      "verdict": "ecmascript-builtin",
+      "drift": false,
+      "note": "ECMAScript global (L11: X initially); not a vue export."
+    },
+    "allSettled": {
+      "verdict": "ecmascript-builtin-method",
+      "drift": false,
+      "note": "Promise.allSettled (L14); not a vue export."
+    },
+    "inheritAttrs": {
+      "verdict": "component-option",
+      "drift": false,
+      "note": "Component option (U13; S11 defineOptions); not a module export."
+    },
+    "onCleanup": {
+      "verdict": "callback-parameter",
+      "drift": false,
+      "note": "Parameter of watch and watchEffect callbacks (V16); not a module export."
+    },
+    "toFixed": {
+      "verdict": "ecmascript-builtin-method",
+      "drift": false,
+      "note": "Number.prototype.toFixed (L08); not a vue export."
+    }
+  },
+  "compilerHelperExclusions": {
+    "BaseTransition": "Emitted only for a user-written <BaseTransition> tag (compiler-core tag map). The profile rejects that tag (U23 promises Transition only), so generated code must not import it.",
+    "Suspense": "Emitted only for a user-written <Suspense> tag. Suspense is E (U25) and rejected by the production profile, so generated code must not import it.",
+    "KeepAlive": "Emitted only for a user-written <KeepAlive> tag. Public component (U21, P): user code may use it directly, so no internal flag.",
+    "Teleport": "Emitted only for a user-written <Teleport> tag. Public component (U22, A): user code may use it directly, so no internal flag.",
+    "Transition": "Emitted only for a user-written <Transition> tag (compiler-dom). Public component (U23, A): no internal flag.",
+    "TransitionGroup": "Emitted only for a user-written <TransitionGroup> tag (compiler-dom). Public component (U24, A): no internal flag.",
+    "resolveFilter": "Emitted only for the removed | filter syntax (compiler-core wrapFilter, COMPILER_FILTERS). The profile rejects filter syntax (no filter API in design.md), so generated code never imports it.",
+    "capitalize": "Helper-map entry with no emission site in @vue/compiler-core 3.5.43 (only the map and the export reference it).",
+    "pushScopeId": "Helper-map entry with no emission site in @vue/compiler-core 3.5.43 (only the map and the export reference it).",
+    "popScopeId": "Helper-map entry with no emission site in @vue/compiler-core 3.5.43 (only the map and the export reference it).",
+    "unref": "Public reactivity helper (V07, P): supported for user code. The compiler also emits it for setup refs, so no internal flag.",
+    "isRef": "Public reactivity helper (V07, P): supported for user code. The compiler also emits it, so no internal flag.",
+    "defineComponent": "Public API (A10, P): supported for user code. Emitted as the default export of script setup, so no internal flag.",
+    "useModel": "Public API (V26, P): supported for user code. Emitted by defineModel, so no internal flag.",
+    "useSlots": "Public API (V25, P): supported for user code. Emitted when script setup calls defineSlots(), so no internal flag.",
+    "useCssVars": "Public CSS contract (design 9.2, P): supported for user code. Emitted for v-bind() in <style>, so no internal flag.",
+    "withAsyncContext": "Emitted for top-level await in script setup. Top-level await is E (S14) and rejected by the production profile, so generated code must not import it."
+  }
+}

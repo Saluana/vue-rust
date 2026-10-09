@@ -1,0 +1,10 @@
+# vn-dom: DOM-like document model (WP-U0). Std only; the behaviour is checked against headless Chrome by the corpora
+# in tests/dom/corpora (replayed by tests/*.rs).
+[package]
+name = "vn-dom"
+version = "0.0.1"
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]

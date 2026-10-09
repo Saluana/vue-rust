@@ -1,0 +1,1 @@
+{"scenario":"mod-hoisted-run","result":"ok","error":null,"entries":[{"label":"before-decl","values":["function"]},{"label":"run","values":["h"]}],"unhandledRejections":[]}

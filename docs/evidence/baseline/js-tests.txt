@@ -1,0 +1,576 @@
+WP-G0A baseline: JavaScript test runs for the immutable prototype fixtures
+Recorded (UTC): 2026-10-09 04:39:54    local: 2026-10-08 21:39:54 PDT
+Host: macOS 27.0.1 arm64; node v26.5.1; npm 11.17.0
+Project root: /Users/brendon/Documents/vue-rust-lab (git: not a repository)
+Commands run from the project root with bash. Exit codes are the process exit codes.
+Expected counts from the WP: counter 25, Quick Quote 28. Counts below are the real numbers.
+Negative-control and sensitivity runs (scratch copies) are EXPECTED to exit 1: that exit is the detection.
+The two 'WP literal form' runs are EXPECTED to exit 1 on Node 26: directory arguments are not supported.
+
+Summary (exit code, then the TAP-style counts Node printed)
+----------------------------------------------------------------
+1.   Node version                                 exit=0   no TAP/spec summary
+2.   Counter fixture suite (its own unchanged test) exit=0   tests=25 pass=25 fail=0 cancelled=0 skipped=0 
+3.   Quick Quote fixture suite (its own unchanged test) exit=0   tests=28 pass=28 fail=0 cancelled=0 skipped=0 
+4.   Verification + known-defect tests            exit=0   tests=21 pass=21 fail=0 cancelled=0 skipped=0 
+5.   All fixture suites together (glob form)      exit=0   tests=74 pass=74 fail=0 cancelled=0 skipped=0 
+6.   WP literal form: two test directories (expected to fail on Node 26) exit=1   tests=2 pass=0 fail=2 cancelled=0 skipped=0 
+7.   WP literal form: prototype directory (expected to fail on Node 26) exit=1   tests=1 pass=0 fail=1 cancelled=0 skipped=0 
+8.   Root suite, README/evidence claim 'npm test: 25 passing' exit=0   tests=25 pass=25 fail=0 cancelled=0 skipped=0 
+9.   Negative control: one byte changed in a scratch copy exit=1   tests=15 pass=14 fail=1 cancelled=0 skipped=0 
+10.  Negative control: extra file added to a scratch copy exit=1   tests=15 pass=14 fail=1 cancelled=0 skipped=0 
+11.  Negative control: manifest file removed in a scratch copy exit=1   tests=15 pass=14 fail=1 cancelled=0 skipped=0 
+12.  Regression sensitivity: scratch counter compiler with @[click] fixed exit=1   tests=6 pass=5 fail=1 cancelled=0 skipped=0 
+----------------------------------------------------------------
+
+== 1. Node version
+$ node --version
+--- begin output (exit=0)
+v26.5.1
+--- end output (exit=0)
+
+== 2. Counter fixture suite (its own unchanged test)
+$ node --test tests/fixtures/prototype/counter/tests/compiler.test.mjs
+--- begin output (exit=0)
+✔ real Composition API SFC emits native state, computed, events, conditional and input (7.673292ms)
+✔ template auto unwrap and script .value (0.420375ms)
+✔ inline update (0.312583ms)
+✔ boolean conditional (0.234958ms)
+✔ forward computed dependency (0.322916ms)
+✔ rejects Options API instead of silently changing behavior (0.218333ms)
+✔ rejects CSS instead of silently changing behavior (0.161959ms)
+✔ rejects unsupported directive instead of silently changing behavior (0.3345ms)
+✔ rejects unsupported element instead of silently changing behavior (0.163583ms)
+✔ rejects unsupported import instead of silently changing behavior (0.194292ms)
+✔ rejects unknown template binding instead of silently changing behavior (0.163542ms)
+✔ rejects non literal ref instead of silently changing behavior (0.169291ms)
+✔ rejects computed mutation instead of silently changing behavior (0.247792ms)
+✔ rejects type mismatch instead of silently changing behavior (0.213458ms)
+✔ rejects cycles instead of silently changing behavior (0.188917ms)
+✔ rejects async handler instead of silently changing behavior (0.206541ms)
+✔ rejects unknown attribute instead of silently changing behavior (0.106125ms)
+✔ rejects event on unsupported node instead of silently changing behavior (0.137875ms)
+✔ rejects number input instead of silently changing behavior (0.112458ms)
+✔ rejects JavaScript loose coercion instead of silently changing behavior (0.170458ms)
+✔ rejects arbitrary JS instead of silently changing behavior (0.114417ms)
+✔ rejects nonboolean v-if instead of silently changing behavior (0.106083ms)
+✔ rejects modifiers instead of silently changing behavior (0.156583ms)
+✔ string escaping preserves Rust source boundaries (0.1815ms)
+✔ unimplemented type annotations are rejected (0.431583ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 99.243792
+--- end output (exit=0)
+
+== 3. Quick Quote fixture suite (its own unchanged test)
+$ node --test tests/fixtures/prototype/quick-quote/tests/compiler.test.mjs
+--- begin output (exit=0)
+✔ real Composition API SFC emits native state, computed, events, conditional and input (7.6885ms)
+✔ template auto unwrap and script .value (0.433583ms)
+✔ inline update (0.2935ms)
+✔ boolean conditional (0.226791ms)
+✔ forward computed dependency (0.289667ms)
+✔ rejects Options API instead of silently changing behavior (0.186ms)
+✔ rejects CSS instead of silently changing behavior (0.149ms)
+✔ rejects unsupported directive instead of silently changing behavior (0.328875ms)
+✔ rejects unsupported element instead of silently changing behavior (0.170042ms)
+✔ rejects unsupported import instead of silently changing behavior (0.181542ms)
+✔ rejects unknown template binding instead of silently changing behavior (0.144958ms)
+✔ rejects non literal ref instead of silently changing behavior (0.152583ms)
+✔ rejects computed mutation instead of silently changing behavior (0.228042ms)
+✔ rejects type mismatch instead of silently changing behavior (0.172542ms)
+✔ rejects cycles instead of silently changing behavior (0.18275ms)
+✔ rejects async handler instead of silently changing behavior (0.208833ms)
+✔ rejects unknown attribute instead of silently changing behavior (0.105333ms)
+✔ rejects event on unsupported node instead of silently changing behavior (0.156666ms)
+✔ rejects number input instead of silently changing behavior (0.104625ms)
+✔ rejects JavaScript loose coercion instead of silently changing behavior (0.175625ms)
+✔ rejects arbitrary JS instead of silently changing behavior (0.123ms)
+✔ rejects nonboolean v-if instead of silently changing behavior (0.091ms)
+✔ rejects modifiers instead of silently changing behavior (0.143583ms)
+✔ string escaping preserves Rust source boundaries (0.16675ms)
+✔ unimplemented type annotations are rejected (0.41225ms)
+✔ quote app compiles numeric inputs and decimal output (2.255917ms)
+✔ numeric bounds are validated (0.181833ms)
+✔ decimal precision is bounded (0.120875ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 77.967666
+--- end output (exit=0)
+
+== 4. Verification + known-defect tests
+$ node --test 'tests/fixtures/prototype/*.test.mjs'
+--- begin output (exit=0)
+✔ KNOWN BUG (prototype): @[click] dynamic event argument is accepted and compiled as a fixed click handler (counter compiler) (7.944667ms)
+✔ KNOWN BUG (prototype): @[click] dynamic event argument is accepted and compiled as a fixed click handler (quick-quote compiler) (1.366417ms)
+✔ KNOWN BUG (prototype): interpolated numbers use Rust Display, which diverges from JS String(n) for some values (486.511ms)
+ℹ Rust format!("{}") outputs: ["1000000000000000000000","0.0000001","-0","0.30000000000000004","123456789012345680000","NaN","inf","0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005"]
+ℹ JS String(x) oracle:        ["1e+21","1e-7","0","0.30000000000000004","123456789012345680000","NaN","Infinity","5e-324"]
+✔ KNOWN BUG (prototype): Quick Quote toFixed emits Rust format!("{:.N}"), which rounds ties to even: (0.5).toFixed(0) and (2.5).toFixed(0) diverge from JS (131.57375ms)
+ℹ Rust outputs of the emitted expressions: ["0","2","1.00"]
+ℹ JS (0.5).toFixed(0), (2.5).toFixed(0), (1.005).toFixed(2): ["1","3","1.00"]
+✔ KNOWN BUG (prototype): computed values are uncached Rust getters that recompute on every read (counter compiler) (0.568ms)
+✔ KNOWN BUG (prototype): computed values are uncached Rust getters that recompute on every read (quick-quote compiler) (0.243208ms)
+✔ MANIFEST pins every preserved fixture file: sha256, size and origin all match (4.874875ms)
+✔ MANIFEST lists files sorted by path, without duplicates (0.170833ms)
+✔ workspace compiler hash in MANIFEST equals the claimed value and the copied counter compiler (0.100417ms)
+✔ zip compiler hash in MANIFEST equals the copied quick-quote compiler (0.095208ms)
+✔ Quick Quote archive matches its recorded SHA-256 and size (0.328625ms)
+✔ quick-quote fixture files are byte-identical to their archive entries (33.54675ms)
+✔ negative control: the checker reports nothing for an untouched temporary tree (1.536125ms)
+✔ negative control: a one-byte change is detected (sha256 mismatch, size unchanged) (1.613792ms)
+✔ negative control: an appended byte is detected (size and sha256 mismatch) (1.50675ms)
+✔ negative control: an extra file under a fixture directory is detected (1.231708ms)
+✔ negative control: a missing manifest file is detected (1.184ms)
+✔ negative control: a symlink inside a fixture directory is detected (1.296834ms)
+✔ negative control: a manifest path that escapes the fixture is rejected (1.173542ms)
+✔ negative control: harness files at the prototype root are exempt from the extra-file check (1.278875ms)
+✔ negative control: a harness-named file inside a fixture directory is not exempt (1.296709ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 697.181833
+--- end output (exit=0)
+
+== 5. All fixture suites together (glob form)
+$ node --test 'tests/fixtures/prototype/*.test.mjs' 'tests/fixtures/prototype/counter/tests/*.test.mjs' 'tests/fixtures/prototype/quick-quote/tests/*.test.mjs'
+--- begin output (exit=0)
+✔ real Composition API SFC emits native state, computed, events, conditional and input (8.411875ms)
+✔ template auto unwrap and script .value (0.486458ms)
+✔ inline update (0.341583ms)
+✔ boolean conditional (0.259708ms)
+✔ forward computed dependency (0.336792ms)
+✔ rejects Options API instead of silently changing behavior (0.236ms)
+✔ rejects CSS instead of silently changing behavior (0.176916ms)
+✔ rejects unsupported directive instead of silently changing behavior (0.395041ms)
+✔ rejects unsupported element instead of silently changing behavior (0.174333ms)
+✔ rejects unsupported import instead of silently changing behavior (0.190167ms)
+✔ rejects unknown template binding instead of silently changing behavior (0.174584ms)
+✔ rejects non literal ref instead of silently changing behavior (0.193458ms)
+✔ rejects computed mutation instead of silently changing behavior (0.2475ms)
+✔ rejects type mismatch instead of silently changing behavior (0.192167ms)
+✔ rejects cycles instead of silently changing behavior (0.206917ms)
+✔ rejects async handler instead of silently changing behavior (0.232833ms)
+✔ rejects unknown attribute instead of silently changing behavior (0.109584ms)
+✔ rejects event on unsupported node instead of silently changing behavior (0.143125ms)
+✔ rejects number input instead of silently changing behavior (0.124833ms)
+✔ rejects JavaScript loose coercion instead of silently changing behavior (0.19375ms)
+✔ rejects arbitrary JS instead of silently changing behavior (0.239292ms)
+✔ rejects nonboolean v-if instead of silently changing behavior (0.205083ms)
+✔ rejects modifiers instead of silently changing behavior (0.222166ms)
+✔ string escaping preserves Rust source boundaries (0.237333ms)
+✔ unimplemented type annotations are rejected (0.521625ms)
+✔ real Composition API SFC emits native state, computed, events, conditional and input (8.507167ms)
+✔ template auto unwrap and script .value (0.485167ms)
+✔ inline update (0.355709ms)
+✔ boolean conditional (0.233417ms)
+✔ forward computed dependency (0.330791ms)
+✔ rejects Options API instead of silently changing behavior (0.21425ms)
+✔ rejects CSS instead of silently changing behavior (0.175958ms)
+✔ rejects unsupported directive instead of silently changing behavior (0.384042ms)
+✔ rejects unsupported element instead of silently changing behavior (0.183334ms)
+✔ rejects unsupported import instead of silently changing behavior (0.184584ms)
+✔ rejects unknown template binding instead of silently changing behavior (0.180792ms)
+✔ rejects non literal ref instead of silently changing behavior (0.179459ms)
+✔ rejects computed mutation instead of silently changing behavior (0.248209ms)
+✔ rejects type mismatch instead of silently changing behavior (0.202459ms)
+✔ rejects cycles instead of silently changing behavior (0.185583ms)
+✔ rejects async handler instead of silently changing behavior (0.258ms)
+✔ rejects unknown attribute instead of silently changing behavior (0.163833ms)
+✔ rejects event on unsupported node instead of silently changing behavior (0.283833ms)
+✔ rejects number input instead of silently changing behavior (0.138125ms)
+✔ rejects JavaScript loose coercion instead of silently changing behavior (0.198625ms)
+✔ rejects arbitrary JS instead of silently changing behavior (0.134791ms)
+✔ rejects nonboolean v-if instead of silently changing behavior (0.11525ms)
+✔ rejects modifiers instead of silently changing behavior (0.187542ms)
+✔ string escaping preserves Rust source boundaries (0.194083ms)
+✔ unimplemented type annotations are rejected (0.486041ms)
+✔ quote app compiles numeric inputs and decimal output (2.385667ms)
+✔ numeric bounds are validated (0.194708ms)
+✔ decimal precision is bounded (0.1555ms)
+✔ KNOWN BUG (prototype): @[click] dynamic event argument is accepted and compiled as a fixed click handler (counter compiler) (7.402459ms)
+✔ KNOWN BUG (prototype): @[click] dynamic event argument is accepted and compiled as a fixed click handler (quick-quote compiler) (1.405291ms)
+✔ KNOWN BUG (prototype): interpolated numbers use Rust Display, which diverges from JS String(n) for some values (135.334083ms)
+ℹ Rust format!("{}") outputs: ["1000000000000000000000","0.0000001","-0","0.30000000000000004","123456789012345680000","NaN","inf","0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005"]
+ℹ JS String(x) oracle:        ["1e+21","1e-7","0","0.30000000000000004","123456789012345680000","NaN","Infinity","5e-324"]
+✔ KNOWN BUG (prototype): Quick Quote toFixed emits Rust format!("{:.N}"), which rounds ties to even: (0.5).toFixed(0) and (2.5).toFixed(0) diverge from JS (135.251709ms)
+ℹ Rust outputs of the emitted expressions: ["0","2","1.00"]
+ℹ JS (0.5).toFixed(0), (2.5).toFixed(0), (1.005).toFixed(2): ["1","3","1.00"]
+✔ KNOWN BUG (prototype): computed values are uncached Rust getters that recompute on every read (counter compiler) (0.63325ms)
+✔ KNOWN BUG (prototype): computed values are uncached Rust getters that recompute on every read (quick-quote compiler) (0.238208ms)
+✔ MANIFEST pins every preserved fixture file: sha256, size and origin all match (3.882708ms)
+✔ MANIFEST lists files sorted by path, without duplicates (0.185167ms)
+✔ workspace compiler hash in MANIFEST equals the claimed value and the copied counter compiler (0.112333ms)
+✔ zip compiler hash in MANIFEST equals the copied quick-quote compiler (0.106625ms)
+✔ Quick Quote archive matches its recorded SHA-256 and size (0.150709ms)
+✔ quick-quote fixture files are byte-identical to their archive entries (35.6405ms)
+✔ negative control: the checker reports nothing for an untouched temporary tree (1.579667ms)
+✔ negative control: a one-byte change is detected (sha256 mismatch, size unchanged) (1.669ms)
+✔ negative control: an appended byte is detected (size and sha256 mismatch) (1.889667ms)
+✔ negative control: an extra file under a fixture directory is detected (1.594375ms)
+✔ negative control: a missing manifest file is detected (1.334583ms)
+✔ negative control: a symlink inside a fixture directory is detected (1.493917ms)
+✔ negative control: a manifest path that escapes the fixture is rejected (1.178083ms)
+✔ negative control: harness files at the prototype root are exempt from the extra-file check (1.3005ms)
+✔ negative control: a harness-named file inside a fixture directory is not exempt (1.285125ms)
+ℹ tests 74
+ℹ suites 0
+ℹ pass 74
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 350.232792
+--- end output (exit=0)
+
+== 6. WP literal form: two test directories (expected to fail on Node 26)
+$ node --test tests/fixtures/prototype/counter/tests/ tests/fixtures/prototype/quick-quote/tests/
+--- begin output (exit=1)
+node:internal/modules/cjs/loader:1573
+  throw err;
+  ^
+
+Error: Cannot find module '/Users/brendon/Documents/vue-rust-lab/tests/fixtures/prototype/counter/tests'
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1569:15)
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1123:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1147:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1174:12)
+    at Module._load (node:internal/modules/cjs/loader:1346:5)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v26.5.1
+✖ tests/fixtures/prototype/counter/tests (24.64375ms)
+node:internal/modules/cjs/loader:1573
+  throw err;
+  ^
+
+Error: Cannot find module '/Users/brendon/Documents/vue-rust-lab/tests/fixtures/prototype/quick-quote/tests'
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1569:15)
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1123:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1147:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1174:12)
+    at Module._load (node:internal/modules/cjs/loader:1346:5)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v26.5.1
+✖ tests/fixtures/prototype/quick-quote/tests (22.588583ms)
+ℹ tests 2
+ℹ suites 0
+ℹ pass 0
+ℹ fail 2
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 27.9515
+
+✖ failing tests:
+
+test at tests/fixtures/prototype/counter/tests:1:1
+✖ tests/fixtures/prototype/counter/tests (24.64375ms)
+  'test failed'
+
+test at tests/fixtures/prototype/quick-quote/tests:1:1
+✖ tests/fixtures/prototype/quick-quote/tests (22.588583ms)
+  'test failed'
+--- end output (exit=1)
+
+== 7. WP literal form: prototype directory (expected to fail on Node 26)
+$ node --test tests/fixtures/prototype/
+--- begin output (exit=1)
+node:internal/modules/cjs/loader:1573
+  throw err;
+  ^
+
+Error: Cannot find module '/Users/brendon/Documents/vue-rust-lab/tests/fixtures/prototype'
+    at Module._resolveFilename (node:internal/modules/cjs/loader:1569:15)
+    at wrapResolveFilename (node:internal/modules/cjs/loader:1123:27)
+    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1147:10)
+    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1174:12)
+    at Module._load (node:internal/modules/cjs/loader:1346:5)
+    at wrapModuleLoad (node:internal/modules/cjs/loader:261:19)
+    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+    at node:internal/main/run_main_module:33:47 {
+  code: 'MODULE_NOT_FOUND',
+  requireStack: []
+}
+
+Node.js v26.5.1
+✖ tests/fixtures/prototype (23.090084ms)
+ℹ tests 1
+ℹ suites 0
+ℹ pass 0
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 25.996292
+
+✖ failing tests:
+
+test at tests/fixtures/prototype:1:1
+✖ tests/fixtures/prototype (23.090084ms)
+  'test failed'
+--- end output (exit=1)
+
+== 8. Root suite, README/evidence claim 'npm test: 25 passing'
+$ npm test
+--- begin output (exit=0)
+
+> vue-rust-lab@0.0.1 test
+> node --test tests/*.test.mjs
+
+✔ real Composition API SFC emits native state, computed, events, conditional and input (7.651875ms)
+✔ template auto unwrap and script .value (0.389ms)
+✔ inline update (0.279583ms)
+✔ boolean conditional (0.201916ms)
+✔ forward computed dependency (0.290375ms)
+✔ rejects Options API instead of silently changing behavior (0.178666ms)
+✔ rejects CSS instead of silently changing behavior (0.150167ms)
+✔ rejects unsupported directive instead of silently changing behavior (0.320417ms)
+✔ rejects unsupported element instead of silently changing behavior (0.156375ms)
+✔ rejects unsupported import instead of silently changing behavior (0.180208ms)
+✔ rejects unknown template binding instead of silently changing behavior (0.173541ms)
+✔ rejects non literal ref instead of silently changing behavior (0.144792ms)
+✔ rejects computed mutation instead of silently changing behavior (0.222125ms)
+✔ rejects type mismatch instead of silently changing behavior (0.173334ms)
+✔ rejects cycles instead of silently changing behavior (0.191708ms)
+✔ rejects async handler instead of silently changing behavior (0.208125ms)
+✔ rejects unknown attribute instead of silently changing behavior (0.099375ms)
+✔ rejects event on unsupported node instead of silently changing behavior (0.129458ms)
+✔ rejects number input instead of silently changing behavior (0.118417ms)
+✔ rejects JavaScript loose coercion instead of silently changing behavior (0.165709ms)
+✔ rejects arbitrary JS instead of silently changing behavior (0.114333ms)
+✔ rejects nonboolean v-if instead of silently changing behavior (0.091417ms)
+✔ rejects modifiers instead of silently changing behavior (0.139333ms)
+✔ string escaping preserves Rust source boundaries (0.161083ms)
+✔ unimplemented type annotations are rejected (0.406291ms)
+ℹ tests 25
+ℹ suites 0
+ℹ pass 25
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 77.919959
+--- end output (exit=0)
+
+== 9. Negative control: one byte changed in a scratch copy
+$ node --test '/private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/record/mut/onebyte/verify-fixtures.test.mjs'
+--- begin output (exit=1)
+✖ MANIFEST pins every preserved fixture file: sha256, size and origin all match (5.119625ms)
+✔ MANIFEST lists files sorted by path, without duplicates (0.231292ms)
+✔ workspace compiler hash in MANIFEST equals the claimed value and the copied counter compiler (0.1065ms)
+✔ zip compiler hash in MANIFEST equals the copied quick-quote compiler (0.096959ms)
+✔ Quick Quote archive matches its recorded SHA-256 and size (0.133625ms)
+✔ quick-quote fixture files are byte-identical to their archive entries (28.702334ms)
+✔ negative control: the checker reports nothing for an untouched temporary tree (1.243625ms)
+✔ negative control: a one-byte change is detected (sha256 mismatch, size unchanged) (1.380792ms)
+✔ negative control: an appended byte is detected (size and sha256 mismatch) (1.166541ms)
+✔ negative control: an extra file under a fixture directory is detected (1.139209ms)
+✔ negative control: a missing manifest file is detected (0.98525ms)
+✔ negative control: a symlink inside a fixture directory is detected (1.080375ms)
+✔ negative control: a manifest path that escapes the fixture is rejected (0.979667ms)
+✔ negative control: harness files at the prototype root are exempt from the extra-file check (1.120625ms)
+✔ negative control: a harness-named file inside a fixture directory is not exempt (1.110083ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 14
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 80.992958
+
+✖ failing tests:
+
+test at ../../../../private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/record/mut/onebyte/verify-fixtures.test.mjs:95:1
+✖ MANIFEST pins every preserved fixture file: sha256, size and origin all match (5.119625ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   'sha256 mismatch: counter/examples/Counter.vue'
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/record/mut/onebyte/verify-fixtures.test.mjs:96:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'sha256 mismatch: counter/examples/Counter.vue' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+--- end output (exit=1)
+
+== 10. Negative control: extra file added to a scratch copy
+$ node --test '/private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/record/mut/extra/verify-fixtures.test.mjs'
+--- begin output (exit=1)
+✖ MANIFEST pins every preserved fixture file: sha256, size and origin all match (5.179541ms)
+✔ MANIFEST lists files sorted by path, without duplicates (0.244208ms)
+✔ workspace compiler hash in MANIFEST equals the claimed value and the copied counter compiler (0.110291ms)
+✔ zip compiler hash in MANIFEST equals the copied quick-quote compiler (0.097875ms)
+✔ Quick Quote archive matches its recorded SHA-256 and size (0.150208ms)
+✔ quick-quote fixture files are byte-identical to their archive entries (28.955917ms)
+✔ negative control: the checker reports nothing for an untouched temporary tree (1.288541ms)
+✔ negative control: a one-byte change is detected (sha256 mismatch, size unchanged) (1.363083ms)
+✔ negative control: an appended byte is detected (size and sha256 mismatch) (1.085791ms)
+✔ negative control: an extra file under a fixture directory is detected (1.103584ms)
+✔ negative control: a missing manifest file is detected (0.969959ms)
+✔ negative control: a symlink inside a fixture directory is detected (1.06975ms)
+✔ negative control: a manifest path that escapes the fixture is rejected (0.926708ms)
+✔ negative control: harness files at the prototype root are exempt from the extra-file check (1.076042ms)
+✔ negative control: a harness-named file inside a fixture directory is not exempt (1.1945ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 14
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 80.805667
+
+✖ failing tests:
+
+test at ../../../../private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/record/mut/extra/verify-fixtures.test.mjs:95:1
+✖ MANIFEST pins every preserved fixture file: sha256, size and origin all match (5.179541ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   'extra file not in manifest: counter/examples/Extra.vue'
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/record/mut/extra/verify-fixtures.test.mjs:96:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'extra file not in manifest: counter/examples/Extra.vue' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+--- end output (exit=1)
+
+== 11. Negative control: manifest file removed in a scratch copy
+$ node --test '/private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/record/mut/missing/verify-fixtures.test.mjs'
+--- begin output (exit=1)
+✖ MANIFEST pins every preserved fixture file: sha256, size and origin all match (4.828958ms)
+✔ MANIFEST lists files sorted by path, without duplicates (0.215333ms)
+✔ workspace compiler hash in MANIFEST equals the claimed value and the copied counter compiler (0.113084ms)
+✔ zip compiler hash in MANIFEST equals the copied quick-quote compiler (0.09575ms)
+✔ Quick Quote archive matches its recorded SHA-256 and size (0.14125ms)
+✔ quick-quote fixture files are byte-identical to their archive entries (28.53325ms)
+✔ negative control: the checker reports nothing for an untouched temporary tree (1.205375ms)
+✔ negative control: a one-byte change is detected (sha256 mismatch, size unchanged) (1.534708ms)
+✔ negative control: an appended byte is detected (size and sha256 mismatch) (1.135375ms)
+✔ negative control: an extra file under a fixture directory is detected (1.195791ms)
+✔ negative control: a missing manifest file is detected (0.98025ms)
+✔ negative control: a symlink inside a fixture directory is detected (1.17475ms)
+✔ negative control: a manifest path that escapes the fixture is rejected (0.982667ms)
+✔ negative control: harness files at the prototype root are exempt from the extra-file check (1.093417ms)
+✔ negative control: a harness-named file inside a fixture directory is not exempt (1.131125ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 14
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 84.413667
+
+✖ failing tests:
+
+test at ../../../../private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/record/mut/missing/verify-fixtures.test.mjs:95:1
+✖ MANIFEST pins every preserved fixture file: sha256, size and origin all match (4.828958ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
+  + actual - expected
+  
+  + [
+  +   'missing: quick-quote/examples/Quote.vue'
+  + ]
+  - []
+  
+      at TestContext.<anonymous> (file:///private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/record/mut/missing/verify-fixtures.test.mjs:96:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: [ 'missing: quick-quote/examples/Quote.vue' ],
+    expected: [],
+    operator: 'deepStrictEqual',
+    diff: 'simple'
+  }
+--- end output (exit=1)
+
+== 12. Regression sensitivity: scratch counter compiler with @[click] fixed
+$ cd '/private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/record/reg' && node --test '/private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/record/reg/tests/fixtures/prototype/regressions.test.mjs'
+--- begin output (exit=1)
+✖ KNOWN BUG (prototype): @[click] dynamic event argument is accepted and compiled as a fixed click handler (counter compiler) (4.980917ms)
+✔ KNOWN BUG (prototype): @[click] dynamic event argument is accepted and compiled as a fixed click handler (quick-quote compiler) (2.72ms)
+✔ KNOWN BUG (prototype): interpolated numbers use Rust Display, which diverges from JS String(n) for some values (133.740917ms)
+ℹ Rust format!("{}") outputs: ["1000000000000000000000","0.0000001","-0","0.30000000000000004","123456789012345680000","NaN","inf","0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005"]
+ℹ JS String(x) oracle:        ["1e+21","1e-7","0","0.30000000000000004","123456789012345680000","NaN","Infinity","5e-324"]
+✔ KNOWN BUG (prototype): Quick Quote toFixed emits Rust format!("{:.N}"), which rounds ties to even: (0.5).toFixed(0) and (2.5).toFixed(0) diverge from JS (127.747ms)
+ℹ Rust outputs of the emitted expressions: ["0","2","1.00"]
+ℹ JS (0.5).toFixed(0), (2.5).toFixed(0), (1.005).toFixed(2): ["1","3","1.00"]
+✔ KNOWN BUG (prototype): computed values are uncached Rust getters that recompute on every read (counter compiler) (0.624833ms)
+✔ KNOWN BUG (prototype): computed values are uncached Rust getters that recompute on every read (quick-quote compiler) (0.236083ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 5
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 338.268625
+
+✖ failing tests:
+
+test at tests/fixtures/prototype/regressions.test.mjs:50:3
+✖ KNOWN BUG (prototype): @[click] dynamic event argument is accepted and compiled as a fixed click handler (counter compiler) (4.980917ms)
+  Error: App.vue: dynamic event argument unsupported
+      at fail (file:///private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/record/reg/tests/fixtures/prototype/counter/compiler/compile.mjs:9:37)
+      at render (file:///private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/record/reg/tests/fixtures/prototype/counter/compiler/compile.mjs:118:79)
+      at Array.map (<anonymous>)
+      at compile (file:///private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/record/reg/tests/fixtures/prototype/counter/compiler/compile.mjs:140:37)
+      at TestContext.<anonymous> (file:///private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/record/reg/tests/fixtures/prototype/regressions.test.mjs:51:21)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17)
+--- end output (exit=1)

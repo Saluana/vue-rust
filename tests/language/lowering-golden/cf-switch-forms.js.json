@@ -1,0 +1,1 @@
+{"scenario":"cf-switch-forms","result":"ok","error":null,"entries":[{"label":"s1","values":["one;two;","two;","three;","def;three;"]},{"label":"s-str","values":["block+z"]},{"label":"s-lazy","values":["1;2;"]}],"unhandledRejections":[]}

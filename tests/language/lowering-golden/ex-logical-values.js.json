@@ -1,0 +1,1 @@
+{"scenario":"ex-logical-values","result":"ok","error":null,"entries":[{"label":"and","values":[0,"x","","z"]},{"label":"or","values":["x",1,null,"last"]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"watch/onwatchercleanup-after-await","result":"ok","error":null,"entries":[{"label":"log","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["run:1","run:2"],"len":2}]}],"unhandledRejections":[]}

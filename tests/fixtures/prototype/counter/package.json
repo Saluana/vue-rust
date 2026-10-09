@@ -1,0 +1,19 @@
+{
+  "name": "vue-rust-lab",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:demo": "node compiler/cli.mjs examples/Counter.vue build/counter",
+    "test": "node --test tests/*.test.mjs",
+    "native": "cargo run --manifest-path build/counter/Cargo.toml"
+  },
+  "dependencies": {
+    "@babel/parser": "7.29.9",
+    "@vue/compiler-dom": "3.5.43",
+    "@vue/compiler-sfc": "3.5.43"
+  },
+  "devDependencies": {
+    "vue": "3.5.43"
+  }
+}

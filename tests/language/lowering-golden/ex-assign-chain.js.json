@@ -1,0 +1,1 @@
+{"scenario":"ex-assign-chain","result":"ok","error":null,"entries":[{"label":"chain-assign","values":[5,5,5,"shared","shared"]},{"label":"assign-value","values":[10,9]}],"unhandledRejections":[]}

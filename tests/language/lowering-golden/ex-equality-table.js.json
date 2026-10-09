@@ -1,0 +1,1 @@
+{"scenario":"ex-equality-table","result":"ok","error":null,"entries":[{"label":"loose","values":[true,false,false,true,true,true,true]},{"label":"strict","values":[false,false,false,true,true]},{"label":"not","values":[false,true,false,false]}],"unhandledRejections":[]}

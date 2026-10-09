@@ -1,0 +1,9 @@
+# vn-value: JavaScript value primitives (WP-L1). No dependencies, not even dev-dependencies.
+[package]
+name = "vn-value"
+version = "0.0.1"
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]

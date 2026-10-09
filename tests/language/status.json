@@ -1,0 +1,121 @@
+{
+ "arrays/callback-methods": "pass",
+ "arrays/holes-basics": "pass",
+ "arrays/length-truncate-extend": "pass",
+ "arrays/mutation-during-iteration": "pass",
+ "arrays/sort-default-and-comparator": "pass",
+ "async/init-before-run": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "async/run-rejects-error": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "async/run-rejects-object": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "async/sync-throw-in-run": "pass",
+ "async/try-finally-await": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "coercion/loose-equality-table": "pass",
+ "coercion/plus-and-relational": "pass",
+ "coercion/truthiness-table": "pass",
+ "collections/map-insertion-order": {
+  "blocked": "Map objects are not traceable yet (WP-B4 Map, trace encoder)"
+ },
+ "collections/mutation-during-iteration": "pass",
+ "collections/object-key-identity": {
+  "blocked": "missing builtin Array.prototype[Symbol.iterator] (WP-B2 array iteration)"
+ },
+ "collections/set-nan-and-negative-zero": {
+  "blocked": "missing builtin Array.prototype[Symbol.iterator] (WP-B2 array iteration)"
+ },
+ "exceptions/engine-error-name-only": "pass",
+ "exceptions/finally-overrides-return": "pass",
+ "exceptions/finally-overrides-throw": "pass",
+ "exceptions/module-throw-after-trace": "pass",
+ "exceptions/module-throw-error": "pass",
+ "exceptions/module-throw-string": "pass",
+ "exceptions/nested-rethrow": "pass",
+ "exceptions/thrown-non-errors": "pass",
+ "functions/arrow-lexical-this": "pass",
+ "functions/callback-reentry": "pass",
+ "functions/closure-counter": "pass",
+ "functions/default-rest-params": "pass",
+ "functions/recursion": "pass",
+ "identity/alias-across-traces": "pass",
+ "identity/alias-in-one-trace": "pass",
+ "identity/cycles": "pass",
+ "identity/shared-mutation": "pass",
+ "lexical/block-shadowing": "pass",
+ "lexical/do-while-continue": "pass",
+ "lexical/loop-let-capture": "pass",
+ "lexical/loop-var-capture": "pass",
+ "lexical/switch-and-labels": "pass",
+ "lexical/tdz-reference-error": "pass",
+ "lexical/var-hoisting": "pass",
+ "modules/module-init-order": "pass",
+ "nullish/coalescing-vs-or": "pass",
+ "nullish/null-vs-undefined": "pass",
+ "nullish/optional-chain-short-circuit": "pass",
+ "numbers/float-printing": "pass",
+ "numbers/remainder-bitwise": "pass",
+ "numbers/special-values": "pass",
+ "numbers/to-fixed-ties": "pass",
+ "objects/delete-and-in": "pass",
+ "objects/destructuring-rest": "pass",
+ "objects/frozen-assignment": "pass",
+ "objects/getter-setter-literal": "pass",
+ "objects/integrity-freeze-seal": "pass",
+ "objects/integrity-prevent-extensions": "pass",
+ "objects/key-order": "pass",
+ "objects/spread-and-assign": "pass",
+ "promises/await-vs-then-interleave": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "promises/combinators": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "promises/finally-passthrough": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "promises/multiple-resolve": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "promises/rejection-handled-later": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "promises/then-chain-order": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "promises/thenable-assimilation": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "promises/unhandled-rejection": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "stdlib/json-roundtrip": "pass",
+ "stdlib/math-basics": "pass",
+ "stdlib/number-string-statics": "pass",
+ "strings/lone-surrogate": "pass",
+ "strings/methods-basics": "pass",
+ "strings/slice-emoji-halves": "pass",
+ "strings/utf16-length-index": "pass",
+ "symbols/registry-for": "pass",
+ "symbols/unique-and-description": "pass",
+ "timers/advance-order": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "timers/clear-timeout": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "timers/microtasks-between-timers": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "timers/now-clock": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ },
+ "timers/zero-delay-in-callback": {
+  "blocked": "async function lowering not implemented (WP-C1c)"
+ }
+}

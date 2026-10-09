@@ -1,0 +1,1 @@
+{"scenario":"ref/isref-unref","result":"ok","error":null,"entries":[{"label":"is","values":[true,true,false,false,true]},{"label":"unref","values":[4,8,5,true,9]}],"unhandledRejections":[]}

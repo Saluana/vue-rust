@@ -1,0 +1,1 @@
+{"scenario":"computed/lazy-cached-getter","result":"ok","error":null,"entries":[{"label":"before-read","values":[0]},{"label":"reads","values":[2,2,2,1]},{"label":"stale-read-not-yet","values":[1]},{"label":"after-change","values":[4,2]}],"unhandledRejections":[]}

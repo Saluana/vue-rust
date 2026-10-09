@@ -1,0 +1,1 @@
+{"scenario":"objects/frozen-assignment","result":"ok","error":null,"entries":[{"label":"write-error","values":["TypeError"]},{"label":"state","values":[{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","integrity":"frozen","props":[["n",1],["inner",{"$":"obj","id":2,"cls":"Object","proto":"Object.prototype","props":[["m",5]]}]]},true,false]}],"unhandledRejections":[]}

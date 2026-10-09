@@ -1,0 +1,14 @@
+# vn-testkit: trace encoder, scenario host globals and runner (WP-T1). Depends on the kernel by path only.
+[package]
+name = "vn-testkit"
+version = "0.0.1"
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lib]
+name = "vn_testkit"
+path = "src/lib.rs"
+
+[dependencies]
+vn-value = { path = "../value" }

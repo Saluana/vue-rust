@@ -1,0 +1,1 @@
+{"scenario":"exceptions/thrown-non-errors","result":"ok","error":null,"entries":[{"label":"caught","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["text",42,null,{"$":"undef"},{"$":"obj","id":2,"cls":"Object","proto":"Object.prototype","props":[["code","E1"]]}],"len":5}]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"cf-throw-values","result":"ok","error":null,"entries":[{"label":"thrown","values":["t;1;null;undefined;"]}],"unhandledRejections":[]}

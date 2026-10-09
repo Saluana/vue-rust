@@ -1,0 +1,1 @@
+{"scenario":"ex-shortcircuit-effects","result":"ok","error":null,"entries":[{"label":"short-circuit","values":[0,1,"used","b","01nullusedfalseb"]}],"unhandledRejections":[]}

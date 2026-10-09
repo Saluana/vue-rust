@@ -1,0 +1,1 @@
+{"scenario":"async/run-rejects-error","result":"throw","error":{"$":"obj","id":1,"cls":"Error","proto":"other","props":[],"name":"Error","message":"run failed"},"entries":[{"label":"run-start","values":[true]},{"label":"inside","values":[1]}],"unhandledRejections":[]}

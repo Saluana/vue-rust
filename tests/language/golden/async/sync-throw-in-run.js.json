@@ -1,0 +1,1 @@
+{"scenario":"async/sync-throw-in-run","result":"throw","error":"sync value","entries":[{"label":"before-sync-throw","values":["yes"]}],"unhandledRejections":[]}

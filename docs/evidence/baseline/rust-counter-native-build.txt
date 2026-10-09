@@ -1,0 +1,11 @@
+WP-G0D evidence: counter native executable build
+Claim: "Linux executable compiled successfully" (root README). This host is macOS arm64, so this is a macOS build. The Linux claim itself is NOT RUN.
+Result: PASSED (exit 0). Binary: target/g0d/debug/vue-rust-demo, 37,232,720 bytes, Mach-O 64-bit arm64 executable.
+sha256: b63a3869f030cb01d5deca5207fd8647d1e82fdcafb3d0a449fec395773a2d35
+Note: the first cargo build in this session printed only "Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.16s" (cache hit from the cargo test step). To get a real build log, cargo clean -p vue-rust-demo --manifest-path generated/Cargo.toml was run (removes only this package's artifacts from target/g0d), then the build below was repeated.
+Command: cargo build --locked --manifest-path generated/Cargo.toml   (same env as rust-counter-test.txt)
+Finished 2026-10-09T04:32:49Z UTC.
+----- raw output -----
+   Compiling vue-rust-demo v0.0.1 (/Users/brendon/Documents/vue-rust-lab/generated)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.55s
+exit=0 wall_s=1

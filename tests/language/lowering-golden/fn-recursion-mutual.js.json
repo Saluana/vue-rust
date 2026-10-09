@@ -1,0 +1,1 @@
+{"scenario":"fn-recursion-mutual","result":"ok","error":null,"entries":[{"label":"mutual","values":[true,true]},{"label":"fact","values":[3628800,2432902008176640000]},{"label":"fib","values":[610]}],"unhandledRejections":[]}

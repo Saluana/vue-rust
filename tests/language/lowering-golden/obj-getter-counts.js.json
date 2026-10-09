@@ -1,0 +1,1 @@
+{"scenario":"obj-getter-counts","result":"ok","error":null,"entries":[{"label":"getter-calls","values":["v","v",2]}],"unhandledRejections":[]}

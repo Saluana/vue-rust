@@ -1,0 +1,1 @@
+{"scenario":"ex-chained-optional-calls","result":"ok","error":null,"entries":[{"label":"chain-calls","values":["hi bo",{"$":"undef"},{"$":"undef"}]}],"unhandledRejections":[]}

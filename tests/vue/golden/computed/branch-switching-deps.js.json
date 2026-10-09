@@ -1,0 +1,1 @@
+{"scenario":"computed/branch-switching-deps","result":"ok","error":null,"entries":[{"label":"start","values":["a1",1]},{"label":"unused-branch-write","values":["a1",1]},{"label":"switched","values":["b2",2]},{"label":"old-branch-write","values":["b2",2]},{"label":"new-branch-write","values":["b3",3]}],"unhandledRejections":[]}

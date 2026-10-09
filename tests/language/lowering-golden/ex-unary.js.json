@@ -1,0 +1,1 @@
+{"scenario":"ex-unary","result":"ok","error":null,"entries":[{"label":"unary","values":[-3,3,{"$":"num","v":"NaN"},false,false,-4,1,{"$":"num","v":"-0"},{"$":"num","v":"NaN"},"number"]}],"unhandledRejections":[]}

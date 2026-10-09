@@ -1,0 +1,1 @@
+{"scenario":"timers/now-clock","result":"ok","error":null,"entries":[{"label":"clock","values":[0,0,250]},{"label":"zero-advance","values":[250]}],"unhandledRejections":[]}

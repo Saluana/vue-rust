@@ -1,0 +1,166 @@
+WP-G0D evidence: Quick Quote cargo test, run exactly as the WP specifies (same CARGO_TARGET_DIR as the counter: target/g0d)
+Claim: "Four quote arithmetic/state tests passed" (quote-app README in the archive /Users/brendon/Downloads/quick-quote-source.zip)
+Result: FAILED. Exit status 101. The test target "quote" did not compile (17 errors), so 0 tests ran.
+First error, verbatim: error[E0599]: no method named `labour` found for struct `App` in the current scope
+Other error kinds: E0599 for totalText, mowingRate, total, cleanupRate, hedgeRate, clearExtras; E0609 for fields hours, rate, disposal, materials.
+Likely cause (strong evidence, see rust-claims.md): artifact collision with the counter crate in the shared target dir. The Quick Quote source itself defines these methods, and its isolated build passes (rust-quickquote-test-isolated.txt).
+Archive handling: entries listed first (19 files, no .., no absolute paths, no symlinks, no build.rs, no shell scripts). Extracted into a new empty scratchpad dir (qq-g0d). No script from the archive was run.
+Command: cargo test --locked --manifest-path $SCRATCH/qq-g0d/quick-quote/quote-app/Cargo.toml   with CARGO_TARGET_DIR=target/g0d
+Finished 2026-10-09T04:33:51Z UTC (failed at compile, wall 0 s).
+Raw output: the full 155-line log, because the first error is outside any 60-line tail.
+----- raw output -----
+   Compiling vue-rust-demo v0.0.1 (/private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/qq-g0d/quick-quote/quote-app)
+warning: method `labourText` should have a snake case name
+  --> src/app.rs:20:8
+   |
+20 | pub fn labourText(&self) -> String { format!("{:.2}", self.labour()) }
+   |        ^^^^^^^^^^ help: convert the identifier to snake case: `labour_text`
+   |
+   = note: `#[warn(non_snake_case)]` (part of `#[warn(nonstandard_style)]`) on by default
+
+warning: method `totalText` should have a snake case name
+  --> src/app.rs:21:8
+   |
+21 | pub fn totalText(&self) -> String { format!("{:.2}", self.total()) }
+   |        ^^^^^^^^^ help: convert the identifier to snake case: `total_text`
+
+warning: method `hedgeRate` should have a snake case name
+  --> src/app.rs:22:8
+   |
+22 | pub fn hedgeRate(&mut self) { self.rate = 100.0f64; }
+   |        ^^^^^^^^^ help: convert the identifier to snake case: `hedge_rate`
+
+warning: method `mowingRate` should have a snake case name
+  --> src/app.rs:23:8
+   |
+23 | pub fn mowingRate(&mut self) { self.rate = 80.0f64; }
+   |        ^^^^^^^^^^ help: convert the identifier to snake case: `mowing_rate`
+
+warning: method `cleanupRate` should have a snake case name
+  --> src/app.rs:24:8
+   |
+24 | pub fn cleanupRate(&mut self) { self.rate = 110.0f64; }
+   |        ^^^^^^^^^^^ help: convert the identifier to snake case: `cleanup_rate`
+
+warning: method `clearExtras` should have a snake case name
+  --> src/app.rs:25:8
+   |
+25 | pub fn clearExtras(&mut self) { self.disposal = 0.0f64;
+   |        ^^^^^^^^^^^ help: convert the identifier to snake case: `clear_extras`
+
+error[E0599]: no method named `labour` found for struct `App` in the current scope
+ --> tests/quote.rs:2:61
+  |
+2 | #[test]fn initial_quote(){let a=App::default();assert_eq!(a.labour(),600.0);assert_eq!(a.totalText(),"750.00");}
+  |                                                             ^^^^^^ method not found in `App`
+
+error[E0599]: no method named `totalText` found for struct `App` in the current scope
+ --> tests/quote.rs:2:90
+  |
+2 | #[test]fn initial_quote(){let a=App::default();assert_eq!(a.labour(),600.0);assert_eq!(a.totalText(),"750.00");}
+  |                                                                                          ^^^^^^^^^ method not found in `App`
+
+error[E0599]: no method named `mowingRate` found for struct `App` in the current scope
+ --> tests/quote.rs:3:48
+  |
+3 | #[test]fn presets(){let mut a=App::default();a.mowingRate();assert_eq!(a.total(),630.0);a.cleanupRate();assert_eq!(a.total(),810.0);a...
+  |                                                ^^^^^^^^^^ method not found in `App`
+
+error[E0599]: no method named `total` found for struct `App` in the current scope
+ --> tests/quote.rs:3:74
+  |
+3 | #[test]fn presets(){let mut a=App::default();a.mowingRate();assert_eq!(a.total(),630.0);a.cleanupRate();assert_eq!(a.total(),810.0);a...
+  |                                                                          ^^^^^ method not found in `App`
+
+error[E0599]: no method named `cleanupRate` found for struct `App` in the current scope
+ --> tests/quote.rs:3:91
+  |
+3 | #[test]fn presets(){let mut a=App::default();a.mowingRate();assert_eq!(a.total(),630.0);a.cleanupRate();assert_eq!(a.total(),810.0);a...
+  |                                                                                           ^^^^^^^^^^^ method not found in `App`
+
+error[E0599]: no method named `total` found for struct `App` in the current scope
+ --> tests/quote.rs:3:118
+  |
+3 | ...q!(a.total(),630.0);a.cleanupRate();assert_eq!(a.total(),810.0);a.hedgeRate();assert_eq!(a.total(),750.0);}
+  |                                                     ^^^^^ method not found in `App`
+
+error[E0599]: no method named `hedgeRate` found for struct `App` in the current scope
+ --> tests/quote.rs:3:135
+  |
+3 | ...;a.cleanupRate();assert_eq!(a.total(),810.0);a.hedgeRate();assert_eq!(a.total(),750.0);}
+  |                                                   ^^^^^^^^^ method not found in `App`
+
+error[E0599]: no method named `total` found for struct `App` in the current scope
+ --> tests/quote.rs:3:160
+  |
+3 | ..._eq!(a.total(),810.0);a.hedgeRate();assert_eq!(a.total(),750.0);}
+  |                                                     ^^^^^ method not found in `App`
+
+error[E0609]: no field `hours` on type `App`
+ --> tests/quote.rs:4:68
+  |
+4 | #[test]fn fractional_hours_and_extras(){let mut a=App::default();a.hours=2.5;a.rate=90.0;a.disposal=75.0;a.materials=25.0;assert_eq!(...
+  |                                                                    ^^^^^ unknown field
+  |
+  = note: available fields are: `count`, `name`
+
+error[E0609]: no field `rate` on type `App`
+ --> tests/quote.rs:4:80
+  |
+4 | #[test]fn fractional_hours_and_extras(){let mut a=App::default();a.hours=2.5;a.rate=90.0;a.disposal=75.0;a.materials=25.0;assert_eq!(...
+  |                                                                                ^^^^ unknown field
+  |
+  = note: available fields are: `count`, `name`
+
+error[E0609]: no field `disposal` on type `App`
+ --> tests/quote.rs:4:92
+  |
+4 | #[test]fn fractional_hours_and_extras(){let mut a=App::default();a.hours=2.5;a.rate=90.0;a.disposal=75.0;a.materials=25.0;assert_eq!(...
+  |                                                                                            ^^^^^^^^ unknown field
+  |
+  = note: available fields are: `count`, `name`
+
+error[E0609]: no field `materials` on type `App`
+ --> tests/quote.rs:4:108
+  |
+4 | #[test]fn fractional_hours_and_extras(){let mut a=App::default();a.hours=2.5;a.rate=90.0;a.disposal=75.0;a.materials=25.0;assert_eq!(...
+  |                                                                                                            ^^^^^^^^^ unknown field
+  |
+  = note: available fields are: `count`, `name`
+
+error[E0599]: no method named `totalText` found for struct `App` in the current scope
+ --> tests/quote.rs:4:136
+  |
+4 | ...;a.disposal=75.0;a.materials=25.0;assert_eq!(a.totalText(),"325.00");a.clearExtras();assert_eq!(a.totalText(),"225.00");}
+  |                                                   ^^^^^^^^^ method not found in `App`
+
+error[E0599]: no method named `clearExtras` found for struct `App` in the current scope
+ --> tests/quote.rs:4:160
+  |
+4 | ...als=25.0;assert_eq!(a.totalText(),"325.00");a.clearExtras();assert_eq!(a.totalText(),"225.00");}
+  |                                                  ^^^^^^^^^^^ method not found in `App`
+
+error[E0599]: no method named `totalText` found for struct `App` in the current scope
+ --> tests/quote.rs:4:187
+  |
+4 | ...lText(),"325.00");a.clearExtras();assert_eq!(a.totalText(),"225.00");}
+  |                                                   ^^^^^^^^^ method not found in `App`
+
+error[E0599]: no method named `clearExtras` found for struct `App` in the current scope
+ --> tests/quote.rs:5:59
+  |
+5 | #[test]fn independent_quotes(){let mut a=App::default();a.clearExtras();assert_eq!(App::default().total(),750.0);}
+  |                                                           ^^^^^^^^^^^ method not found in `App`
+
+error[E0599]: no method named `total` found for struct `App` in the current scope
+ --> tests/quote.rs:5:99
+  |
+5 | #[test]fn independent_quotes(){let mut a=App::default();a.clearExtras();assert_eq!(App::default().total(),750.0);}
+  |                                                                                                   ^^^^^ method not found in `App`
+
+Some errors have detailed explanations: E0599, E0609.
+For more information about an error, try `rustc --explain E0599`.
+error: could not compile `vue-rust-demo` (test "quote") due to 17 previous errors
+warning: build failed, waiting for other jobs to finish...
+warning: `vue-rust-demo` (lib test) generated 6 warnings
+exit=101 wall_s=0

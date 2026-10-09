@@ -1,0 +1,1 @@
+{"scenario":"forof-user-iterable-break","result":"ok","error":null,"entries":[{"label":"forof-break","values":["12","closed;"]},{"label":"forof-continue","values":["23","closed;"]},{"label":"forof-return","values":[2,"closed;closed;"]}],"unhandledRejections":[]}

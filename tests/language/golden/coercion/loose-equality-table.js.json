@@ -1,0 +1,1 @@
+{"scenario":"coercion/loose-equality-table","result":"ok","error":null,"entries":[{"label":"eq-1","values":[true,false]},{"label":"eq-0","values":[true,true,false]},{"label":"eq-null","values":[true,false,false]},{"label":"eq-bool","values":[true,true,true]},{"label":"eq-nan","values":[false,false]}],"unhandledRejections":[]}

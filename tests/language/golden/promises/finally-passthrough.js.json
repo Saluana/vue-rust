@@ -1,0 +1,1 @@
+{"scenario":"promises/finally-passthrough","result":"ok","error":null,"entries":[{"label":"finally-ok","values":[]},{"label":"passed","values":["value"]},{"label":"replaced-by","values":["replaced"]}],"unhandledRejections":[]}

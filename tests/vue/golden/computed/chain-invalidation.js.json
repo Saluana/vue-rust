@@ -1,0 +1,1 @@
+{"scenario":"computed/chain-invalidation","result":"ok","error":null,"entries":[{"label":"first","values":[20,1,1]},{"label":"invalidated","values":[1,1]},{"label":"second","values":[30,2,2]},{"label":"reread","values":[30,2,2]}],"unhandledRejections":[]}

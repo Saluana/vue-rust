@@ -1,0 +1,1 @@
+{"scenario":"exc-rethrow-identity","result":"ok","error":null,"entries":[{"label":"inner-sees","values":[true]},{"label":"outer-finally","values":[true]},{"label":"outer-catch","values":[true,"disk"]}],"unhandledRejections":[]}

@@ -1,0 +1,366 @@
+{
+  "cases": [
+    {
+      "name": "single",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "chain",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "c",
+            "b",
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "diamond",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "d",
+            "a",
+            "b",
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cycle-function",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "b:f",
+            "main:gf"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "cycle-let-uncaught",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ReferenceError",
+          "sameThrow": false,
+          "log": []
+        },
+        {
+          "load": "main.mjs",
+          "outcome": "ReferenceError",
+          "sameThrow": true,
+          "log": []
+        }
+      ]
+    },
+    {
+      "name": "cycle-let-caught",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "b:ReferenceError",
+            "main:1"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "reexport-rename",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "b",
+            "main:42"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "reexport-chain",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "c",
+            "main:cx"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "star-same-binding",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "d",
+            "main:dx"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "star-ambiguous-namespace",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "b",
+            "c",
+            "keys:y,z",
+            "x:false"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "star-ambiguous-import",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "SyntaxError",
+          "sameThrow": false,
+          "log": []
+        },
+        {
+          "load": "b.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "star-default-excluded",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "keys:q",
+            "default:false"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "star-cycle",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "keys:a1,b1"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "missing-module",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "Error",
+          "sameThrow": false,
+          "log": []
+        }
+      ]
+    },
+    {
+      "name": "missing-export",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "SyntaxError",
+          "sameThrow": false,
+          "log": []
+        },
+        {
+          "load": "lib.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "lib"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "error-cache",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "RangeError",
+          "sameThrow": false,
+          "log": [
+            "bad"
+          ]
+        },
+        {
+          "load": "main.mjs",
+          "outcome": "RangeError",
+          "sameThrow": true,
+          "log": []
+        }
+      ]
+    },
+    {
+      "name": "error-sibling",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "RangeError",
+          "sameThrow": false,
+          "log": [
+            "bad"
+          ]
+        },
+        {
+          "load": "other.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "other"
+          ]
+        },
+        {
+          "load": "main.mjs",
+          "outcome": "RangeError",
+          "sameThrow": true,
+          "log": []
+        }
+      ]
+    },
+    {
+      "name": "error-chain-cache",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "RangeError",
+          "sameThrow": false,
+          "log": [
+            "bad"
+          ]
+        },
+        {
+          "load": "mid.mjs",
+          "outcome": "RangeError",
+          "sameThrow": true,
+          "log": []
+        }
+      ]
+    },
+    {
+      "name": "native-vue",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "main:3.5.43"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "namespace-contents",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "keys:2,10,a,b,bump,counter,default,f,zz",
+            "own:2,10,a,b,bump,counter,default,f,zz,sym:Symbol.toStringTag",
+            "proto:true",
+            "ext:false",
+            "tag:Module",
+            "vals:1,2,1,2,3,dflt,f,0,undefined",
+            "desc:1,true,true,false",
+            "desctag:Module,false,false,false",
+            "set:false",
+            "define:false",
+            "delete:false",
+            "delete2:true",
+            "has:true,false,true",
+            "same:true",
+            "assign:TypeError",
+            "seal:true",
+            "freeze:TypeError",
+            "live:1"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "namespace-tdz",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "in:true",
+            "keys:ReferenceError",
+            "tdz:ReferenceError",
+            "lib",
+            "main"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "live-binding",
+      "steps": [
+        {
+          "load": "main.mjs",
+          "outcome": "ok",
+          "sameThrow": null,
+          "log": [
+            "before:0",
+            "after:1"
+          ]
+        }
+      ]
+    }
+  ]
+}

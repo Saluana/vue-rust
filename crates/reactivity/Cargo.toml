@@ -1,0 +1,10 @@
+# vn-reactivity: behaviour port of the @vue/reactivity 3.5.43 core (WP-R1a) over vn-value. No dependencies beyond vn-value.
+[package]
+name = "vn-reactivity"
+version = "0.0.1"
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+vn-value = { path = "../value" }
