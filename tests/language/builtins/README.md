@@ -28,7 +28,7 @@ node --test "tests/language/builtin-corpus.test.mjs"          # library and suit
 - `target` is a dotted path from the global object. `"new:Map"` constructs. `static: true` means `this` is the owner
   object and is not part of `pre`.
 - `"get": 1` marks a data property read (`Math.PI`): nothing is called, `pre` is `[]`, `post.ret` is the value.
-- `"approx": 1` marks results that may differ from the platform libm by one ulp (`sin`, `exp`, `pow`, `hypot`, ...).
+- `"approx": 1` marks results that may differ from V8 by one ulp (`sin`, `exp`, `pow`, `hypot`, ...).
 - `"cbs"` aligns with `pre` (`[this?, ...args]`); a callback preset name at a position means that argument is the
   preset. The preset appears in `pre` as `{"$":"fn","name","length"}`. Only the callback-taking targets in
   `CALLBACK_ARITY` (`Array.prototype.map`, `reduce`, `sort`) may carry `cbs`.

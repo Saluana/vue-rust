@@ -697,9 +697,11 @@ pub fn js_rem(a: f64, b: f64) -> f64 {
 }
 
 /// `**` and Math.pow (ECMA-262 6.1.6.1.3 Number::exponentiate). Differs from C `pow` for NaN exponents
-/// and for |base| = 1 with an infinite exponent. The exponents 1, -1, 2 and 0.5 (non-negative base) are
-/// computed directly, as V8's fdlibm-derived pow does: `(+0)**0.5` is `sqrt`, which is correctly rounded
-/// where the platform `powf` is not for some inputs (for example `Number.MAX_VALUE ** 0.5`).
+/// and for |base| = 1 with an infinite exponent. The exponents 1, 2 and 0.5 (non-negative base) are computed as
+/// x, x * x and sqrt(x), which matched V8 14.6 on every sampled input. Every other case uses the platform `powf`:
+/// V8 has its own pow, and a pure-Rust fdlibm pow disagreed with V8 14.6 on about 3% of random inputs, so it is not
+/// used (see `exponentiation_matches_v8` in crates/value/tests/number_corpus.rs). x ** -1 is not 1 / x: V8 returns
+/// 1 for 0.9999999999999999 ** -1, where 1 / x rounds up.
 pub fn js_pow(base: f64, exp: f64) -> f64 {
     if exp.is_nan() {
         return f64::NAN;
@@ -712,9 +714,6 @@ pub fn js_pow(base: f64, exp: f64) -> f64 {
     }
     if exp == 1.0 {
         return base;
-    }
-    if exp == -1.0 {
-        return 1.0 / base;
     }
     if exp == 2.0 {
         return base * base;

@@ -5,9 +5,9 @@
 use vn_testkit::replay::replay_suite_approx_ulps;
 use vn_testkit::{ReplayOptions, ReplayReport};
 
-/// Approx numbers may differ from V8 by this many ulps (libm versus V8's ieee754 port; the two `tan` cases of math.json
-/// are two ulps away, see `tan_cases_need_the_two_ulp_tolerance`).
-const APPROX_ULPS: u32 = 2;
+/// Approx numbers may differ from V8 by this many ulps: one, the tolerance of `replay_suite`. The `tan` cases of
+/// math.json are exact (see `tan_cases_match_v8_bit_for_bit`).
+const APPROX_ULPS: u32 = 1;
 
 /// The suites this WP generates (tests/language/gen/gen-b3.mjs).
 const OWN_SUITES: &[(&str, &str)] = &[
@@ -61,8 +61,7 @@ fn b3_generated_suites_replay_with_no_failures_and_no_missing_targets() {
     assert!(problems.is_empty(), "replay problems:\n{problems}");
 }
 
-/// Not green until the Array family provides Array.prototype.toString: 32 cases pass arrays, whose ToString needs it.
-/// Left failing on purpose.
+/// The O2 seed suites (math.json and number.json) must replay with no failures and no missing targets.
 #[test]
 fn o2_math_and_number_suites_replay_with_no_failures() {
     let problems = replay_all(O2_SUITES);
@@ -92,15 +91,22 @@ fn an_absent_method_is_reported_missing() {
     assert!(report.failures.is_empty(), "{}", report_text(&report));
 }
 
-/// The two `tan` cases of math.json are about two ulps from V8: they fail with a one-ulp tolerance and pass with two.
+/// Math.tan is bit-exact with V8: every `tan` case of math.json passes with no tolerance. The two string-argument cases
+/// (tan/arg-str5 and tan/arg-strws) were two ulps from V8 under the platform libm, which is why the tolerance was two.
 #[test]
-fn tan_cases_need_the_two_ulp_tolerance() {
-    let failing = |ulps: u32| -> Vec<String> {
-        replay_suite_approx_ulps(O2_SUITES[0].1, &ReplayOptions::default(), ulps).failures.into_iter().map(|f| f.id).collect()
-    };
-    let one = failing(1);
-    assert!(one.iter().any(|id| id == "tan/arg-str5") && one.iter().any(|id| id == "tan/arg-strws"), "{one:?}");
-    let two = failing(2);
-    // tan/arg-arr (an array argument) fails at both tolerances for the Array reason; only the two scalar cases are checked.
-    assert!(!two.iter().any(|id| id == "tan/arg-str5" || id == "tan/arg-strws"), "{two:?}");
+fn tan_cases_match_v8_bit_for_bit() {
+    let text = O2_SUITES[0].1;
+    for id in ["tan/arg-str5", "tan/arg-strws"] {
+        assert!(text.contains(&format!("\"id\":\"{id}\"")), "{id} is not a case of math.json");
+    }
+    let report = replay_suite_approx_ulps(text, &ReplayOptions::default(), 0);
+    let failing: Vec<&str> =
+        report.failures.iter().map(|f| f.id.as_str()).filter(|id| id.starts_with("tan/")).collect();
+    let missing: Vec<&str> =
+        report.missing.iter().map(|m| m.id.as_str()).filter(|id| id.starts_with("tan/")).collect();
+    assert!(
+        failing.is_empty() && missing.is_empty(),
+        "tan failures {failing:?}, missing {missing:?}\n{}",
+        report_text(&report)
+    );
 }
