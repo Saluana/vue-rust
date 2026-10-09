@@ -4,7 +4,7 @@
 // the temporaries are frame slots (buf.mjs); argument and element lists are accumulators (vn_acc_* in the prelude), and
 // await is `await_value(rt, v).await?` stored in a slot.
 import { readVar, cellExpr, assignVar, prepareMember, putPrepared, bindPattern } from './vars.mjs';
-import { rstr, f64Lit, fnName } from './names.mjs';
+import { rstr, f64Lit, fnName, owned, vecNew } from './names.mjs';
 
 const BIN_FN = {
   '+': 'add', '-': 'sub', '*': 'mul', '/': 'div', '%': 'rem', '**': 'pow', '<<': 'shl', '>>': 'shr', '>>>': 'ushr',
@@ -43,20 +43,21 @@ function emitArgs(em, args) {
         em.line(`vn_acc_spread(rt, &${acc}, &${x})?;`);
       } else {
         const x = emitExpr(em, a);
-        em.line(`vn_acc_push(rt, &${acc}, ${x}.clone())?;`);
+        em.line(`vn_acc_push(rt, &${acc}, ${owned(x)})?;`);
       }
     }
     return `vn_acc_take(rt, &${acc})?`;
   }
   const va = em.uniq('a');
-  em.line(`let mut ${va}: Vec<Value> = Vec::new();`);
+  const spread = args.some((a) => a.k === 'spread');
+  em.line(`let mut ${va}: Vec<Value> = ${vecNew(spread ? null : args.length)};`);
   for (const a of args) {
     if (a.k === 'spread') {
       const x = emitExpr(em, a.e);
       em.line(`vn_spread(rt, &mut ${va}, &${x})?;`);
     } else {
       const x = emitExpr(em, a);
-      em.line(`${va}.push(${x}.clone());`);
+      em.line(`${va}.push(${owned(x)});`);
     }
   }
   return va;
@@ -64,7 +65,7 @@ function emitArgs(em, args) {
 
 // Reads a member value: static names need no conversion; computed keys go through vn_get (nullish base first).
 function getMember(em, o, key) {
-  if (key.k === 's') return bindTmp(em, `rt.get_v(&${o}, &PropKey::from_str(${rstr(key.s)}))?`);
+  if (key.k === 's') return bindTmp(em, `rt.get_v(&${o}, &PropKey::lit(${rstr(key.s)}))?`);
   const kv = emitExpr(em, key.e);
   return bindTmp(em, `vn_get(rt, &${o}, &${kv})?`);
 }
@@ -90,7 +91,7 @@ function emitChain(em, n) {
   em.defMut(th, 'Value::Undefined');
   const base = emitExpr(em, n.base);
   const cur = em.tmp();
-  em.defMut(cur, `${base}.clone()`);
+  em.defMut(cur, owned(base));
   em.line(`'${label}: {`);
   em.depth += 1;
   let prevMember = false;
@@ -101,7 +102,7 @@ function emitChain(em, n) {
       const obj = em.tmp();
       em.def(obj, `${cur}.clone()`);
       if (link.key.k === 's') {
-        em.set(cur, `rt.get_v(&${obj}, &PropKey::from_str(${rstr(link.key.s)}))?`);
+        em.set(cur, `rt.get_v(&${obj}, &PropKey::lit(${rstr(link.key.s)}))?`);
       } else {
         const kv = emitExpr(em, link.key.e);
         em.set(cur, `vn_get(rt, &${obj}, &${kv})?`);
@@ -126,7 +127,7 @@ function emitChain(em, n) {
 
 // Assignment operators on a member target: the key is converted by vn_get and again by vn_put (V8 does the same).
 function memberRead(em, prep) {
-  if (prep.name !== null) return bindTmp(em, `rt.get_v(&${prep.o}, &PropKey::from_str(${rstr(prep.name)}))?`);
+  if (prep.name !== null) return bindTmp(em, `rt.get_v(&${prep.o}, &PropKey::lit(${rstr(prep.name)}))?`);
   return bindTmp(em, `vn_get(rt, &${prep.o}, &${prep.kv})?`);
 }
 
@@ -142,7 +143,7 @@ function targetRead(em, t) {
 
 function targetWrite(em, t, value) {
   if (t.k === 'tvar') assignVar(em, t, value);
-  else em.line(`vn_gset(rt, ${rstr(t.name)}, ${value}.clone())?;`);
+  else em.line(`vn_gset(rt, ${rstr(t.name)}, ${owned(value)})?;`);
 }
 
 function emitAssign(em, n) {
@@ -190,7 +191,7 @@ function emitLogAssign(em, n) {
     em.depth += 1;
     const r = emitExpr(em, n.v);
     memberWrite(em, prep, r);
-    em.set(res, `${r}.clone()`);
+    em.set(res, owned(r));
     em.depth -= 1;
     em.line('}');
     return res;
@@ -201,7 +202,7 @@ function emitLogAssign(em, n) {
   em.depth += 1;
   const r = emitExpr(em, n.v);
   targetWrite(em, t, r);
-  em.set(res, `${r}.clone()`);
+  em.set(res, owned(r));
   em.depth -= 1;
   em.line('}');
   return res;
@@ -260,13 +261,14 @@ export function emitExpr(em, n) {
             em.line(`vn_acc_spread(rt, &${acc}, &${x})?;`);
           } else {
             const x = emitExpr(em, el);
-            em.line(`vn_acc_push(rt, &${acc}, ${x}.clone())?;`);
+            em.line(`vn_acc_push(rt, &${acc}, ${owned(x)})?;`);
           }
         }
         return bindTmp(em, `vn_array(rt, vn_acc_take(rt, &${acc})?)?`);
       }
       const va = em.uniq('e');
-      em.line(`let mut ${va}: Vec<Value> = Vec::new();`);
+      const spread = n.elems.some((el) => el.k === 'spread');
+      em.line(`let mut ${va}: Vec<Value> = ${vecNew(spread ? null : n.elems.length)};`);
       for (const el of n.elems) {
         if (el.k === 'hole') em.line(`${va}.push(Value::Hole);`);
         else if (el.k === 'spread') {
@@ -274,7 +276,7 @@ export function emitExpr(em, n) {
           em.line(`vn_spread(rt, &mut ${va}, &${x})?;`);
         } else {
           const x = emitExpr(em, el);
-          em.line(`${va}.push(${x}.clone());`);
+          em.line(`${va}.push(${owned(x)});`);
         }
       }
       return bindTmp(em, `vn_array(rt, ${va})?`);
@@ -290,7 +292,7 @@ export function emitExpr(em, n) {
     case 'new': {
       const f = emitExpr(em, n.f);
       const args = emitArgs(em, n.args);
-      return bindTmp(em, `rt.construct(&${f}, &${args}, &${f}.clone())?`);
+      return bindTmp(em, `rt.construct(&${f}, &${args}, &${owned(f)})?`);
     }
     case 'chain':
       return emitChain(em, n).v;
@@ -332,14 +334,14 @@ export function emitExpr(em, n) {
     case 'log': {
       const res = em.tmp();
       const l = emitExpr(em, n.l);
-      em.defMut(res, `${l}.clone()`);
+      em.defMut(res, owned(l));
       const test = n.op === '&&' ? `vn_truth(&${res})`
         : n.op === '||' ? `!vn_truth(&${res})`
           : `${res}.is_nullish()`;
       em.line(`if ${test} {`);
       em.depth += 1;
       const r = emitExpr(em, n.r);
-      em.set(res, `${r}.clone()`);
+      em.set(res, owned(r));
       em.depth -= 1;
       em.line('}');
       return res;
@@ -351,12 +353,12 @@ export function emitExpr(em, n) {
       em.line(`if vn_truth(&${t}) {`);
       em.depth += 1;
       const c = emitExpr(em, n.c);
-      em.set(res, `${c}.clone()`);
+      em.set(res, owned(c));
       em.depth -= 1;
       em.line('} else {');
       em.depth += 1;
       const a = emitExpr(em, n.a);
-      em.set(res, `${a}.clone()`);
+      em.set(res, owned(a));
       em.depth -= 1;
       em.line('}');
       return res;
@@ -396,7 +398,7 @@ export function emitExpr(em, n) {
       if (!em.async) throw new Error('await outside an async function');
       const v = emitExpr(em, n.e);
       const r = em.tmp();
-      em.def(r, `await_value(rt, ${v}.clone()).await?`);
+      em.def(r, `await_value(rt, ${owned(v)}).await?`);
       return r;
     }
     default:
@@ -416,7 +418,7 @@ function emitCall(em, n) {
     const obj = emitExpr(em, n.f.o);
     const fv = getMember(em, obj, n.f.key);
     const args = emitArgs(em, n.args);
-    return bindTmp(em, `vn_call(rt, &${fv}, &${obj}.clone(), &${args}, ${what})?`);
+    return bindTmp(em, `vn_call(rt, &${fv}, &${owned(obj)}, &${args}, ${what})?`);
   }
   if (n.f.k === 'chain' && n.chainCallee) {
     const { v, t } = emitChain(em, n.f);
@@ -441,13 +443,13 @@ function emitObject(em, n) {
     if (p.k === 'init') {
       if (p.key.k === 's') {
         const v = emitExpr(em, p.v);
-        em.line(`rt.define_data(${o}, PropKey::from_str(${rstr(p.key.s)}), ${v}.clone(), Flags::ALL)?;`);
+        em.line(`rt.define_data(${o}, PropKey::lit(${rstr(p.key.s)}), ${owned(v)}, Flags::ALL)?;`);
       } else {
         const kv = emitExpr(em, p.key.e);
         const kk = em.keyTmp();
         em.defKey(kk, `vn_key(rt, &${kv})?`);
         const v = emitExpr(em, p.v);
-        em.line(`rt.define_data(${o}, ${kk}.clone(), ${v}.clone(), Flags::ALL)?;`);
+        em.line(`rt.define_data(${o}, ${kk}.clone(), ${owned(v)}, Flags::ALL)?;`);
         if (p.v.k === 'fn' && em.hir.fns[p.v.f].nameFromKey) {
           em.line(`vn_set_name(rt, &${v}, &${kk}, "")?;`);
         }
@@ -456,7 +458,7 @@ function emitObject(em, n) {
     }
     // get / set: the key is converted first, then the function value is created.
     const kk = em.keyTmp();
-    if (p.key.k === 's') em.defKey(kk, `PropKey::from_str(${rstr(p.key.s)})`);
+    if (p.key.k === 's') em.defKey(kk, `PropKey::lit(${rstr(p.key.s)})`);
     else {
       const kv = emitExpr(em, p.key.e);
       em.defKey(kk, `vn_key(rt, &${kv})?`);

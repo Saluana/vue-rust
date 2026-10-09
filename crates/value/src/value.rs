@@ -1,5 +1,8 @@
 //! Core value types: `Value`, `ObjRef`, `Sym`, `PropKey`, `Throw`, `Res`. No heap access here.
 
+use std::cell::RefCell;
+use std::collections::HashMap;
+
 use crate::jsstr::JsStr;
 use crate::number;
 
@@ -87,9 +90,20 @@ impl PropKey {
         PropKey::from_jsstr(JsStr::from_str(s))
     }
 
+    /// `PropKey::from_str(s)` for a string literal, encoded once per thread. The cache is keyed by the address and
+    /// length of `s`: a `'static` string never changes its bytes, so equal keys mean equal text.
+    pub fn lit(s: &'static str) -> PropKey {
+        let id = (s.as_ptr() as usize, s.len());
+        LIT_KEYS.with(|cache| cache.borrow_mut().entry(id).or_insert_with(|| PropKey::from_str(s)).clone())
+    }
+
     pub fn is_index(&self) -> bool {
         matches!(self, PropKey::Index(_))
     }
+}
+
+thread_local! {
+    static LIT_KEYS: RefCell<HashMap<(usize, usize), PropKey>> = RefCell::new(HashMap::new());
 }
 
 /// A thrown JavaScript value. `Err(Throw)` is JavaScript `throw`; Rust panics are framework bugs.
@@ -122,5 +136,42 @@ pub fn same_value(a: &Value, b: &Value) -> bool {
         (Value::Symbol(x), Value::Symbol(y)) => x == y,
         (Value::Object(x), Value::Object(y)) => x == y,
         _ => false,
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn lit_is_from_str_for_every_kind_of_name() {
+        let names: [&'static str; 14] = [
+            "value", "length", "__v_skip", "", "0", "1", "42", "4294967294", "4294967295", "01", "-1", "\u{e9}",
+            "a\u{1F600}b", "\u{FFFD}",
+        ];
+        for name in names {
+            // The first call encodes the name; the second one reads the cache. Both must equal from_str.
+            assert_eq!(PropKey::lit(name), PropKey::from_str(name), "key of {name:?}");
+            assert_eq!(PropKey::lit(name), PropKey::from_str(name), "cached key of {name:?}");
+        }
+    }
+
+    #[test]
+    fn lit_turns_canonical_indices_into_index_keys() {
+        assert_eq!(PropKey::lit("0"), PropKey::Index(0));
+        assert_eq!(PropKey::lit("42"), PropKey::Index(42));
+        assert_eq!(PropKey::lit("4294967294"), PropKey::Index(4294967294));
+        assert_eq!(PropKey::lit("01"), PropKey::from_str("01"));
+        assert!(matches!(PropKey::lit("4294967295"), PropKey::Str(_)));
+        assert!(matches!(PropKey::lit("value"), PropKey::Str(_)));
+    }
+
+    #[test]
+    fn lit_keys_of_equal_text_from_different_literals_are_equal() {
+        // Two literals with the same text may have different addresses; the keys still compare equal.
+        let a: &'static str = "shared";
+        let b: &'static str = "shared";
+        assert_eq!(PropKey::lit(a), PropKey::lit(b));
+        assert_eq!(PropKey::lit(a), PropKey::from_str("shared"));
     }
 }

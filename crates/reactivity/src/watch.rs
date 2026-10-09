@@ -632,9 +632,9 @@ pub fn watch_base(rt: &Rt, source: Value, cb: Option<Value>, opts: WatchOptions)
     }
     let pause = native(rt, "bound pause", 0, pause_code, vec![Value::Object(effect)]);
     let resume = native(rt, "bound resume", 0, resume_code, vec![Value::Object(effect)]);
-    rt.define_data(handle, PropKey::from_str("pause"), Value::Object(pause), vn_value::Flags::ALL)?;
-    rt.define_data(handle, PropKey::from_str("resume"), Value::Object(resume), vn_value::Flags::ALL)?;
-    rt.define_data(handle, PropKey::from_str("stop"), Value::Object(handle), vn_value::Flags::ALL)?;
+    rt.define_data(handle, PropKey::lit("pause"), Value::Object(pause), vn_value::Flags::ALL)?;
+    rt.define_data(handle, PropKey::lit("resume"), Value::Object(resume), vn_value::Flags::ALL)?;
+    rt.define_data(handle, PropKey::lit("stop"), Value::Object(handle), vn_value::Flags::ALL)?;
     Ok(WatchHandle { handle: Value::Object(handle) })
 }
 

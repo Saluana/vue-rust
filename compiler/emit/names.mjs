@@ -49,3 +49,18 @@ export function f64Lit(text) {
   if (t.startsWith('-')) return `(${t}_f64)`;
   return `${t}_f64`;
 }
+
+// The forms of a constant operand (emitExpr: undef, null, bool, num, str). Anything else is a named temporary or local.
+const LITERAL_VALUE_RE = /^(?:Value::(?:Undefined|Null)|Value::Bool\((?:true|false)\)|Value::Number\((?:\(?-?[0-9][0-9._e+-]*_f64\)?|f64::(?:NAN|INFINITY|NEG_INFINITY))\)|Value::String\(JsStr::from_units\(S[0-9]+\)\))$/;
+
+// The owned Value of an operand expression. A constant is already a fresh Value, so it gets no `.clone()`; a temporary or a
+// local is cloned as before.
+export function owned(expr) {
+  return LITERAL_VALUE_RE.test(expr) ? expr : `${expr}.clone()`;
+}
+
+// The constructor of a Vec that receives `pushes` items: with_capacity when that count is known statically, null when it is
+// not (a spread or a loop). Vec::new() for an empty list, as before.
+export function vecNew(pushes) {
+  return pushes === null || pushes === 0 ? 'Vec::new()' : `Vec::with_capacity(${pushes})`;
+}

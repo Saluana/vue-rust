@@ -6,7 +6,7 @@
 // (they may await), and the loop state (iterator record, keys, index, discriminant, completion) lives in frame slots.
 import { declareScope, bindPattern, initVar } from './vars.mjs';
 import { emitExpr } from './expr.mjs';
-import { rstr } from './names.mjs';
+import { rstr, owned } from './names.mjs';
 
 const innermostClosure = (em) => {
   for (let i = em.ctl.length - 1; i >= 0; i--) if (em.ctl[i].type === 'closure') return i;
@@ -43,10 +43,10 @@ export function emitJump(em, kind, lid) {
 export function emitReturn(em, v) {
   const ci = innermostClosure(em);
   if (ci < 0) {
-    em.line(`return Ok(${v}.clone());`);
+    em.line(`return Ok(${owned(v)});`);
   } else {
     em.ctl[ci].pendingRet = true;
-    em.line(`return Ok(Flow::Return(${v}.clone()));`);
+    em.line(`return Ok(Flow::Return(${owned(v)}));`);
   }
 }
 
@@ -125,7 +125,7 @@ export function emitStmt(em, s) {
     }
     case 'throw': {
       const v = emitExpr(em, s.e);
-      em.line(`return Err(Throw(${v}.clone()));`);
+      em.line(`return Err(Throw(${owned(v)}));`);
       return;
     }
     case 'break':
@@ -334,7 +334,7 @@ function emitSwitch(em, s) {
   if (em.async) return emitSwitchAsync(em, s);
   const d = emitExpr(em, s.disc);
   const dv = em.uniq('d');
-  em.line(`let ${dv}: Value = ${d}.clone();`);
+  em.line(`let ${dv}: Value = ${owned(d)};`);
   em.line(`'l${s.lid}: {`);
   em.depth += 1;
   em.ctl.push({ type: 'switch', lid: s.lid });
@@ -554,7 +554,7 @@ function emitForOfAsync(em, s) {
 function emitSwitchAsync(em, s) {
   const d = emitExpr(em, s.disc);
   const dv = em.tmp();
-  em.def(dv, `${d}.clone()`);
+  em.def(dv, owned(d));
   em.line(`'l${s.lid}: {`);
   em.depth += 1;
   em.ctl.push({ type: 'switch', lid: s.lid });

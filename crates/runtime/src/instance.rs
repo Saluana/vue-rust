@@ -353,7 +353,7 @@ pub fn create_component_instance(rt: &Rt, vnode: &Value, parent: Option<ObjRef>,
     };
     this.root.replace(root);
     let ctx = rt.new_object();
-    rt.define_data(ctx, PropKey::from_str("_"), Value::Object(obj), Flags::ALL)?;
+    rt.define_data(ctx, PropKey::lit("_"), Value::Object(obj), Flags::ALL)?;
     this.ctx.replace(Value::Object(ctx));
     if ce.to_boolean() {
         rt.call(&ce, vnode, &[Value::Object(obj)])?;

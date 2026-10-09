@@ -84,8 +84,8 @@ fn dispatch(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     let a1 = c.arg(1);
     match name {
         "@@iterator" => iterator(rt, this, PropKey::Sym(rt.well_known(WellKnown::Iterator)), false),
-        "values" => iterator(rt, this, PropKey::from_str("values"), false),
-        "entries" => iterator(rt, this, PropKey::from_str("entries"), true),
+        "values" => iterator(rt, this, PropKey::lit("values"), false),
+        "entries" => iterator(rt, this, PropKey::lit("entries"), true),
         "concat" => concat(rt, this, c.args),
         "every" | "forEach" | "map" | "some" | "findIndex" | "findLastIndex" => {
             apply(rt, this, name, &a0, &a1, Ret::None, c.args)
@@ -123,7 +123,7 @@ fn call_named(rt: &Rt, obj: &Value, name: &str, args: &[Value]) -> Res<Value> {
 
 /// `fn.length` as a number (a non-number length counts as 0; `undefined` throws like the property read does).
 fn fn_length(rt: &Rt, f: &Value) -> Res<f64> {
-    Ok(match rt.get_v(f, &PropKey::from_str("length"))? {
+    Ok(match rt.get_v(f, &PropKey::lit("length"))? {
         Value::Number(n) => n,
         _ => 0.0,
     })
@@ -315,11 +315,11 @@ fn reduce(rt: &Rt, this: &Value, method: &str, f: &Value, args: &[Value]) -> Res
     let arr = shallow_read_array(rt, this)?;
     let needs_wrap = !strict_eq(&arr, this) && !is_shallow(rt, this)?;
     let holder = rt.new_object();
-    rt.define_data(holder, PropKey::from_str("w"), Value::Bool(false), Flags::ALL)?;
+    rt.define_data(holder, PropKey::lit("w"), Value::Bool(false), Flags::ALL)?;
     let mut wrapped = f.clone();
     if !strict_eq(&arr, this) {
         if needs_wrap {
-            rt.define_data(holder, PropKey::from_str("w"), Value::Bool(args.is_empty()), Flags::ALL)?;
+            rt.define_data(holder, PropKey::lit("w"), Value::Bool(args.is_empty()), Flags::ALL)?;
             wrapped = reduce_wrapper(rt, f, this, holder, true);
         } else if fn_length(rt, f)? > 3.0 {
             wrapped = reduce_wrapper(rt, f, this, holder, false);
@@ -346,10 +346,10 @@ fn iterator(rt: &Rt, this: &Value, method: PropKey, entries: bool) -> Res<Value>
             return Err(rt.throw_type_error("array iterator is not an object (framework bug)"));
         };
         let next = rt.get_str(&iter, "next")?;
-        rt.define_data(io, PropKey::from_str("_next"), next, Flags::ALL)?;
+        rt.define_data(io, PropKey::lit("_next"), next, Flags::ALL)?;
         let data = vec![iter.clone(), this.clone(), Value::Bool(entries)];
         let wrapper = native(rt, "next", 0, iter_next, data);
-        rt.set_v_strict(&iter, &PropKey::from_str("next"), Value::Object(wrapper))?;
+        rt.set_v_strict(&iter, &PropKey::lit("next"), Value::Object(wrapper))?;
     }
     Ok(iter)
 }
@@ -371,7 +371,7 @@ fn iter_next(rt: &Rt, c: &Call<'_>) -> Res<Value> {
         } else {
             to_wrapped(rt, &this_v, &value)?
         };
-        rt.set_v_strict(&result, &PropKey::from_str("value"), wrapped)?;
+        rt.set_v_strict(&result, &PropKey::lit("value"), wrapped)?;
     }
     Ok(result)
 }

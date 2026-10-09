@@ -4,7 +4,7 @@
 // marker). Expressions are emitted through em.expr (set by the module emitter), so this file does not import expr.mjs.
 // In an async function (em.async) a local or a cell is a frame slot: a local holds its value there, a cell holds the
 // cell object (as a Value), and a captured cell is the capture's slot. See buf.mjs.
-import { localName, cellName, rstr } from './names.mjs';
+import { localName, cellName, rstr, owned, vecNew } from './names.mjs';
 
 // The cell (ObjRef) of a reference, as a Rust expression.
 export function cellExpr(em, r) {
@@ -42,9 +42,9 @@ export function readVar(em, r, name, tdz) {
 // Initialises a binding (a declaration or a hoisted function): no TDZ or const check.
 export function initVar(em, r, name, value) {
   if (r.k === 'L') {
-    if (em.async) em.line(`frame_set(rt, fr, ${em.slotFor(`b:${r.id}`)}, ${value}.clone());`);
-    else em.line(`${localName(r.id, name)} = ${value}.clone();`);
-  } else em.line(`rt.cell_init(${cellExpr(em, r)}, ${value}.clone());`);
+    if (em.async) em.line(`frame_set(rt, fr, ${em.slotFor(`b:${r.id}`)}, ${owned(value)});`);
+    else em.line(`${localName(r.id, name)} = ${owned(value)};`);
+  } else em.line(`rt.cell_init(${cellExpr(em, r)}, ${owned(value)});`);
 }
 
 // Assignment to a binding (PutValue, strict). A const, an import or a function-expression name throws a TypeError after
@@ -62,20 +62,20 @@ export function assignVar(em, target, value) {
       if (tdz) {
         const u = em.uniq('lv');
         em.line(`let mut ${u}: Value = frame_get(rt, fr, ${slot});`);
-        em.line(`vn_lset(rt, &mut ${u}, ${value}.clone(), ${rstr(name)})?;`);
+        em.line(`vn_lset(rt, &mut ${u}, ${owned(value)}, ${rstr(name)})?;`);
         em.line(`frame_set(rt, fr, ${slot}, ${u});`);
       } else {
-        em.line(`frame_set(rt, fr, ${slot}, ${value}.clone());`);
+        em.line(`frame_set(rt, fr, ${slot}, ${owned(value)});`);
       }
       return;
     }
     const v = localName(r.id, name);
-    if (tdz) em.line(`vn_lset(rt, &mut ${v}, ${value}.clone(), ${rstr(name)})?;`);
-    else em.line(`${v} = ${value}.clone();`);
+    if (tdz) em.line(`vn_lset(rt, &mut ${v}, ${owned(value)}, ${rstr(name)})?;`);
+    else em.line(`${v} = ${owned(value)};`);
   } else if (tdz) {
-    em.line(`rt.cell_set_checked(${cellExpr(em, r)}, ${rstr(name)}, ${value}.clone())?;`);
+    em.line(`rt.cell_set_checked(${cellExpr(em, r)}, ${rstr(name)}, ${owned(value)})?;`);
   } else {
-    em.line(`rt.cell_set(${cellExpr(em, r)}, ${value}.clone());`);
+    em.line(`rt.cell_set(${cellExpr(em, r)}, ${owned(value)});`);
   }
 }
 
@@ -103,18 +103,18 @@ export function declareScope(em, decls) {
 // The member target of an assignment (or a destructuring leaf): base and key are evaluated before the value is read.
 export function prepareMember(em, t) {
   const o = em.tmp();
-  em.def(o, `${em.expr(t.o)}.clone()`);
+  em.def(o, owned(em.expr(t.o)));
   if (t.key.k === 's') return { o, kv: null, name: t.key.s };
   const kv = em.tmp();
-  em.def(kv, `${em.expr(t.key.e)}.clone()`);
+  em.def(kv, owned(em.expr(t.key.e)));
   return { o, kv, name: null };
 }
 
 export function putPrepared(em, prep, value) {
   if (prep.name !== null) {
-    em.line(`rt.set_v_strict(&${prep.o}, &PropKey::from_str(${rstr(prep.name)}), ${value}.clone())?;`);
+    em.line(`rt.set_v_strict(&${prep.o}, &PropKey::lit(${rstr(prep.name)}), ${owned(value)})?;`);
   } else {
-    em.line(`vn_put(rt, &${prep.o}, &${prep.kv}, ${value}.clone())?;`);
+    em.line(`vn_put(rt, &${prep.o}, &${prep.kv}, ${owned(value)})?;`);
   }
 }
 
@@ -129,7 +129,7 @@ export function bindPattern(em, pat, value, prep = null) {
       assignVar(em, pat, value);
       return;
     case 'tglobal':
-      em.line(`vn_gset(rt, ${rstr(pat.name)}, ${value}.clone())?;`);
+      em.line(`vn_gset(rt, ${rstr(pat.name)}, ${owned(value)})?;`);
       return;
     case 'tmem':
       putPrepared(em, prep ?? prepareMember(em, pat), value);
@@ -154,7 +154,7 @@ function bindElement(em, el, v, prep) {
     em.line(`if matches!(${cur}, Value::Undefined) {`);
     em.depth += 1;
     const d = em.expr(el.d);
-    em.set(cur, `${d}.clone()`);
+    em.set(cur, owned(d));
     em.depth -= 1;
     em.line('}');
   }
@@ -174,15 +174,15 @@ function bindObject(em, pat, value) {
   const ex = em.tmp();
   if (hasRest) {
     if (em.async) em.def(ex, 'vn_acc_new(rt)');
-    else em.line(`let mut ${ex}: Vec<PropKey> = Vec::new();`);
+    else em.line(`let mut ${ex}: Vec<PropKey> = ${vecNew(pat.props.length)};`);
   }
   for (const p of pat.props) {
     const kk = em.keyTmp();
     if (p.key.k === 's') {
-      em.defKey(kk, `PropKey::from_str(${rstr(p.key.s)})`);
+      em.defKey(kk, `PropKey::lit(${rstr(p.key.s)})`);
     } else {
       const kv = em.tmp();
-      em.def(kv, `${em.expr(p.key.e)}.clone()`);
+      em.def(kv, owned(em.expr(p.key.e)));
       em.defKey(kk, `vn_key(rt, &${kv})?`);
     }
     if (hasRest) {

@@ -160,7 +160,7 @@ impl BaseHandler {
                 if old_readonly {
                     return Ok(true);
                 }
-                rt.set_v_strict(&old, &PropKey::from_str("value"), value)?;
+                rt.set_v_strict(&old, &PropKey::lit("value"), value)?;
                 return Ok(true);
             }
         }

@@ -362,13 +362,13 @@ impl Renderer {
         let attrs = as_obj(rt, &rec.attrs.borrow().clone(), "attrs")?;
         let ctx = rt.new_object();
         let proxy = attrs_proxy(rt, attrs);
-        rt.define_data(ctx, PropKey::from_str("attrs"), Value::Object(proxy), Flags::ALL)?;
+        rt.define_data(ctx, PropKey::lit("attrs"), Value::Object(proxy), Flags::ALL)?;
         let slots = rec.slots.borrow().clone();
-        rt.define_data(ctx, PropKey::from_str("slots"), slots, Flags::ALL)?;
+        rt.define_data(ctx, PropKey::lit("slots"), slots, Flags::ALL)?;
         let emit = rec.emit.borrow().clone();
-        rt.define_data(ctx, PropKey::from_str("emit"), emit, Flags::ALL)?;
+        rt.define_data(ctx, PropKey::lit("emit"), emit, Flags::ALL)?;
         let expose = rt.new_native_function(expose_code, "expose", 1, vec![Value::Object(inst)]);
-        rt.define_data(ctx, PropKey::from_str("expose"), Value::Object(expose), Flags::ALL)?;
+        rt.define_data(ctx, PropKey::lit("expose"), Value::Object(expose), Flags::ALL)?;
         Ok(Value::Object(ctx))
     }
 
@@ -430,7 +430,7 @@ impl Renderer {
         call_method(rt, &scope, "on")?;
         let options = rt.new_object();
         let sched = rt.new_native_function(scheduler_code, "", 0, vec![Value::Object(inst)]);
-        rt.define_data(options, PropKey::from_str("scheduler"), Value::Object(sched), Flags::ALL)?;
+        rt.define_data(options, PropKey::lit("scheduler"), Value::Object(sched), Flags::ALL)?;
         // runtime-core builds the render effect with `new ReactiveEffect`, which does not run it; it is run below.
         let effect_fn = reactivity_fn(rt, "effectWithoutRun");
         let runner = rt.call(&effect_fn, &Value::Undefined, &[Value::Object(update_fn), Value::Object(options)]);
@@ -773,11 +773,11 @@ impl Renderer {
         let n = arity(rt, comp)?;
         let rendered = if n > 1.0 {
             let ctx = rt.new_object();
-            rt.define_data(ctx, PropKey::from_str("attrs"), attrs.clone(), Flags::ALL)?;
+            rt.define_data(ctx, PropKey::lit("attrs"), attrs.clone(), Flags::ALL)?;
             let slots = rec.slots.borrow().clone();
-            rt.define_data(ctx, PropKey::from_str("slots"), slots, Flags::ALL)?;
+            rt.define_data(ctx, PropKey::lit("slots"), slots, Flags::ALL)?;
             let emit = rec.emit.borrow().clone();
-            rt.define_data(ctx, PropKey::from_str("emit"), emit, Flags::ALL)?;
+            rt.define_data(ctx, PropKey::lit("emit"), emit, Flags::ALL)?;
             rt.call(comp, &Value::Undefined, &[props, Value::Object(ctx)])?
         } else {
             rt.call(comp, &Value::Undefined, &[props, Value::Null])?

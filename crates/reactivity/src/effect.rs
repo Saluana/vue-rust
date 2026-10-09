@@ -242,7 +242,7 @@ fn create_runner(rt: &Rt, fn_arg: Value, options: &Value, run_now: bool) -> Res<
         }
     }
     let runner = native(rt, "bound run", 0, runner_code, vec![Value::Object(e)]);
-    rt.define_data(runner, PropKey::from_str("effect"), Value::Object(e), Flags::ALL)?;
+    rt.define_data(runner, PropKey::lit("effect"), Value::Object(e), Flags::ALL)?;
     Ok(Value::Object(runner))
 }
 

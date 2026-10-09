@@ -118,7 +118,7 @@ fn render_slot_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
         let slots_flag = rt.get_str(&slots, "_")?;
         let patch = if valid.to_boolean() && matches!(slots_flag, Value::Number(n) if n == 1.0) { PatchFlags::STABLE_FRAGMENT } else { -2 };
         let key_obj = rt.new_object();
-        rt.define_data(key_obj, PropKey::from_str("key"), Value::String(JsStr::from_str(&key)), Flags::ALL)?;
+        rt.define_data(key_obj, PropKey::lit("key"), Value::String(JsStr::from_str(&key)), Flags::ALL)?;
         let create = crate::renderer::builtin_fn(rt, "vn-runtime.createBlock");
         let fragment = crate::renderer::sym(rt, "v-fgt");
         rt.call(&create, &Value::Undefined, &[fragment, Value::Object(key_obj), children, Value::Number(patch as f64)])
@@ -251,8 +251,8 @@ fn with_directives_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
         }
         if rt.is_callable(&dir) {
             let d = rt.new_object();
-            rt.define_data(d, PropKey::from_str("mounted"), dir.clone(), Flags::ALL)?;
-            rt.define_data(d, PropKey::from_str("updated"), dir.clone(), Flags::ALL)?;
+            rt.define_data(d, PropKey::lit("mounted"), dir.clone(), Flags::ALL)?;
+            rt.define_data(d, PropKey::lit("updated"), dir.clone(), Flags::ALL)?;
             dir = Value::Object(d);
         }
         if rt.get_str(&dir, "deep")?.to_boolean() {
@@ -260,12 +260,12 @@ fn with_directives_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
             rt.call(&traverse, &Value::Undefined, std::slice::from_ref(&value))?;
         }
         let binding = rt.new_object();
-        rt.define_data(binding, PropKey::from_str("dir"), dir, Flags::ALL)?;
-        rt.define_data(binding, PropKey::from_str("instance"), instance.clone(), Flags::ALL)?;
-        rt.define_data(binding, PropKey::from_str("value"), value, Flags::ALL)?;
-        rt.define_data(binding, PropKey::from_str("oldValue"), Value::Undefined, Flags::ALL)?;
-        rt.define_data(binding, PropKey::from_str("arg"), arg_v, Flags::ALL)?;
-        rt.define_data(binding, PropKey::from_str("modifiers"), modifiers, Flags::ALL)?;
+        rt.define_data(binding, PropKey::lit("dir"), dir, Flags::ALL)?;
+        rt.define_data(binding, PropKey::lit("instance"), instance.clone(), Flags::ALL)?;
+        rt.define_data(binding, PropKey::lit("value"), value, Flags::ALL)?;
+        rt.define_data(binding, PropKey::lit("oldValue"), Value::Undefined, Flags::ALL)?;
+        rt.define_data(binding, PropKey::lit("arg"), arg_v, Flags::ALL)?;
+        rt.define_data(binding, PropKey::lit("modifiers"), modifiers, Flags::ALL)?;
         let len = length_of(rt, &Value::Object(bindings))? as u32;
         rt.set_v_strict(&Value::Object(bindings), &PropKey::Index(len), Value::Object(binding))?;
     }

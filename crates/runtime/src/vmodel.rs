@@ -745,7 +745,7 @@ fn dynamic_updated_js(rt: &Rt, c: &Call<'_>) -> Res<Value> {
 fn directive(rt: &Rt, hooks: &[(&str, CodeFn)], deep: bool) -> Value {
     let obj = rt.new_object();
     if deep {
-        let _ = rt.define_data(obj, PropKey::from_str("deep"), Value::Bool(true), vn_value::Flags::ALL);
+        let _ = rt.define_data(obj, PropKey::lit("deep"), Value::Bool(true), vn_value::Flags::ALL);
     }
     for (hook, code) in hooks {
         rt.define_native_method(obj, hook, *code, 4);

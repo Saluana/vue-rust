@@ -106,7 +106,7 @@ pub(crate) fn normalize_props_options(rt: &Rt, comp: &Value) -> Res<Value> {
             let opt = rt.get_v(&raw, &key)?;
             let prop = rt.new_object();
             if rt.is_array(&opt) || rt.is_callable(&opt) {
-                rt.define_data(prop, PropKey::from_str("type"), opt.clone(), Flags::ALL)?;
+                rt.define_data(prop, PropKey::lit("type"), opt.clone(), Flags::ALL)?;
             } else if let Value::Object(_) = opt {
                 for pk in enumerable_keys(rt, &opt)? {
                     let v = rt.get_str(&opt, &pk)?;

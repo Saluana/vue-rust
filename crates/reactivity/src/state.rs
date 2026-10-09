@@ -123,7 +123,7 @@ fn init(rt: &Rt) -> ObjRef {
         array_iterate: rt.new_symbol(Some(JsStr::empty())),
     };
     let op = rt.intrinsic(Intrinsic::ObjectPrototype);
-    let obj_to_string = match rt.get_own_property(op, &PropKey::from_str("toString")) {
+    let obj_to_string = match rt.get_own_property(op, &PropKey::lit("toString")) {
         Ok(Some(Prop::Data { value: Value::Object(f), .. })) => f,
         _ => panic!("Object.prototype.toString is missing (framework bug)"),
     };

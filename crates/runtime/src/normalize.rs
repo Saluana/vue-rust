@@ -257,11 +257,11 @@ pub fn normalize_props(rt: &Rt, props: &Value) -> Res<Value> {
     let klass = rt.get_str(props, "class")?;
     let style = rt.get_str(props, "style")?;
     if klass.to_boolean() && !matches!(klass, Value::String(_)) {
-        rt.set_v(props, &PropKey::from_str("class"), Value::String(normalize_class(rt, &klass)?))?;
+        rt.set_v(props, &PropKey::lit("class"), Value::String(normalize_class(rt, &klass)?))?;
     }
     if style.to_boolean() {
         let n = normalize_style(rt, &style)?;
-        rt.set_v(props, &PropKey::from_str("style"), n)?;
+        rt.set_v(props, &PropKey::lit("style"), n)?;
     }
     Ok(props.clone())
 }
@@ -364,7 +364,7 @@ pub fn loose_index_of(rt: &Rt, arr: &Value, val: &Value) -> Res<f64> {
 
 /// The realm's `Object.prototype.toString` applied to `v` (`toTypeString`), as a string.
 fn to_type_string(rt: &Rt, v: &Value) -> Res<JsStr> {
-    let f = rt.get_v(&Value::Object(rt.intrinsic(Intrinsic::ObjectPrototype)), &PropKey::from_str("toString"))?;
+    let f = rt.get_v(&Value::Object(rt.intrinsic(Intrinsic::ObjectPrototype)), &PropKey::lit("toString"))?;
     let s = rt.call(&f, v, &[])?;
     rt.to_string(&s)
 }
@@ -535,7 +535,7 @@ pub(crate) fn is_ref(rt: &Rt, v: &Value) -> Res<bool> {
     if !v.to_boolean() {
         return Ok(false);
     }
-    Ok(matches!(rt.get_v(v, &PropKey::from_str("__v_isRef"))?, Value::Bool(true)))
+    Ok(matches!(rt.get_v(v, &PropKey::lit("__v_isRef"))?, Value::Bool(true)))
 }
 
 /// `stringifySymbol(v, i)`: a symbol becomes `Symbol(description)` (or `Symbol(i)` when it has none); others pass.
@@ -637,7 +637,7 @@ pub fn to_display_string(rt: &Rt, v: &Value) -> Res<Value> {
     if v.is_nullish() {
         return Ok(Value::str(""));
     }
-    let object_tostring = rt.get_v(&Value::Object(rt.intrinsic(Intrinsic::ObjectPrototype)), &PropKey::from_str("toString"))?;
+    let object_tostring = rt.get_v(&Value::Object(rt.intrinsic(Intrinsic::ObjectPrototype)), &PropKey::lit("toString"))?;
     let plain_candidate = if rt.is_array(v) {
         true
     } else if is_obj(rt, v) {
