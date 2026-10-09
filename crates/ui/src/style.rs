@@ -13,12 +13,17 @@ pub struct ComputedStyle {
     custom: CustomProperties,
     /// The computed font size in px (line-height numbers serialise as px of this).
     font_size: f64,
+    resolved: bool,
 }
 
 impl ComputedStyle {
     pub(crate) fn new(values: Vec<Value>, custom: CustomProperties, font_size: f64) -> ComputedStyle {
-        ComputedStyle { values, custom, font_size }
+        ComputedStyle { values, custom, font_size, resolved: true }
     }
+
+    pub(crate) fn is_resolved(&self) -> bool { self.resolved }
+
+    pub(crate) fn suppress_resolved_values(&mut self) { self.resolved = false; }
 
     /// The computed value of a longhand (None for a name outside the table).
     pub fn value(&self, name: &str) -> Option<&Value> {
@@ -42,6 +47,11 @@ impl ComputedStyle {
     /// The Chrome serialisation of a longhand or a custom property (`--name`), as getPropertyValue returns it. Custom
     /// properties that are absent give an empty string, as Chrome does. Shorthands are not served (None).
     pub fn get(&self, name: &str) -> Option<String> {
+        // Descendants of replaced elements have no CSS resolved declaration in browser CSSOM.
+        // Typed computed values remain available for inheritance and native layout.
+        if !self.resolved {
+            return if name.starts_with("--") || props::index_of(name).is_some() { Some(String::new()) } else { None };
+        }
         if name.starts_with("--") {
             return Some(self.custom.get(name).map_or_else(String::new, |t| t.text().to_string()));
         }

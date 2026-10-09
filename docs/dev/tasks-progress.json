@@ -1,5 +1,5 @@
 {
- "asOf": "2026-10-09 08:12 PDT (paused)",
+ "asOf": "2026-10-09 (cleanup verified; component scenarios and Rust workspace green)",
  "tasks": {
   "2.1": {
    "status": "done",
@@ -77,15 +77,15 @@
   },
   "4.4": {
    "status": "partial",
-   "summary": "Event/prop layer, DOM host and component rendering work over the headless DocHost and the browser host contract (131/160 real-Vue component scenarios pass); native desktop renderer and an assembled quote form on web/native not done.",
+   "summary": "Event/prop layer, DOM host and component rendering work over the headless DocHost and the browser host contract (143/160 real-Vue component scenarios pass); Counter and Quick Quote now run in Chrome; native desktop renderer is not done.",
    "evidence": "`cargo test -p vn-runtime` (rtd_* tests); `node --test \"tests/platform/web/*.test.mjs\"`.",
-   "missing": "Native desktop host, end-to-end quote form on both hosts, keyboard/AT operation."
+   "missing": "Native desktop host, end-to-end quote form on native, keyboard/AT operation."
   },
   "4.5": {
    "status": "partial",
-   "summary": "`vue-native` CLI exists (check/build/create/doctor, `--json`, refuses existing output dirs); web packaging pipeline proven with a host-only app in headless Chrome (53.9 KB wasm / 20.3 KB gz, first render 24 ms after navigation); headless target mounts a compiled `.vue` app in the Rust Vue runtime and runs scripted interactions — Counter (mount, click, v-if threshold, reset, disabled) and Quick Quote with `defineModel` (full interaction sequence: validation, watcher status line, hide/show, remove line) both pass end to end.",
-   "evidence": "`node --test \"tests/cli/*.test.mjs\"` (38/38) and `node --test \"tests/platform/web/*.test.mjs\"` (398 tests: 293 pass, 0 fail, 105 skipped with a stated reason — corpus cases that need Host operations that do not exist yet); run each with a fresh private CARGO_TARGET_DIR; `node tooling/cli/vue-native.mjs check examples/counter`; artifacts `tooling/cli/`, `examples/{counter,quick-quote}`, `docs/guide/getting-started.md`.",
-   "missing": "`vue-native build --target web` for `.vue` projects still refuses them (the renderer is Host-generic now: wire WebHost + a generated vn_start entry, update the refusal test in tests/cli/build.test.mjs) and a Chrome e2e of Counter and Quick Quote; measured startup/memory/edit latency; G3 report."
+   "summary": "vue-native CLI check/build/create/doctor and headless apps work. Web builds now compile .vue projects into Rust/WASM, install WebHost and mount the root component. Counter and Quick Quote run full browser interactions, including defineModel, validation, watch, keyed rows and editor recreation. Browser delivery supplies event identities/kinds and drains Rust jobs in a microtask. Repeated unmount/recreate cycles keep host handles and listeners flat.",
+   "evidence": "`node --test \"tests/cli/*.test.mjs\"` (40/40); `node --test \"tests/platform/web/*.test.mjs\"` (298 pass / 109 explicit skips / 0 fail); tests/platform/web/e2e-vue-apps.test.mjs (3/3); docs/evidence/resume-web-apps.md.",
+   "missing": "Native desktop host and keyboard/AT qualification; measured memory/edit latency; startup distributions and optimized app size; G3 report. Browser qualification remains Chrome only."
   },
   "5.1": {
    "status": "done",
@@ -142,25 +142,27 @@
   },
   "6.4": {
    "status": "partial",
-   "summary": "Component props (casting, defaults), emits (modifiers), slots, attrs fallthrough, provide/inject, v-model/defineModel via useModel run through the real renderer; against real-Vue UI goldens: props 11/12, emits 8/8, slots 11/11, provide-inject 7/7, model 14/14 (the single props miss is a vn-dom style-shorthand gap, not props logic).",
+   "summary": "Component props (casting, defaults), emits (modifiers), slots, attrs fallthrough, provide/inject, v-model/defineModel via useModel run through the real renderer; against real-Vue UI goldens: props 12/12, emits 8/8, slots 11/11, provide-inject 7/7, model 14/14.",
    "missing": "two-app-root and dynamic-slot-name edge scenarios beyond the recorded 160; mergeModels/defineModel edge cases; Options API remains unsupported by design.",
-   "evidence": "`node tooling/harness/run-language.mjs --with-vue --ui` (131/160 overall, 0 fail); `cargo test -p vn-runtime`."
+   "evidence": "`node tooling/harness/run-language.mjs --with-vue --ui` (160/160 overall, 0 fail); `cargo test -p vn-runtime`."
   },
   "6.5": {
    "status": "partial",
-   "summary": "Lifecycle hooks (order verified: lifecycle 9/10), error capture/app errorHandler routing (errors 4/7), template refs (refs 4/9) implemented; remaining misses are classified.",
-   "evidence": "`node tooling/harness/run-language.mjs --with-vue --ui`; `cargo test -p vn-runtime` (rtb_errors_lifecycle, rtc_*).",
-   "missing": "reactive() must not wrap DOM element handles (crates/reactivity/src/reactive.rs) — blocks 5 refs scenarios and 2 others; DOM-event listener errors must reach handleError (pass owning instance to patch_event, crates/runtime/src/dom_events.rs) — blocks 3 errors scenarios."
+   "summary": "Lifecycle hooks, template refs and component DOM event errors now match all recorded scenarios: lifecycle 10/10, refs 9/9, errors 7/7. Host handles expose DOM tags so Vue target classification bypasses proxies; event invokers retain their owning instance and route synchronous throws/promise rejections through errorCaptured and app errorHandler.",
+   "evidence": "`node tooling/harness/run-language.mjs --with-vue --ui` (160 pass / 0 blocked / 0 fail / 0 unexpected); `cargo test -p vn-dom -p vn-runtime -p vn-reactivity`; docs/evidence/resume-components.md.",
+   "missing": "Broader lifecycle/ref/error edge coverage; broader advanced-component qualification remains in 6.6."
   },
   "6.6": {
-   "status": "notstarted",
-   "summary": "Not started: KeepAlive, Teleport, Transition, defineAsyncComponent exports missing — 17 of the 29 blocked UI scenarios (teleport 0/5, transition 0/5, dynamic 2/9)."
+   "status": "partial",
+   "summary": "All 160 existing component scenarios match real Vue: Teleport 5/5, Transition 5/5, dynamic 9/9 (KeepAlive and async components). Implemented target moves/defer/events, JS/appear/CSS hooks and out-in ordering, cached state/include/LRU/disposal, shared async loader requests/loading delay/errors/timeouts.",
+   "evidence": "`node tooling/harness/run-language.mjs --with-vue --ui` and `--gc-stress` (160/160 each, no blocked/failing/unexpected); `cargo test --workspace --no-fail-fast` (1323/1323); `node --test \"tests/platform/web/*.test.mjs\"` (299 pass, 109 documented skips); docs/evidence/advanced-components.md and docs/evidence/advanced-components/. Cleanup re-verification: docs/evidence/cleanup.md (three assertion-free Rust probes removed; corpus and negative-control checks retained).",
+   "missing": "TransitionGroup, in-out mode, CSS transition-end event shortcuts, native motion/layout, async retry/hydration hooks and broader nested/lifetime edge qualification. Unsupported async hooks and transition modes throw explicitly."
   },
   "6.7": {
    "status": "partial",
-   "summary": "Official-compiler template lowering plus runtime semantics verified end to end: events 13/13, model 14/14, list 11/11, conditional 7/7, fragments 5/5, directives 5/5, static 14/15 against real-Vue goldens.",
-   "evidence": "`node tooling/harness/run-language.mjs --with-vue --ui`; 944 patchProp cases and 174 directive scenarios (`cargo test -p vn-runtime`).",
-   "missing": "vn-dom margin/style shorthands (blocks 2 scenarios), v-html native rejection fixture in the UI corpus, custom-element/SVG breadth."
+   "summary": "Official-compiler template lowering plus runtime semantics verified end to end: events 13/13, model 14/14, list 11/11, conditional 7/7, fragments 5/5, directives 5/5, static 15/15 against real-Vue goldens.",
+   "evidence": "`node tooling/harness/run-language.mjs --with-vue --ui` (160 pass / 0 blocked / 0 fail / 0 unexpected); `cargo test -p vn-dom -p vn-runtime -p vn-reactivity`; docs/evidence/resume-components.md.",
+   "missing": "Other style shorthands beyond margin/padding, functional box values, v-html native rejection fixture in the UI corpus, custom-element/SVG breadth."
   },
   "6.8": {
    "status": "partial",
@@ -174,9 +176,9 @@
   },
   "7.2": {
    "status": "partial",
-   "summary": "CSS tokenizer/parser, selectors, media queries, cascade and custom properties (`vn-css`: 98 tests, ~3400 Chrome comparisons); typed values/computed style (`vn-ui`) in progress.",
-   "evidence": "`cargo test -p vn-css`; `node --test \"tests/css/gen/*.test.mjs\"`.",
-   "missing": "typed values and shorthands, computed style, layout (Taffy), scoped/deep/slotted handling in the renderer, units."
+   "summary": "CSS tokenizer/parser, selectors, media queries, cascade and custom properties; typed values, shorthands and computed style pass the recorded Chrome corpora. Repaired form-control defaults, disabled/checkbox appearance, bolder weights, replaced-element descendant CSSOM serialization and font-size precision. Cascade driver now mirrors the oracle head/body sibling topology; unchanged goldens: 72 fixtures / 6675 comparisons, plus negative control.",
+   "evidence": "`cargo test --workspace --no-fail-fast` (1323 passed, 0 failed); `cargo test -p vn-ui` (including cascade and values corpora); docs/evidence/advanced-components.md; independent Chrome measurements in docs/evidence/advanced-components/css-defaults-chrome.json. Cleanup re-verification: docs/evidence/cleanup.md (three assertion-free Rust probes removed; corpus and negative-control checks retained).",
+   "missing": "layout (Taffy), complete native painting/style integration, scoped/deep/slotted renderer breadth and further CSS value qualification."
   },
   "7.3": {
    "status": "notstarted",
@@ -224,7 +226,7 @@
   },
   "9.1": {
    "status": "partial",
-   "summary": "`vue-native` CLI: check (diagnostics with spans, --json), build (web packaging, headless), create (2 templates), doctor (no installs); getting-started guide written from what runs.",
+   "summary": "`vue-native` CLI: check (diagnostics with spans, --json), build (web packaging, headless), create (2 templates), doctor (no installs); getting-started guide written from what runs. Web target for .vue projects now builds and runs both demos in Chrome; see docs/evidence/resume-web-apps.md.",
    "missing": "locked toolchain setup/offline mirror, dev/test/package/upgrade commands, config schema, clean-room documentation exercise.",
    "evidence": "`node --test \"tests/cli/*.test.mjs\"`; `tooling/cli/`, `docs/guide/getting-started.md`."
   },
@@ -264,7 +266,7 @@
   },
   "10.4": {
    "status": "partial",
-   "summary": "Browser host runs in headless Chrome 155 (wasm loading, events, DOM semantics) with size measured; no multi-browser, storage, offline or WCAG qualification.",
+   "summary": "Browser host runs in headless Chrome 155 (wasm loading, events, DOM semantics) with size measured; no multi-browser, storage, offline or WCAG qualification. Compiled Counter/Quick Quote browser delivery is now verified in Chrome (3 e2e tests), including flat handle/listener counts across repeated unmounts.",
    "evidence": "`node --test \"tests/platform/web/*.test.mjs\"`.",
    "missing": "Firefox/Safari, mobile browsers, storage/quota/offline, accessibility audit."
   },

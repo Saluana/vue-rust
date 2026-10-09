@@ -3,7 +3,7 @@
 //! `VNodeData`; its identity is the object's. Blocks are `Block` payload objects. The block stack and the tracking
 //! counter live in one `State` object that every export receives as its first function-data value.
 //! Deviations: no rendering instance (`ctx`, `scopeId` stay null, `_ctx` is null), no internal-object prototype
-//! (`isInternalObject` is always false), `createStaticVNode` and transition cloning throw TypeError.
+//! (`isInternalObject` is always false), `createStaticVNode` throws TypeError. Transition clones delegate to the hooks' clone function.
 
 use std::cell::{Cell, RefCell};
 use std::rc::Rc;
@@ -47,6 +47,8 @@ pub struct Fields {
     pub target: Option<u64>,
     pub target_anchor: Option<u64>,
     pub target_start: Option<u64>,
+    pub(crate) target_handles: Vec<ObjRef>,
+    pub(crate) teleport_unmounted: bool,
     pub scope_id: Value,
     pub slot_scope_ids: Value,
     pub component: Value,
@@ -83,6 +85,8 @@ impl Fields {
             target: None,
             target_anchor: None,
             target_start: None,
+            target_handles: Vec::new(),
+            teleport_unmounted: false,
             scope_id: Value::Null,
             slot_scope_ids: Value::Null,
             component: Value::Null,
@@ -110,6 +114,7 @@ impl NativeObject for VNodeData {
     fn trace(&self, t: &mut Tracer) {
         let f = self.f.borrow();
         for o in [f.el_handle, f.anchor_handle].into_iter().flatten() { t.mark(o); }
+        for o in &f.target_handles { t.mark(*o); }
         for v in [
             &f.ty, &f.props, &f.key, &f.reference, &f.children, &f.shape, &f.patch, &f.dynamic_props, &f.dynamic_children,
             &f.static_count, &f.scope_id, &f.slot_scope_ids, &f.component, &f.suspense, &f.ss_content, &f.ss_fallback,
@@ -679,9 +684,6 @@ pub(crate) fn clone_vnode(rt: &Rt, st: &State, src: ObjRef, extra: &Value, merge
     } else {
         s.reference.clone()
     };
-    if clone_transition && s.transition.to_boolean() {
-        return Err(rt.throw_type_error("cloneVNode: transition hooks are not supported"));
-    }
     let frag = is_sym(&s.ty, rt.symbol_for(&JsStr::from_str("v-fgt")));
     let patch = if extra.to_boolean() && !frag {
         if strict_eq(&s.patch, &Value::Number(-1.0)) {
@@ -700,7 +702,13 @@ pub(crate) fn clone_vnode(rt: &Rt, st: &State, src: ObjRef, extra: &Value, merge
     f.memo = Value::Null;
     f.ss_content = clone_slot_content(rt, st, &s.ss_content)?;
     f.ss_fallback = clone_slot_content(rt, st, &s.ss_fallback)?;
-    Ok(alloc(rt, f))
+    let cloned = alloc(rt, f);
+    if clone_transition && s.transition.to_boolean() {
+        let clone = rt.get_str(&s.transition, "clone")?;
+        let hooks = rt.call(&clone, &s.transition, &[Value::Object(cloned)])?;
+        fields(rt, cloned, |f| f.transition = hooks);
+    }
+    Ok(cloned)
 }
 
 fn clone_slot_content(rt: &Rt, st: &State, v: &Value) -> Res<Value> {

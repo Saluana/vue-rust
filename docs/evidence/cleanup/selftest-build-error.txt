@@ -1,0 +1,28 @@
+error[E0599]: no variant, associated function, or constant named `as_bool` found for enum `Json` in the current scope
+     --> crates/renderer-dom/src/selftest.rs:249:54
+      |
+  249 |         let flag = |k: &str| o.get(k).and_then(Json::as_bool).unwrap_or(false);
+      |                                                      ^^^^^^^ variant, associated function, or constant not found in `Json`
+      |
+     ::: crates/renderer-dom/src/json.rs:5:1
+      |
+    5 | pub enum Json {
+      | ------------- variant, associated function, or constant `as_bool` not found for this enum
+
+  error[E0599]: no variant, associated function, or constant named `as_bool` found for enum `Json` in the current scope
+     --> crates/renderer-dom/src/selftest.rs:333:61
+      |
+  333 |             let flag = |k: &str| spec.get(k).and_then(Json::as_bool).unwrap_or(false);
+      |                                                             ^^^^^^^ variant, associated function, or constant not found in `Json`
+      |
+     ::: crates/renderer-dom/src/json.rs:5:1
+      |
+    5 | pub enum Json {
+      | ------------- variant, associated function, or constant `as_bool` not found for this enum
+
+  For more information about this error, try `rustc --explain E0599`.
+  error: could not compile `vn-renderer-dom` (lib) due to 2 previous errors
+
+      at genericNodeError (node:internal/errors:986:15)
+      at wrappedFn (node:internal/errors:540:14)
+      at check

@@ -65,6 +65,7 @@ mod raw {
         style_set_property(el: u32, name_ptr: u32, name_len: u32, value_ptr: u32, value_len: u32, important: u32) -> i32;
         style_remove_property(el: u32, name_ptr: u32, name_len: u32) -> i32;
         style_get_property(el: u32, name_ptr: u32, name_len: u32, out: u32) -> i32;
+        computed_style_property(el: u32, name_ptr: u32, name_len: u32, out: u32) -> i32;
         style_css_text(el: u32, out: u32) -> i32;
         style_set_css_text(el: u32, text_ptr: u32, text_len: u32) -> i32;
         class_list_add(el: u32, token_ptr: u32, token_len: u32) -> i32;
@@ -346,6 +347,11 @@ pub fn style_get_property(el: u32, name: &str) -> (i32, String) {
     string_out(|out| unsafe { raw::style_get_property(el, addr(name), len(name), out) })
 }
 
+pub fn computed_style_property(el: u32, name: &str) -> (i32, String) {
+    // SAFETY: name is borrowed for the call; the out slot is local to string_out.
+    string_out(|out| unsafe { raw::computed_style_property(el, addr(name), len(name), out) })
+}
+
 pub fn style_css_text(el: u32) -> (i32, String) {
     // SAFETY: the out slot is local to string_out.
     string_out(|out| unsafe { raw::style_css_text(el, out) })
@@ -423,7 +429,7 @@ pub fn inner_html(node: u32) -> Option<String> {
 /// Takes the address of every import, so the linker keeps the complete `vn_host` table in the module (a cdylib keeps only the
 /// code its exports reach). Returns the number of imports; `vn_host_probe` exposes it. It calls nothing.
 pub fn linked_imports() -> u32 {
-    let table: [*const (); 44] = [
+    let table: [*const (); 45] = [
         raw::host_now as *const (),
         raw::host_set_timeout as *const (),
         raw::host_clear_timeout as *const (),
@@ -456,6 +462,7 @@ pub fn linked_imports() -> u32 {
         raw::style_set_property as *const (),
         raw::style_remove_property as *const (),
         raw::style_get_property as *const (),
+        raw::computed_style_property as *const (),
         raw::style_css_text as *const (),
         raw::style_set_css_text as *const (),
         raw::class_list_add as *const (),

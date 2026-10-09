@@ -276,7 +276,7 @@ impl Renderer {
         match n1 {
             None => {
                 if shape_of(rt, n2) & ShapeFlags::COMPONENT_KEPT_ALIVE != 0 {
-                    return Err(rt.throw_type_error("unsupported: KeepAlive activation"));
+                    return self.activate_cached(n2, container, anchor, ns, optimized);
                 }
                 self.mount_component(n2, container, anchor, parent, ns, optimized)
             }
@@ -513,7 +513,8 @@ impl Renderer {
                 }
             }
             if shape_of(rt, initial) & ShapeFlags::COMPONENT_SHOULD_KEEP_ALIVE != 0 {
-                return Err(rt.throw_type_error("unsupported: KeepAlive"));
+                let a = hook_list(rt, inst, LifeHook::A);
+                if !a.is_empty() { queue_post_render_effect(rt, &hook_array(rt, a), &Value::Null)?; }
             }
             rec.is_mounted.set(true);
             re.initial.set(None);
@@ -740,8 +741,7 @@ impl Renderer {
             fields(rt, result, |f| f.dirs = merged);
         }
         if transition_of(rt, vnode).to_boolean() {
-            set_current_rendering_instance(rt, prev);
-            return Err(rt.throw_type_error("unsupported: Transition on a component root"));
+            crate::transition::set_hooks(rt, result, transition_of(rt, vnode))?;
         }
         set_current_rendering_instance(rt, prev);
         Ok(result)

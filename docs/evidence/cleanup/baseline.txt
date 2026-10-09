@@ -1,0 +1,93 @@
+   Compiling vn-dom v0.0.1 (/Users/brendon/Documents/vue-rust-lab/crates/dom)
+   Compiling vn-css v0.0.1 (/Users/brendon/Documents/vue-rust-lab/crates/css)
+   Compiling vn-value v0.0.1 (/Users/brendon/Documents/vue-rust-lab/crates/value)
+   Compiling vn-ui v0.0.1 (/Users/brendon/Documents/vue-rust-lab/crates/ui)
+   Compiling vn-reactivity v0.0.1 (/Users/brendon/Documents/vue-rust-lab/crates/reactivity)
+warning: unused import: `json::Json`
+  --> crates/ui/tests/support/mod.rs:10:9
+   |
+10 | pub use json::Json;
+   |         ^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `no_listeners`
+ --> crates/ui/tests/zz_debug.rs:2:32
+  |
+2 | use support::{append, element, no_listeners};
+  |                                ^^^^^^^^^^^^
+
+   Compiling vn-runtime v0.0.1 (/Users/brendon/Documents/vue-rust-lab/crates/runtime)
+warning: `vn-ui` (test "zz_debug") generated 2 warnings (run `cargo fix --test "zz_debug" -p vn-ui` to apply 2 suggestions)
+   Compiling vn-renderer-dom v0.0.1 (/Users/brendon/Documents/vue-rust-lab/crates/renderer-dom)
+warning: method `as_bool` is never used
+  --> crates/renderer-dom/src/json.rs:36:12
+   |
+14 | impl Json {
+   | --------- method in this implementation
+...
+36 |     pub fn as_bool(&self) -> Option<bool> {
+   |            ^^^^^^^
+   |
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `vn-renderer-dom` (lib test) generated 1 warning
+    Finished `test` profile [unoptimized] target(s) in 2.18s
+     Running unittests src/lib.rs (target/cleanup-rust/debug/deps/vn_renderer_dom-6fe1cc7a09608bb4)
+
+running 8 tests
+test abi::tests::outcome_bits_match_the_documented_values ... ok
+test abi::tests::decodes_every_field ... ok
+test abi::tests::rejects_truncated_and_inconsistent_payloads ... ok
+test json::tests::decodes_escapes_and_surrogate_pairs ... ok
+test abi::tests::input_data_is_absent_without_its_flag ... ok
+test json::tests::parses_nested_values ... ok
+test json::tests::writes_escaped_strings_and_non_finite_numbers ... ok
+test json::tests::rejects_malformed_input ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/cleanup-rust/debug/deps/vn_ui-367b9f241cc19b64)
+
+running 3 tests
+test font::tests::bare_identifiers ... ok
+test color::tests::named_table_is_sorted_and_complete ... ok
+test dom::zz_debug::links ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cascade_corpus.rs (target/cleanup-rust/debug/deps/cascade_corpus-3faf392f107073ef)
+
+running 2 tests
+test cascade_checker_detects_wrong_expectations ... ok
+test cascade_fixtures_match_chrome ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/values_corpus.rs (target/cleanup-rust/debug/deps/values_corpus-2a3a7f97ccde0267)
+
+running 2 tests
+test values_checker_detects_wrong_expectations ... ok
+test values_match_chrome ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
+
+     Running tests/zz_debug.rs (target/cleanup-rust/debug/deps/zz_debug-1e3693c6e35ea517)
+
+running 2 tests
+test debug_parse ... ok
+test debug_nth ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests vn_renderer_dom
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests vn_ui
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

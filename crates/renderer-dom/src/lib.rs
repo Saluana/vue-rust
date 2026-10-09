@@ -15,3 +15,5 @@ mod selftest;
 mod web_host;
 
 pub use web_host::{LogLevel, WebHost, set_timer_hook};
+
+pub use listeners::{set_event_context, finish_dispatch};

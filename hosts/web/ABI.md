@@ -62,6 +62,7 @@ page shell `index.html`, and `tooling/web/build-wasm.mjs`, which writes `manifes
 | style_set_property | (el, name ptr, name len, value ptr, value len, important u32) | i32 | style.setProperty |
 | style_remove_property | (el, name ptr, name len) | i32 | style.removeProperty |
 | style_get_property | (el, name ptr, name len, out) | i32 | style.getPropertyValue (out string) |
+| computed_style_property | (el, name ptr, name len, out) | i32 | getComputedStyle(el).getPropertyValue, with owned UTF-8 out string; used by Transition timing |
 | style_css_text | (el, out) | i32 | style.cssText (out string) |
 | style_set_css_text | (el, text ptr, text len) | i32 | style.cssText = text |
 | class_list_add | (el, token ptr, token len) | i32 | classList.add |
@@ -86,7 +87,7 @@ page shell `index.html`, and `tooling/web/build-wasm.mjs`, which writes `manifes
 | vn_free | (ptr u32, len u32) -> () | frees a block from vn_alloc with the same len |
 | vn_event | (listener u32, ptr u32, len u32) -> u32 | delivers one event payload; returns outcome bits |
 | vn_timer | (id u32) -> u32 | fires a timer; 1 when a hook is installed, else 0 |
-| vn_host_probe | () -> u32 | links every import (a cdylib keeps only what its exports reach) and returns 44; the glue does not call it |
+| vn_host_probe | () -> u32 | links every import (a cdylib keeps only what its exports reach) and returns 45; the glue does not call it |
 | selftest_call | (ptr u32, len u32) -> u32 | selftest build only: JSON request in, reply buffer out (see below) |
 
 ## Event payload (`vn_event`)

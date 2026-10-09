@@ -1,0 +1,476 @@
+▶ ABI tables and build outputs
+  ✔ the shipped build imports exactly the 45 vn_host functions of ABI 1 (8.610584ms)
+  ✔ the shipped build exports the ABI 1 entry points and no self-test export (0.305292ms)
+  ✔ the self-test build has the same imports and adds only selftest_call (0.123584ms)
+  ✔ the glue declares ABI_VERSION 1 and its import table names every vn_host function (7.086875ms)
+✔ ABI tables and build outputs (9027.902875ms)
+▶ loading mismatched or invalid modules
+  ✔ a module reporting another abiVersion is refused with both versions named (153.267792ms)
+  ✔ a module that imports a vn_host function the glue lacks is refused and the name is given (32.463208ms)
+  ✔ an import from another module is refused (20.572625ms)
+  ✔ a module missing a required export is refused (108.098416ms)
+  ✔ the same hand-assembled module with the right version and no extras loads (33.894583ms)
+  ✔ bytes that are not WebAssembly fail to compile with CompileError (41.361833ms)
+  ✔ createHost validates its arguments (31.310042ms)
+  ✔ two host instances in one page keep separate handle tables and wasm memories (36.805125ms)
+✔ loading mismatched or invalid modules (3215.568708ms)
+▶ raw exports
+  ✔ vn_host_probe links all 45 imports and returns 45 (26.002625ms)
+  ✔ vn_abi_version returns 1, vn_alloc(0) is non-null and vn_alloc/vn_free round-trip bytes (30.640208ms)
+✔ raw exports (2193.445958ms)
+▶ attributes
+  ✔ HTML attribute names are lower-cased by set, get and has (124.0535ms)
+  ✔ SVG attribute names keep their case (55.605041ms)
+  ✔ set_attribute replaces the value; remove_attribute deletes; removing again is not an error (40.396917ms)
+  ✔ an attribute name the DOM rejects is InvalidState (37.091459ms)
+  ✔ namespaced attributes: set, read with getAttributeNS, remove (96.578125ms)
+  ✔ a null namespace sets a plain attribute; a mismatched prefix is InvalidState (90.893667ms)
+  ✔ event-handler attributes are Unsupported and nothing is set (51.066083ms)
+  ✔ javascript: URLs are Unsupported in URL attributes, whatever the case and leading spaces (40.071584ms)
+  ✔ srcdoc is Unsupported; an attribute value may hold any text (44.187833ms)
+  ✔ get_attribute and has_attribute on a text node report no attributes (the glue logs a warning) (27.732125ms)
+✔ attributes (12451.631209ms)
+▶ properties
+  ✔ has_property answers like `name in el` (87.532083ms)
+  ✔ get_property returns the five value kinds: string, number, boolean, null and undefined (137.931709ms)
+  ✔ a detached element has a null parentNode, an attached one an object (Unsupported) (66.176375ms)
+  ✔ set_property converts strings, numbers and booleans as the DOM does (44.993833ms)
+  ✔ undefined and null convert the way `el[name] = v` does (undefined is "undefined", null is "null") (20.387042ms)
+  ✔ input.value uses LegacyNullToEmptyString and does not reflect to the attribute (48.47675ms)
+  ✔ checked and selected are properties; defaultChecked is the attribute (51.349708ms)
+  ✔ disabled reflects to the attribute; a textarea value reads back its text (189.148791ms)
+  ✔ a property the node does not have is Unsupported (no expando is created) (26.162167ms)
+  ✔ innerHTML and outerHTML cannot be set; their getters work (41.056958ms)
+  ✔ on* and javascript: URL properties are Unsupported (13.627417ms)
+  ✔ strings round-trip unchanged through set_property and get_property, including NUL and astral characters (17.431042ms)
+  ✔ a successful property write is visible in the DOM the page holds (84.903541ms)
+✔ properties (2411.388541ms)
+✔ compiled advanced components: real browser CSS timers, cache state, teleport events and resource disposal (12885.718792ms)
+host-only: wasm 60685 bytes (gzip 23175), 45 vn_host imports
+✔ host-only web app: built output is complete and the wasm is a web app (8497.895417ms)
+host-only: 60685 bytes wasm; first render 172 ms after navigation
+✔ host-only web app: starts in Chrome and mounts through the browser host (3049.035584ms)
+✔ host-only web app: a failing start is reported, not silent (negative control) (2507.271583ms)
+Counter: 2238428 bytes wasm (658965 gzip); first render 185 ms
+✔ compiled Counter: browser click, computed, conditional, disabled and reset (11554.2085ms)
+Quick Quote: 2402940 bytes wasm (692524 gzip); first render 51 ms
+✔ compiled Quick Quote: input/models, validation, keyed rows, watcher and unmount/recreate (4340.523209ms)
+✔ compiled app: missing mount container rejects startup loudly (negative control) (975.709666ms)
+▶ events: delivery and options
+  ✔ a dispatch from the page reaches the listener with its id, type, target, current target and phase (175.077208ms)
+  ✔ a once listener runs once (35.510917ms)
+  ✔ capture and bubble order across three nested elements matches native listeners (150.456791ms)
+  ✔ target and currentTarget are the handles of the node the event is at, in each phase (41.165333ms)
+  ✔ a listener registered twice with the same id and capture runs once (addEventListener dedupes) (31.999ms)
+  ✔ remove_event_listener needs the same capture flag; an unknown listener is a no-op (37.851667ms)
+  ✔ a passive listener cannot prevent the default action (69.391333ms)
+  ✔ preventDefault from Rust makes a cancelable dispatch report false, and later listeners see it (47.550333ms)
+  ✔ preventDefault has no effect on a non-cancelable event (24.885292ms)
+  ✔ stopPropagation from Rust stops the bubble before the outer element (32.596333ms)
+  ✔ stopImmediatePropagation skips the rest of the element and the bubble (47.631958ms)
+  ✔ a listener that throws is reported and the dispatch continues (184.816208ms)
+✔ events: delivery and options (12812.982375ms)
+▶ events: data fidelity
+  ✔ keyboard fields: key, code, modifiers and the cancelable and bubbles flags (36.469875ms)
+  ✔ astral characters in key arrive intact (58.534584ms)
+  ✔ mouse fields: button, detail and client coordinates (172.634208ms)
+  ✔ composition data and isComposing reach the listener; absent data is null (91.002916ms)
+  ✔ time stamps equal the timeStamp the page sees, and are positive (31.887167ms)
+  ✔ a released target is reported as no handle (documented limit) (39.343458ms)
+✔ events: data fidelity (2047.054083ms)
+▶ events: focus order and re-entrancy
+  ✔ focus from one input to another fires blur, focusout, focus, focusin in the browser order (63.482833ms)
+  ✔ blur fires during remove, while the node is attached; the listener may call back into the host (93.354375ms)
+  ✔ a listener removes the node being inserted: a custom element dispatches during insert (52.38825ms)
+  ✔ a listener inserts another node while the page dispatches to its parent (34.789959ms)
+✔ events: focus order and re-entrancy (1063.511834ms)
+▶ Chrome-recorded DOM corpora replayed through the web host
+  ▶ activation.json
+    ﹣ activation/checkbox-click-order (1.306458ms) # listener 2 logs a kind the replay does not model
+    ﹣ activation/checkbox-script-click-and-synthetic-dispatch (0.117833ms) # listener 2 logs a kind the replay does not model
+    ﹣ activation/radio-group-switch (0.072709ms) # listener 2 logs a kind the replay does not model
+    ﹣ activation/label-click-forwards-order (0.049125ms) # listener 3 logs a kind the replay does not model
+    ﹣ activation/label-wrapping-control-click-inside (0.040667ms) # listener 3 logs a kind the replay does not model
+    ✔ activation/prevented-click-fires-no-input-or-change (230.191ms)
+    ✔ activation/prevented-radio-click-keeps-group (167.146625ms)
+    ✔ activation/input-listener-prevent-does-not-revert (104.471875ms)
+    ﹣ activation/disabled-checkbox-click-ignored (0.402ms) # listener 2 logs a kind the replay does not model
+    ﹣ activation/select-and-option-not-activated (0.087708ms) # listener 2 logs a kind the replay does not model
+    ﹣ activation/detached-checkbox-click (0.064584ms) # listener 2 logs a kind the replay does not model
+    ﹣ activation/input-change-bubble-to-ancestor (0.050667ms) # listener 2 logs a kind the replay does not model
+    ﹣ activation/radio-already-checked-click (0.027417ms) # listener 2 logs a kind the replay does not model
+  ✔ activation.json (505.252708ms)
+  ▶ attr.json
+    ﹣ attr/html-name-lowercased (1.171ms) # verb 'attributeNames' has no Host operation
+    ﹣ attr/svg-name-case-preserved (0.051708ms) # verb 'attributeNames' has no Host operation
+    ﹣ attr/remove-case-insensitive-html (0.041625ms) # verb 'attributeNames' has no Host operation
+    ﹣ attr/replace-keeps-position (0.026417ms) # verb 'attributeNames' has no Host operation
+    ﹣ attr/remove-readd-moves-last (0.019291ms) # verb 'attributeNames' has no Host operation
+    ✔ attr/null-and-undefined-values (37.674042ms)
+    ﹣ attr/number-and-boolean-values (0.10775ms) # verb 'attributeNames' has no Host operation
+    ﹣ attr/invalid-names-rejected (0.029208ms) # verb 'attributeNames' has no Host operation
+    ﹣ attr/lenient-names-accepted (0.021917ms) # verb 'attributeNames' has no Host operation
+    ﹣ attr/ns-null-keeps-case-but-lookup-lowercases (0.019292ms) # verb 'attributeNames' has no Host operation
+    ﹣ attr/ns-prefix-without-namespace-error (0.017833ms) # verb 'attributeNames' has no Host operation
+    ﹣ attr/xmlns-without-namespace-error (0.017542ms) # verb 'attributeNames' has no Host operation
+    ﹣ attr/xlink-prefixed-serialized (0.017125ms) # verb 'attributeNames' has no Host operation
+    ﹣ attr/xlink-unprefixed-serialized-with-prefix (0.015834ms) # verb 'attributeNames' has no Host operation
+    ﹣ attr/xlink-then-prefixed-keeps-qualified-name (0.016125ms) # verb 'attributeNames' has no Host operation
+    ﹣ attr/xml-namespace-lang (0.020667ms) # verb 'attributeNames' has no Host operation
+    ✔ attr/xlink-on-html-element-serialized (35.49925ms)
+    ﹣ attr/remove-missing-noop (0.135375ms) # verb 'attributeNames' has no Host operation
+    ✔ attr/value-escaping-roundtrip (27.153708ms)
+    ✔ attr/empty-value-present (118.814ms)
+    ﹣ attr/mathml-name-case-preserved (0.105542ms) # verb 'attributeNames' has no Host operation
+    ✔ attr/disabled-false-string-is-presence (42.984625ms)
+    ﹣ attr/order-after-many-ops (0.100334ms) # verb 'attributeNames' has no Host operation
+  ✔ attr.json (266.095791ms)
+  ▶ class.json
+    ﹣ class/classlist-reads-attribute (0.08125ms) # verb 'attributeNames' has no Host operation
+    ✔ class/add-normalizes-attribute (27.995ms)
+    ✔ class/remove-missing-still-normalizes (29.717583ms)
+    ﹣ class/toggle-remove-then-add-appends (0.094792ms) # verb 'classToggle' has no Host operation
+    ﹣ class/toggle-force-true-keeps-present (0.040666ms) # verb 'classToggleForce' has no Host operation
+    ﹣ class/toggle-force-false-keeps-absent (0.022083ms) # verb 'classToggleForce' has no Host operation
+    ﹣ class/contains-empty-and-spaces-false (0.017708ms) # verb 'classContains' has no Host operation
+    ﹣ class/add-multiple-dedupes (0.019375ms) # classAdd with several tokens (the Host adds one token per call)
+    ﹣ class/classname-whitespace-raw-then-tokens (0.019375ms) # verb 'classList' has no Host operation
+    ﹣ class/remove-absent-creates-nothing (0.01675ms) # verb 'attributeNames' has no Host operation
+    ﹣ class/add-no-tokens-creates-attribute (0.016625ms) # classAdd with no tokens (the Host operation takes one token)
+    ﹣ class/toggle-creates-attribute (0.014ms) # verb 'classToggle' has no Host operation
+    ✔ class/add-invalid-tokens-error (39.423625ms)
+    ﹣ class/toggle-empty-token-error (0.144708ms) # verb 'classToggle' has no Host operation
+    ✔ class/remove-leaves-empty-attribute (171.559042ms)
+    ✔ class/svg-class-normalized (46.744167ms)
+    ﹣ class/uppercase-class-attribute-name (0.272208ms) # verb 'classContains' has no Host operation
+  ✔ class.json (316.884792ms)
+  ▶ event.json
+    ✔ event/path-capture-target-bubble (202.355166ms)
+    ✔ event/non-bubbling-skips-ancestor-bubble (306.184542ms)
+    ✔ event/stop-in-target-capture-blocks-target-bubble (84.128416ms)
+    ✔ event/stop-immediate-same-node (100.26725ms)
+    ✔ event/stop-keeps-same-node-listeners (156.145459ms)
+    ✔ event/stop-at-ancestor-capture-blocks-target (114.127708ms)
+    ✔ event/stop-in-bubble-blocks-ancestors (87.25675ms)
+    ✔ event/once-runs-once (249.040958ms)
+    ✔ event/duplicate-add-ignored-including-options (83.278125ms)
+    ✔ event/capture-variant-is-distinct (80.769875ms)
+    ✔ event/remove-with-matching-capture (161.049959ms)
+    ✔ event/prevent-only-when-cancelable (29.84425ms)
+    ✔ event/passive-ignores-prevent (45.273708ms)
+    ✔ event/throwing-listener-continues (113.006125ms)
+    ﹣ event/listener-added-during-dispatch (0.10475ms) # listener 1 runs corpus operations
+    ﹣ event/listener-removed-during-dispatch (0.027375ms) # listener 1 runs corpus operations
+    ﹣ event/removed-on-later-node-is-skipped (0.22275ms) # listener 1 runs corpus operations
+    ✔ event/once-listener-that-throws-is-removed (65.640167ms)
+    ✔ event/payload-keyboard (36.64225ms)
+    ✔ event/payload-mouse (78.075166ms)
+    ✔ event/payload-input-data (91.573958ms)
+    ✔ event/default-init-values (98.44675ms)
+    ✔ event/click-method-bubbles-cancelable (34.5285ms)
+    ✔ event/click-dispatch-prevent-result (36.626375ms)
+    ✔ event/click-method-skips-disabled-control (40.308875ms)
+    ﹣ event/document-listener-on-attached-path-only (0.240125ms) # the document is used as a node argument
+    ✔ event/registration-order-same-node (73.73975ms)
+    ﹣ event/detached-chain-never-reaches-document (0.095792ms) # the document is used as a node argument
+  ✔ event.json (2371.772958ms)
+  ▶ focus.json
+    ﹣ focus/focusable-matrix (402.492333ms) # step 71 el: refused by host policy (<iframe> elements are not created by the host)
+    ✔ focus/focus-then-focus-moves-with-events (140.244708ms)
+    ✔ focus/blur-not-focused-is-noop (33.552291ms)
+    ✔ focus/refocus-same-element-no-events (39.958542ms)
+    ✔ focus/detached-element-focus-noop (20.990917ms)
+    ﹣ focus/active-seen-during-blur-is-null (0.11775ms) # listener 1 logs a kind the replay does not model
+    ﹣ focus/removal-blurs-focused-descendant-before-detach (0.034292ms) # the document is used as a node argument
+    ✔ focus/move-focused-blurs (22.862333ms)
+    ✔ focus/text-replace-blurs-focused-child (90.320416ms)
+    ✔ focus/blur-method-clears-active (90.722584ms)
+    ✔ focus/removed-focus-not-restored (76.302708ms)
+    ✔ focus/click-does-not-move-focus (31.090917ms)
+    ﹣ focus/document-listener-sees-focusin (0.116667ms) # the document is used as a node argument
+    ✔ focus/focus-of-nested-inside-focused-ancestor (120.034417ms)
+  ✔ focus.json (1070.028666ms)
+  ▶ form.json
+    ✔ form/input-value-attribute-default-until-dirty (58.365167ms)
+    ✔ form/input-value-empty-and-coercion (23.017917ms)
+    ✔ form/input-text-strips-newlines (18.620458ms)
+    ✔ form/input-number-sanitized (22.323541ms)
+    ✔ form/input-range-default-and-clamp (32.81375ms)
+    ✔ form/input-color-sanitized (28.863792ms)
+    ✔ form/input-hidden-default-mode (39.581417ms)
+    ✔ form/input-type-change-copies-value (18.161959ms)
+    ✔ form/checkbox-default-value-on (24.232625ms)
+    ✔ form/checkbox-checked-follows-attribute-until-dirty (14.642209ms)
+    ✔ form/checkbox-dirty-ignores-attribute (14.170875ms)
+    ✔ form/checkbox-default-checked-reflects (14.387ms)
+    ✔ form/checkbox-click-toggles (12.561667ms)
+    ﹣ form/checkbox-click-prevented-reverts (0.088209ms) # listener 1 logs a kind the replay does not model
+    ﹣ form/checkbox-dispatch-noncancelable-keeps (0.026625ms) # listener 1 logs a kind the replay does not model
+    ﹣ form/checkbox-dispatch-cancelable-reverts (0.020417ms) # listener 1 logs a kind the replay does not model
+    ✔ form/checkbox-plain-event-no-activation (12.527583ms)
+    ✔ form/checkbox-disabled-click-versus-dispatch (18.065791ms)
+    ✔ form/radio-group-click-exclusive (26.64475ms)
+    ✔ form/radio-checked-property-unchecks-group (28.056209ms)
+    ✔ form/radio-insert-checked-wins (75.77675ms)
+    ✔ form/radio-checked-attribute-unchecks (53.971667ms)
+    ✔ form/radio-name-change-joins-group (55.8875ms)
+    ✔ form/radio-click-prevented-reverts-group (39.635917ms)
+    ✔ form/label-for-forwards-click (27.902625ms)
+    ✔ form/label-wrapping-forwards-and-toggles-back (55.216625ms)
+    ✔ form/label-prevented-no-forward (17.422916ms)
+    ✔ form/label-disabled-control-no-forward (15.860333ms)
+    ✔ form/label-click-on-control-toggles-once (12.781875ms)
+    ✔ form/textarea-value-and-default (15.65125ms)
+    ✔ form/textarea-default-value-setter-and-text (17.718333ms)
+    ✔ form/select-first-option-selected-by-default (23.168625ms)
+    ✔ form/select-option-setter-deselects-others (55.186958ms)
+    ✔ form/select-selectedindex-setter-range (34.4485ms)
+    ✔ form/select-value-setter (32.343791ms)
+    ✔ form/select-removing-selected-resets (52.7165ms)
+    ✔ form/select-skips-disabled-when-resetting (21.078083ms)
+    ✔ form/select-empty (28.119458ms)
+    ✔ form/select-multiple-keeps-selection (72.229708ms)
+    ✔ form/option-value-and-text-normalized (25.544875ms)
+    ✔ form/option-value-setter-and-text-setter (22.142334ms)
+    ✔ form/option-selected-attribute-last-inserted-wins (17.920708ms)
+    ✔ form/option-inserted-selected-wins-then-removal-resets (26.97525ms)
+    ✔ form/option-setattribute-selected-after-dirty-select (18.387417ms)
+    ✔ form/option-selected-false-resets-to-first (16.195209ms)
+    ✔ form/button-type-normalized (13.178458ms)
+    ✔ form/submit-button-click-does-nothing-extra (15.635833ms)
+    ✔ form/text-input-checked-attribute (11.32825ms)
+    ✔ form/keyboard-payload-on-input (12.454208ms)
+  ✔ form.json (1296.031542ms)
+  ▶ prop.json
+    ✔ prop/has-div (29.574042ms)
+    ✔ prop/has-input (35.40775ms)
+    ✔ prop/has-option (25.1255ms)
+    ✔ prop/has-select (23.766708ms)
+    ✔ prop/has-textarea (27.228834ms)
+    ✔ prop/has-button (20.3915ms)
+    ✔ prop/has-a (30.685917ms)
+    ✔ prop/has-img (43.974709ms)
+    ✔ prop/has-label (40.552625ms)
+    ✔ prop/has-fieldset (31.650125ms)
+    ✔ prop/has-svgrect (24.054375ms)
+    ✔ prop/has-mathmi (30.114917ms)
+    ✔ prop/has-text (122.433833ms)
+    ✔ prop/has-comment (28.212125ms)
+    ﹣ prop/has-document (0.076ms) # the document is used as a node argument
+    ✔ prop/id-reflect (13.832459ms)
+    ✔ prop/classname-reflect (11.991416ms)
+    ✔ prop/title-hidden-reflect (13.960083ms)
+    ✔ prop/hidden-truthiness (13.295292ms)
+    ﹣ prop/tabindex-default-by-element (12.702166ms) # step 6 el: refused by host policy (<iframe> elements are not created by the host)
+    ✔ prop/tabindex-attribute-parsing (16.915917ms)
+    ✔ prop/tabindex-setter-coercion (20.27775ms)
+    ✔ prop/input-type-normalized (13.593ms)
+    ✔ prop/input-type-from-attribute (12.591709ms)
+    ﹣ prop/input-string-reflects (0.07925ms) # verb 'attributeNames' has no Host operation
+    ✔ prop/input-boolean-reflects (15.48275ms)
+    ﹣ prop/href-reflects-raw (0.082ms) # href reflects the resolved URL; the corpus was recorded without a document base URL
+    ﹣ prop/img-src-alt (0.0295ms) # src reflects the resolved URL; the corpus was recorded without a document base URL
+    ✔ prop/label-htmlfor (12.819208ms)
+    ✔ prop/button-type-normalized (12.882791ms)
+    ✔ prop/button-value-reflects (10.512584ms)
+    ✔ prop/disabled-reflects-per-element (31.900333ms)
+    ✔ prop/fieldset-disabled-not-propagated (13.791625ms)
+    ✔ prop/unsupported-names-read-undefined (10.461042ms)
+    ✔ prop/read-only-set-is-type-error (10.753709ms)
+    ✔ prop/get-text-node-properties (12.042334ms)
+    ✔ prop/get-element-properties (14.637417ms)
+    ✔ prop/get-innerhtml-outerhtml (12.706042ms)
+    ﹣ prop/document-properties (0.081333ms) # the document is used as a node argument
+  ✔ prop.json (802.165084ms)
+  ▶ query.json
+    ﹣ query/get-element-by-id-first-in-tree-order (0.139917ms) # byId('') is outside the selector subset
+    ✔ query/get-element-by-id-detached-not-found (15.012125ms)
+    ﹣ query/query-selector-tag-case-insensitive (0.07925ms) # verb 'querySelector' has no Host operation
+    ﹣ query/query-selector-id-and-class (0.025458ms) # verb 'querySelector' has no Host operation
+    ﹣ query/query-selector-attribute-forms (0.02175ms) # verb 'querySelector' has no Host operation
+    ﹣ query/query-selector-compound (0.021ms) # verb 'querySelector' has no Host operation
+    ﹣ query/query-selector-list-document-order (0.018167ms) # verb 'querySelector' has no Host operation
+    ﹣ query/query-selector-universal-and-scope (0.018ms) # verb 'querySelector' has no Host operation
+  ✔ query.json (15.459542ms)
+  ▶ serial.json
+    ✔ serial/text-escapes (11.29575ms)
+    ✔ serial/attribute-escapes (14.398375ms)
+    ✔ serial/void-element-ignores-children (10.400666ms)
+    ✔ serial/boolean-attributes-printed (11.768333ms)
+    ✔ serial/comment-in-inner-html (20.22875ms)
+    ✔ serial/style-text-is-raw (11.581375ms)
+    ﹣ serial/script-text-is-raw (8.868333ms) # step 0 el: refused by host policy (<script> elements are not created by the host)
+    ✔ serial/textarea-children-escaped (11.23725ms)
+    ✔ serial/xmp-text-is-raw (9.426ms)
+    ✔ serial/svg-tree (15.961125ms)
+    ✔ serial/svg-camel-tag-kept (10.192959ms)
+    ✔ serial/xlink-attribute-prefix (9.554625ms)
+    ✔ serial/mathml-element (10.604041ms)
+    ✔ serial/attribute-whitespace-kept-raw (10.361542ms)
+    ✔ serial/attribute-quotes-and-apostrophe (9.000083ms)
+    ✔ serial/attribute-angle-brackets (10.457458ms)
+    ✔ serial/unicode-passthrough (14.338917ms)
+    ✔ serial/empty-attribute-value (8.520459ms)
+    ✔ serial/inner-html-nested (11.326625ms)
+    ﹣ serial/snapshot-basic (0.075917ms) # verb 'snapshot' has no Host operation
+    ﹣ serial/snapshot-input-props (0.023209ms) # verb 'snapshot' has no Host operation
+    ﹣ serial/snapshot-textarea-option-props (0.01875ms) # verb 'snapshot' has no Host operation
+    ﹣ serial/snapshot-document-and-svg (0.020833ms) # verb 'snapshot' has no Host operation
+    ﹣ serial/inner-html-of-text-undefined (0.015375ms) # the document is used as a node argument
+    ﹣ serial/snapshot-escapes-json (0.014834ms) # verb 'snapshot' has no Host operation
+    ✔ serial/set-attribute-undefined-serialized (8.685458ms)
+  ✔ serial.json (229.197708ms)
+  ▶ style.json
+    ﹣ style/set-get-priority (0.133083ms) # verb 'stylePriority' has no Host operation
+    ✔ style/property-name-case-insensitive (11.483542ms)
+    ✔ style/invalid-values-ignored (10.689042ms)
+    ﹣ style/update-in-place-and-priority-reset (0.094084ms) # verb 'stylePriority' has no Host operation
+    ✔ style/empty-value-removes (13.901625ms)
+    ✔ style/remove-property-returns-old-value (10.626625ms)
+    ✔ style/custom-property-case-sensitive (10.739875ms)
+    ✔ style/important-serialized-last (10.529875ms)
+    ✔ style/important-group-order (10.587917ms)
+    ✔ style/cssText-parse-drops-invalid-declaration (9.133042ms)
+    ﹣ style/cssText-normal-after-important-ignored (0.0725ms) # verb 'stylePriority' has no Host operation
+    ✔ style/cssText-later-normal-wins (8.682292ms)
+    ✔ style/cssText-important-after-important-wins (8.658833ms)
+    ✔ style/cssText-roundtrip-format (9.244833ms)
+    ✔ style/cssText-blank-is-empty (9.274667ms)
+    ✔ style/attribute-raw-until-cssom-change (12.178958ms)
+    ✔ style/remove-attribute-clears-declarations (9.900459ms)
+    ﹣ style/cssom-creates-attribute-at-end (0.079708ms) # verb 'attributeNames' has no Host operation
+    ﹣ style/lazy-attribute-after-other-attribute (0.025542ms) # verb 'attributeNames' has no Host operation
+    ﹣ style/existing-attribute-keeps-position (0.027333ms) # verb 'attributeNames' has no Host operation
+    ﹣ style/set-attribute-after-lazy-cssom (0.042583ms) # verb 'attributeNames' has no Host operation
+    ﹣ style/remove-absent-property-creates-nothing (0.022167ms) # verb 'attributeNames' has no Host operation
+    ✔ style/keyword-values-lowercased (11.671ms)
+    ✔ style/values-trimmed (11.703583ms)
+    ✔ style/length-forms-accepted (11.310875ms)
+    ✔ style/number-values (13.375417ms)
+    ✔ style/var-value-valid (10.517292ms)
+    ✔ style/object-set-syncs-attribute (9.199375ms)
+    ✔ style/keyword-invalid-ignored (10.29725ms)
+    ✔ style/set-property-undefined-value-text (10.983875ms)
+    ﹣ style/camel-case-setter-matches-kebab (0.081583ms) # verb 'styleCamel' has no Host operation
+    ﹣ style/camel-case-invalid-value-ignored (0.024459ms) # verb 'styleCamel' has no Host operation
+    ﹣ style/camel-and-kebab-share-declarations (0.021166ms) # verb 'styleCamel' has no Host operation
+    ✔ style/margin-shorthand-values (53.685208ms)
+    ﹣ style/margin-longhand-update-removal (0.099167ms) # verb 'stylePriority' has no Host operation
+    ﹣ style/margin-css-text-priority (0.029583ms) # verb 'stylePriority' has no Host operation
+    ✔ style/padding-shorthand-values (35.067542ms)
+    ﹣ style/padding-longhand-update-removal (0.106333ms) # verb 'stylePriority' has no Host operation
+    ﹣ style/padding-css-text-priority (0.022208ms) # verb 'stylePriority' has no Host operation
+  ✔ style.json (325.364583ms)
+  ▶ tree.json
+    ✔ tree/create-html-lowercases (12.299792ms)
+    ✔ tree/create-svg-keeps-case (10.150542ms)
+    ✔ tree/create-mathml (9.624542ms)
+    ✔ tree/create-invalid-names (11.193667ms)
+    ✔ tree/create-text-comment (11.945458ms)
+    ﹣ tree/append-order (0.080083ms) # verb 'childNodes' has no Host operation
+    ﹣ tree/insert-before-anchor (0.035542ms) # verb 'childNodes' has no Host operation
+    ﹣ tree/insert-null-anchor-appends (0.037542ms) # verb 'childNodes' has no Host operation
+    ﹣ tree/insert-moves-attached (0.026084ms) # verb 'childNodes' has no Host operation
+    ﹣ tree/insert-anchor-self-noop (0.0205ms) # verb 'childNodes' has no Host operation
+    ﹣ tree/insert-first-before-first-child (0.017542ms) # verb 'childNodes' has no Host operation
+    ﹣ tree/insert-anchor-not-child (0.018333ms) # verb 'childNodes' has no Host operation
+    ﹣ tree/cycle-self-and-ancestor (0.018292ms) # verb 'childNodes' has no Host operation
+    ✔ tree/insert-into-text-or-comment (12.274042ms)
+    ﹣ tree/document-rejects-text (0.111625ms) # verb 'childNodes' has no Host operation
+    ﹣ tree/document-one-element-only (0.022583ms) # verb 'childNodes' has no Host operation
+    ﹣ tree/document-comment-allowed (0.0155ms) # verb 'childNodes' has no Host operation
+    ﹣ tree/document-element-replaced-after-remove (0.015417ms) # verb 'childNodes' has no Host operation
+    ﹣ tree/remove-child-missing (0.016ms) # removeChild with a parent check the Host does not model
+    ﹣ tree/remove-detaches-and-connected (0.014791ms) # verb 'childNodes' has no Host operation
+    ﹣ tree/sibling-navigation-after-remove (0.016375ms) # verb 'previousSibling' has no Host operation
+    ﹣ tree/contains-is-inclusive (0.01425ms) # verb 'contains' has no Host operation
+    ﹣ tree/root-of-detached-and-connected (0.012834ms) # verb 'root' has no Host operation
+    ✔ tree/text-content-concatenates (16.316916ms)
+    ✔ tree/set-text-content-replaces-children (13.740375ms)
+    ✔ tree/text-node-data-setters (14.944125ms)
+    ✔ tree/element-node-value-ignored (9.888541ms)
+    ✔ tree/comment-data-setters (11.562125ms)
+    ﹣ tree/document-text-properties-null (0.077ms) # the document is used as a node argument
+    ﹣ tree/empty-text-child-kept (0.026166ms) # verb 'childNodes' has no Host operation
+    ﹣ tree/move-between-parents (0.01925ms) # verb 'childNodes' has no Host operation
+    ﹣ tree/remove-then-reinsert (0.019708ms) # verb 'childNodes' has no Host operation
+    ﹣ tree/mixed-namespace-children (0.073459ms) # verb 'childNodes' has no Host operation
+    ✔ tree/undefined-node-value-set (34.014375ms)
+  ✔ tree.json (169.316208ms)
+✔ Chrome-recorded DOM corpora replayed through the web host (18634.37875ms)
+▶ strings
+  ✔ an empty text node round-trips and an empty attribute value is kept (117.737417ms)
+  ✔ a 1 MB text round-trips exactly (348.424625ms)
+  ✔ astral characters and embedded NULs survive text, attribute and selector round trips (95.047792ms)
+  ✔ a 300 000 character attribute value round-trips (44.992917ms)
+✔ strings (12405.550542ms)
+▶ handles and memory
+  ✔ handles are exhausted at maxNodes and come back after release, with a new generation (120.88125ms)
+  ✔ 50 000 create, insert, remove and release cycles keep wasm memory and handle count flat (211.138959ms)
+  ✔ a 400-level deep tree serialises exactly and every level keeps its handle (1602.087417ms)
+✔ handles and memory (3572.072541ms)
+▶ panics and lifecycle
+  ✔ a Rust panic is reported through host_panic and the page keeps working (22.385917ms)
+  ✔ timers scheduled through the host fire through vn_timer; cleared timers do not (166.506375ms)
+  ✔ host log messages reach onLog with the info level (14.379125ms)
+  ✔ destroy() removes listeners and makes later calls InvalidState (15.754583ms)
+✔ panics and lifecycle (788.676833ms)
+▶ style
+  ✔ setProperty and getPropertyValue round-trip; cssText shows the declaration (111.457709ms)
+  ✔ important priority is kept and serialised (90.631292ms)
+  ✔ custom properties and shorthands are accepted (140.375959ms)
+  ✔ a camelCase or unknown property name is Unsupported (kebab-case is required) (65.137584ms)
+  ✔ an invalid value is ignored, as CSSOM does: nothing is set and the call succeeds (22.534958ms)
+  ✔ removeProperty removes a declaration; removing an absent one is not an error (30.083416ms)
+  ✔ cssText round trip matches the browser, including dropped invalid declarations (79.589958ms)
+  ✔ style applies to SVG elements; text nodes have no style (InvalidState) (32.632667ms)
+  ✔ style changes are visible in the DOM the page holds (138.259833ms)
+✔ style (12253.023625ms)
+▶ classList
+  ✔ add, duplicate add and remove keep the class attribute in step (145.426875ms)
+  ✔ a token with whitespace is InvalidState (InvalidCharacterError); an empty token is InvalidState (SyntaxError) (57.276458ms)
+✔ classList (2182.3125ms)
+▶ focus and selectors
+  ✔ focus makes an input the active element; blur clears it (53.6465ms)
+  ✔ focus moves between elements: only the last one is active (23.657833ms)
+  ✔ focus on a non-focusable element does nothing; tabindex makes it focusable (18.215791ms)
+  ✔ focus on a detached element does nothing; on a text node it is InvalidState (18.781084ms)
+  ✔ removing the focused element clears the focus (48.770625ms)
+  ✔ selectors: tag, id, class, attribute, attribute value (bare and quoted), star, and comma lists (132.137875ms)
+  ✔ selector syntax outside the subset is Unsupported, an empty one is InvalidState (44.078416ms)
+✔ focus and selectors (1371.243708ms)
+▶ tree operations
+  ✔ a fresh page starts with a body handle and no focused element (57.575666ms)
+  ✔ create_element lower-cases HTML tag names and reports the uppercase tagName (170.176791ms)
+  ✔ SVG and MathML elements keep their case and namespace (38.4285ms)
+  ✔ an invalid element name is InvalidState with the browser message (30.182458ms)
+  ✔ script, iframe and object elements are refused by policy (Unsupported) (93.035ms)
+  ✔ insert appends with a null anchor and inserts before an anchor (63.059083ms)
+  ✔ inserting an attached node moves it and leaves its old parent (28.293125ms)
+  ✔ an anchor that is not a child of the parent is InvalidState (20.179458ms)
+  ✔ inserting a node into its own descendant is InvalidState (cycle) (29.472291ms)
+  ✔ inserting into a text node is InvalidState (21.920583ms)
+  ✔ remove detaches the node; removing a detached node is not an error (138.706291ms)
+  ✔ parent_node and next_sibling follow the tree (82.434959ms)
+  ✔ the document node is never exposed: the parent of body is null (32.422541ms)
+  ✔ text nodes: create, set_text, and comments serialise as the DOM does (264.314041ms)
+  ✔ set_text on an element is InvalidState; set_element_text on a text node is InvalidState (181.494584ms)
+  ✔ set_element_text replaces all children; an empty text removes them (36.608459ms)
+  ✔ option_nodes lists the options of a select in order, and rejects other elements (48.719375ms)
+  ✔ outer_html and inner_html serialise elements; both are null for text (138.972208ms)
+  ✔ query_selector finds by subset selectors and reports the rest as Unsupported (97.273625ms)
+  ✔ a released handle is NotFound, even after its slot is reused (70.537041ms)
+  ✔ handle 0 and unknown handles are NotFound (35.512209ms)
+  ✔ release of an attached node keeps it in the document (141.798042ms)
+✔ tree operations (14130.10025ms)
+▶ harness guards
+  ✔ a malformed request is a harness error and never reaches the host (32.761625ms)
+✔ harness guards (1033.218166ms)
+ℹ tests 408
+ℹ suites 28
+ℹ pass 299
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 109
+ℹ todo 0
+ℹ duration_ms 18737.99175

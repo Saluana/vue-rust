@@ -1,0 +1,2030 @@
+   Compiling vn-value v0.0.1 (/Users/brendon/Documents/vue-rust-lab/crates/value)
+   Compiling vn-dom v0.0.1 (/Users/brendon/Documents/vue-rust-lab/crates/dom)
+   Compiling vn-testkit v0.0.1 (/Users/brendon/Documents/vue-rust-lab/crates/testkit)
+   Compiling vn-uikit v0.0.1 (/Users/brendon/Documents/vue-rust-lab/crates/uikit)
+   Compiling vn-reactivity v0.0.1 (/Users/brendon/Documents/vue-rust-lab/crates/reactivity)
+    Finished `test` profile [unoptimized] target(s) in 5.71s
+     Running unittests src/lib.rs (target/cleanup-rust/debug/deps/vn_css-db45f1a52c85140f)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cascade.rs (target/cleanup-rust/debug/deps/cascade-05fac47fc6935a4e)
+
+running 17 tests
+test later_sheets_win_ties ... ok
+test candidates_are_in_ascending_precedence ... ok
+test author_normal_beats_user_agent_normal_whatever_the_specificity ... ok
+test important_user_agent_beats_important_author ... ok
+test inline_declarations_from_a_style_attribute_are_author_origin ... ok
+test css_wide_keywords_on_custom_properties ... ok
+test inline_beats_author_normal_and_loses_to_important_author ... ok
+test important_author_beats_normal_author_whatever_the_specificity ... ok
+test custom_values_keep_their_raw_text ... ok
+test empty_values_are_valid_and_do_not_use_fallbacks ... ok
+test custom_properties_inherit_and_children_override ... ok
+test media_conditional_rules_only_apply_when_they_match ... ok
+test cycles_are_guaranteed_invalid ... ok
+test regular_properties_substitute_and_report_invalid_values ... ok
+test specificity_then_source_order ... ok
+test var_fallbacks_nest_and_undefined_without_fallback_is_invalid ... ok
+test substitution_joins_raw_text_and_separates_tokens_that_would_merge ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cascade_corpus.rs (target/cleanup-rust/debug/deps/cascade_corpus-20e49a117241fe96)
+
+running 4 tests
+test negative_control_doctored_serialisation_is_reported ... ok
+test negative_control_doctored_custom_value_is_reported ... ok
+test cascade_agrees_with_chrome ... ok
+test var_serialisation_agrees_with_chrome ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/matching.rs (target/cleanup-rust/debug/deps/matching-126d46c9b3fe5462)
+
+running 13 tests
+test empty_comes_from_the_element_state_not_from_children ... ok
+test html_type_names_are_ascii_case_insensitive_and_non_html_names_are_not ... ok
+test form_and_focus_states ... ok
+test hover_and_active_come_from_the_element_state ... ok
+test not_takes_compounds_and_matches_when_none_of_them_does ... ok
+test html_listed_attributes_compare_case_insensitively_others_do_not ... ok
+test backtracking_finds_the_outer_ancestor_when_the_nearest_fails ... ok
+test mixed_combinators_with_the_non_greedy_bound ... ok
+test attribute_word_and_prefix_rules ... ok
+test ids_and_classes_are_case_sensitive ... ok
+test root_is_the_document_element ... ok
+test deep_descendant_chains_are_linear_and_correct ... ok
+test an_plus_b_over_siblings ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/media.rs (target/cleanup-rust/debug/deps/media-f9661f4bc3703b5b)
+
+running 11 tests
+test media_env_defaults_are_a_mouse_desktop_at_one_dppx ... ok
+test spans_point_at_the_query ... ok
+test em_and_rem_are_sixteen_pixels ... ok
+test orientation_is_landscape_only_when_wider_than_tall ... ok
+test comma_lists_match_when_any_query_matches ... ok
+test resolution_units_convert_to_dppx ... ok
+test media_types ... ok
+test unknown_features_are_unknown_not_matching ... ok
+test diagnostics_by_code ... ok
+test lengths_and_range_syntax ... ok
+test colour_scheme_motion_hover_and_pointer ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/media_corpus.rs (target/cleanup-rust/debug/deps/media_corpus-66910f5c00096268)
+
+running 2 tests
+test negative_control_doctored_result_is_reported ... ok
+test media_queries_agree_with_chrome ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/parser.rs (target/cleanup-rust/debug/deps/parser-e9fb535aeee778bf)
+
+running 23 tests
+test html_comment_tokens_are_ignored_with_a_note ... ok
+test important_is_case_and_space_insensitive ... ok
+test diagnostic_positions_are_line_and_utf16_column ... ok
+test env_is_unsupported_and_dropped ... ok
+test limits_source_nesting_and_rule_count ... ok
+test empty_value_is_invalid_for_properties_but_valid_for_custom_properties ... ok
+test deep_value_nesting_is_a_resource_diagnostic ... ok
+test custom_property_may_hold_blocks_and_semicolons_inside_brackets ... ok
+test function_names_starting_with_double_dash_are_invalid ... ok
+test invalid_declaration_is_dropped_and_reported_with_its_span ... ok
+test bad_tokens_and_bang_are_invalid_values ... ok
+test media_rules_nest_and_keep_their_rules ... ok
+test media_without_block_and_bad_queries_are_diagnosed ... ok
+test nested_style_rules_and_at_rules_are_rejected ... ok
+test property_names_lowercase_but_custom_names_keep_case ... ok
+test rule_without_selector_is_dropped ... ok
+test standalone_declarations ... ok
+test stray_close_brace_drops_its_rule_only ... ok
+test style_rule_without_a_block_is_dropped ... ok
+test style_rules_and_declarations ... ok
+test unclosed_block_is_kept_and_reported ... ok
+test unknown_at_rules_each_have_their_code ... ok
+test deep_rule_nesting_and_large_input_do_not_overflow_the_stack ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/selector_corpus.rs (target/cleanup-rust/debug/deps/selector_corpus-14bb0f2fcba3e7f5)
+
+running 2 tests
+test negative_control_doctored_row_is_reported ... ok
+test selectors_agree_with_chrome ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/selectors.rs (target/cleanup-rust/debug/deps/selectors-0079bd6a055dea2c)
+
+running 9 tests
+test one_bad_member_rejects_the_whole_list_and_reports_each_bad_member ... ok
+test diagnostic_spans_point_at_the_construct ... ok
+test a_deep_descendant_chain_is_within_the_non_greedy_limit ... ok
+test specificity_examples_from_selectors_level_3 ... ok
+test specificity_of_pseudo_classes_and_not ... ok
+test invalid_forms_are_syntax_errors ... ok
+test round_trip_is_stable ... ok
+test unsupported_forms_have_their_codes ... ok
+test serialisation_matches_cssom ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/support_list.rs (target/cleanup-rust/debug/deps/support_list-3eec4d0581fe1576)
+
+running 3 tests
+test codes_table_covers_every_diagnostic_constant_used_by_the_parser ... ok
+test every_rejected_entry_has_a_documented_code ... ok
+test every_design_row_is_listed ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/tokenizer.rs (target/cleanup-rust/debug/deps/tokenizer-99d297c3a0bf2bc9)
+
+running 14 tests
+test cdo_cdc ... ok
+test byte_spans_cover_the_source_text ... ok
+test hashes ... ok
+test functions_and_whitespace ... ok
+test comments_are_not_tokens ... ok
+test identifiers_and_dashes ... ok
+test positions_are_line_and_utf16_column ... ok
+test simple_declaration_block ... ok
+test escapes_in_identifiers ... ok
+test at_keywords_and_delimiters ... ok
+test numbers_percentages_dimensions ... ok
+test strings_and_quotes ... ok
+test urls ... ok
+test deep_nesting_and_long_input_do_not_recurse ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.24s
+
+     Running unittests src/lib.rs (target/cleanup-rust/debug/deps/vn_dom-a43a492e53812c75)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/corpus.rs (target/cleanup-rust/debug/deps/corpus-3d5fc3ccb36a071d)
+
+running 16 tests
+test corpus_class ... ok
+test corpus_focus ... ok
+test corpus_query ... ok
+test corpus_event ... ok
+test corpus_serial ... ok
+test corpus_style ... ok
+test corpus_activation ... ok
+test corpus_tree ... ok
+test corpus_attr ... ok
+test corpus_form ... ok
+test negative_control_unknown_op_is_not_silently_accepted ... ok
+test negative_control_doctored_expectation_is_reported_at_its_op ... ok
+test negative_control_missing_listener_behaviour_is_reported ... ok
+test corpus_prop ... ok
+test negative_control_doctored_op_is_reported ... ok
+test corpus_total_is_about_250_cases ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/unit.rs (target/cleanup-rust/debug/deps/unit-033ecee013faea01)
+
+running 24 tests
+test an_element_created_with_is_has_no_is_attribute ... ok
+test camel_case_setter_converts_like_cssom ... ok
+test camel_case_setter_leaves_custom_properties_and_reports_unknown_names_as_errors ... ok
+test document_is_node_zero_and_empty ... ok
+test a_refused_insertion_leaves_the_tree_as_it_was ... ok
+test error_names_are_the_dom_exception_names ... ok
+test focus_on_a_detached_element_does_nothing ... ok
+test input_and_change_follow_a_connected_checkbox_click_and_not_a_detached_one ... ok
+test listener_registration_is_keyed_by_type_listener_and_capture ... ok
+test number_and_string_conversions_follow_javascript ... ok
+test prevent_default_is_ignored_when_not_cancelable ... ok
+test documented_gaps_answer_as_documented ... ok
+test query_by_id_takes_the_first_match_in_tree_order ... ok
+test release_frees_a_detached_subtree_and_its_ids_go_stale ... ok
+test release_refuses_attached_nodes_and_the_document ... ok
+test selectors_outside_the_supported_grammar_are_errors_values ... ok
+test property_errors_are_values ... ok
+test snapshot_escapes_strings_like_json_stringify ... ok
+test snapshot_lists_only_differing_props_and_marks_foreign_namespaces ... ok
+test snapshot_of_a_small_tree_matches_the_documented_rule ... ok
+test stale_ids_are_errors_not_panics ... ok
+test text_content_of_a_document_is_absent_and_setting_it_changes_nothing ... ok
+test style_attribute_round_trip_is_exact_for_raw_values_until_cssom_changes_it ... ok
+test unknown_style_property_names_are_errors_and_invalid_values_are_ignored ... ok
+
+test result: ok. 24 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/cleanup-rust/debug/deps/vn_reactivity-c4131c282e4ab515)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/api_gc.rs (target/cleanup-rust/debug/deps/api_gc-dc2d63d9ff4c5b3c)
+
+running 12 tests
+test closures_created_inside_closures_keep_their_data ... ok
+test gc_between_steps_keeps_results ... ok
+test export_names_and_lengths_match_vue ... ok
+test every_oracle_case_has_a_test ... ok
+test reactive_hook_is_used_by_refs ... ok
+test gc_releases_stopped_effects ... ok
+test gc_keeps_subscribed_effects_alive ... ok
+test proxy_refs_unwraps_and_assigns_through_refs ... ok
+test register_vue_module_exposes_exports ... ok
+test effect_scope_constructor_requires_new ... ok
+test negative_control_detects_wrong_expectation ... ok
+test gc_releases_scope_graphs_on_stop ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/computed.rs (target/cleanup-rust/debug/deps/computed-b1330d31f9e24e0a)
+
+running 14 tests
+test computed_lazy_cached ... ok
+test computed_readonly_set_ignored ... ok
+test computed_error_then_recover ... ok
+test computed_self_read_previous_value ... ok
+test computed_throw_cache_after_error ... ok
+test computed_no_deps_evaluated_once ... ok
+test computed_oldvalue_param ... ok
+test computed_diamond_single_recompute ... ok
+test computed_invalidation_chain ... ok
+test computed_branch_switching ... ok
+test computed_new_object_retrigger ... ok
+test computed_scope_stop_keeps_cache ... ok
+test computed_writable_roundtrip ... ok
+test computed_unchanged_result_no_retrigger ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/effects.rs (target/cleanup-rust/debug/deps/effects-86e5627b3ef91ec3)
+
+running 23 tests
+test effect_return_and_pause_tracking ... ok
+test batch_computed_and_effects_share_dep ... ok
+test effect_nan_and_negative_zero ... ok
+test batch_subscription_order ... ok
+test effect_on_stop_option ... ok
+test effect_cleanup_before_rerun_and_stop ... ok
+test effect_pause_coalesces_writes ... ok
+test effect_conditional_dependencies ... ok
+test effect_dirty_getter ... ok
+test effect_allow_recurse_reruns_itself ... ok
+test effect_nested_effects ... ok
+test batch_nested_writes_propagate ... ok
+test effect_stop_in_own_run ... ok
+test effect_stop_releases_links ... ok
+test track_clear_triggers_all ... ok
+test effect_two_runners_one_stopped ... ok
+test track_add_iterate_and_delete ... ok
+test effect_throw_stops_effect ... ok
+test effect_runs_and_skips_equal_writes ... ok
+test effect_scheduler_option ... ok
+test effect_self_write_no_recursion ... ok
+test trigger_without_dependents ... ok
+test track_manual_array_length ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/r1b_array.rs (target/cleanup-rust/debug/deps/r1b_array-f728a9e9f6628150)
+
+running 44 tests
+test arr_holes_for_of_undefined ... ok
+test arr_includes_tracks_after_mutation ... ok
+test arr_find_family_wraps ... ok
+test arr_copies_tracking_iterate ... ok
+test arr_delete_index_hole_tracking ... ok
+test arr_fill_triggers_per_write ... ok
+test arr_foreach_push_visits_original ... ok
+test arr_concat_spreads_wrapped ... ok
+test arr_includes_from_index ... ok
+test arr_at_tracks_length ... ok
+test arr_computed_length ... ok
+test arr_filter_map_wrap_results ... ok
+test arr_index_nan_and_string_search ... ok
+test arr_join_and_tostring_wrapped ... ok
+test arr_index_string_keys ... ok
+test arr_length_set_truncates_effects ... ok
+test arr_nested_array_identity ... ok
+test arr_reduce_accumulator_wrap ... ok
+test arr_readonly_pop_shift_silent ... ok
+test arr_readonly_push_silent ... ok
+test arr_length_after_index_add ... ok
+test arr_keys_tracking ... ok
+test arr_reduce_empty_init_not_wrapped ... ok
+test arr_ownkeys_tracks_length ... ok
+test arr_some_every_callback_args ... ok
+test arr_sparse_holes_iteration ... ok
+test arr_sort_proxy_elements ... ok
+test arr_reduce_initial_accumulator_wrapped ... ok
+test arr_shallow_elements_not_wrapped ... ok
+test array_index_and_length_tracking ... ok
+test array_method_identity ... ok
+test array_includes_identity ... ok
+test array_isarray_and_tostring ... ok
+test arr_spread_and_destructure ... ok
+test array_splice_effect ... ok
+test array_pop_shift_unshift ... ok
+test arr_unshift_push_return_and_tracking ... ok
+test array_iteration_wraps_items ... ok
+test array_sort_reverse_effect ... ok
+test push_in_effect_untracked ... ok
+test shallow_array_push_tracks ... ok
+test array_push_effects ... ok
+test readonly_array_iteration_wrapped ... ok
+test nested_reactive_arrays_deep_tracking ... ok
+
+test result: ok. 44 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/r1b_collections.rs (target/cleanup-rust/debug/deps/r1b_collections-4562179603a3d5dd)
+
+running 36 tests
+test array_of_maps_proxied ... ok
+test map_clear_triggers ... ok
+test collection_get_tracks_key ... ok
+test map_entries_tracking_add_in_effect ... ok
+test map_flags_and_identity ... ok
+test map_foreach_add_during_visits_new ... ok
+test map_chainable_and_size ... ok
+test map_entry_object_deep_tracking ... ok
+test collection_mutate_during_iteration ... ok
+test map_delete_during_iteration ... ok
+test collection_proto_and_tag ... ok
+test map_foreach_wraps_values ... ok
+test map_get_set_has_size_effects ... ok
+test map_has_tracks_object_key ... ok
+test map_iterators_wrap_entries ... ok
+test map_nested_map_values ... ok
+test map_object_keys_raw_and_proxy ... ok
+test map_keys_tracking_iterate_key ... ok
+test map_readonly_methods ... ok
+test map_nan_zero_keys ... ok
+test map_values_track_on_value_change ... ok
+test map_set_stores_raw_value ... ok
+test readonly_map_values_wrapped ... ok
+test object_with_map_field_size ... ok
+test readonly_set_clear_silent ... ok
+test readonly_set_iteration_wraps ... ok
+test readonly_raw_map_no_tracking ... ok
+test set_clear_triggers_size ... ok
+test set_foreach_and_iteration ... ok
+test set_of_arrays_identity ... ok
+test set_of_proxies_stores_raw ... ok
+test set_delete_during_foreach ... ok
+test set_tracks_iteration_on_add ... ok
+test set_add_delete_has_tracking ... ok
+test shallow_set_values_not_wrapped ... ok
+test shallow_map_values_not_wrapped ... ok
+
+test result: ok. 36 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/r1b_effects.rs (target/cleanup-rust/debug/deps/r1b_effects-5e6c0f8cce8feec0)
+
+running 12 tests
+test null_prototype_object_proxied ... ok
+test keys_order_after_delete_readd ... ok
+test json_stringify_proxy ... ok
+test readonly_keys_and_shallow_readonly_set ... ok
+test class_instance_getter_receiver ... ok
+test method_this_is_proxy ... ok
+test effect_stop_stops_proxy_tracking ... ok
+test effect_scope_disposes_proxy_effect ... ok
+test proxy_function_property_not_proxied ... ok
+test two_proxies_independent_tracking ... ok
+test computed_cache_unrelated_key ... ok
+test computed_over_proxy_fields ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/r1b_misc.rs (target/cleanup-rust/debug/deps/r1b_misc-af8e3f5680ad4a55)
+
+running 25 tests
+test is_flags_on_primitives ... ok
+test gopd_returns_raw_value ... ok
+test frozen_nested_not_proxied ... ok
+test markraw_under_readonly ... ok
+test in_operator_inherited_tracking ... ok
+test define_property_no_trigger ... ok
+test gc_proxy_identity_across_collections ... ok
+test freeze_readonly_proxy_freezes_target ... ok
+test gc_cross_references ... ok
+test array_like_object_not_array ... ok
+test cycles_through_proxies ... ok
+test proto_chain_get_and_flags ... ok
+test proto_of_proxy_is_raw ... ok
+test object_entries_values_wrapped ... ok
+test readonly_of_raw_no_tracking ... ok
+test numeric_and_string_keys_same ... ok
+test readonly_of_shallow_reactive ... ok
+test readonly_vs_shallow_on_refs ... ok
+test shallow_nested_not_tracked ... ok
+test reactive_of_readonly_unchanged ... ok
+test readonly_tracks_underlying ... ok
+test set_through_prototype_chain ... ok
+test shallow_readonly_root_only ... ok
+test tostringtag_object_proxied_as_collection ... ok
+test every_snippet_has_a_translation ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/r1b_proxy.rs (target/cleanup-rust/debug/deps/r1b_proxy-53731cd0c5561633)
+
+running 22 tests
+test has_tracks_key ... ok
+test markraw_skips_wrapping ... ok
+test get_tracks_property ... ok
+test for_in_tracks ... ok
+test nested_object_tracks ... ok
+test ownkeys_tracks_iterate ... ok
+test getter_receiver_tracks ... ok
+test frozen_and_nonextensible_bypass ... ok
+test non_plain_and_primitives_bypass ... ok
+test delete_missing_no_trigger ... ok
+test flags_reactive ... ok
+test proxy_cache_identity ... ok
+test readonly_set_and_delete_silent ... ok
+test readonly_flags ... ok
+test shallow_flags ... ok
+test shallow_reactive_keeps_refs ... ok
+test readonly_nested_wrapped ... ok
+test setter_receiver_is_proxy ... ok
+test tor_chain_and_isproxy ... ok
+test refs_unwrap_in_reactive ... ok
+test set_same_value_no_trigger ... ok
+test symbol_keys ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/r1b_refs.rs (target/cleanup-rust/debug/deps/r1b_refs-fd15aa0c0f1a8685)
+
+running 14 tests
+test ref_value_is_reactive_object ... ok
+test ref_deep_array_push_tracking ... ok
+test ref_in_map_value_wrapped ... ok
+test shallowref_in_reactive_not_rewrapped ... ok
+test ref_of_proxy_reads_through ... ok
+test ref_of_readonly_value ... ok
+test ref_in_array_not_unwrapped ... ok
+test ref_assign_same_raw_no_trigger ... ok
+test ref_deep_object_value_tracking ... ok
+test toref_over_readonly ... ok
+test shallowref_value_raw ... ok
+test reactive_unwraps_nested_ref_writes ... ok
+test torefs_over_reactive ... ok
+test unref_tovalue_on_reactive ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/refs.rs (target/cleanup-rust/debug/deps/refs-dd9e59d4caed2103)
+
+running 10 tests
+test ref_isref_unref_same_ref ... ok
+test ref_torefs_destructure ... ok
+test ref_trigger_ref_same_value ... ok
+test ref_toref_getter_readonly_and_tovalue ... ok
+test ref_shallow_identity_nested_no_trigger ... ok
+test ref_customref_set_always_triggers ... ok
+test ref_dep_per_instance ... ok
+test ref_toref_property_alias ... ok
+test ref_primitive_get_set ... ok
+test ref_custom_track_trigger_counts ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/scopes.rs (target/cleanup-rust/debug/deps/scopes-a93eb900ab795669)
+
+running 9 tests
+test scope_onscopedispose_without_scope ... ok
+test scope_detached_survives_parent ... ok
+test scope_on_off_current ... ok
+test scope_nested_run_restores_current ... ok
+test scope_nested_stop_cascade ... ok
+test scope_effects_before_cleanups ... ok
+test scope_pause_resume_effects ... ok
+test scope_run_returns_and_current ... ok
+test scope_stop_idempotent ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/watch.rs (target/cleanup-rust/debug/deps/watch-895bc37d6cb8002d)
+
+running 20 tests
+test watch_augment_job_and_call ... ok
+test watch_array_of_sources ... ok
+test watch_cleanup_before_rerun ... ok
+test watch_deep_cycle_terminates ... ok
+test watch_onwatchercleanup_outside_noop ... ok
+test watch_once ... ok
+test watch_effect_self_write_no_rerun ... ok
+test watch_deep_numeric_depth ... ok
+test watch_getter_changes_only ... ok
+test watch_no_callback_cleanup_and_stop ... ok
+test watch_pause_resume_coalesces ... ok
+test watch_ref_old_new ... ok
+test watch_immediate ... ok
+test scope_watch_stopped_with_scope ... ok
+test watch_shallow_ref_set_only ... ok
+test watch_scheduler_option ... ok
+test watch_throw_in_callback_reaches_writer ... ok
+test watch_stop_inside_callback ... ok
+test watch_throw_in_getter_then_change ... ok
+test watch_triggers_watch ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running unittests src/lib.rs (target/cleanup-rust/debug/deps/vn_renderer_dom-6fe1cc7a09608bb4)
+
+running 8 tests
+test abi::tests::decodes_every_field ... ok
+test json::tests::decodes_escapes_and_surrogate_pairs ... ok
+test abi::tests::rejects_truncated_and_inconsistent_payloads ... ok
+test json::tests::parses_nested_values ... ok
+test abi::tests::outcome_bits_match_the_documented_values ... ok
+test abi::tests::input_data_is_absent_without_its_flag ... ok
+test json::tests::rejects_malformed_input ... ok
+test json::tests::writes_escaped_strings_and_non_finite_numbers ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/cleanup-rust/debug/deps/vn_runtime-be9ca453dd76e48e)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/realm_cleanup.rs (target/cleanup-rust/debug/deps/realm_cleanup-2015b19a9ae4d348)
+
+running 5 tests
+test dom_realm_drops_with_its_owners ... ok
+test app_provides_symbol_keys_without_string_conversion ... ok
+test replacing_array_children_with_text_releases_their_resources ... ok
+test detached_ref_remains_usable_until_its_owner_drops_it ... ok
+test unmount_releases_listener_resources ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/rta_helpers_replay.rs (target/cleanup-rust/debug/deps/rta_helpers_replay-b14222bbbce283e4)
+
+running 9 tests
+test helpers_display_replays_clean ... ok
+test helpers_style_replays_clean ... ok
+test negative_control_detects_a_wrong_target ... ok
+test helpers_names_replays_clean ... ok
+test helpers_class_replays_clean ... ok
+test helpers_merge_replays_clean ... ok
+test helpers_list_replays_clean ... ok
+test negative_control_per_family_detects_a_doctored_result ... ok
+test helper_corpora_total_at_least_700_cases ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.51s
+
+     Running tests/rta_helpers_unit.rs (target/cleanup-rust/debug/deps/rta_helpers_unit-bfabd2a90dbaccae)
+
+running 3 tests
+test custom_to_string_is_used_through_string ... ok
+test symbols_display_as_their_description ... ok
+test nullish_and_strings_are_returned_as_described ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/rta_vnode_replay.rs (target/cleanup-rust/debug/deps/rta_vnode_replay-3719164a4b7a0fc9)
+
+running 3 tests
+test flags_match_vue_shared ... ok
+test negative_control_detects_a_doctored_expectation ... ok
+test vnode_scenarios_replay_clean ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.66s
+
+     Running tests/rta_vnode_unit.rs (target/cleanup-rust/debug/deps/rta_vnode_unit-7e72f74a3d226874)
+
+running 16 tests
+test flag_values_match_vue_shared ... ok
+test register_vue_module_exports_the_names_of_vue ... ok
+test element_shape_counts_text_children ... ok
+test is_same_vnode_type_compares_type_and_key ... ok
+test disabled_tracking_gives_null_dynamic_children ... ok
+test merge_props_joins_handlers_and_classes ... ok
+test clone_merges_extra_props_and_drops_memo ... ok
+test normalize_vnode_kinds_and_identity ... ok
+test close_without_open_block_is_not_an_error ... ok
+test is_vnode_and_text_helpers ... ok
+test fragment_and_component_shapes ... ok
+test blocks_track_dynamic_children ... ok
+test create_vnode_normalizes_class_and_style ... ok
+test static_vnodes_are_unsupported ... ok
+test vnodes_reachable_only_through_children_survive_collection ... ok
+test vnodes_reachable_only_through_dynamic_children_survive_collection ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/rtb_errors_lifecycle.rs (target/cleanup-rust/debug/deps/rtb_errors_lifecycle-b7d98c3a3dbaf354)
+
+running 13 tests
+test log_error_reports_to_the_sink_and_rethrows_only_when_configured ... ok
+test a_deactivated_target_skips_its_activated_hook ... ok
+test a_throwing_lifecycle_hook_is_routed_to_the_handler_and_the_instance_is_restored ... ok
+test the_app_error_handler_gets_the_error_proxy_and_info_when_no_hook_captures ... ok
+test call_with_error_handling_turns_a_throw_into_undefined_and_reports_it ... ok
+test on_mounted_forwards_its_arguments_and_registers_on_the_explicit_target ... ok
+test error_captured_hooks_run_from_the_parent_up_and_a_false_result_stops_the_walk ... ok
+test inject_hook_prepends_and_runs_each_hook_with_its_instance_as_the_current_one ... ok
+test keep_alive_activation_hooks_are_prepended_on_the_keep_alive_root_and_removed_on_unmount ... ok
+test on_error_captured_defaults_to_the_current_instance_and_is_a_no_op_outside_one ... ok
+test error_captured_hooks_without_false_all_run_parent_first ... ok
+test a_rejected_promise_result_goes_to_the_error_handler_with_the_watch_type ... ok
+test the_wrapper_is_cached_on_the_hook_so_one_function_registers_once_per_target_pair ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/rtb_inject.rs (target/cleanup-rust/debug/deps/rtb_inject-8d0b659b44bb34db)
+
+running 4 tests
+test the_root_reads_app_level_provides_and_a_running_app_provides_without_an_instance ... ok
+test inject_finds_the_nearest_provider_and_provide_is_scoped_to_its_instance ... ok
+test inject_defaults_factories_and_the_context_check ... ok
+test use_id_counts_down_the_tree_and_uses_the_prefix ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/rtb_scheduler.rs (target/cleanup-rust/debug/deps/rtb_scheduler-ae5e699c3da6f302)
+
+running 10 tests
+test jobs_queued_during_a_flush_run_in_the_same_flush_after_the_running_one ... ok
+test post_callbacks_run_after_the_jobs_and_are_deduplicated ... ok
+test a_job_queued_by_a_post_callback_runs_in_a_following_round_of_the_same_flush ... ok
+test a_queued_job_is_not_queued_twice ... ok
+test a_disposed_job_is_skipped_by_the_flush ... ok
+test next_tick_returns_the_same_promise_when_idle_and_runs_callbacks_after_the_flush ... ok
+test a_post_callback_with_id_minus_one_queued_while_draining_runs_next ... ok
+test queued_jobs_survive_a_collection_before_the_flush ... ok
+test pre_jobs_come_first_within_an_id_and_ids_sort_the_queue ... ok
+test a_job_that_keeps_requeuing_itself_fails_the_flush_at_the_recursion_limit ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/rtb_watch.rs (target/cleanup-rust/debug/deps/rtb_watch-0ddb1c0f6831a075)
+
+running 11 tests
+test a_null_options_argument_is_a_type_error ... ok
+test stopping_a_watcher_drops_its_queued_delivery ... ok
+test a_pre_watcher_runs_in_the_flush_with_the_new_and_old_values ... ok
+test watch_effect_runs_once_at_creation_and_again_on_change ... ok
+test a_queued_watch_job_survives_a_collection_before_the_flush ... ok
+test post_watchers_run_after_the_pre_jobs_of_the_same_flush ... ok
+test immediate_and_once_run_the_callback_once_at_creation ... ok
+test a_sync_watcher_runs_inside_the_write ... ok
+test stopping_the_instance_scope_stops_its_watchers ... ok
+test a_callback_error_goes_to_the_error_handler_with_the_watch_callback_type ... ok
+test a_stopped_watcher_and_its_job_are_released_by_the_collector ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/rtc_app.rs (target/cleanup-rust/debug/deps/rtc_app-fa212f321a0b79c1)
+
+running 2 tests
+test negative_control_detects_a_corrupted_app_expectation ... ok
+test app_scenarios_match_vue_in_chrome ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/rtc_components.rs (target/cleanup-rust/debug/deps/rtc_components-85088c3b253c790a)
+
+running 3 tests
+test negative_control_detects_a_corrupted_component_expectation ... ok
+test component_scenarios_match_vue_in_chrome ... ok
+test mount_unmount_1000_components_returns_to_the_live_object_baseline ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.49s
+
+     Running tests/rtc_renderer.rs (target/cleanup-rust/debug/deps/rtc_renderer-6e03a9b5caf28723)
+
+running 3 tests
+test renders_through_a_dyn_host ... ok
+test negative_control_detects_a_wrong_expectation ... ok
+test renderer_scenarios_match_vue_in_chrome ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/rtd_corpus.rs (target/cleanup-rust/debug/deps/rtd_corpus-570cf94e77de0187)
+
+running 3 tests
+test negative_control_changed_listener_behaviour_is_reported ... ok
+test negative_control_doctored_dom_recording_is_reported ... ok
+test dom_corpora_replay_identically_through_the_host_trait ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/rtd_events.rs (target/cleanup-rust/debug/deps/rtd_events-d7e38b0c177d2858)
+
+running 7 tests
+test released_nodes_take_their_side_table_entries_and_listeners ... ok
+test replacing_a_handler_keeps_one_listener_and_runs_the_new_one ... ok
+test event_object_fields_follow_the_event_kind ... ok
+test handlers_and_invokers_survive_collections_and_keep_running ... ok
+test with_modifiers_wrapper_is_cached_per_function_and_modifier_list ... ok
+test with_keys_of_nothing_is_a_type_error ... ok
+test with_keys_matches_hyphenated_names_and_aliases ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/rtd_host.rs (target/cleanup-rust/debug/deps/rtd_host-85685111e0db1435)
+
+running 9 tests
+test clock_is_settable_and_serves_time_stamps ... ok
+test passive_listener_cannot_prevent_default ... ok
+test listener_outcome_stops_propagation_and_prevents_default ... ok
+test released_nodes_are_stale_and_detached_subtrees_only_are_released ... ok
+test each_dispatch_gets_a_new_serial_and_event_kind_is_visible ... ok
+test snapshot_and_query_selector_follow_the_tree ... ok
+test blur_listener_reads_and_writes_the_live_tree_during_remove ... ok
+test unsupported_selector_is_an_error_not_a_panic ... ok
+test property_round_trip_through_the_dom_model ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/rtd_props.rs (target/cleanup-rust/debug/deps/rtd_props-1f70a7c8a6946e94)
+
+running 6 tests
+test innerhtml_assignment_is_a_type_error_on_the_native_host ... ok
+test negative_control_mutated_transition_is_reported ... ok
+test negative_control_doctored_snapshot_is_reported_at_its_step ... ok
+test negative_control_unknown_op_is_not_silently_accepted ... ok
+test negative_control_recorded_handler_log_is_checked ... ok
+test patchprop_corpus_replays_identically_to_chrome ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.17s
+
+     Running tests/rtd_vmodel.rs (target/cleanup-rust/debug/deps/rtd_vmodel-4be2d78feeb43c64)
+
+running 3 tests
+test negative_control_expected_throw_must_be_reproduced ... ok
+test negative_control_doctored_model_assignment_is_reported ... ok
+test directive_corpus_replays_identically_to_chrome ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+     Running unittests src/lib.rs (target/cleanup-rust/debug/deps/vn_testkit-b0ecfff1d340c710)
+
+running 5 tests
+test json_in::tests::decodes_escapes_and_lone_surrogates_to_code_units ... ok
+test json_in::tests::reads_nested_values_and_keeps_number_text ... ok
+test json_in::tests::rejects_malformed_input_with_an_offset ... ok
+test trace::tests::number_forms ... ok
+test json_in::tests::refuses_nesting_past_the_limit ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cross_check.rs (target/cleanup-rust/debug/deps/cross_check-466b62fde1b47178)
+
+running 3 tests
+test negative_control_a_mutated_input_is_reported ... ok
+test negative_control_a_doctored_expectation_is_reported ... ok
+test rust_encoder_matches_the_node_oracle_on_every_graph ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/decode.rs (target/cleanup-rust/debug/deps/decode-efde450d17bdfb8e)
+
+running 4 tests
+test negative_control_dropping_integrity_is_detected_by_the_round_trip ... ok
+test hand_written_encodings_round_trip ... ok
+test inputs_the_decoder_must_refuse_are_errors ... ok
+test the_first_call_of_every_cross_check_graph_round_trips ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/encode_table.rs (target/cleanup-rust/debug/deps/encode_table-0bc88d9afb5114bf)
+
+running 29 tests
+test empty_object_after_preventextensions_is_frozen ... ok
+test extensible_object_has_no_integrity_field ... ok
+test accessors_are_markers_and_getters_never_run ... ok
+test cycles_are_refs_to_the_enclosing_object ... ok
+test delete_and_line_separator_are_written_raw_like_json_stringify ... ok
+test finite_numbers_are_written_as_string_of_n ... ok
+test frozen_error_keeps_name_and_message ... ok
+test errors_carry_name_and_message ... ok
+test a_ref_carries_no_integrity_and_functions_carry_none_either ... ok
+test frozen_object_has_integrity_after_proto_and_before_props ... ok
+test host_payloads_are_untraceable_type_errors ... ok
+test functions_are_fn_entries_and_take_no_ordinal ... ok
+test integrity_is_read_at_encode_time ... ok
+test negative_control_a_missing_field_is_reported ... ok
+test arrays_list_props_then_elems_and_len_with_holes ... ok
+test negative_zero_nan_and_infinities_have_tagged_forms ... ok
+test ordinals_are_global_and_a_rejected_call_keeps_the_ordinals_it_took ... ok
+test frozen_array_has_integrity_before_props_elems_and_len ... ok
+test negative_control_a_doctored_expectation_is_reported ... ok
+test preventextensions_object_has_integrity_nonextensible ... ok
+test proto_is_null_object_prototype_or_other ... ok
+test repeats_in_one_call_are_refs_and_the_next_call_expands_again ... ok
+test sealed_and_nonextensible_arrays ... ok
+test sealed_object_has_integrity_sealed ... ok
+test plain_object_props_follow_own_key_order ... ok
+test standalone_encodings_use_a_fresh_expansion_set ... ok
+test undefined_null_and_booleans ... ok
+test strings_escape_like_json_stringify ... ok
+test symbols_are_numbered_in_first_encounter_order ... ok
+
+test result: ok. 29 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/host.rs (target/cleanup-rust/debug/deps/host-5bf54ec15c3e3451)
+
+running 13 tests
+test a_callback_can_schedule_a_timer_that_fires_within_the_same_advance ... ok
+test advance_rejects_when_a_callback_throws_and_the_clock_stays_at_its_due_time ... ok
+test timers_fire_in_due_time_then_creation_order ... ok
+test advance_and_tick_return_promises_that_settle_once_the_queue_drains ... ok
+test an_async_advance_drains_the_job_queue_after_each_callback ... ok
+test an_async_advance_fires_a_timer_scheduled_inside_it_when_it_is_due ... ok
+test set_timeout_checks_its_callback_and_converts_delays_with_number ... ok
+test the_host_survives_a_collection_with_no_scenario_references ... ok
+test clear_timeout_cancels_numbers_and_ignores_other_values ... ok
+test testhost_has_the_oracle_shape ... ok
+test a_throwing_callback_ends_the_advance_and_its_error_is_returned ... ok
+test timer_callbacks_and_their_data_survive_collections_between_steps ... ok
+test trace_requires_a_string_label_at_the_global ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/presets.rs (target/cleanup-rust/debug/deps/presets-ecd518c8cc5335b1)
+
+running 2 tests
+test negative_control_a_changed_log_entry_is_detected ... ok
+test every_preset_sequence_matches_the_oracle ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/promise_programs.rs (target/cleanup-rust/debug/deps/promise_programs-d774f3e6b9d4b684)
+
+running 3 tests
+test a_corrupted_expectation_is_reported_as_a_mismatch ... ok
+test the_corpus_has_at_least_400_programs_with_documented_hand_designed_ones ... ok
+test every_program_matches_node_v8 ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.27s
+
+     Running tests/replay.rs (target/cleanup-rust/debug/deps/replay-c01a07b89ac05d8c)
+
+running 5 tests
+test a_malformed_suite_is_one_failure_with_no_cases ... ok
+test a_missing_target_is_reported_and_is_not_a_failure ... ok
+test the_report_is_one_line_of_json ... ok
+test negative_controls_are_reported_as_failures_with_both_texts ... ok
+test a_correct_mini_suite_replays_clean ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/replay_b1.rs (target/cleanup-rust/debug/deps/replay_b1-aa649249b908fdd2)
+
+running 6 tests
+test globals_suite_replays_clean ... ok
+test symbol_suite_replays_clean ... ok
+test boolean_suite_replays_clean ... ok
+test function_proto_suite_replays_clean ... ok
+test object_own_suite_replays_clean ... ok
+test object_proto_suite_replays_clean ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.57s
+
+     Running tests/replay_b2.rs (target/cleanup-rust/debug/deps/replay_b2-8bec47ceb6248313)
+
+running 4 tests
+test negative_control_corrupted_expectation_is_reported ... ok
+test array_statics_replay_clean ... ok
+test array_callbacks_replay_clean ... ok
+test array_methods_replay_clean ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.34s
+
+     Running tests/replay_b3.rs (target/cleanup-rust/debug/deps/replay_b3-580987363460cfb6)
+
+running 5 tests
+test a_corrupted_expectation_is_reported ... ok
+test an_absent_method_is_reported_missing ... ok
+test o2_math_and_number_suites_replay_with_no_failures ... ok
+test b3_generated_suites_replay_with_no_failures_and_no_missing_targets ... ok
+test tan_cases_need_the_two_ulp_tolerance ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.91s
+
+     Running tests/replay_b4.rs (target/cleanup-rust/debug/deps/replay_b4-4f56a771be9bdab1)
+
+running 5 tests
+test groupby_suite_replays_clean ... ok
+test map_suite_replays_clean ... ok
+test negative_control_reports_a_corrupted_expectation ... ok
+test set_suite_replays_clean ... ok
+test suites_have_at_least_250_cases ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.81s
+
+     Running tests/replay_b6.rs (target/cleanup-rust/debug/deps/replay_b6-89f69286ddd7388b)
+
+running 3 tests
+test json_stringify_suite_replays_clean ... ok
+test json_parse_suite_replays_clean ... ok
+test a_corrupted_expectation_is_reported_as_the_only_failure ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.16s
+
+     Running tests/runner.rs (target/cleanup-rust/debug/deps/runner-f3067529597a44e4)
+
+running 15 tests
+test an_ok_scenario_records_module_and_run_entries_in_order ... ok
+test a_run_throw_is_the_result_after_the_earlier_entries ... ok
+test a_thrown_value_that_cannot_be_encoded_is_a_panic_document_not_a_crash ... ok
+test a_value_returned_by_run_that_never_settles_is_a_harness_panic ... ok
+test an_isolated_panic_is_a_document_with_the_message_and_the_earlier_entries ... ok
+test a_promise_is_traced_as_an_opaque_object ... ok
+test deep_recursion_is_a_range_error_on_the_isolated_thread ... ok
+test a_run_export_that_is_not_a_function_is_a_harness_panic ... ok
+test a_rejection_with_a_handler_is_not_listed ... ok
+test a_module_throw_is_the_result_and_run_is_not_called ... ok
+test collecting_at_every_safepoint_does_not_change_the_document ... ok
+test a_rejection_returned_by_run_is_the_result_after_the_earlier_entries ... ok
+test unhandled_rejections_are_encoded_in_rejection_order ... ok
+test run_waits_for_the_queue_so_the_tick_continuation_is_in_the_document ... ok
+test the_isolated_runner_and_the_plain_runner_give_the_same_document ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/scenario_setup.rs (target/cleanup-rust/debug/deps/scenario_setup-65b48766c3d2c633)
+
+running 2 tests
+test negative_control_without_setup_throws ... ok
+test setup_runs_before_module_evaluation ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/cleanup-rust/debug/deps/vn_ui-367b9f241cc19b64)
+
+running 2 tests
+test color::tests::named_table_is_sorted_and_complete ... ok
+test font::tests::bare_identifiers ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cascade_corpus.rs (target/cleanup-rust/debug/deps/cascade_corpus-3faf392f107073ef)
+
+running 2 tests
+test cascade_checker_detects_wrong_expectations ... ok
+test cascade_fixtures_match_chrome ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/values_corpus.rs (target/cleanup-rust/debug/deps/values_corpus-2a3a7f97ccde0267)
+
+running 2 tests
+test values_checker_detects_wrong_expectations ... ok
+test values_match_chrome ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+
+     Running unittests src/lib.rs (target/cleanup-rust/debug/deps/vn_uikit-9d41eba8297bb418)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/dom_ops.rs (target/cleanup-rust/debug/deps/dom_ops-f5dce249d1a3d250)
+
+running 12 tests
+test click_bubbles_and_uses_the_mouse_defaults ... ok
+test container_reuses_an_id_but_each_mount_gets_a_new_element ... ok
+test input_sets_the_value_and_dispatches_a_bubbling_input_event ... ok
+test class_matches_whole_tokens_and_attributes_match_exactly ... ok
+test select_takes_an_array_for_a_multiple_select_and_a_string_otherwise ... ok
+test snapshot_has_contract_shape_and_keeps_text_nodes_apart ... ok
+test nth_child_counts_element_siblings_only ... ok
+test snapshot_props_pairs_come_in_contract_order ... ok
+test check_toggles_through_activation_and_refuses_disabled_and_radio_cases ... ok
+test child_lists_follow_moves_and_removals ... ok
+test snapshot_props_are_the_dirty_value_checked_selected_and_disabled_in_that_order ... ok
+test find_returns_matches_in_document_order_below_the_scope_only ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/selector.rs (target/cleanup-rust/debug/deps/selector-6c3aa4806fac383e)
+
+running 2 tests
+test accepts_the_grammar_and_builds_the_parts ... ok
+test rejects_everything_outside_the_grammar_with_the_oracle_message ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/cleanup-rust/debug/deps/vn_value-99ab9fa743f17df7)
+
+running 25 tests
+test jsstr::tests::code_points_yield_pairs_and_lone_surrogates ... ok
+test jsstr::tests::array_index_is_canonical_only ... ok
+test jsstr::tests::code_point_at_pairs_and_bounds ... ok
+test jsstr::tests::case_mapping_special_casing_and_lone_surrogates ... ok
+test jsstr::tests::conversions_to_rust_strings ... ok
+test jsstr::tests::default_and_code_unit_ordering ... ok
+test jsstr::tests::from_code_point_bounds ... ok
+test jsstr::tests::lone_surrogates_are_kept_and_detected ... ok
+test jsstr::tests::pad_repeat_and_limits ... ok
+test jsstr::tests::replace_all_with_empty_pattern_matches_every_boundary ... ok
+test jsstr::tests::replace_applies_get_substitution_without_captures ... ok
+test jsstr::tests::search_with_empty_and_out_of_range_positions ... ok
+test jsstr::tests::split_limits_and_empty_cases ... ok
+test jsstr::tests::trim_uses_js_whitespace_only ... ok
+test number::tests::parse_float_takes_the_longest_prefix ... ok
+test number::tests::parse_int_radixes_and_prefixes ... ok
+test number::tests::radix_conversion_matches_v8_samples ... ok
+test number::tests::remainder_power_round_min_max ... ok
+test number::tests::js_argument_checks_follow_the_spec_order ... ok
+test number::tests::same_value_and_integers ... ok
+test number::tests::string_to_number_literals ... ok
+test number::tests::to_integer_family_wraps_modulo ... ok
+test number::tests::to_string_formats_match_ecma_thresholds ... ok
+test number::tests::exponential_and_precision_rounding ... ok
+test number::tests::to_fixed_rounds_on_the_exact_binary_value ... ok
+
+test result: ok. 25 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/builtins_b1_boolean.rs (target/cleanup-rust/debug/deps/builtins_b1_boolean-368bafd7bf9c6f0b)
+
+running 8 tests
+test new_boolean_makes_a_wrapper_with_boolean_prototype ... ok
+test kernel_operators_see_boolean_wrappers_correctly ... ok
+test to_string_and_value_of_accept_primitives_and_wrappers ... ok
+test to_string_and_value_of_reject_other_receivers ... ok
+test boolean_call_is_truthiness ... ok
+test boolean_constructor_attributes ... ok
+test boolean_construct_defaults_to_the_boolean_prototype ... ok
+test boolean_prototype_is_a_false_boolean_wrapper ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/builtins_b1_function.rs (target/cleanup-rust/debug/deps/builtins_b1_function-6bc07f59c1673dd1)
+
+running 24 tests
+test bind_name_defaults_to_the_bound_prefix_when_the_target_name_is_not_a_string ... ok
+test bind_sets_name_and_length_from_the_target ... ok
+test bound_function_calls_the_target_with_bound_this_and_arguments ... ok
+test bind_length_follows_the_target_length_property ... ok
+test apply_spreads_an_array_like_and_nullish_gives_no_arguments ... ok
+test bound_function_prototype_is_the_target_prototype ... ok
+test bound_function_of_a_non_constructor_is_not_a_constructor ... ok
+test bound_function_construct_uses_the_target_as_new_target ... ok
+test apply_rejects_non_object_argument_lists_and_huge_lengths ... ok
+test bind_requires_a_callable_this ... ok
+test bound_function_of_a_three_argument_native_is_a_plain_function ... ok
+test bound_function_record_survives_a_collection ... ok
+test call_and_apply_on_a_non_callable_this_throw_type_error ... ok
+test bound_function_target_survives_a_collection ... ok
+test function_constructor_and_constructor_property_are_absent ... ok
+test function_prototype_is_callable_and_empty ... ok
+test call_forwards_this_and_the_remaining_arguments ... ok
+test has_instance_throws_when_prototype_is_not_an_object ... ok
+test has_instance_of_a_bound_function_asks_its_target ... ok
+test has_instance_follows_the_prototype_chain ... ok
+test to_string_prints_the_native_shape ... ok
+test to_string_rejects_non_functions ... ok
+test prototype_methods_have_spec_lengths_names_and_attributes ... ok
+test instanceof_operator_for_ordinary_functions ... ok
+
+test result: ok. 24 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/builtins_b1_global.rs (target/cleanup-rust/debug/deps/builtins_b1_global-f4ec9233273cfb9c)
+
+running 11 tests
+test parse_int_follows_the_spec_and_v8 ... ok
+test parse_functions_still_work_after_a_collection ... ok
+test global_this_is_the_global_object_with_hidden_attributes ... ok
+test only_the_listed_global_functions_exist ... ok
+test parse_functions_are_registered_for_number ... ok
+test global_functions_have_spec_lengths_names_and_attributes ... ok
+test parse_float_follows_the_spec_and_v8 ... ok
+test value_properties_are_read_only_permanent_and_correct ... ok
+test parse_int_converts_the_string_before_the_radix ... ok
+test is_nan_coerces_with_to_number ... ok
+test is_finite_coerces_with_to_number ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/builtins_b1_object.rs (target/cleanup-rust/debug/deps/builtins_b1_object-4f122e99d58bd6c3)
+
+running 40 tests
+test from_entries_accepts_symbol_keys ... ok
+test freeze_fixes_array_elements_and_length ... ok
+test assign_copies_enumerable_props_including_symbols_and_skips_nullish ... ok
+test assign_coerces_the_target_and_throws_on_nullish ... ok
+test create_with_null_or_object_prototype ... ok
+test freeze_seal_and_prevent_extensions_round_trip ... ok
+test assign_throws_when_a_target_property_is_read_only ... ok
+test from_entries_builds_an_object_from_key_value_pairs ... ok
+test create_rejects_a_non_object_prototype_and_any_properties_argument ... ok
+test descriptor_reads_data_accessor_missing_and_array_length ... ok
+test from_entries_refuses_nullish_and_non_iterable_arguments ... ok
+test group_by_keys_may_be_symbols ... ok
+test descriptors_for_every_own_key ... ok
+test group_by_closes_the_iterator_when_the_key_conversion_throws ... ok
+test group_by_of_nothing_is_an_empty_null_prototype_object ... ok
+test from_entries_later_duplicates_win_and_keys_are_property_keys ... ok
+test group_by_closes_the_iterator_when_the_callback_throws ... ok
+test from_entries_closes_the_iterator_when_an_item_is_not_an_object ... ok
+test group_by_passes_the_index_and_coerces_keys_with_to_property_key ... ok
+test from_entries_closes_the_iterator_when_reading_an_entry_throws ... ok
+test group_by_checks_the_callback_before_it_reads_items ... ok
+test group_by_groups_in_first_seen_order_with_a_null_prototype ... ok
+test keys_values_entries_follow_own_key_order ... ok
+test integrity_functions_on_primitives_follow_the_spec ... ok
+test is_has_own_and_get_prototype_of ... ok
+test object_prototype_is_prototype_of ... ok
+test object_call_and_construct_coerce_like_the_spec ... ok
+test keys_of_primitives_and_arrays ... ok
+test object_prototype_has_own_property_coerces_key_before_this ... ok
+test keys_skip_symbols_and_hidden_properties ... ok
+test keys_values_entries_throw_on_nullish ... ok
+test object_constructor_shape ... ok
+test object_prototype_to_locale_string_invokes_to_string ... ok
+test own_property_symbols_list_only_symbol_keys ... ok
+test values_recheck_enumerability_after_an_earlier_getter ... ok
+test object_prototype_methods_and_statics_have_spec_attributes ... ok
+test object_prototype_property_is_enumerable ... ok
+test object_to_string_tags_follow_the_builtin_kinds_and_to_string_tag ... ok
+test object_prototype_value_of_boxes_this ... ok
+test own_property_names_include_hidden_properties_and_length ... ok
+
+test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/builtins_b1_symbol.rs (target/cleanup-rust/debug/deps/builtins_b1_symbol-eec06c3f6f7ebf88)
+
+running 12 tests
+test operators_typeof_instanceof_and_conversions ... ok
+test symbol_creates_fresh_symbols_with_optional_descriptions ... ok
+test symbol_for_and_key_for_form_the_global_registry ... ok
+test symbol_description_matches_the_host_text ... ok
+test prototype_to_string_and_value_of ... ok
+test description_getter_reads_the_description_and_is_configurable_only ... ok
+test to_string_tag_and_object_to_string ... ok
+test the_registry_survives_collection ... ok
+test symbol_is_a_function_and_not_a_constructor ... ok
+test symbol_rejects_a_symbol_description ... ok
+test to_primitive_method_returns_the_symbol ... ok
+test well_known_symbols_are_the_five_listed_and_nothing_else ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/builtins_b2_callbacks.rs (target/cleanup-rust/debug/deps/builtins_b2_callbacks-6e3acf0d7515f59d)
+
+running 32 tests
+test find_index_reads_holes_as_undefined ... ok
+test filter_that_shrinks_the_array_skips_the_missing_indices ... ok
+test array_from_closes_the_iterator_when_the_mapper_throws ... ok
+test filter_skips_holes_and_keeps_order ... ok
+test flat_map_drops_holes_of_the_mapper_result ... ok
+test find_keeps_the_length_it_started_with ... ok
+test a_collected_result_survives_a_collection_while_rooted ... ok
+test flat_map_flattens_one_level ... ok
+test array_from_with_a_mapper_receives_the_index ... ok
+test array_from_reads_its_iterable_live ... ok
+test find_last_reads_removed_elements_as_undefined ... ok
+test find_last_and_find_last_index_scan_from_the_end ... ok
+test for_each_visits_present_indices_in_order_and_skips_holes ... ok
+test for_each_ignores_elements_pushed_during_the_loop ... ok
+test flat_map_keeps_the_length_it_started_with ... ok
+test map_reads_each_element_when_it_is_visited ... ok
+test reduce_reads_each_element_when_it_is_visited ... ok
+test for_each_skips_an_element_deleted_before_its_visit ... ok
+test for_each_error_stops_the_loop_and_propagates ... ok
+test map_callbacks_receive_the_this_argument ... ok
+test map_result_keeps_the_holes_of_the_source ... ok
+test reduce_with_no_elements_and_no_initial_value_is_a_type_error ... ok
+test map_with_a_shrinking_array_keeps_holes_and_stops_early ... ok
+test reduce_over_only_holes_returns_the_initial_value ... ok
+test reduce_right_follows_the_array_shortened_during_the_loop ... ok
+test reduce_right_skips_holes ... ok
+test sort_leaves_the_array_unchanged_when_the_comparator_throws ... ok
+test sort_writes_back_within_the_length_it_started_with ... ok
+test to_sorted_sorts_a_snapshot_of_the_source ... ok
+test reduce_without_initial_value_starts_at_the_first_present_element ... ok
+test some_treats_an_element_removed_during_the_loop_as_absent ... ok
+test some_and_every_stop_at_the_deciding_element ... ok
+
+test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/builtins_b2_construct.rs (target/cleanup-rust/debug/deps/builtins_b2_construct-7af3460770196546)
+
+running 11 tests
+test array_from_array_like_uses_the_constructor_it_is_called_on ... ok
+test is_array_is_true_for_the_array_prototype_and_false_for_objects ... ok
+test new_target_chooses_the_prototype_of_the_new_array ... ok
+test constructor_and_prototype_are_linked_with_their_attributes ... ok
+test call_and_construct_build_the_same_holey_array ... ok
+test array_prototype_is_an_empty_array ... ok
+test method_names_and_lengths_match_the_spec ... ok
+test methods_are_writable_non_enumerable_and_configurable ... ok
+test prototype_has_exactly_the_wp_names_and_one_symbol ... ok
+test invalid_length_arguments_are_range_errors ... ok
+test array_of_uses_the_constructor_it_is_called_on ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/builtins_b2_iter.rs (target/cleanup-rust/debug/deps/builtins_b2_iter-59330ce9ec6779e4)
+
+running 10 tests
+test a_rooted_iterator_keeps_its_array_alive_across_a_collection ... ok
+test next_on_a_foreign_receiver_is_a_type_error ... ok
+test values_iterator_sees_elements_pushed_before_it_ends ... ok
+test values_iterator_steps_and_stays_done_after_growth ... ok
+test symbol_iterator_is_values_with_its_own_name_and_length ... ok
+test array_iterator_has_the_array_iterator_tag ... ok
+test keys_iterator_after_shrink_is_not_done_at_index_zero ... ok
+test array_from_iterable_fills_holes_with_undefined ... ok
+test array_from_string_iterates_by_code_point ... ok
+test entries_yield_index_value_pairs ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/builtins_b2_limits.rs (target/cleanup-rust/debug/deps/builtins_b2_limits-37574463bc82721c)
+
+running 10 tests
+test last_index_of_with_an_explicit_undefined_from_index_starts_at_zero ... ok
+test join_of_a_cyclic_element_is_empty_for_the_cycle ... ok
+test pop_and_at_read_string_keys_above_the_index_range ... ok
+test slice_of_a_huge_array_like_is_a_range_error_beyond_the_dense_limit ... ok
+test growing_an_array_past_the_dense_limit_is_a_range_error ... ok
+test sort_of_a_single_element_frozen_array_writes_nothing ... ok
+test push_past_two_to_the_53_minus_one_is_a_type_error ... ok
+test push_at_the_limit_minus_one_writes_a_string_key ... ok
+test unshift_past_the_limit_is_a_type_error ... ok
+test flat_of_a_cyclic_array_is_a_stack_overflow_range_error ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/builtins_b3_math.rs (target/cleanup-rust/debug/deps/builtins_b3_math-8360c1d33230e090)
+
+running 3 tests
+test lengths_constants_and_absent_members ... ok
+test special_values_and_argument_order ... ok
+test table_matches_v8_with_the_approx_rule ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/builtins_b3_number.rs (target/cleanup-rust/debug/deps/builtins_b3_number-d70963ad352b87e0)
+
+running 5 tests
+test parse_functions_are_installed ... ok
+test wrappers_symbols_and_argument_order ... ok
+test static_and_constructor_calls_match_v8 ... ok
+test lengths_names_constants_and_attributes ... ok
+test method_table_matches_v8 ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/builtins_b3_string.rs (target/cleanup-rust/debug/deps/builtins_b3_string-a0fcca4b27cf6fd3)
+
+running 9 tests
+test results_survive_collection_between_calls ... ok
+test string_iterator_yields_code_points ... ok
+test symbols_and_wrappers ... ok
+test surrogates_and_limits ... ok
+test lengths_names_attributes_and_absent_members ... ok
+test conversion_order_matches_v8 ... ok
+test callbacks_match_v8 ... ok
+test static_and_constructor_calls_match_v8 ... ok
+test method_table_matches_v8 ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/builtins_b4_iter.rs (target/cleanup-rust/debug/deps/builtins_b4_iter-fc7661256623737c)
+
+running 14 tests
+test iterator_prototypes_have_tags_and_inherit_iterator_prototype ... ok
+test entries_yield_pairs_and_sets_repeat_the_value ... ok
+test a_walk_in_progress_keeps_its_map_and_keys_alive ... ok
+test set_walk_mutations_match_the_map_walk ... ok
+test next_rejects_iterators_of_another_family_and_other_receivers ... ok
+test map_delete_then_readd_is_visited_again_at_the_end ... ok
+test exhausted_walk_stays_done_after_later_additions ... ok
+test iterate_driver_walks_a_set_and_a_map ... ok
+test map_walk_visits_entries_added_during_the_walk ... ok
+test map_walk_sees_entries_added_after_clear ... ok
+test map_walk_ends_after_clear_when_nothing_is_added ... ok
+test map_walk_skips_an_entry_deleted_before_it_is_reached ... ok
+test walk_cursor_survives_compaction ... ok
+test walk_started_before_deletions_continues_after_the_cursor ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/builtins_b4_map.rs (target/cleanup-rust/debug/deps/builtins_b4_map-26ac8b6f32bc9485)
+
+running 22 tests
+test constructor_reads_set_once_before_iterating ... ok
+test constructor_adder_error_closes_the_iterator_and_propagates ... ok
+test constructor_reads_entry_key_then_value ... ok
+test foreach_skips_an_entry_deleted_before_it_is_reached ... ok
+test builtin_shapes_and_absent_members ... ok
+test collection_keeps_its_object_keys_alive ... ok
+test enumeration_helpers_follow_insertion_order ... ok
+test foreach_clear_then_add_visits_the_added_entry ... ok
+test groupby_argument_errors_are_type_errors ... ok
+test constructor_closes_the_iterator_on_a_non_object_entry ... ok
+test foreach_passes_value_key_collection_and_this_arg ... ok
+test groupby_passes_value_and_index_and_closes_the_iterator_on_a_throw ... ok
+test foreach_delete_then_readd_moves_the_entry_to_the_end ... ok
+test groupby_groups_in_first_seen_order ... ok
+test insertion_order_and_overwrite_keeps_position ... ok
+test foreach_visits_entries_added_during_the_walk ... ok
+test iterate_driver_walks_a_map_as_entries ... ok
+test constructor_requires_new_and_nullish_iterables_are_empty ... ok
+test set_foreach_clear_then_add ... ok
+test groupby_normalises_negative_zero_and_groups_nan_together ... ok
+test same_value_zero_keys ... ok
+test size_and_methods_reject_other_receivers ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/builtins_b4_set.rs (target/cleanup-rust/debug/deps/builtins_b4_set-e598dfebb3e56717)
+
+running 19 tests
+test set_algebra_on_plain_sets_matches_v8 ... ok
+test other_must_be_an_object_and_this_must_be_a_set ... ok
+test getsetrecord_reads_size_has_keys_in_that_order ... ok
+test difference_walks_a_copy_on_the_has_path ... ok
+test next_results_must_be_objects ... ok
+test set_constructor_and_iterable_protocol ... ok
+test errors_from_next_do_not_close_the_iterator ... ok
+test difference_copies_this_before_keys_on_the_keys_path ... ok
+test has_and_keys_must_be_callable_and_keys_must_return_an_object ... ok
+test add_has_delete_and_zero_normalisation ... ok
+test intersection_keys_path_sees_deletions_made_by_next ... ok
+test intersection_walks_this_live_when_it_is_no_larger_than_other ... ok
+test set_prototype_shapes ... ok
+test symmetric_difference_copies_this_after_keys ... ok
+test zero_is_normalised_in_results_and_has_arguments ... ok
+test union_reads_keys_before_copying_this ... ok
+test size_validation_happens_before_has_and_keys ... ok
+test superset_closes_the_keys_iterator_at_the_first_missing_key ... ok
+test subset_and_disjoint_walk_the_live_set ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/builtins_b5_async.rs (target/cleanup-rust/debug/deps/builtins_b5_async-e476d70893fcf6a3)
+
+running 13 tests
+test a_task_awaiting_a_pending_promise_that_is_unreachable_is_collected ... ok
+test a_rejected_await_is_caught_by_try_catch_and_finally_runs ... ok
+test a_task_awaiting_a_pending_promise_survives_collections_until_it_is_resolved ... ok
+test an_async_call_runs_up_to_its_first_await_synchronously ... ok
+test a_value_stored_in_a_frame_survives_suspension ... ok
+test await_of_a_native_promise_costs_one_tick_and_return_completes_the_result ... ok
+test a_throw_rejects_the_result_and_an_unhandled_result_is_listed ... ok
+test await_of_a_thenable_adopts_it_in_a_job ... ok
+test returning_a_promise_adopts_it_with_two_extra_ticks ... ok
+test a_rejected_await_without_try_rejects_the_result ... ok
+test await_of_a_non_promise_costs_one_tick ... ok
+test a_task_stays_alive_across_collections_between_jobs ... ok
+test a_long_chain_of_awaits_runs_without_deep_recursion ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/builtins_b5_promise.rs (target/cleanup-rust/debug/deps/builtins_b5_promise-6ec201445b7e6a9e)
+
+running 23 tests
+test catch_and_finally_need_an_object_receiver ... ok
+test a_rejection_handled_before_the_drain_is_never_listed ... ok
+test all_rejects_with_the_first_rejection_in_time ... ok
+test any_of_nothing_rejects_with_an_empty_aggregate_error_and_all_of_nothing_fulfils ... ok
+test all_resolves_with_the_values_in_input_order ... ok
+test aggregate_error_has_the_v8_shape ... ok
+test a_thenable_is_adopted_by_a_job_that_calls_its_then ... ok
+test a_rejection_from_a_derived_promise_is_listed ... ok
+test all_settled_reports_a_status_record_per_input ... ok
+test finally_passes_the_outcome_through_and_a_throwing_callback_replaces_it ... ok
+test race_settles_with_the_first_settled_input ... ok
+test promise_surface_matches_v8_lengths_and_names ... ok
+test reactions_run_as_jobs_after_the_synchronous_code ... ok
+test finally_with_a_non_callable_passes_through ... ok
+test promise_without_new_is_a_type_error_and_the_executor_must_be_callable ... ok
+test finally_takes_two_extra_ticks_like_v8 ... ok
+test any_takes_the_first_fulfilment_and_otherwise_an_aggregate_error ... ok
+test resolving_with_a_native_promise_takes_two_extra_ticks_like_v8 ... ok
+test then_chains_interleave_in_registration_order_like_v8 ... ok
+test with_resolvers_hands_out_a_promise_and_its_resolver ... ok
+test unhandled_rejections_are_listed_in_order_until_a_handler_is_attached ... ok
+test combinator_resolution_takes_the_ticks_v8_takes ... ok
+test ten_thousand_chained_thens_run_without_deep_recursion ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/builtins_b6_parse.rs (target/cleanup-rust/debug/deps/builtins_b6_parse-ddff787d62984d0c)
+
+running 10 tests
+test array_index_keys_come_first_in_ascending_order ... ok
+test proto_is_an_own_key_and_the_prototype_is_unchanged ... ok
+test grammar_accepts_strict_json_and_rejects_the_rest ... ok
+test a_repeated_key_keeps_its_first_position_and_the_last_value ... ok
+test numbers_are_correctly_rounded_and_keep_negative_zero ... ok
+test strings_keep_pairs_and_lone_surrogates_as_code_units ... ok
+test the_text_argument_is_converted_with_tostring ... ok
+test a_to_string_method_decides_the_text ... ok
+test nesting_up_to_1000_levels_is_accepted_and_1001_is_a_range_error ... ok
+test an_array_longer_than_the_dense_limit_is_a_range_error ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.62s
+
+     Running tests/builtins_b6_stringify.rs (target/cleanup-rust/debug/deps/builtins_b6_stringify-69a07843ef54bb4d)
+
+running 17 tests
+test a_stringified_value_survives_a_collection_while_it_is_rooted ... ok
+test a_boxed_boolean_serializes_as_its_primitive ... ok
+test cycles_throw_a_type_error_and_shared_references_do_not ... ok
+test a_replacer_function_is_called_for_every_value_in_order_with_the_holder_as_this ... ok
+test a_non_callable_replacer_is_ignored ... ok
+test getters_run_in_order_once_and_a_member_deleted_by_a_getter_is_skipped ... ok
+test arrays_write_null_for_undefined_functions_symbols_and_holes ... ok
+test an_array_replacer_is_the_property_list_of_every_object_below ... ok
+test a_replacer_can_omit_members_replace_values_and_throw ... ok
+test object_keys_that_are_lone_surrogates_are_escaped ... ok
+test space_gives_indentation_with_the_spec_clamping ... ok
+test primitives_serialize_as_json_text ... ok
+test undefined_functions_and_symbols_at_the_top_level_give_undefined ... ok
+test objects_leave_out_undefined_functions_symbols_and_hidden_members ... ok
+test strings_escape_quotes_controls_and_lone_surrogates ... ok
+test to_json_is_called_with_the_key_and_the_object_as_this ... ok
+test a_very_deep_array_is_written_without_recursion_limits ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+
+     Running tests/builtins_b6_surface.rs (target/cleanup-rust/debug/deps/builtins_b6_surface-f51beb861a5948a6)
+
+running 7 tests
+test json_has_only_parse_stringify_and_the_tag ... ok
+test parse_and_stringify_have_spec_lengths_names_and_attributes ... ok
+test parse_and_stringify_are_not_constructors ... ok
+test the_this_value_is_ignored_and_missing_arguments_behave_as_undefined ... ok
+test parse_results_survive_a_collection_between_calls ... ok
+test to_string_tag_is_json_and_read_only ... ok
+test json_is_a_plain_object_on_the_global_object ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/builtins_b6_walk.rs (target/cleanup-rust/debug/deps/builtins_b6_walk-2242d82fa5ea2945)
+
+running 11 tests
+test a_throwing_reviver_propagates_its_error ... ok
+test children_are_revived_before_their_parent_in_key_order ... ok
+test the_root_is_revived_last_with_the_empty_key ... ok
+test a_reviver_that_is_not_callable_is_ignored ... ok
+test the_holder_is_this_and_the_root_holder_owns_the_empty_key ... ok
+test undefined_deletes_a_member_and_leaves_a_hole_in_an_array ... ok
+test members_are_visited_in_own_key_order_with_index_keys_first ... ok
+test a_reviver_may_delete_a_later_sibling_and_the_walk_sees_undefined ... ok
+test index_keys_reach_the_reviver_as_strings ... ok
+test a_revived_value_replaces_the_member_and_is_not_walked_again ... ok
+test a_reviver_sees_children_already_revived ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/builtins_iterator.rs (target/cleanup-rust/debug/deps/builtins_iterator-a0144ba4cf06629a)
+
+running 53 tests
+test a_family_prototype_has_the_array_iterator_attributes ... ok
+test a_native_iterator_drives_iterate_and_its_own_iterator_method_returns_it ... ok
+test a_body_error_closes_the_iterator_and_is_the_error_that_propagates ... ok
+test a_new_iterator_object_for_an_unknown_family_is_a_framework_bug - should panic ... ok
+test a_non_callable_return_is_swallowed_on_a_throw_completion ... ok
+test a_non_callable_next_is_stored_and_only_fails_when_stepped ... ok
+test a_native_iterator_error_propagates_once_and_finishes_the_iterator ... ok
+test a_non_callable_return_is_a_type_error_on_a_normal_completion ... ok
+test a_new_iterator_object_uses_the_prototype_registered_under_its_family ... ok
+test a_native_iterator_that_returns_none_once_stays_done ... ok
+test a_native_iterator_stays_exhausted_without_calling_its_state_again ... ok
+test a_missing_next_fails_at_the_first_step_without_calling_return ... ok
+test a_non_object_return_result_is_not_checked_on_a_throw_completion ... ok
+test a_null_or_absent_return_means_no_return_call ... ok
+test a_throwing_next_marks_the_iterator_done_and_does_not_call_return ... ok
+test a_throwing_return_propagates_on_a_normal_completion ... ok
+test a_throwing_return_getter_propagates_on_a_normal_completion ... ok
+test an_early_exit_calls_return_once ... ok
+test a_re_entrant_next_on_a_native_iterator_sees_consistent_state ... ok
+test a_non_object_from_symbol_iterator_is_a_type_error ... ok
+test a_throw_in_next_marks_the_record_done_so_it_is_not_stepped_again ... ok
+test a_result_that_is_not_an_object_is_a_type_error_and_does_not_close ... ok
+test a_throwing_value_getter_does_not_call_return ... ok
+test a_throwing_return_getter_is_swallowed_on_a_throw_completion ... ok
+test an_iterator_object_prints_its_tag_through_object_prototype_to_string ... ok
+test a_non_object_return_result_is_a_type_error_on_a_normal_completion ... ok
+test a_throwing_return_is_swallowed_on_a_throw_completion ... ok
+test create_iter_result_has_value_then_done_as_plain_data_properties ... ok
+test done_is_coerced_with_to_boolean ... ok
+test iter_close_on_a_normal_completion_rejects_a_non_object_result ... ok
+test an_unrooted_iterator_and_what_it_holds_are_collected_together ... ok
+test iter_close_on_a_throw_completion_ignores_a_non_object_result ... ok
+test get_iterator_reads_symbol_iterator_once_and_calls_it_with_no_arguments_and_the_iterable_as_this ... ok
+test native_next_rejects_receivers_that_are_not_iterators_of_its_family ... ok
+test done_true_ends_the_loop_without_calling_return ... ok
+test iter_close_on_a_normal_completion_accepts_an_object_result ... ok
+test iter_close_on_a_normal_completion_propagates_return_errors ... ok
+test negative_control_a_payload_that_forgets_to_trace_loses_its_objects ... ok
+test iter_close_without_a_return_method_does_nothing ... ok
+test nested_iteration_over_the_same_iterable_uses_independent_iterators ... ok
+test iter_close_on_a_throw_completion_swallows_return_errors ... ok
+test iter_step_yields_values_then_none_and_a_done_record_never_calls_next_again ... ok
+test next_is_read_once_and_the_record_keeps_that_function ... ok
+test return_gets_no_arguments_and_the_iterator_as_this ... ok
+test negative_control_a_swapped_read_order_is_reported_as_a_mismatch ... ok
+test the_iterator_prototype_method_returns_its_receiver_unchanged ... ok
+test nested_loops_close_only_the_inner_iterator_on_break ... ok
+test the_value_is_not_read_when_the_result_is_done ... ok
+test protocol_order_reads_done_before_value_and_skips_value_when_done ... ok
+test objects_held_by_a_native_iterator_survive_collection_between_steps ... ok
+test the_iterator_prototype_is_registered_under_its_name ... ok
+test the_iterator_prototype_method_has_the_javascript_attributes ... ok
+test values_that_are_not_iterable_are_type_errors_with_the_is_not_iterable_message ... ok
+
+test result: ok. 53 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/kernel_arrays.rs (target/cleanup-rust/debug/deps/kernel_arrays-edb6737c1abc2d19)
+
+running 29 tests
+test an_accessor_on_an_array_index_is_refused_as_unsupported ... ok
+test frozen_array_length_is_read_only ... ok
+test array_is_array_is_true_only_for_arrays ... ok
+test freeze_still_makes_length_read_only_and_seal_leaves_it_writable ... ok
+test a_hole_reads_through_to_the_prototype_chain ... ok
+test frozen_array_refuses_element_writes_and_new_indices ... ok
+test delete_of_an_element_leaves_a_hole_and_keeps_length ... ok
+test freezing_an_array_keeps_its_length_and_values_readable ... ok
+test a_read_only_length_on_a_non_extensible_empty_array_is_still_frozen ... ok
+test an_extensible_array_is_never_frozen_or_sealed_even_with_a_read_only_length ... ok
+test a_new_element_with_non_default_attributes_is_refused_as_unsupported ... ok
+test length_is_an_own_non_enumerable_non_configurable_data_property ... ok
+test length_define_refuses_enumerable_or_configurable_attributes ... ok
+test dense_limit_refuses_growth_with_a_range_error ... ok
+test length_extension_creates_holes_that_are_not_own_properties ... ok
+test named_properties_of_arrays_still_count_toward_integrity ... ok
+test own_keys_are_indices_then_length_then_named_properties ... ok
+test length_coerces_strings_like_to_number ... ok
+test plain_objects_keep_the_spec_integrity_rule ... ok
+test length_rejects_negative_and_fractional_values_with_range_error ... ok
+test truncating_a_sealed_array_stops_at_its_non_configurable_elements ... ok
+test length_truncation_drops_trailing_elements ... ok
+test v8_integrity_of_empty_arrays_ignores_the_writable_length ... ok
+test v8_integrity_of_a_non_extensible_array_of_holes_is_frozen_and_sealed ... ok
+test sealed_array_keeps_writable_values_and_refuses_truncation_and_delete ... ok
+test non_writable_length_blocks_growth_but_not_reads ... ok
+test writes_to_existing_elements_update_in_place ... ok
+test v8_integrity_of_one_element_arrays_follows_the_element ... ok
+test writing_past_the_end_extends_with_holes ... ok
+
+test result: ok. 29 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/kernel_cells_errors.rs (target/cleanup-rust/debug/deps/kernel_cells_errors-0063d86b0c4937ce)
+
+running 31 tests
+test an_error_without_a_message_has_only_a_stack_and_no_colon_in_it ... ok
+test a_thrown_value_round_trips_through_a_native_call ... ok
+test constructor_uses_new_target_prototype_when_present ... ok
+test cause_option_creates_an_own_non_enumerable_cause ... ok
+test distinct_cells_do_not_alias ... ok
+test cell_set_then_get_round_trips ... ok
+test cause_is_absent_when_the_options_do_not_have_it ... ok
+test error_constructor_length_is_one_and_name_matches ... ok
+test descriptions_round_trip_and_absent_descriptions_are_none ... ok
+test constructor_converts_a_non_string_message ... ok
+test error_own_message_is_not_enumerable ... ok
+test a_symbol_key_addresses_only_its_own_property ... ok
+test error_prototype_to_string_formats_like_v8 ... ok
+test initialising_then_reading_checked_succeeds ... ok
+test assigning_before_initialisation_is_a_reference_error ... ok
+test assigning_after_initialisation_writes_through_the_checked_form ... ok
+test make_error_builds_name_message_and_stack ... ok
+test error_constructor_works_with_new ... ok
+test checked_read_of_an_uninitialised_binding_is_a_reference_error ... ok
+test error_constructor_works_without_new ... ok
+test symbol_for_is_separate_from_new_symbol ... ok
+test prototypes_carry_name_and_empty_message_and_link_back_to_constructors ... ok
+test error_prototype_to_string_rejects_a_non_object_receiver ... ok
+test the_throw_helpers_build_the_matching_error_kinds ... ok
+test new_symbols_are_unique_even_with_the_same_description ... ok
+test well_known_symbols_are_distinct_and_carry_their_spec_names ... ok
+test prototype_chain_runs_from_each_kind_to_error_prototype ... ok
+test undefined_message_creates_no_own_message_property ... ok
+test symbol_for_returns_one_symbol_per_key ... ok
+test the_error_constructors_are_installed_on_the_global_object ... ok
+test well_known_symbols_are_not_registered_under_symbol_for ... ok
+
+test result: ok. 31 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/kernel_exotic.rs (target/cleanup-rust/debug/deps/kernel_exotic-e1605f94196b3439)
+
+running 14 tests
+test a_has_hook_answers_has_property_without_storage ... ok
+test an_own_keys_hook_replaces_the_stored_keys ... ok
+test get_own_property_hook_is_used_by_get_and_has_own_property ... ok
+test a_non_callable_symbol_to_primitive_is_a_type_error ... ok
+test an_object_with_no_conversion_methods_cannot_become_a_primitive ... ok
+test a_get_hook_overrides_stored_properties ... ok
+test an_ordinary_result_falls_back_to_storage ... ok
+test an_error_from_a_hook_propagates_as_a_throw ... ok
+test a_set_hook_can_refuse_assignment_and_strict_mode_throws ... ok
+test symbol_to_primitive_returning_an_object_is_a_type_error ... ok
+test a_define_hook_can_refuse_definitions_and_ordinary_keys_still_work ... ok
+test a_get_hook_sees_the_receiver ... ok
+test a_delete_hook_can_refuse_deletion ... ok
+test symbol_to_primitive_receives_the_hint ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/kernel_exotic_integrity.rs (target/cleanup-rust/debug/deps/kernel_exotic_integrity-ddf8cd6bec38432f)
+
+running 6 tests
+test ordinary_objects_unchanged ... ok
+test seal_through_exotic_seals_target ... ok
+test freeze_through_exotic_freezes_target ... ok
+test throwing_hook_propagates ... ok
+test prevent_extensions_through_exotic_reaches_target ... ok
+test refused_prevent_extensions_refuses_freeze ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/kernel_functions.rs (target/cleanup-rust/debug/deps/kernel_functions-77bae1b9335724ff)
+
+running 21 tests
+test calling_a_function_returns_the_code_value_unchanged ... ok
+test a_thrown_recursion_error_leaves_the_runtime_usable ... ok
+test fn_info_name_and_kind_are_recorded ... ok
+test a_function_value_is_not_a_constructor_even_with_a_native_code_pointer ... ok
+test call_passes_this_and_arguments_through ... ok
+test captured_cells_are_visible_inside_the_function ... ok
+test a_native_error_propagates_as_a_value_with_its_message ... ok
+test a_lowered_call_limit_is_honoured_exactly ... ok
+test call_depth_is_one_inside_a_top_level_call_and_zero_after ... ok
+test construct_rejects_a_non_constructor_new_target ... ok
+test function_length_and_name_are_zero_and_empty_for_function_prototype ... ok
+test construct_passes_new_target_and_calls_the_constructor_code ... ok
+test native_closure_data_is_visible_inside_the_function ... ok
+test name_and_length_are_own_read_only_configurable_properties ... ok
+test calling_a_non_callable_throws_type_error ... ok
+test name_and_length_are_not_writable_but_can_be_redefined ... ok
+test plain_call_has_undefined_new_target ... ok
+test user_functions_and_plain_natives_are_not_constructors ... ok
+test length_precedes_name_in_own_key_order ... ok
+test missing_arguments_read_as_undefined ... ok
+test the_default_call_limit_is_1500_nested_calls ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/kernel_gc.rs (target/cleanup-rust/debug/deps/kernel_gc-0093f9004aaf6af2)
+
+running 29 tests
+test a_root_provider_keeps_objects_alive_until_it_is_removed ... ok
+test a_captured_cell_keeps_its_value_alive_and_frees_with_the_function ... ok
+test a_property_chain_survives_while_its_head_is_rooted ... ok
+test a_reused_slot_does_not_revive_the_old_handle ... ok
+test a_native_payload_trace_keeps_its_objects_alive ... ok
+test an_intrinsic_prototype_member_is_a_root ... ok
+test a_persistent_root_keeps_its_object_alive ... ok
+test a_stale_handle_panics_instead_of_reading_another_object - should panic ... ok
+test a_global_binding_keeps_its_object_alive ... ok
+test a_native_payload_can_be_read_back_and_downcast ... ok
+test a_persistent_root_table_keeps_other_roots_intact_when_ids_are_recycled ... ok
+test an_unreachable_cycle_is_freed_by_collect ... ok
+test heap_stats_count_allocations_frees_and_collections ... ok
+test maybe_collect_waits_for_the_allocation_threshold ... ok
+test collect_inside_running_code_is_a_framework_bug - should panic ... ok
+test array_elements_keep_their_objects_alive ... ok
+test positive_control_a_tracing_provider_keeps_its_objects ... ok
+test exotic_hook_trace_keeps_its_objects_alive ... ok
+test collect_frees_only_the_unreachable_part_of_a_mixed_graph ... ok
+test the_extension_slot_is_traced_and_dies_with_its_object ... ok
+test negative_control_a_provider_that_forgets_to_trace_is_detected ... ok
+test native_function_closure_data_keeps_its_objects_alive ... ok
+test negative_control_a_stress_run_with_a_forgetful_root_provider_fails ... ok
+test the_byte_estimate_grows_with_contents_and_returns_to_baseline ... ok
+test try_collect_is_refused_while_code_runs_and_allowed_at_depth_zero ... ok
+test unrooting_the_same_id_twice_is_a_framework_bug - should panic ... ok
+test unrooting_makes_the_object_collectable ... ok
+test a_deep_chain_is_marked_without_recursion ... ok
+test random_graphs_agree_with_the_reference_model ... ok
+
+test result: ok. 29 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+     Running tests/kernel_jobs.rs (target/cleanup-rust/debug/deps/kernel_jobs-65345c32741ebb6a)
+
+running 16 tests
+test heap_limit_is_exact_at_the_estimate_boundary ... ok
+test a_job_can_read_and_write_properties_of_objects_it_was_given ... ok
+test jobs_run_in_fifo_order ... ok
+test queued_values_are_roots_until_their_job_runs ... ok
+test clearing_the_budget_removes_the_limit ... ok
+test jobs_queued_while_draining_run_in_the_same_drain ... ok
+test heap_limit_refuses_ticks_while_the_estimate_is_above_it ... ok
+test a_job_that_is_not_callable_is_recorded_as_a_type_error ... ok
+test a_throwing_job_does_not_stop_the_drain_and_its_error_is_kept ... ok
+test execution_budget_stops_a_job_after_the_allowed_ticks ... ok
+test run_jobs_never_collects_so_objects_survive_until_the_host_collects ... ok
+test run_jobs_inside_running_code_is_a_framework_bug - should panic ... ok
+test run_jobs_on_an_empty_queue_runs_nothing ... ok
+test the_execution_budget_resets_before_each_job ... ok
+test ticks_outside_jobs_accumulate_until_the_next_job_resets_them ... ok
+test taking_uncaught_errors_empties_the_list ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/kernel_props.rs (target/cleanup-rust/debug/deps/kernel_props-dc513210050936f3)
+
+running 42 tests
+test canonical_index_strings_normalise_to_index_keys ... ok
+test configurable_property_can_change_kind ... ok
+test get_walks_the_prototype_chain ... ok
+test get_v_on_strings_reads_length_index_and_prototype ... ok
+test accessor_without_setter_refuses_assignment ... ok
+test empty_non_extensible_object_is_vacuously_frozen_and_sealed ... ok
+test delete_respects_configurable ... ok
+test get_v_on_undefined_and_null_throws_the_v8_message ... ok
+test define_reports_attributes_through_get_own_property ... ok
+test getter_that_reads_its_own_object_reenters_cleanly ... ok
+test non_canonical_numeric_strings_stay_string_keys ... ok
+test deleting_then_reinserting_moves_a_key_to_the_end ... ok
+test getter_throw_propagates_as_an_error_value ... ok
+test get_str_and_set_str_use_the_same_key_normalisation ... ok
+test freeze_makes_every_property_read_only_and_fixed ... ok
+test many_properties_stay_findable_past_the_index_threshold ... ok
+test non_configurable_refuses_becoming_an_accessor_or_configurable ... ok
+test same_value_separates_signed_zero_and_joins_nan ... ok
+test getter_receives_the_receiver_as_this ... ok
+test inherited_setter_runs_with_the_assigned_object_as_receiver ... ok
+test prevent_extensions_blocks_new_keys_and_allows_existing_writes ... ok
+test inherited_read_only_property_blocks_assignment ... ok
+test integer_keys_ascend_regardless_of_insertion_order ... ok
+test missing_property_reads_undefined_and_define_reads_back ... ok
+test set_creates_own_property_and_leaves_the_prototype_alone ... ok
+test non_configurable_read_only_refuses_a_different_value ... ok
+test set_v_on_undefined_throws_and_on_primitives_is_refused ... ok
+test non_configurable_writable_allows_value_change_then_read_only ... ok
+test own_keys_orders_indices_strings_then_symbols ... ok
+test strict_writes_to_string_indices_and_length_name_the_string ... ok
+test seal_keeps_values_writable_but_blocks_delete_and_add ... ok
+test symbol_keys_round_trip_and_follow_strings ... ok
+test setter_that_writes_its_own_object_reenters_cleanly ... ok
+test symbol_to_string_and_number_throw_type_errors ... ok
+test set_prototype_of_rejects_cycles_and_non_extensible_targets ... ok
+test strict_assignment_to_read_only_throws_with_the_spec_message ... ok
+test strict_add_to_non_extensible_object_throws_add_message ... ok
+test to_property_key_normalises_numbers_and_keeps_symbols ... ok
+test to_primitive_prefers_value_of_for_default_and_to_string_for_string_hint ... ok
+test to_number_follows_string_to_number_for_primitives ... ok
+test to_primitive_uses_value_of_first_when_it_yields_a_primitive ... ok
+test typeof_and_to_boolean_follow_the_spec_tables ... ok
+
+test result: ok. 42 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/modules_bindings.rs (target/cleanup-rust/debug/deps/modules_bindings-93ce023df89be03a)
+
+running 20 tests
+test closure_created_in_bind_sees_the_value_written_in_evaluate ... ok
+test collections_between_the_phases_keep_records_locals_and_closures ... ok
+test collection_after_load_keeps_bindings_and_frees_garbage ... ok
+test duplicate_reexport_name_panics - should panic ... ok
+test duplicate_export_name_panics - should panic ... ok
+test locals_are_set_read_and_initialised_across_the_phases ... ok
+test module_local_before_the_table_is_set_panics - should panic ... ok
+test live_binding_reads_the_value_the_exporter_wrote ... ok
+test export_star_cycle_terminates ... ok
+test module_local_past_the_table_panics - should panic ... ok
+test ambiguous_star_name_is_missing_from_the_namespace_and_from_export_lookup ... ok
+test module_request_returns_the_record_of_a_listed_request ... ok
+test export_star_never_re_exports_default ... ok
+test module_request_of_an_unlisted_specifier_panics - should panic ... ok
+test module_set_locals_twice_panics - should panic ... ok
+test reexport_chain_resolves_through_every_module ... ok
+test reexport_from_an_unlisted_request_panics - should panic ... ok
+test star_exports_of_one_binding_through_two_paths_are_not_ambiguous ... ok
+test re_export_cycle_terminates_and_the_name_is_missing ... ok
+test reexport_rename_resolves_to_the_exporters_own_cell ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/modules_common.rs (target/cleanup-rust/debug/deps/modules_common-13eb2deb8966938b)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/modules_graph.rs (target/cleanup-rust/debug/deps/modules_graph-074d781a4f6ccbaa)
+
+running 22 tests
+test loading_a_module_while_modules_are_being_linked_throws ... ok
+test chain_evaluates_dependencies_first ... ok
+test cycle_let_read_before_initialisation_throws_and_the_error_is_cached ... ok
+test missing_export_is_a_link_error_and_the_other_modules_stay_loadable ... ok
+test cycle_function_export_is_usable_before_its_module_evaluates ... ok
+test dependents_of_a_failed_module_rethrow_the_same_value ... ok
+test collection_inside_module_code_panics - should panic ... ok
+test importing_from_an_unlisted_request_panics - should panic ... ok
+test ambiguous_star_import_is_a_link_error_and_the_sources_stay_loadable ... ok
+test missing_module_throws_and_no_code_of_the_graph_runs ... ok
+test diamond_evaluates_the_shared_dependency_once ... ok
+test evaluation_error_is_cached_and_rethrown_with_the_same_identity ... ok
+test cycle_let_read_before_initialisation_can_be_caught_inside_the_module ... ok
+test missing_request_is_found_before_any_declare_runs ... ok
+test module_status_follows_the_lifecycle ... ok
+test module_new_for_an_existing_specifier_panics - should panic ... ok
+test registering_a_different_definition_for_the_same_specifier_panics - should panic ... ok
+test registering_the_same_definition_twice_is_a_no_op ... ok
+test sibling_after_a_failed_module_is_not_run_and_loads_later ... ok
+test native_module_is_registered_evaluated_and_imported ... ok
+test single_module_runs_once_and_reloads_without_running ... ok
+test negative_control_a_reversed_expectation_is_reported ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/modules_namespace.rs (target/cleanup-rust/debug/deps/modules_namespace-8d1698518e11e5e1)
+
+running 9 tests
+test namespace_is_created_once_and_has_null_prototype_and_no_extensions ... ok
+test namespace_read_while_modules_are_being_linked_is_refused ... ok
+test namespace_to_string_tag_is_module_and_read_only ... ok
+test namespace_refuses_writes_defines_and_deletes_of_exports ... ok
+test namespace_contents_and_probes_match_node ... ok
+test negative_control_reversed_namespace_probes_are_reported ... ok
+test namespace_read_before_the_export_is_initialised_is_a_reference_error ... ok
+test namespace_read_of_a_missing_name_is_undefined_and_absent ... ok
+test namespace_keys_list_index_names_first_then_the_rest_in_code_unit_order ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/number_corpus.rs (target/cleanup-rust/debug/deps/number_corpus-221dca30004586ac)
+
+running 18 tests
+test positive_control_passes_on_correct_expectations ... ok
+test math_min_matches_v8 ... ok
+test same_value_and_same_value_zero_match_v8 ... ok
+test remainder_matches_v8 ... ok
+test negative_control_mutated_corpus_rows_are_reported ... ok
+test string_to_number_matches_v8 ... ok
+test number_is_integer_matches_v8 ... ok
+test parse_int_matches_v8 ... ok
+test parse_float_matches_v8 ... ok
+test math_max_matches_v8 ... ok
+test math_round_matches_v8 ... ok
+test exponentiation_matches_v8 ... ok
+test to_int_family_matches_v8 ... ok
+test to_string_with_radix_matches_v8 ... ok
+test to_string_matches_v8 ... ok
+test to_exponential_matches_v8 ... ok
+test to_precision_matches_v8 ... ok
+test to_fixed_matches_v8 ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
+     Running tests/ops_conv.rs (target/cleanup-rust/debug/deps/ops_conv-460d039d7a1b8cd2)
+
+running 14 tests
+test to_string_of_an_object_with_no_conversion_methods_is_a_type_error ... ok
+test to_length_clamps_into_zero_to_two_to_the_53_minus_one ... ok
+test to_boolean_follows_the_spec_table ... ok
+test to_index_accepts_zero_to_two_to_the_53_minus_one_and_rejects_the_rest ... ok
+test to_string_of_a_symbol_is_a_type_error ... ok
+test to_string_of_an_object_calls_to_string_first_and_stops_at_a_primitive ... ok
+test object_prototype_to_string_reports_builtin_and_to_string_tags ... ok
+test to_property_key_canonicalises_numbers_symbols_and_objects ... ok
+test to_string_of_an_error_goes_through_method_lookup ... ok
+test to_integer_or_infinity_truncates_and_never_returns_negative_zero ... ok
+test to_numeric_is_to_number_and_a_symbol_throws ... ok
+test to_int32_and_to_uint32_wrap_modulo_two_to_the_32 ... ok
+test to_string_of_primitives_matches_number_to_string_and_the_keywords ... ok
+test typeof_names_each_kind_of_value ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/ops_corpus.rs (target/cleanup-rust/debug/deps/ops_corpus-70a569f9395a238b)
+
+running 4 tests
+test negative_control_a_doctored_expectation_is_reported ... ok
+test unary_operators_and_conversions_match_v8_for_every_operand ... ok
+test negative_control_a_mutated_operand_is_reported ... ok
+test binary_operators_match_v8_for_every_ordered_pair ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/ops_kernel.rs (target/cleanup-rust/debug/deps/ops_kernel-e74195fd3b98dce5)
+
+running 4 tests
+test exotic_is_array_hook_answers_is_array_and_nothing_else ... ok
+test a_string_wrapper_has_read_only_length_and_character_properties ... ok
+test to_object_wraps_each_primitive_with_its_intrinsic_prototype ... ok
+test class_of_names_every_object_kind ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/ops_ops.rs (target/cleanup-rust/debug/deps/ops_ops-b6157519a0066a94)
+
+running 19 tests
+test arithmetic_special_values_follow_ieee_and_ecmascript ... ok
+test add_uses_the_default_hint_so_value_of_wins_for_objects ... ok
+test in_operator_looks_up_own_and_inherited_keys ... ok
+test inc_and_dec_return_the_new_numeric_value ... ok
+test bitwise_and_shift_operators_mask_their_counts_and_wrap ... ok
+test arithmetic_operators_use_the_number_hint_for_objects ... ok
+test add_concatenates_when_a_primitive_is_a_string_and_adds_otherwise ... ok
+test a_throwing_value_of_stops_the_operator_before_the_right_operand ... ok
+test in_operator_throws_for_a_primitive_right_side_with_v8_messages ... ok
+test instance_of_walks_the_prototype_chain_of_a_constructor ... ok
+test in_operator_checks_the_right_side_before_converting_the_key ... ok
+test instance_of_rejects_a_right_side_that_is_not_a_function_object ... ok
+test loose_equality_converts_an_object_with_the_default_hint ... ok
+test relational_comparison_of_strings_uses_code_units ... ok
+test relational_operators_are_false_when_a_nan_is_involved ... ok
+test operands_are_converted_left_to_right_for_every_operator_family ... ok
+test strict_equality_and_the_two_same_value_relations_differ_on_zero_and_nan ... ok
+test unary_operators_convert_their_operand_once ... ok
+test symbol_operands_throw_type_errors_except_in_equality_and_logic ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/string_corpus.rs (target/cleanup-rust/debug/deps/string_corpus-4c68a530b3ad5e16)
+
+running 15 tests
+test positive_control_lone_surrogates_round_trip ... ok
+test from_char_code_and_from_code_point_match_v8 ... ok
+test concat_and_compare_match_v8 ... ok
+test negative_control_mutated_corpus_rows_are_reported ... ok
+test code_points_iterator_matches_v8 ... ok
+test to_lower_and_upper_case_match_v8 ... ok
+test code_unit_and_code_point_at_match_v8 ... ok
+test split_matches_v8 ... ok
+test array_index_matches_v8 ... ok
+test padding_and_repeat_match_v8 ... ok
+test well_formedness_matches_v8 ... ok
+test trim_variants_match_v8 ... ok
+test substring_matches_v8 ... ok
+test replace_and_replace_all_match_v8 ... ok
+test search_methods_match_v8 ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+   Doc-tests vn_css
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests vn_dom
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests vn_reactivity
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests vn_renderer_dom
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests vn_runtime
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests vn_testkit
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests vn_ui
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests vn_uikit
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests vn_value
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s

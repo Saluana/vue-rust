@@ -37,10 +37,13 @@ fn build(doc: &mut Document, d: &Json, elements: &mut Vec<NodeId>) -> NodeId {
 fn fixture_document(fx: &Json) -> (Document, Vec<NodeId>) {
     let mut doc = Document::new();
     let html = element(&mut doc, "html", "");
+    // The oracle page has head before body; :first-child/:nth-child rules also match these ancestors.
+    let head = element(&mut doc, "head", "");
     let body = element(&mut doc, "body", "");
     let mut elements = Vec::new();
     let root = build(&mut doc, fx.get("tree"), &mut elements);
     append(&mut doc, body, root);
+    append(&mut doc, html, head);
     append(&mut doc, html, body);
     let top = doc.document();
     append(&mut doc, top, html);

@@ -27,7 +27,7 @@ test('host-only web app: built output is complete and the wasm is a web app', { 
   fs.rmSync(out, { recursive: true, force: true });
   const { dir, manifest } = buildWebApp({ out, name: 'host-only', libRs: HOST_ONLY_LIB_RS, title: 'Host only' });
   assert.match(manifest.wasm, /^vn_app_host_only-[0-9a-f]{16}\.wasm$/);
-  assert.deepEqual(manifest.wasmImports, 44);
+  assert.deepEqual(manifest.wasmImports, 45);
   for (const file of [manifest.wasm, 'vn-host.js', 'index.html', 'manifest.json']) {
     assert.ok(fs.existsSync(path.join(dir, file)), `${file} is written`);
   }
@@ -36,7 +36,7 @@ test('host-only web app: built output is complete and the wasm is a web app', { 
   assert.ok(check.exports.includes('vn_abi_version'));
   const html = fs.readFileSync(path.join(dir, 'index.html'), 'utf8');
   assert.match(html, /<div id="app"><\/div>/);
-  console.log(`host-only: wasm ${manifest.bytes} bytes (gzip ${manifest.gzipBytes}), 44 vn_host imports`);
+  console.log(`host-only: wasm ${manifest.bytes} bytes (gzip ${manifest.gzipBytes}), 45 vn_host imports`);
 });
 
 test('host-only web app: starts in Chrome and mounts through the browser host', { skip: SKIP }, async () => {

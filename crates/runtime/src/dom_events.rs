@@ -16,7 +16,7 @@ use std::collections::{HashMap, HashSet};
 use std::rc::Rc;
 
 use vn_dom::EventKind;
-use vn_value::{payload_ref, Call, CodeFn, Exotic, Flags, Hook, Intrinsic, JsStr, NativeObject, ObjRef, PropKey, Res, Rt, RootProvider, Throw, Tracer, Value};
+use vn_value::{payload_ref, Call, CodeFn, Exotic, Flags, Hook, Intrinsic, JsStr, NativeObject, ObjRef, PropKey, Res, Rt, RootProvider, Throw, Tracer, Value, WellKnown};
 
 use crate::host::{EventInfo, EventSink, Host, HostError, HostEvent, HostNode, HostProvider, HostValue, ListenerId, ListenerOpts, ListenerOutcome, SharedHost};
 
@@ -192,7 +192,27 @@ impl NativeObject for HandleData {
 impl Exotic for HandleData {
     fn trace(&self, t: &mut Tracer) { NativeObject::trace(self, t); }
 
-    fn get(&self, _rt: &Rt, _obj: ObjRef, key: &PropKey, _receiver: &Value) -> Res<Hook<Value>> {
+    fn get(&self, rt: &Rt, _obj: ObjRef, key: &PropKey, _receiver: &Value) -> Res<Hook<Value>> {
+        // Host objects have DOM interface tags, so Vue's targetTypeMap leaves them raw.
+        if *key == PropKey::Sym(rt.well_known(WellKnown::ToStringTag)) {
+            let tag = self.host.handle().tag_name(self.node);
+            let interface = match tag.as_str() {
+                "INPUT" => "HTMLInputElement", "TEXTAREA" => "HTMLTextAreaElement",
+                "BUTTON" => "HTMLButtonElement", "SELECT" => "HTMLSelectElement",
+                "OPTION" => "HTMLOptionElement", "DIV" => "HTMLDivElement",
+                "SPAN" => "HTMLSpanElement", "P" => "HTMLParagraphElement",
+                "BODY" => "HTMLBodyElement", "HTML" => "HTMLHtmlElement",
+                "A" => "HTMLAnchorElement", "IMG" => "HTMLImageElement",
+                "FORM" => "HTMLFormElement", "LABEL" => "HTMLLabelElement",
+                "UL" => "HTMLUListElement", "OL" => "HTMLOListElement", "LI" => "HTMLLIElement",
+                "HR" => "HTMLHRElement", "BR" => "HTMLBRElement", "PRE" => "HTMLPreElement",
+                "H1" | "H2" | "H3" | "H4" | "H5" | "H6" => "HTMLHeadingElement",
+                "MAIN" | "SECTION" | "HEADER" | "FOOTER" | "NAV" | "ARTICLE" | "ASIDE"
+                    | "STRONG" | "EM" | "B" | "I" | "SMALL" | "CODE" => "HTMLElement",
+                _ => "Element",
+            };
+            return Ok(Hook::Handled(Value::String(JsStr::from_str(interface))));
+        }
         let PropKey::Str(name) = key else { return Ok(Hook::Ordinary) };
         let name = name.to_rust_string_lossy();
         let mut host = self.host.handle();
@@ -377,17 +397,22 @@ pub(crate) fn ctx_of_handle(rt: &Rt, v: &Value) -> Res<(DomCtx, HostNode)> {
     Ok((DomCtx { rt: rt.clone(), host: h.host.clone(), state: Rc::clone(&h.state) }, h.node))
 }
 
-/// Invokers call the handler (or each handler of an array) through `callWithAsyncErrorHandling`: a throw is reported
-/// (recorded in `DomState::errors`, as Vue's prod `handleError` logs it) and does not stop the dispatch.
-fn call_with_async_error_handling(rt: &Rt, state: &Rc<RefCell<DomState>>, f: &Value, args: &[Value]) {
-    if rt.is_callable(f) {
+/// Route component listeners through Vue's errorCaptured/app handler chain, including promise rejections.
+/// Standalone DOM-layer callers retain their host error collection.
+fn call_with_async_error_handling(rt: &Rt, state: &Rc<RefCell<DomState>>, f: &Value, owner: Option<ObjRef>, args: &[Value]) {
+    if owner.is_some() {
+        if let Err(Throw(err)) = crate::errors::call_with_async_error_handling(
+            rt, f, owner, crate::errors::ErrType::Code(crate::errors::code::NATIVE_EVENT_HANDLER), Some(args),
+        ) {
+            state.borrow_mut().errors.push(err);
+        }
+    } else if rt.is_callable(f) {
         if let Err(Throw(err)) = rt.call(f, &Value::Undefined, args) {
             state.borrow_mut().errors.push(err);
         }
     } else if rt.is_array(f) {
-        let items = array_items(rt, f).unwrap_or_default();
-        for item in items {
-            call_with_async_error_handling(rt, state, &item, args);
+        for item in array_items(rt, f).unwrap_or_default() {
+            call_with_async_error_handling(rt, state, &item, owner, args);
         }
     }
 }
@@ -409,6 +434,7 @@ fn invoker_code(rt: &Rt, c: &Call<'_>) -> Res<Value> {
             return Ok(Value::Undefined);
         }
     }
+    let owner = data.get(1).and_then(Value::as_object);
     let value = rt.get_str(&invoker, "value")?;
     if rt.is_array(&value) {
         let original = rt.get_str(&e, "stopImmediatePropagation")?;
@@ -420,11 +446,11 @@ fn invoker_code(rt: &Rt, c: &Call<'_>) -> Res<Value> {
                 break;
             }
             if h.to_boolean() {
-                call_with_async_error_handling(rt, &state, &h, std::slice::from_ref(&e));
+                call_with_async_error_handling(rt, &state, &h, owner, std::slice::from_ref(&e));
             }
         }
     } else {
-        call_with_async_error_handling(rt, &state, &value, std::slice::from_ref(&e));
+        call_with_async_error_handling(rt, &state, &value, owner, std::slice::from_ref(&e));
     }
     Ok(Value::Undefined)
 }
@@ -695,9 +721,9 @@ impl DomCtx {
     }
 
     /// `createInvoker`: a native function with the current handler in `value` and the attach time in `attached`.
-    fn create_invoker(&self, initial: &Value) -> Res<ObjRef> {
+    fn create_invoker(&self, initial: &Value, owner: Option<ObjRef>) -> Res<ObjRef> {
         let realm = self.state.borrow().realm.expect("realm object");
-        let f = self.rt.new_native_function(invoker_code, "invoker", 1, vec![Value::Object(realm)]);
+        let f = self.rt.new_native_function(invoker_code, "invoker", 1, vec![Value::Object(realm), owner.map(Value::Object).unwrap_or(Value::Undefined)]);
         let fv = Value::Object(f);
         self.rt.set_str(&fv, "value", initial.clone())?;
         self.rt.set_str(&fv, "attached", Value::Number(self.host.handle().now_ms()))?;
@@ -724,7 +750,7 @@ impl DomCtx {
     }
 
     /// `patchEvent(el, rawName, prev, next)`: updates the invoker of an attached event, or attaches or detaches one.
-    pub(crate) fn patch_event(&self, el: HostNode, raw: &str, next: &Value) -> Res<()> {
+    pub(crate) fn patch_event(&self, el: HostNode, raw: &str, next: &Value, owner: Option<ObjRef>) -> Res<()> {
         let existing = self.with_expando(el, |ex| ex.vei.get(raw).cloned());
         if next.to_boolean() {
             if let Some(att) = existing {
@@ -734,7 +760,7 @@ impl DomCtx {
         }
         let (name, opts) = parse_name(raw);
         if next.to_boolean() {
-            let invoker = self.create_invoker(next)?;
+            let invoker = self.create_invoker(next, owner)?;
             let lid = self.add_listener(el, &name, invoker, opts)?;
             let att = Attached { lid, ty: name.clone(), capture: opts.capture, invoker };
             self.with_expando(el, |ex| {

@@ -3,10 +3,11 @@
 //! `HostError` named by the status code, with the message fetched from the glue.
 
 use std::cell::RefCell;
+use std::collections::HashSet;
 use std::rc::Rc;
 
 use vn_runtime::host::{
-    EventSink, Host, HostError, HostNode, HostNs, HostResult, HostValue, ListenerId, ListenerOpts,
+    EventSink, Host, HostProvider, HostError, HostNode, HostNs, HostResult, HostValue, ListenerId, ListenerOpts,
 };
 
 use crate::abi::{self, STATUS_OK};
@@ -22,12 +23,13 @@ pub enum LogLevel {
 }
 
 /// Handle to the browser host of this wasm instance (zero-sized: all state lives in the glue or in thread-local cells).
-#[derive(Debug, Default)]
+#[derive(Clone, Debug, Default)]
 pub struct WebHost {
     _private: (),
 }
 
 thread_local! {
+    static NODES: RefCell<HashSet<HostNode>> = RefCell::new(HashSet::new());
     static TIMER_HOOK: RefCell<Option<Rc<dyn Fn(u32)>>> = const { RefCell::new(None) };
 }
 
@@ -102,13 +104,17 @@ fn created(handle: u32, what: &str) -> HostNode {
     if handle == 0 {
         panic!("vn_host: no node handle left for a new {what}");
     }
-    HostNode(handle)
+    let node = HostNode(handle);
+    NODES.with(|nodes| { nodes.borrow_mut().insert(node); });
+    node
 }
 
 impl Host for WebHost {
     fn set_event_sink(&mut self, sink: Rc<dyn EventSink>) {
         listeners::install(sink);
     }
+
+    fn event_info(&self) -> vn_runtime::host::EventInfo { listeners::event_info() }
 
     fn now_ms(&self) -> f64 {
         ffi::now()
@@ -122,7 +128,7 @@ impl Host for WebHost {
         };
         let (status, handle) = ffi::create_element(ns, tag, is);
         check(status)?;
-        Ok(HostNode(handle))
+        Ok(created(handle, "element"))
     }
 
     fn create_text(&mut self, text: &str) -> HostNode {
@@ -171,8 +177,28 @@ impl Host for WebHost {
         opt(ffi::body())
     }
 
+    fn subtree_nodes(&self, node: HostNode) -> Vec<HostNode> {
+        // The ABI exposes parent queries, so enumerate mapped descendants before retiring a subtree.
+        // Snapshot the set before host calls: queries can allocate memory and re-enter wasm.
+        let mapped = NODES.with(|nodes| nodes.borrow().iter().copied().collect::<Vec<_>>());
+        let mut subtree = vec![node];
+        for candidate in mapped {
+            if candidate == node { continue; }
+            let mut parent = opt(ffi::parent_node(candidate.0));
+            while let Some(p) = parent {
+                if p == node { subtree.push(candidate); break; }
+                parent = opt(ffi::parent_node(p.0));
+            }
+        }
+        subtree
+    }
+
     fn release(&mut self, node: HostNode) {
-        ffi::release(node.0);
+        let subtree = self.subtree_nodes(node);
+        for child in subtree {
+            NODES.with(|nodes| { nodes.borrow_mut().remove(&child); });
+            ffi::release(child.0);
+        }
     }
 
     fn tag_name(&self, el: HostNode) -> String {
@@ -247,6 +273,12 @@ impl Host for WebHost {
         ffi::style_get_property(el.0, name).1
     }
 
+    fn computed_style_property(&self, el: HostNode, name: &str) -> HostResult<String> {
+        let (status, value) = ffi::computed_style_property(el.0, name);
+        check(status)?;
+        Ok(value)
+    }
+
     fn style_css_text(&self, el: HostNode) -> String {
         ffi::style_css_text(el.0).1
     }
@@ -308,4 +340,8 @@ impl Host for WebHost {
     fn inner_html(&mut self, node: HostNode) -> Option<String> {
         ffi::inner_html(node.0)
     }
+}
+
+impl HostProvider for WebHost {
+    fn handle(&self) -> Box<dyn Host> { Box::new(self.clone()) }
 }

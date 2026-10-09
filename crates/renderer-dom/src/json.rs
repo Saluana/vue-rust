@@ -33,6 +33,7 @@ impl Json {
         }
     }
 
+    #[cfg(feature = "selftest")]
     pub fn as_bool(&self) -> Option<bool> {
         match self {
             Json::Bool(b) => Some(*b),

@@ -3,7 +3,7 @@
 ## 1. Execution rules and dependencies
 
 <!-- impl-note -->
-> **Implementation progress (2026-10-09 08:12 PDT (paused)).** Annotations below were added during implementation. A box is ticked only when the task's acceptance criteria are met and a test command plus evidence artifact are linked; the workspace is not a version-control repository, so there is no commit to link (evidence = commands that pass in this checkout + artifact paths). Partly finished work is annotated, not ticked. Totals: 9 done, 25 partial, 7 blocked, 29 not started of 70 tasks. Source of truth for the annotations: `docs/dev/tasks-progress.json` (regenerate with `node tooling/status/update-tasks.mjs`); narrative status in `docs/dev/STATUS.md`.
+> **Implementation progress (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)).** Annotations below were added during implementation. A box is ticked only when the task's acceptance criteria are met and a test command plus evidence artifact are linked; the workspace is not a version-control repository, so there is no commit to link (evidence = commands that pass in this checkout + artifact paths). Partly finished work is annotated, not ticked. Totals: 9 done, 26 partial, 7 blocked, 28 not started of 70 tasks. Source of truth for the annotations: `docs/dev/tasks-progress.json` (regenerate with `node tooling/status/update-tasks.mjs`); narrative status in `docs/dev/STATUS.md`.
 <!-- /impl-note -->
 
 
@@ -40,7 +40,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [x] **2.1 Preserve and reproduce the two prototypes.**
   <!-- progress:2.1 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): DONE** — Both prototypes preserved byte-for-byte as immutable fixtures with a SHA-256 manifest; baseline reproduced on this Mac (counter 25 + Quick Quote 28 compiler tests; counter 4 and Quick Quote 4 Rust tests — Quick Quote only with its own target dir because both crates share a name; native and wasm32 library builds); KNOWN-BUG regressions pin the old defects (dynamic `@[click]` accepted, Rust Display numbers, tie-to-even toFixed, uncached computed).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): DONE** — Both prototypes preserved byte-for-byte as immutable fixtures with a SHA-256 manifest; baseline reproduced on this Mac (counter 25 + Quick Quote 28 compiler tests; counter 4 and Quick Quote 4 Rust tests — Quick Quote only with its own target dir because both crates share a name; native and wasm32 library builds); KNOWN-BUG regressions pin the old defects (dynamic `@[click]` accepted, Rust Display numbers, tie-to-even toFixed, uncached computed).
   - **Evidence:** `node --test "tests/fixtures/prototype/*.test.mjs" "tests/fixtures/prototype/counter/tests/*.test.mjs" "tests/fixtures/prototype/quick-quote/tests/*.test.mjs"` (74 tests); `cargo test --locked --manifest-path generated/Cargo.toml`; artifacts `tests/fixtures/prototype/MANIFEST.json`, `docs/evidence/baseline/{claims-ledger.md,js-tests.txt,rust-claims.md,rust-*.txt}`.
   <!-- /progress -->
   - **Build / why / files:** create immutable counter and Quick Quote fixtures under `tests/fixtures/prototype/`, provenance manifest and reproduction instructions; retain original `compiler/`, `generated/` and ZIP source identity before changing behavior.
@@ -52,7 +52,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **2.2 Freeze the language/Vue/TS compatibility manifest.**
   <!-- progress:2.2 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Machine-readable manifest generated from design §8: 126 inventory rows, 446 named entries (incl. 52 native tags), all 171 runtime exports of vue@3.5.43 classified (`isShallow` confirmed exported, 40 compiler-internal helpers flagged), Options API excluded, experimental APIs labelled E, default-deny lookup; plus a 465-entry closed-world standard-library/globals manifest.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Machine-readable manifest generated from design §8: 126 inventory rows, 446 named entries (incl. 52 native tags), all 171 runtime exports of vue@3.5.43 classified (`isShallow` confirmed exported, 40 compiler-internal helpers flagged), Options API excluded, experimental APIs labelled E, default-deny lookup; plus a 465-entry closed-world standard-library/globals manifest.
   - **Evidence:** `node --test "tests/profile/*.test.mjs"` (92 tests); `node tooling/manifest/build-manifest.mjs --check`; `node tooling/manifest/build-stdlib.mjs --check`; artifacts `compiler/profile/{manifest.json,stdlib.json}`, `docs/compatibility/`.
   - **Not yet done:** TypeScript 7 vs TypeScript 6 tooling distinction and the exact TS 6 / Vue language-tools pair (needs the `typescript` package, not installed).
   <!-- /progress -->
@@ -65,7 +65,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [x] **2.3 Establish research build isolation and candidate obligations.**
   <!-- progress:2.3 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): DONE** — Untrusted build steps run under a deny-default macOS `sandbox-exec` profile (workspace-only writes, no network, no inherited env); hostile npm-postinstall-style and Cargo build.rs-style fixtures prove the sentinel secret, outside writes and network are blocked while the same attacks succeed unsandboxed; dependency policy and a candidate-obligation ledger exist (13 of 15 entries honestly 'unresolved'). Limits documented: sandbox-exec is deprecated/best-effort, containers and VMs not verified.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): DONE** — Untrusted build steps run under a deny-default macOS `sandbox-exec` profile (workspace-only writes, no network, no inherited env); hostile npm-postinstall-style and Cargo build.rs-style fixtures prove the sentinel secret, outside writes and network are blocked while the same attacks succeed unsandboxed; dependency policy and a candidate-obligation ledger exist (13 of 15 entries honestly 'unresolved'). Limits documented: sandbox-exec is deprecated/best-effort, containers and VMs not verified.
   - **Evidence:** `node --test "tests/security/build-isolation/*.test.mjs"` (27 tests); artifacts `docs/security/build-trust.md`, `release/dependency-policy/{POLICY.md,candidates.json}`, `tooling/sandbox/run-untrusted.mjs`.
   <!-- /progress -->
   - **Build / why / files:** `docs/security/build-trust.md`, `release/dependency-policy/`, research runner configuration; make hostile-input experiments safe and filter renderer/license dead ends early.
@@ -81,7 +81,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **3.1 Prove AOT semantics with a small value-runtime experiment.**
   <!-- progress:3.1 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Instead of a throw-away experiment the real AOT path was built: JS/TS → HIR → Rust calling a managed `vn-value` runtime (UTF-16 strings, V8-exact number formatting, closures via heap cells, TDZ, exceptions, cycles, async frames); no interpreter or eval. Verified differentially against Node/V8.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Instead of a throw-away experiment the real AOT path was built: JS/TS → HIR → Rust calling a managed `vn-value` runtime (UTF-16 strings, V8-exact number formatting, closures via heap cells, TDZ, exceptions, cycles, async frames); no interpreter or eval. Verified differentially against Node/V8.
   - **Evidence:** `node tooling/harness/run-language.mjs` (79/79) and `--dir tests/language/lowering` (164/164); `cargo test -p vn-value`; corpora `tests/language/corpora`, `tests/language/builtins`.
   - **Not yet done:** Cost comparison against an engine-backed alternative, release-artifact size/allocation report, selected Test262 cases.
   <!-- /progress -->
@@ -94,7 +94,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **3.2 Prove rooting, cycles and collection latency.**
   <!-- progress:3.2 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Non-moving generation-checked heap with iterative mark-sweep run only at safepoints; cycles, escaping closures, roots/providers, native/exotic tracing and a randomized reachability-model stress test pass; GC-stress runs (collect at every safepoint) leave all scenario outputs identical.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Non-moving generation-checked heap with iterative mark-sweep run only at safepoints; cycles, escaping closures, roots/providers, native/exotic tracing and a randomized reachability-model stress test pass; GC-stress runs (collect at every safepoint) leave all scenario outputs identical.
   - **Evidence:** `cargo test -p vn-value` (kernel_gc.rs, 29 tests + stress); harness GC-stress mode (`run_scenario_with_gc_threshold`).
   - **Not yet done:** Measured p99 collection pauses under graph churn, comparison with `gc-arena`, Miri/unsafe review (the crate forbids `unsafe`).
   <!-- /progress -->
@@ -107,7 +107,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **3.3 Prove Vue scheduling and JS async interaction.**
   <!-- progress:3.3 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Exact Vue 3.5 scheduler, watchers, nextTick and effect graph run against the real vue@3.5.43 goldens: 102/102 V0 scenarios; 403 random promise programs match V8 job ordering.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Exact Vue 3.5 scheduler, watchers, nextTick and effect graph run against the real vue@3.5.43 goldens: 102/102 V0 scenarios; 403 random promise programs match V8 job ordering.
   - **Evidence:** `node tooling/harness/run-language.mjs --with-vue` (102/102); `cargo test -p vn-runtime -p vn-reactivity`; `crates/testkit/tests/promise_programs.rs`.
   - **Not yet done:** Scope-owned service cancellation and stale-completion rejection (services layer not built).
   <!-- /progress -->
@@ -120,7 +120,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **3.4 Compare native renderers on one semantic scene.**
   <!-- progress:3.4 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Not done. A CSS parser/selector/cascade crate (`vn-css`) and a style crate (`vn-ui`, in progress) exist, but no renderer comparison (egui vs Blitz vs alternatives) was run.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Not done. A CSS parser/selector/cascade crate (`vn-css`) and a style crate (`vn-ui`, in progress) exist, but no renderer comparison (egui vs Blitz vs alternatives) was run.
   <!-- /progress -->
   - **Build / why / files:** `experiments/renderers/`, draft `crates/ui/`; adapt egui and pinned Blitz core (or justified retained candidate) to the same form/list/overlay/layout tree.
   - **Depends:** 2.2, 2.3. **Requirements:** R08–R09, R23, R25.
@@ -131,7 +131,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **3.5 Prove mobile editing and accessibility on real hardware.**
   <!-- progress:3.5 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): BLOCKED** — Needs real iPhone/iPad and Android devices with VoiceOver/TalkBack and IME; none are available here (iOS simulators exist, Android has no NDK/JDK). A simulator alone cannot pass this gate.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): BLOCKED** — Needs real iPhone/iPad and Android devices with VoiceOver/TalkBack and IME; none are available here (iOS simulators exist, Android has no NDK/JDK). A simulator alone cannot pass this gate.
   <!-- /progress -->
   - **Build / why / files:** `experiments/mobile-input/`, draft `hosts/{ios,android}/`; connect candidate renderer to UIKit/Android input and accessibility, including native editor surfaces if needed.
   - **Depends:** 3.4. **Requirements:** R09, R16–R17, R21.
@@ -142,7 +142,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **3.6 Prove Rust/WASM DOM and SSR identity boundary.**
   <!-- progress:3.6 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Rust/WASM DOM boundary proven in headless Chrome: `WebHost` (44 imports, 38 KB wasm) + hand-written JS glue.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Rust/WASM DOM boundary proven in headless Chrome: `WebHost` (44 imports, 38 KB wasm) + hand-written JS glue.
   - **Evidence:** `node --test "tests/platform/web/*.test.mjs"` (290 pass, 0 fail, 105 skipped with reasons); `cargo test -p vn-renderer-dom`.
   - **Not yet done:** SSR/hydration identity probe, three-engine browser run (only Chrome available), input-before-hydration test.
   <!-- /progress -->
@@ -155,7 +155,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **3.7 Prove the TS/editor/source-error and native reload path.**
   <!-- progress:3.7 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Not done (requires installing `typescript`/Vue language tools; not yet approved).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Not done (requires installing `typescript`/Vue language tools; not yet approved).
   <!-- /progress -->
   - **Build / why / files:** `experiments/tooling/`; test actual TypeScript 6 compatibility API + Vue virtual files, source mapping and a compiled restart with safe state snapshot.
   - **Depends:** 2.2, 3.1. **Requirements:** R03, R10–R11.
@@ -166,7 +166,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **3.8 Record the architecture go/no-go decision.**
   <!-- progress:3.8 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — The G1/G2 decision record has not been written yet (evidence is accumulating in docs/dev/STATUS.md).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — The G1/G2 decision record has not been written yet (evidence is accumulating in docs/dev/STATUS.md).
   <!-- /progress -->
   - **Build / why / files:** `docs/decisions/architecture-gate.md`; consolidate measured results, profile usefulness, renderer/GC choice, staffing and revised costs before broad implementation.
   - **Depends:** 3.2–3.7. **Requirements:** R01, R22–R26.
@@ -179,7 +179,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **4.1 Replace direct emission with source-located checked IR.**
   <!-- progress:4.1 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Source-located versioned HIR (`hirVersion: 1`), checked emitter, identifier mangling and diagnostics with `.vue`-mapped spans replace the prototype's direct string emission; the SFC frontend reuses the official compiler so dynamic event arguments are compiled by Vue itself.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Source-located versioned HIR (`hirVersion: 1`), checked emitter, identifier mangling and diagnostics with `.vue`-mapped spans replace the prototype's direct string emission; the SFC frontend reuses the official compiler so dynamic event arguments are compiled by Vue itself.
   - **Evidence:** `node --test "tests/compiler/**/*.test.mjs"` (474 tests); `node tooling/harness/run-language.mjs --dir tests/language/lowering`; `compiler/hir/README.md`, `compiler/ABI.md`.
   - **Not yet done:** Explicit regression fixture showing the old `@[click]` defect is fixed through the new pipeline; IR schema content hashes.
   <!-- /progress -->
@@ -192,7 +192,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **4.2 Turn proven primitive/closure semantics into a reusable runtime.**
   <!-- progress:4.2 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Primitive math/strings/booleans, mutable captured aliases and JS decimal formatting execute correctly natively with automatic GC roots.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Primitive math/strings/booleans, mutable captured aliases and JS decimal formatting execute correctly natively with automatic GC roots.
   - **Evidence:** `node tooling/harness/run-language.mjs --dir tests/language/lowering` (164/164).
   - **Not yet done:** Execution of compiled scenarios on wasm32 (the crates compile to wasm and the host is tested, but compiled-app execution in the browser is still being wired).
   <!-- /progress -->
@@ -205,7 +205,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **4.3 Implement minimal component/effect ownership.**
   <!-- progress:4.3 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Reactivity ownership model complete (cached computed, scopes, watchers with cleanup, dependency release on stop); component instance record exists; component mounting/unmounting is being written.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Reactivity ownership model complete (cached computed, scopes, watchers with cleanup, dependency release on stop); component instance record exists; component mounting/unmounting is being written.
   - **Evidence:** `cargo test -p vn-reactivity` (240+ tests); `node tooling/harness/run-language.mjs --with-vue`.
   - **Not yet done:** Props/emit components, keyed child removal stopping watchers, unmount/recreate leak counts through the renderer.
   <!-- /progress -->
@@ -218,9 +218,9 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **4.4 Connect semantic UI events to native and DOM hosts.**
   <!-- progress:4.4 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Event/prop layer, DOM host and component rendering work over the headless DocHost and the browser host contract (131/160 real-Vue component scenarios pass); native desktop renderer and an assembled quote form on web/native not done.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Event/prop layer, DOM host and component rendering work over the headless DocHost and the browser host contract (143/160 real-Vue component scenarios pass); Counter and Quick Quote now run in Chrome; native desktop renderer is not done.
   - **Evidence:** `cargo test -p vn-runtime` (rtd_* tests); `node --test "tests/platform/web/*.test.mjs"`.
-  - **Not yet done:** Native desktop host, end-to-end quote form on both hosts, keyboard/AT operation.
+  - **Not yet done:** Native desktop host, end-to-end quote form on native, keyboard/AT operation.
   <!-- /progress -->
   - **Build / why / files:** `crates/ui/`, `crates/renderer-{native,dom}/`, one desktop host; text/number field, labels, button, keyed two-row list and conditional error.
   - **Depends:** 4.3, 3.4–3.6. **Requirements:** R07–R09, R18.
@@ -231,9 +231,9 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **4.5 Deliver the slice build/check/dev workflow and G3 report.**
   <!-- progress:4.5 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — `vue-native` CLI exists (check/build/create/doctor, `--json`, refuses existing output dirs); web packaging pipeline proven with a host-only app in headless Chrome (53.9 KB wasm / 20.3 KB gz, first render 24 ms after navigation); headless target mounts a compiled `.vue` app in the Rust Vue runtime and runs scripted interactions — Counter (mount, click, v-if threshold, reset, disabled) and Quick Quote with `defineModel` (full interaction sequence: validation, watcher status line, hide/show, remove line) both pass end to end.
-  - **Evidence:** `node --test "tests/cli/*.test.mjs"` (38/38) and `node --test "tests/platform/web/*.test.mjs"` (398 tests: 293 pass, 0 fail, 105 skipped with a stated reason — corpus cases that need Host operations that do not exist yet); run each with a fresh private CARGO_TARGET_DIR; `node tooling/cli/vue-native.mjs check examples/counter`; artifacts `tooling/cli/`, `examples/{counter,quick-quote}`, `docs/guide/getting-started.md`.
-  - **Not yet done:** `vue-native build --target web` for `.vue` projects still refuses them (the renderer is Host-generic now: wire WebHost + a generated vn_start entry, update the refusal test in tests/cli/build.test.mjs) and a Chrome e2e of Counter and Quick Quote; measured startup/memory/edit latency; G3 report.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — vue-native CLI check/build/create/doctor and headless apps work. Web builds now compile .vue projects into Rust/WASM, install WebHost and mount the root component. Counter and Quick Quote run full browser interactions, including defineModel, validation, watch, keyed rows and editor recreation. Browser delivery supplies event identities/kinds and drains Rust jobs in a microtask. Repeated unmount/recreate cycles keep host handles and listeners flat.
+  - **Evidence:** `node --test "tests/cli/*.test.mjs"` (40/40); `node --test "tests/platform/web/*.test.mjs"` (298 pass / 109 explicit skips / 0 fail); tests/platform/web/e2e-vue-apps.test.mjs (3/3); docs/evidence/resume-web-apps.md.
+  - **Not yet done:** Native desktop host and keyboard/AT qualification; measured memory/edit latency; startup distributions and optimized app size; G3 report. Browser qualification remains Chrome only.
   <!-- /progress -->
   - **Build / why / files:** extend `compiler/cli.mjs` into initial `tooling/cli/`, `examples/quick-quote-slice/`, `docs/getting-started.md`; make architecture reviewable by an app author.
   - **Depends:** 4.4, 3.7. **Requirements:** R10–R11, R23–R26.
@@ -246,7 +246,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [x] **5.1 Lower lexical environments and control flow.**
   <!-- progress:5.1 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): DONE** — Lexical environments, TDZ, hoisting, closures, per-iteration let capture, labels/switch/loops/try-finally and evaluation order match Node.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): DONE** — Lexical environments, TDZ, hoisting, closures, per-iteration let capture, labels/switch/loops/try-finally and evaluation order match Node.
   - **Evidence:** `node tooling/harness/run-language.mjs --dir tests/language/lowering` (164/164); `node tooling/harness/run-language.mjs` (79/79); rejects fixtures `tests/language/rejects` via `node --test "tests/compiler/frontend/*.test.mjs"`. Note: Test262 not used; correctness is checked against 243 differential scenarios.
   <!-- /progress -->
   - **Build / why / files:** `compiler/{bindings,lower}/`, `crates/value/closures.rs`; implement L01–L02 including parameter/default/rest, this, recursion, TDZ, loops and short-circuit ordering.
@@ -258,7 +258,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [x] **5.2 Implement objects, collections and identity.**
   <!-- progress:5.2 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): DONE** — Objects (key order, accessors, freeze/seal with V8's array rules), arrays with holes, Map/Set (mutation during iteration), Symbols and identity/aliasing match V8 on large recorded corpora; classes/prototype mutation/descriptor mutation are rejected with spans.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): DONE** — Objects (key order, accessors, freeze/seal with V8's array rules), arrays with holes, Map/Set (mutation during iteration), Symbols and identity/aliasing match V8 on large recorded corpora; classes/prototype mutation/descriptor mutation are rejected with spans.
   - **Evidence:** `cargo test -p vn-value -p vn-testkit` (1000+ tests); corpora `tests/language/builtins/*.json` (≈14k cases, zero failures).
   <!-- /progress -->
   - **Build / why / files:** `crates/value/{object,array,map,set,symbol}.rs`, lowering; L03–L05/L10–L12 property/iteration semantics.
@@ -270,7 +270,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [x] **5.3 Implement primitive operations, strings and standard-method registry.**
   <!-- progress:5.3 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): DONE** — Number formatting/parsing (toString radix, toFixed ties, toPrecision, parseInt/Float) and UTF-16 string semantics (lone surrogates) match V8 on 40k+ corpus cases; operators/coercions on 46k pairs; String/Number/Math/JSON builtins; closed-world standard-method manifest rejects the rest.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): DONE** — Number formatting/parsing (toString radix, toFixed ties, toPrecision, parseInt/Float) and UTF-16 string semantics (lone surrogates) match V8 on 40k+ corpus cases; operators/coercions on 46k pairs; String/Number/Math/JSON builtins; closed-world standard-method manifest rejects the rest.
   - **Evidence:** `cargo test -p vn-value --test number_corpus --test string_corpus --test ops_corpus`; `crates/testkit/tests/replay_b*.rs`. Note: transcendental Math functions are within 1–2 ulp of V8 (documented); Date/Intl/RegExp/BigInt are rejected by the profile.
   <!-- /progress -->
   - **Build / why / files:** `crates/value/{number,string,coercion,json,bytes}.rs`, `compiler/profile/`; L06–L09/L18–L21 including Number formatting and UTF-16.
@@ -282,7 +282,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [x] **5.4 Implement completions, promises and async frames.**
   <!-- progress:5.4 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): DONE** — try/finally abrupt completions, promises (all combinators, thenable assimilation, exact V8 tick counts), async functions lowered to Rust async blocks with heap frames, unhandled-rejection tracking, async watchdog; stacks to source are not yet mapped (see 9.5).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): DONE** — try/finally abrupt completions, promises (all combinators, thenable assimilation, exact V8 tick counts), async functions lowered to Rust async blocks with heap frames, unhandled-rejection tracking, async watchdog; stacks to source are not yet mapped (see 9.5).
   - **Evidence:** `node tooling/harness/run-language.mjs` (promises 8/8, async 5/5, timers 5/5); `crates/testkit/tests/promise_programs.rs` (403 programs equal Node, mutation check kills 101).
   <!-- /progress -->
   - **Build / why / files:** `compiler/lower/async/`, `crates/value/{completion,promise}.rs`, `crates/runtime/jobs.rs`; L13–L15.
@@ -294,7 +294,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **5.5 Implement ESM and bundled dynamic modules.**
   <!-- progress:5.5 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Static ESM across multiple files, live bindings, cycles, re-exports, namespace objects, native module imports and `.vue` imports compile and run.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Static ESM across multiple files, live bindings, cycles, re-exports, namespace objects, native module imports and `.vue` imports compile and run.
   - **Evidence:** `node tooling/harness/run-projects.mjs` (10/10); `cargo test -p vn-value --test modules_graph` etc.
   - **Not yet done:** Dynamic `import()` lowering (still VN9001), chunk graph and web chunk loading.
   <!-- /progress -->
@@ -307,7 +307,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **5.6 Harden the chosen heap and host-resource model.**
   <!-- progress:5.6 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Heap limit and execution-budget watchdogs, GC safepoint discipline and stress tests exist.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Heap limit and execution-budget watchdogs, GC safepoint discipline and stress tests exist.
   - **Evidence:** `cargo test -p vn-value` (kernel_gc, kernel_jobs).
   - **Not yet done:** Miri/ASan/FFI audit, long-churn latency tails, native-resource disposal.
   <!-- /progress -->
@@ -320,7 +320,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **5.7 Complete SFC and TypeScript lowering.**
   <!-- progress:5.7 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — SFC frontend wraps the official compileScript/compileTemplate/compileStyle with profile checks, native template validation and `.vue` spans; macros come from Vue itself; TypeScript is erased at lowering; all 37 real SFC fixtures lower to Rust that passes `cargo check`.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — SFC frontend wraps the official compileScript/compileTemplate/compileStyle with profile checks, native template validation and `.vue` spans; macros come from Vue itself; TypeScript is erased at lowering; all 37 real SFC fixtures lower to Rust that passes `cargo check`.
   - **Evidence:** `node --test "tests/compiler/sfc/*.test.mjs"` (210 tests, 31 components rendered in real Vue in Chrome); `node tooling/harness/check-sfc-lowering.mjs` (37/37).
   - **Not yet done:** Type checking via a pinned TypeScript 6 + Vue virtual-file pair, imported-type props, `<style module>` (async CSS modules).
   <!-- /progress -->
@@ -335,7 +335,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [x] **6.1 Implement reactivity wrappers and utilities.**
   <!-- progress:6.1 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): DONE** — reactive/readonly/shallowReactive/shallowReadonly proxies with array and Map/Set instrumentation, raw/proxy identity, toRaw/markRaw/is* utilities and ref unwrapping rules match the real package.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): DONE** — reactive/readonly/shallowReactive/shallowReadonly proxies with array and Map/Set instrumentation, raw/proxy identity, toRaw/markRaw/is* utilities and ref unwrapping rules match the real package.
   - **Evidence:** `node tooling/harness/run-language.mjs --with-vue` (ref 18/18, reactive 25/25); `cargo test -p vn-reactivity`; `node tests/vue/rust/gen-expected.mjs --check` (≈230 snippets from real @vue/reactivity).
   <!-- /progress -->
   - **Build / why / files:** `crates/reactivity/{ref,proxy,collections,utilities}.rs`; V01–V05/V07–V10 and all qualified overloads.
@@ -347,7 +347,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [x] **6.2 Implement computed, custom refs and effect scopes.**
   <!-- progress:6.2 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): DONE** — Lazy cached computed (branching, chains, diamonds, writable, oldValue), customRef, effect scopes (nested/detached/stop order) match the real package.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): DONE** — Lazy cached computed (branching, chains, diamonds, writable, oldValue), customRef, effect scopes (nested/detached/stop order) match the real package.
   - **Evidence:** `node tooling/harness/run-language.mjs --with-vue` (computed 12/12, effect 8/8); `cargo test -p vn-reactivity`.
   <!-- /progress -->
   - **Build / why / files:** `crates/reactivity/{computed,effect,scope,custom_ref}.rs`; V06/V11–V12.
@@ -359,7 +359,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [x] **6.3 Implement full qualified watchers and scheduler.**
   <!-- progress:6.3 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): DONE** — watch/watchEffect/watchPostEffect/watchSyncEffect with all options, handles (stop/pause/resume), cleanup, the exact 3.5 job queue and nextTick over real promises; recursion watchdog fails visibly.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): DONE** — watch/watchEffect/watchPostEffect/watchSyncEffect with all options, handles (stop/pause/resume), cleanup, the exact 3.5 job queue and nextTick over real promises; recursion watchdog fails visibly.
   - **Evidence:** `node tooling/harness/run-language.mjs --with-vue` (watch 27/27, scheduler 12/12); `cargo test -p vn-runtime` (rtb_*).
   <!-- /progress -->
   - **Build / why / files:** `crates/runtime/scheduler/`, `crates/reactivity/watch.rs`; V13–V17, depth traversal, handles and cleanup API.
@@ -371,8 +371,8 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **6.4 Implement props, emits, slots, models and injection.**
   <!-- progress:6.4 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Component props (casting, defaults), emits (modifiers), slots, attrs fallthrough, provide/inject, v-model/defineModel via useModel run through the real renderer; against real-Vue UI goldens: props 11/12, emits 8/8, slots 11/11, provide-inject 7/7, model 14/14 (the single props miss is a vn-dom style-shorthand gap, not props logic).
-  - **Evidence:** `node tooling/harness/run-language.mjs --with-vue --ui` (131/160 overall, 0 fail); `cargo test -p vn-runtime`.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Component props (casting, defaults), emits (modifiers), slots, attrs fallthrough, provide/inject, v-model/defineModel via useModel run through the real renderer; against real-Vue UI goldens: props 12/12, emits 8/8, slots 11/11, provide-inject 7/7, model 14/14.
+  - **Evidence:** `node tooling/harness/run-language.mjs --with-vue --ui` (160/160 overall, 0 fail); `cargo test -p vn-runtime`.
   - **Not yet done:** two-app-root and dynamic-slot-name edge scenarios beyond the recorded 160; mergeModels/defineModel edge cases; Options API remains unsupported by design.
   <!-- /progress -->
   - **Build / why / files:** `crates/runtime/{component,props,slots,inject}.rs`, compiler template linkage; U11–U13/V24–V26.
@@ -384,9 +384,9 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **6.5 Implement lifecycle, template refs and error boundaries.**
   <!-- progress:6.5 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Lifecycle hooks (order verified: lifecycle 9/10), error capture/app errorHandler routing (errors 4/7), template refs (refs 4/9) implemented; remaining misses are classified.
-  - **Evidence:** `node tooling/harness/run-language.mjs --with-vue --ui`; `cargo test -p vn-runtime` (rtb_errors_lifecycle, rtc_*).
-  - **Not yet done:** reactive() must not wrap DOM element handles (crates/reactivity/src/reactive.rs) — blocks 5 refs scenarios and 2 others; DOM-event listener errors must reach handleError (pass owning instance to patch_event, crates/runtime/src/dom_events.rs) — blocks 3 errors scenarios.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Lifecycle hooks, template refs and component DOM event errors now match all recorded scenarios: lifecycle 10/10, refs 9/9, errors 7/7. Host handles expose DOM tags so Vue target classification bypasses proxies; event invokers retain their owning instance and route synchronous throws/promise rejections through errorCaptured and app errorHandler.
+  - **Evidence:** `node tooling/harness/run-language.mjs --with-vue --ui` (160 pass / 0 blocked / 0 fail / 0 unexpected); `cargo test -p vn-dom -p vn-runtime -p vn-reactivity`; docs/evidence/resume-components.md.
+  - **Not yet done:** Broader lifecycle/ref/error edge coverage; broader advanced-component qualification remains in 6.6.
   <!-- /progress -->
   - **Build / why / files:** `crates/runtime/{lifecycle,refs,errors}.rs`, source-stack table; V18–V23/V27–V29.
   - **Depends:** 6.4. **Requirements:** R05–R06, R09–R10.
@@ -397,7 +397,9 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **6.6 Implement identity-dependent built-in components.**
   <!-- progress:6.6 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Not started: KeepAlive, Teleport, Transition, defineAsyncComponent exports missing — 17 of the 29 blocked UI scenarios (teleport 0/5, transition 0/5, dynamic 2/9).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — All 160 existing component scenarios match real Vue: Teleport 5/5, Transition 5/5, dynamic 9/9 (KeepAlive and async components). Implemented target moves/defer/events, JS/appear/CSS hooks and out-in ordering, cached state/include/LRU/disposal, shared async loader requests/loading delay/errors/timeouts.
+  - **Evidence:** `node tooling/harness/run-language.mjs --with-vue --ui` and `--gc-stress` (160/160 each, no blocked/failing/unexpected); `cargo test --workspace --no-fail-fast` (1323/1323); `node --test "tests/platform/web/*.test.mjs"` (299 pass, 109 documented skips); docs/evidence/advanced-components.md and docs/evidence/advanced-components/. Cleanup re-verification: docs/evidence/cleanup.md (three assertion-free Rust probes removed; corpus and negative-control checks retained).
+  - **Not yet done:** TransitionGroup, in-out mode, CSS transition-end event shortcuts, native motion/layout, async retry/hydration hooks and broader nested/lifetime edge qualification. Unsupported async hooks and transition modes throw explicitly.
   <!-- /progress -->
   - **Build / why / files:** `crates/runtime/components/`, template IR; dynamic components, async loader, KeepAlive and Teleport per U19–U22.
   - **Depends:** 6.5, 5.5. **Requirements:** R06–R07.
@@ -408,9 +410,9 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **6.7 Complete template lowering and event/model semantics.**
   <!-- progress:6.7 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Official-compiler template lowering plus runtime semantics verified end to end: events 13/13, model 14/14, list 11/11, conditional 7/7, fragments 5/5, directives 5/5, static 14/15 against real-Vue goldens.
-  - **Evidence:** `node tooling/harness/run-language.mjs --with-vue --ui`; 944 patchProp cases and 174 directive scenarios (`cargo test -p vn-runtime`).
-  - **Not yet done:** vn-dom margin/style shorthands (blocks 2 scenarios), v-html native rejection fixture in the UI corpus, custom-element/SVG breadth.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Official-compiler template lowering plus runtime semantics verified end to end: events 13/13, model 14/14, list 11/11, conditional 7/7, fragments 5/5, directives 5/5, static 15/15 against real-Vue goldens.
+  - **Evidence:** `node tooling/harness/run-language.mjs --with-vue --ui` (160 pass / 0 blocked / 0 fail / 0 unexpected); `cargo test -p vn-dom -p vn-runtime -p vn-reactivity`; docs/evidence/resume-components.md.
+  - **Not yet done:** Other style shorthands beyond margin/padding, functional box values, v-html native rejection fixture in the UI corpus, custom-element/SVG breadth.
   <!-- /progress -->
   - **Build / why / files:** `compiler/template/`, `crates/ui/{events,models,reconcile}.rs`; U01–U18/U26–U32, conditional/list/fragment operations and target exclusions.
   - **Depends:** 6.4–6.6. **Requirements:** R07, R09.
@@ -421,7 +423,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **6.8 Implement application APIs and enforce advanced-API boundaries.**
   <!-- progress:6.8 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — createApp/mount/unmount/use/component/directive/provide/runWithContext/onUnmount implemented; advanced-API boundary diagnostics via manifest + SFC frontend.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — createApp/mount/unmount/use/component/directive/provide/runWithContext/onUnmount implemented; advanced-API boundary diagnostics via manifest + SFC frontend.
   <!-- /progress -->
   - **Build / why / files:** `crates/runtime/app.rs`, `compiler/profile/exports/`, `packages/vue-compat/`; A01–A19 supported forms, helpers/useId/CSS helpers and explicit exclusions.
   - **Depends:** 6.5–6.7. **Requirements:** R01, R06, R12, R18.
@@ -434,7 +436,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **7.1 Stabilize the retained renderer adapter and semantic tree.**
   <!-- progress:7.1 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Semantic element tree exists (`vn-dom`: tree, attributes, properties with dirty flags, events with activation behaviour, focus, selectors, serialization; 284 Chrome-recorded cases). Retained native renderer adapter not started.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Semantic element tree exists (`vn-dom`: tree, attributes, properties with dirty flags, events with activation behaviour, focus, selectors, serialization; 284 Chrome-recorded cases). Retained native renderer adapter not started.
   - **Evidence:** `cargo test -p vn-dom`.
   - **Not yet done:** retained renderer adapter, hit testing with transforms/clipping, gestures.
   <!-- /progress -->
@@ -447,9 +449,9 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **7.2 Implement the explicit CSS compatibility profile.**
   <!-- progress:7.2 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — CSS tokenizer/parser, selectors, media queries, cascade and custom properties (`vn-css`: 98 tests, ~3400 Chrome comparisons); typed values/computed style (`vn-ui`) in progress.
-  - **Evidence:** `cargo test -p vn-css`; `node --test "tests/css/gen/*.test.mjs"`.
-  - **Not yet done:** typed values and shorthands, computed style, layout (Taffy), scoped/deep/slotted handling in the renderer, units.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — CSS tokenizer/parser, selectors, media queries, cascade and custom properties; typed values, shorthands and computed style pass the recorded Chrome corpora. Repaired form-control defaults, disabled/checkbox appearance, bolder weights, replaced-element descendant CSSOM serialization and font-size precision. Cascade driver now mirrors the oracle head/body sibling topology; unchanged goldens: 72 fixtures / 6675 comparisons, plus negative control.
+  - **Evidence:** `cargo test --workspace --no-fail-fast` (1323 passed, 0 failed); `cargo test -p vn-ui` (including cascade and values corpora); docs/evidence/advanced-components.md; independent Chrome measurements in docs/evidence/advanced-components/css-defaults-chrome.json. Cleanup re-verification: docs/evidence/cleanup.md (three assertion-free Rust probes removed; corpus and negative-control checks retained).
+  - **Not yet done:** layout (Taffy), complete native painting/style integration, scoped/deep/slotted renderer breadth and further CSS value qualification.
   <!-- /progress -->
   - **Build / why / files:** `compiler/styles/`, `crates/renderer-native/style/`, `docs/compatibility/css/`; validate each selector/property/value and map supported cascade/layout to backend.
   - **Depends:** 7.1, 6.8. **Requirements:** R03, R08, R10.
@@ -460,7 +462,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **7.3 Implement international text editing and input adapters.**
   <!-- progress:7.3 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — International text editing/IME not started.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — International text editing/IME not started.
   <!-- /progress -->
   - **Build / why / files:** `crates/ui/text/`, host text adapters, font asset policy; shared editing/composition/selection model with selected OS editor surfaces.
   - **Depends:** 7.1, 3.5, 5.3. **Requirements:** R08–R09, R16–R17.
@@ -471,7 +473,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **7.4 Implement semantic accessibility and focus.**
   <!-- progress:7.4 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Semantic accessibility tree and focus management for the native host not started.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Semantic accessibility tree and focus management for the native host not started.
   <!-- /progress -->
   - **Build / why / files:** `crates/ui/{accessibility,focus}.rs`, native AccessKit adapters and DOM semantics; names/relations/actions and logical reading order.
   - **Depends:** 7.2, 7.3. **Requirements:** R09, R21.
@@ -482,7 +484,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **7.5 Implement media, transitions and rendering resilience.**
   <!-- progress:7.5 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Media, transitions and rendering resilience not started.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Media, transitions and rendering resilience not started.
   <!-- /progress -->
   - **Build / why / files:** `crates/renderer-native/{assets,animation}/`, `crates/runtime/components/transition.rs`; safe images/SVG/icons, timeline and Transition/TransitionGroup contracts.
   - **Depends:** 7.2, 7.4, 6.6. **Requirements:** R07–R09, R22–R23.
@@ -495,7 +497,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **8.1 Implement capability and service interfaces.**
   <!-- progress:8.1 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Not started (services layer: capability and service interfaces).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Not started (services layer: capability and service interfaces).
   <!-- /progress -->
   - **Build / why / files:** `packages/platform/`, `crates/services/{capability,error,scope}.rs`, config schema; typed denial/unavailable/cancellation and scope-owned delivery tokens.
   - **Depends:** 5.4, 6.5. **Requirements:** R19–R22.
@@ -506,7 +508,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **8.2 Implement HTTP, streaming and WebSockets.**
   <!-- progress:8.2 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Not started (services layer: HTTP, streaming and WebSockets).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Not started (services layer: HTTP, streaming and WebSockets).
   <!-- /progress -->
   - **Build / why / files:** `crates/services/network/`, `hosts/web/network/`; qualified client libraries and pull-based bounded stream bridge.
   - **Depends:** 8.1. **Requirements:** R05, R19, R22.
@@ -517,7 +519,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **8.3 Implement scoped files and recovery-safe export.**
   <!-- progress:8.3 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Not started (services layer: scoped files and export).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Not started (services layer: scoped files and export).
   <!-- /progress -->
   - **Build / why / files:** `crates/services/files/`, platform picker/handle adapters; safe local saves, user-selected export and permission revocation.
   - **Depends:** 8.1. **Requirements:** R20–R22.
@@ -528,7 +530,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **8.4 Implement SQLite access, migration and crash recovery.**
   <!-- progress:8.4 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Not started (services layer: SQLite access and migrations).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Not started (services layer: SQLite access and migrations).
   <!-- /progress -->
   - **Build / why / files:** `crates/services/database/`, `tests/storage/migrations/`; serialized worker connections, parameter binding, schema journal and versioned migration/backup protocol.
   - **Depends:** 8.1, 8.3. **Requirements:** R20, R22.
@@ -539,7 +541,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **8.5 Implement web KV and optional SQL persistence.**
   <!-- progress:8.5 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Not started (services layer: web KV/SQL persistence).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Not started (services layer: web KV/SQL persistence).
   <!-- /progress -->
   - **Build / why / files:** `hosts/web/storage/`, SQL worker adapter; distinct IndexedDB KV and qualified SQLite OPFS capabilities.
   - **Depends:** 8.4, 3.6. **Requirements:** R18, R20.
@@ -550,7 +552,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **8.6 Implement settings and secure storage adapters.**
   <!-- progress:8.6 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Not started (services layer: settings and secure storage).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Not started (services layer: settings and secure storage).
   <!-- /progress -->
   - **Build / why / files:** `crates/services/{settings,secrets}/`, OS keychain/credential/keystore bridges; separate ordinary settings from secrets.
   - **Depends:** 8.1, 8.3. **Requirements:** R20–R22.
@@ -561,7 +563,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **8.7 Implement navigation, deep links and desktop window services.**
   <!-- progress:8.7 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Not started (services layer: navigation, deep links and windows).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Not started (services layer: navigation, deep links and windows).
   <!-- /progress -->
   - **Build / why / files:** `crates/services/{navigation,windows,dialogs,menus}/`, `packages/platform/`; route state, guards, typed commands and explicit app/window store scopes.
   - **Depends:** 8.1, 6.6, 7.4. **Requirements:** R12, R21.
@@ -572,7 +574,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **8.8 Implement notifications and best-effort background jobs.**
   <!-- progress:8.8 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Not started (services layer: notifications and background jobs).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Not started (services layer: notifications and background jobs).
   <!-- /progress -->
   - **Build / why / files:** `crates/services/{notifications,jobs}/`, OS scheduler bridges; permission-aware actions, checkpointed work and cancellation.
   - **Depends:** 8.2, 8.4, 8.7, 3.5. **Requirements:** R16–R17, R19–R21.
@@ -585,7 +587,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **9.1 Deliver reproducible CLI and toolchain setup.**
   <!-- progress:9.1 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — `vue-native` CLI: check (diagnostics with spans, --json), build (web packaging, headless), create (2 templates), doctor (no installs); getting-started guide written from what runs.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — `vue-native` CLI: check (diagnostics with spans, --json), build (web packaging, headless), create (2 templates), doctor (no installs); getting-started guide written from what runs. Web target for .vue projects now builds and runs both demos in Chrome; see docs/evidence/resume-web-apps.md.
   - **Evidence:** `node --test "tests/cli/*.test.mjs"`; `tooling/cli/`, `docs/guide/getting-started.md`.
   - **Not yet done:** locked toolchain setup/offline mirror, dev/test/package/upgrade commands, config schema, clean-room documentation exercise.
   <!-- /progress -->
@@ -598,7 +600,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **9.2 Implement incremental graph/cache invalidation.**
   <!-- progress:9.2 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Incremental graph/cache invalidation not started (builds are full rebuilds).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Incremental graph/cache invalidation not started (builds are full rebuilds).
   <!-- /progress -->
   - **Build / why / files:** `tooling/build/{graph,cache,watch}/`; include runtime/type/style/asset/config/SDK/env edges and atomic content cache publication.
   - **Depends:** 9.1, 5.7, 7.2. **Requirements:** R10–R11, R23.
@@ -609,7 +611,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **9.3 Implement honest native preview and state-preserving reload.**
   <!-- progress:9.3 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Preview/reload not started.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Preview/reload not started.
   <!-- /progress -->
   - **Build / why / files:** `tooling/dev/`, `crates/runtime/dev_snapshot.rs`; data-only UI/style patching and AOT process restart for code changes.
   - **Depends:** 9.2, 6.5, 7.2. **Requirements:** R05, R11, R22.
@@ -620,7 +622,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **9.4 Implement Vue editor integration and type checking.**
   <!-- progress:9.4 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Editor integration/type checking not started.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Editor integration/type checking not started.
   <!-- /progress -->
   - **Build / why / files:** `tooling/editor/`, `packages/types/`; qualified Vue language-tools extension/virtual files, profile-specific ambient declarations and style/service completions.
   - **Depends:** 5.7, 9.1. **Requirements:** R03, R10–R11.
@@ -631,7 +633,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **9.5 Implement source-level diagnostics, stacks and inspector.**
   <!-- progress:9.5 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Compiler diagnostics carry codes, `.vue` spans (UTF-16 exact) and formatted source frames.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Compiler diagnostics carry codes, `.vue` spans (UTF-16 exact) and formatted source frames.
   - **Evidence:** `node --test "tests/compiler/frontend/*.test.mjs" "tests/compiler/sfc/*.test.mjs"`.
   - **Not yet done:** runtime source-mapped stacks, async stacks, component/effect inspector.
   <!-- /progress -->
@@ -644,7 +646,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **9.6 Qualify actual ecosystem packages and publish boundaries.**
   <!-- progress:9.6 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Ecosystem package qualification not started.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Ecosystem package qualification not started.
   <!-- /progress -->
   - **Build / why / files:** `tests/packages/`, `docs/compatibility/packages/`, resolver metadata; exact-version pure modules/composables, Pinia/Router feasibility and per-VueUse function decisions.
   - **Depends:** 6.8, 8.7, 9.4. **Requirements:** R01, R12.
@@ -657,7 +659,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **10.1 Upgrade Quick Quote using ordinary framework APIs.**
   <!-- progress:10.1 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Quick Quote upgrade not started (a first demo form without persistence is part of the CLI work).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Quick Quote upgrade not started (a first demo form without persistence is part of the CLI work).
   <!-- /progress -->
   - **Build / why / files:** `examples/quick-quote/`, app-owned SQLite migrations; reusable forms, explicit money policy, validation, draft/history storage, JSON/CSV export and recovery.
   - **Depends:** 7.5, 8.2–8.7, 9.3–9.5. **Requirements:** R20, R26.
@@ -668,7 +670,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **10.2 Build Fieldboard as the demanding reference app.**
   <!-- progress:10.2 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Fieldboard not started.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Fieldboard not started.
   <!-- /progress -->
   - **Build / why / files:** `examples/fieldboard/`, `tests/fixtures/stream-server/`; 100k record master-detail, virtual list, routes, draft conflicts, streaming updates, shared/window-local state and cancellation.
   - **Depends:** 7.5, 8.2–8.8, 9.3–9.5. **Requirements:** R05–R09, R19–R21, R23, R26.
@@ -679,7 +681,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **10.3 Implement production SSR, SSG and hydration.**
   <!-- progress:10.3 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — SSR/SSG/hydration not started.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — SSR/SSG/hydration not started.
   <!-- /progress -->
   - **Build / why / files:** `crates/renderer-ssr/`, `tooling/web/`, server adapter package; same template IR, request scopes, HTML/metadata/status/route output and typed hydration payload.
   - **Depends:** 6.8, 8.5, 9.2, 3.6. **Requirements:** R06, R18, R22.
@@ -690,7 +692,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **10.4 Qualify browser loading, storage and accessibility.**
   <!-- progress:10.4 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Browser host runs in headless Chrome 155 (wasm loading, events, DOM semantics) with size measured; no multi-browser, storage, offline or WCAG qualification.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Browser host runs in headless Chrome 155 (wasm loading, events, DOM semantics) with size measured; no multi-browser, storage, offline or WCAG qualification. Compiled Counter/Quick Quote browser delivery is now verified in Chrome (3 e2e tests), including flat handle/listener counts across repeated unmounts.
   - **Evidence:** `node --test "tests/platform/web/*.test.mjs"`.
   - **Not yet done:** Firefox/Safari, mobile browsers, storage/quota/offline, accessibility audit.
   <!-- /progress -->
@@ -703,7 +705,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **10.5 Audit shared-profile completeness and pass/fail G4.**
   <!-- progress:10.5 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — G4 audit not yet possible.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — G4 audit not yet possible.
   <!-- /progress -->
   - **Build / why / files:** compatibility manifest/evidence reports, `docs/decisions/shared-profile-gate.md`; reconcile every planned feature, app workflow and known exclusion before platform expansion.
   - **Depends:** 5.1–5.7, 6.1–6.8, 7.1–7.5, 8.1–8.8, 9.1–9.6, 10.1–10.4.
@@ -717,7 +719,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **11.1 Complete Windows host and distribution.**
   <!-- progress:11.1 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): BLOCKED** — Windows needs real x64/ARM64 machines; none available.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): BLOCKED** — Windows needs real x64/ARM64 machines; none available.
   <!-- /progress -->
   - **Build / why / files:** `hosts/windows/`, packaging templates, `tests/platform/windows/`; x64/ARM64 host, UIA/IME, DPI/multi-window/menu/dialog integration and signed MSIX recipe.
   - **Depends:** 10.5, 8.7, 9.1. **Requirements:** R09, R13, R21, R24–R25.
@@ -728,7 +730,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **11.2 Complete macOS host and both distribution profiles.**
   <!-- progress:11.2 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — macOS native host not built yet (this Mac is the only machine that can verify it).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — macOS native host not built yet (this Mac is the only machine that can verify it).
   <!-- /progress -->
   - **Build / why / files:** `hosts/macos/`, bundle/entitlement/notarization recipes; Apple Silicon/Intel, menus, reopen/multi-window, secure bookmarks and sandbox profile.
   - **Depends:** 10.5, 8.7, 9.1. **Requirements:** R09, R14, R21, R24–R25.
@@ -739,7 +741,7 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **11.3 Complete Linux host and distribution matrix.**
   <!-- progress:11.3 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): BLOCKED** — Linux needs real hardware and distros; none available (Docker is installed but unused).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): BLOCKED** — Linux needs real hardware and distros; none available (Docker is installed but unused).
   <!-- /progress -->
   - **Build / why / files:** `hosts/linux/`, Flatpak manifest/runtime recipes; X11/Wayland, portal/AT-SPI/input methods, distro/arch/GPU compatibility.
   - **Depends:** 10.5, 8.7, 9.1. **Requirements:** R09, R15, R21, R24–R25.
@@ -754,7 +756,7 @@ Each desktop G5 requires both apps and all applicable tests, signed/installable 
 
 - [ ] **12.1 Complete iOS/iPadOS host and service bindings.**
   <!-- progress:12.1 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): BLOCKED** — iOS needs physical devices, signing identities and VoiceOver; simulators only available.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): BLOCKED** — iOS needs physical devices, signing identities and VoiceOver; simulators only available.
   <!-- /progress -->
   - **Build / why / files:** `hosts/ios/`, generated Xcode project, Swift/ObjC bridge; UIKit scenes/Metal surface, OS editor/AT, safe area/keyboard/rotation, permissions and restoration.
   - **Depends:** 10.5, 3.5, 8.8, 9.1. **Requirements:** R09, R16, R19–R21.
@@ -765,7 +767,7 @@ Each desktop G5 requires both apps and all applicable tests, signed/installable 
 
 - [ ] **12.2 Complete Android host and service bindings.**
   <!-- progress:12.2 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): BLOCKED** — Android needs NDK/JDK/devices; none installed.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): BLOCKED** — Android needs NDK/JDK/devices; none installed.
   <!-- /progress -->
   - **Build / why / files:** `hosts/android/`, Gradle/Kotlin/JNI integration; activity/surface lifecycle, InputConnection/AT, back navigation, permissions and process restoration.
   - **Depends:** 10.5, 3.5, 8.8, 9.1. **Requirements:** R09, R17, R19–R21.
@@ -776,7 +778,7 @@ Each desktop G5 requires both apps and all applicable tests, signed/installable 
 
 - [ ] **12.3 Qualify iOS distribution and sustained real-device use.**
   <!-- progress:12.3 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): BLOCKED** — Depends on 12.1 and real devices.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): BLOCKED** — Depends on 12.1 and real devices.
   <!-- /progress -->
   - **Build / why / files:** `release/ios/`, `tests/platform/ios/`; archive/provisioning/entitlements/privacy manifests and upgrade/restoration evidence with authorized test identities later.
   - **Depends:** 12.1, 10.1–10.2. **Requirements:** R16, R22–R26.
@@ -787,7 +789,7 @@ Each desktop G5 requires both apps and all applicable tests, signed/installable 
 
 - [ ] **12.4 Qualify Android distribution and sustained real-device use.**
   <!-- progress:12.4 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): BLOCKED** — Depends on 12.2 and real devices.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): BLOCKED** — Depends on 12.2 and real devices.
   <!-- /progress -->
   - **Build / why / files:** `release/android/`, `tests/platform/android/`; APK/AAB, ABI splits, current target SDK/store policy check, upload/signing key continuity and recovery paths.
   - **Depends:** 12.2, 10.1–10.2. **Requirements:** R17, R22–R26.
@@ -800,7 +802,7 @@ Each desktop G5 requires both apps and all applicable tests, signed/installable 
 
 - [ ] **13.1 Complete security fuzzing and independent boundary review.**
   <!-- progress:13.1 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Security fuzzing not started (sandbox runner and resource limits exist).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Security fuzzing not started (sandbox runner and resource limits exist).
   <!-- /progress -->
   - **Build / why / files:** `tests/security/`, compiler/FFI/decoder fuzz targets, `docs/security/`; exercise threat model beyond happy-path app tests.
   - **Depends:** 11.1–11.3, 12.1–12.2, 10.4. **Requirements:** R22, R24.
@@ -811,7 +813,7 @@ Each desktop G5 requires both apps and all applicable tests, signed/installable 
 
 - [ ] **13.2 Benchmark and tune measured bottlenecks.**
   <!-- progress:13.2 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Benchmarks not started.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Benchmarks not started.
   <!-- /progress -->
   - **Build / why / files:** `benches/`, `tests/performance/`, profiler instrumentation; execute each design budget on named hardware and equivalent reference apps.
   - **Depends:** 10.1–10.4, 11.1–11.3, 12.3–12.4. **Requirements:** R23, R26.
@@ -822,7 +824,7 @@ Each desktop G5 requires both apps and all applicable tests, signed/installable 
 
 - [ ] **13.3 Complete license, attribution and branding review.**
   <!-- progress:13.3 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Dependency policy and candidate ledger exist; licence audit of the actual dependency graph not done.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Dependency policy and candidate ledger exist; licence audit of the actual dependency graph not done.
   - **Evidence:** `release/dependency-policy/`.
   - **Not yet done:** licence scan of the full Rust/npm graph, SBOM, branding review.
   <!-- /progress -->
@@ -835,7 +837,7 @@ Each desktop G5 requires both apps and all applicable tests, signed/installable 
 
 - [ ] **13.4 Implement and attack update verification/recovery.**
   <!-- progress:13.4 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Update verification not started.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Update verification not started.
   <!-- /progress -->
   - **Build / why / files:** `crates/services/updater/`, `release/update/`, web version-manifest activation; TUF-style direct-distribution metadata and platform Store update separation.
   - **Depends:** 8.4–8.6, 11.1–11.3, 12.3–12.4. **Requirements:** R20, R22, R25.
@@ -846,7 +848,7 @@ Each desktop G5 requires both apps and all applicable tests, signed/installable 
 
 - [ ] **13.5 Build reproducible release artifacts and signing recipes.**
   <!-- progress:13.5 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Reproducible release artifacts not started.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Reproducible release artifacts not started.
   <!-- /progress -->
   - **Build / why / files:** `release/`, CI release workflows; locked per-OS builders, unsigned payload comparison, provenance/checksums/SBOM and isolated signing steps.
   - **Depends:** 13.1, 13.3–13.4, 9.1–9.2. **Requirements:** R11, R22, R25.
@@ -857,7 +859,7 @@ Each desktop G5 requires both apps and all applicable tests, signed/installable 
 
 - [ ] **13.6 Automate qualification and dependency upgrade policy.**
   <!-- progress:13.6 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Differential scoreboards with ratchet ledgers (`tests/language/status.json`, `tests/vue/status.json`) fail on regressions or unexpected passes; no CI matrix.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Differential scoreboards with ratchet ledgers (`tests/language/status.json`, `tests/vue/status.json`) fail on regressions or unexpected passes; no CI matrix.
   - **Evidence:** `node tooling/harness/run-language.mjs [--with-vue]`.
   - **Not yet done:** CI matrix, tier evidence automation, dependency-upgrade rehearsals.
   <!-- /progress -->
@@ -870,7 +872,7 @@ Each desktop G5 requires both apps and all applicable tests, signed/installable 
 
 - [ ] **13.7 Finish author docs, migration and maintenance runbooks.**
   <!-- progress:13.7 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): PARTIAL** — Compatibility and architecture docs exist (`docs/compatibility`, `docs/dev`).
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): PARTIAL** — Compatibility and architecture docs exist (`docs/compatibility`, `docs/dev`).
   - **Not yet done:** Author guide, migration guide, runbooks.
   <!-- /progress -->
   - **Build / why / files:** `docs/{guide,compatibility,migration,security,support}/`, examples; source-first workflow, config/defaults/env, unsupported features, version policy and staffed security response.
@@ -882,7 +884,7 @@ Each desktop G5 requires both apps and all applicable tests, signed/installable 
 
 - [ ] **13.8 Make the production go/no-go decision.**
   <!-- progress:13.8 -->
-  - **Status (2026-10-09 08:12 PDT (paused)): NOT STARTED** — Production go/no-go cannot be made yet.
+  - **Status (2026-10-09 (cleanup verified; component scenarios and Rust workspace green)): NOT STARTED** — Production go/no-go cannot be made yet.
   <!-- /progress -->
   - **Build / why / files:** `release/qualification/<version>/`, final compatibility/risk ledger; independent review of every requirement and target evidence before production label.
   - **Depends:** 13.1–13.7, all target G5 gates. **Requirements:** R01–R26.

@@ -21,6 +21,10 @@ pub fn all(rt: &Rt) -> Vec<(&'static str, Value)> {
     out.extend(crate::vshow::exports(rt));
     out.extend(crate::setup_helpers::exports(rt));
     out.extend(crate::app::exports(rt));
+    out.extend(crate::teleport::exports(rt));
+    out.extend(crate::keep_alive::exports(rt));
+    out.extend(crate::async_component::exports(rt));
+    out.extend(crate::transition::exports(rt));
     out
 }
 

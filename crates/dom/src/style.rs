@@ -5,8 +5,8 @@
 //! grammars: paint is `none` or a colour, widths are non-negative). A name outside the table is an
 //! error (UnsupportedStyleProperty). Values are checked against a small grammar per property: an invalid value leaves
 //! the declarations unchanged (CSSOM behaviour). Chrome normalises more than this model does, so the corpora avoid:
-//! hex and named colours other than the subset in NAMED_COLORS (Chrome rewrites hex as rgb()); shorthands, which
-//! Chrome merges (margin, padding, inset, border, background...); and out-of-range numbers. A unitless `0` becomes
+//! hex and named colours other than the subset in NAMED_COLORS (Chrome rewrites hex as rgb()); shorthands other
+//! than margin/padding; and out-of-range numbers. Box shorthands support one to four lengths/percentages (margin also auto). A unitless `0` becomes
 //! `0px`, and keyword values and named colours are lowercased, as in Chrome.
 //!
 //! Ordering: setProperty keeps insertion order, and an updated declaration keeps its position. cssText parsing adds
@@ -121,6 +121,57 @@ pub(crate) fn normalize_name(name: &str) -> String {
 
 fn kind_of(name: &str) -> Option<Kind> {
     PROPS.iter().find(|(n, _)| *n == name).map(|(_, k)| *k)
+}
+
+const MARGIN: [&str; 4] = ["margin-top", "margin-right", "margin-bottom", "margin-left"];
+const PADDING: [&str; 4] = ["padding-top", "padding-right", "padding-bottom", "padding-left"];
+
+fn box_sides(name: &str) -> Option<&'static [&'static str; 4]> {
+    match name { "margin" => Some(&MARGIN), "padding" => Some(&PADDING), _ => None }
+}
+
+fn box_values(name: &str, value: &str) -> Option<[String; 4]> {
+    let kind = if name == "margin" { Kind::LenAuto } else { Kind::Len };
+    let values: Vec<String> = value.split_whitespace().map(|v| check_value(kind, v)).collect::<Option<_>>()?;
+    if values.is_empty() || values.len() > 4 { return None; }
+    if values.len() > 1 && values.iter().any(|v| CSS_WIDE.contains(&v.as_str())) { return None; }
+    if name == "padding" && values.iter().any(|v| v.starts_with('-')) { return None; }
+    Some([
+        values[0].clone(),
+        values.get(1).unwrap_or(&values[0]).clone(),
+        values.get(2).unwrap_or(&values[0]).clone(),
+        values.get(3).or(values.get(1)).unwrap_or(&values[0]).clone(),
+    ])
+}
+
+fn compact_box(values: [&str; 4]) -> String {
+    let [top, right, bottom, left] = values;
+    if left != right { values.join(" ") }
+    else if bottom != top { values[..3].join(" ") }
+    else if right != top { values[..2].join(" ") }
+    else { top.to_string() }
+}
+
+fn box_decl(list: &[Decl], name: &str) -> Option<(String, bool)> {
+    let sides = box_sides(name)?;
+    let parts: Vec<&Decl> = sides.iter().map(|n| list.iter().find(|d| d.name == *n)).collect::<Option<_>>()?;
+    if parts.iter().any(|d| d.important != parts[0].important) { return None; }
+    let values = std::array::from_fn(|i| parts[i].value.as_str());
+    // CSS-wide keywords cannot be mixed with concrete values in a shorthand.
+    if values.iter().any(|v| CSS_WIDE.contains(v)) && values.iter().any(|v| *v != values[0]) { return None; }
+    Some((compact_box(values), parts[0].important))
+}
+
+fn set_decl(list: &mut Vec<Decl>, name: String, value: String, important: bool) {
+    if let Some(sides) = box_sides(&name) {
+        if let Some(values) = box_values(&name, &value) {
+            for (side, value) in sides.iter().zip(values) {
+                upsert(list, (*side).to_string(), value, important);
+            }
+        }
+    } else {
+        upsert(list, name, value, important);
+    }
 }
 
 /// Splits a number from the front of `s`: sign, digits, optional fraction and exponent. Returns the rest.
@@ -244,6 +295,9 @@ fn valid_for(name: &str, v: &str) -> Option<String> {
     if is_custom(name) {
         return Some(v.to_string());
     }
+    if box_sides(name).is_some() {
+        return box_values(name, v).map(|values| compact_box(std::array::from_fn(|i| values[i].as_str())));
+    }
     kind_of(name).and_then(|k| check_value(k, v))
 }
 
@@ -315,7 +369,12 @@ pub(crate) fn parse_declarations(text: &str) -> Vec<Decl> {
     let mut list = Vec::new();
     for group in [false, true] {
         for (n, v, imp) in items.iter().filter(|x| x.2 == group) {
-            upsert(&mut list, n.clone(), v.clone(), *imp);
+            if *imp {
+                list.retain(|d: &Decl| d.important || if let Some(sides) = box_sides(n) {
+                    !sides.contains(&d.name.as_str())
+                } else { d.name != *n });
+            }
+            set_decl(&mut list, n.clone(), v.clone(), *imp);
         }
     }
     list
@@ -323,10 +382,20 @@ pub(crate) fn parse_declarations(text: &str) -> Vec<Decl> {
 
 /// The serialization used for cssText and for the style attribute: "name: value[ !important];" items joined by spaces.
 pub(crate) fn serialize_declarations(list: &[Decl]) -> String {
-    list.iter()
-        .map(|d| format!("{}: {}{};", d.name, d.value, if d.important { " !important" } else { "" }))
-        .collect::<Vec<_>>()
-        .join(" ")
+    let mut out = Vec::new();
+    let mut emitted = Vec::new();
+    for d in list {
+        let group = ["margin", "padding"].into_iter().find(|n| box_sides(n).unwrap().contains(&d.name.as_str()));
+        let (name, value, important) = if let Some(group) = group {
+            if let Some((value, important)) = box_decl(list, group) {
+                if emitted.contains(&group) { continue; }
+                emitted.push(group);
+                (group, value, important)
+            } else { (d.name.as_str(), d.value.clone(), d.important) }
+        } else { (d.name.as_str(), d.value.clone(), d.important) };
+        out.push(format!("{name}: {value}{};", if important { " !important" } else { "" }));
+    }
+    out.join(" ")
 }
 
 impl Document {
@@ -342,7 +411,7 @@ impl Document {
     pub fn style_set_property(&mut self, id: NodeId, name: &str, value: &str, important: bool) -> Result<(), DomError> {
         self.style_target(id)?;
         let name = normalize_name(name);
-        if !is_custom(&name) && kind_of(&name).is_none() {
+        if !is_custom(&name) && kind_of(&name).is_none() && box_sides(&name).is_none() {
             return Err(DomError::UnsupportedStyleProperty);
         }
         let v = value.trim_matches(is_css_ws);
@@ -351,7 +420,7 @@ impl Document {
             return Ok(());
         }
         let Some(stored) = valid_for(&name, v) else { return Ok(()) };
-        upsert(&mut self.nm(id).style, name, stored, important);
+        set_decl(&mut self.nm(id).style, name, stored, important);
         self.style_changed(id);
         Ok(())
     }
@@ -366,6 +435,13 @@ impl Document {
     pub fn style_remove_property(&mut self, id: NodeId, name: &str) -> Result<String, DomError> {
         self.style_target(id)?;
         let name = normalize_name(name);
+        if let Some(sides) = box_sides(&name) {
+            let old = box_decl(&self.n(id).style, &name).map(|d| d.0).unwrap_or_default();
+            let before = self.n(id).style.len();
+            self.nm(id).style.retain(|d| !sides.contains(&d.name.as_str()));
+            if self.n(id).style.len() != before { self.style_changed(id); }
+            return Ok(old);
+        }
         let Some(i) = self.n(id).style.iter().position(|d| d.name == name) else { return Ok(String::new()) };
         let old = self.nm(id).style.remove(i).value;
         self.style_changed(id);
@@ -375,6 +451,7 @@ impl Document {
     pub fn style_get_property(&self, id: NodeId, name: &str) -> Result<String, DomError> {
         self.style_target(id)?;
         let name = normalize_name(name);
+        if box_sides(&name).is_some() { return Ok(box_decl(&self.n(id).style, &name).map(|d| d.0).unwrap_or_default()); }
         Ok(self.n(id).style.iter().find(|d| d.name == name).map(|d| d.value.clone()).unwrap_or_default())
     }
 
@@ -382,6 +459,9 @@ impl Document {
     pub fn style_get_priority(&self, id: NodeId, name: &str) -> Result<String, DomError> {
         self.style_target(id)?;
         let name = normalize_name(name);
+        if box_sides(&name).is_some() {
+            return Ok(box_decl(&self.n(id).style, &name).filter(|d| d.1).map(|_| "important".to_string()).unwrap_or_default());
+        }
         Ok(match self.n(id).style.iter().find(|d| d.name == name) {
             Some(d) if d.important => "important".to_string(),
             _ => String::new(),

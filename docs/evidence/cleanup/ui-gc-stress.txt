@@ -1,0 +1,20 @@
+group            total  pass  FAIL  compile-error
+conditional          7     7     0              0
+directives           5     5     0              0
+dynamic              9     9     0              0
+emits                8     8     0              0
+errors               7     7     0              0
+events              13    13     0              0
+fragments            5     5     0              0
+lifecycle           10    10     0              0
+list                11    11     0              0
+model               14    14     0              0
+props               12    12     0              0
+provide-inject       7     7     0              0
+refs                 9     9     0              0
+slots               11    11     0              0
+static              15    15     0              0
+teleport             5     5     0              0
+transition           5     5     0              0
+watch-in-component     7     7     0              0
+scenarios 160: pass 160, FAIL 0, blocked 0, compile-error 0; 0 unexpected

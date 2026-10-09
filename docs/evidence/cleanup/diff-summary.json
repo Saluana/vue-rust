@@ -1,0 +1,96 @@
+{
+  "counts_against_pre_cleanup_copies": {
+    "production/tooling": [
+      452,
+      173
+    ],
+    "tests/test support": [
+      0,
+      62
+    ],
+    "docs/ledger": [
+      131,
+      143
+    ]
+  },
+  "files": [
+    {
+      "file": "crates/renderer-dom/src/json.rs",
+      "added": 1,
+      "removed": 0,
+      "category": "production/tooling"
+    },
+    {
+      "file": "crates/runtime/src/async_component.rs",
+      "added": 80,
+      "removed": 29,
+      "category": "production/tooling"
+    },
+    {
+      "file": "crates/runtime/src/keep_alive.rs",
+      "added": 52,
+      "removed": 17,
+      "category": "production/tooling"
+    },
+    {
+      "file": "crates/runtime/src/teleport.rs",
+      "added": 37,
+      "removed": 15,
+      "category": "production/tooling"
+    },
+    {
+      "file": "crates/runtime/src/timers.rs",
+      "added": 31,
+      "removed": 5,
+      "category": "production/tooling"
+    },
+    {
+      "file": "crates/runtime/src/transition.rs",
+      "added": 220,
+      "removed": 76,
+      "category": "production/tooling"
+    },
+    {
+      "file": "crates/ui/src/dom.rs",
+      "added": 0,
+      "removed": 26,
+      "category": "tests/test support"
+    },
+    {
+      "file": "crates/ui/tests/zz_debug.rs",
+      "added": 0,
+      "removed": 36,
+      "category": "tests/test support"
+    },
+    {
+      "file": "docs/dev/HANDOFF.md",
+      "added": 16,
+      "removed": 8,
+      "category": "docs/ledger"
+    },
+    {
+      "file": "docs/dev/STATUS.md",
+      "added": 39,
+      "removed": 59,
+      "category": "docs/ledger"
+    },
+    {
+      "file": "docs/dev/tasks-progress.json",
+      "added": 3,
+      "removed": 3,
+      "category": "docs/ledger"
+    },
+    {
+      "file": "planning/vue-native-framework/tasks.md",
+      "added": 73,
+      "removed": 73,
+      "category": "docs/ledger"
+    },
+    {
+      "file": "tooling/cli/build.mjs",
+      "added": 31,
+      "removed": 31,
+      "category": "production/tooling"
+    }
+  ]
+}

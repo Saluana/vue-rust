@@ -13,7 +13,8 @@
 use std::cell::RefCell;
 use std::rc::Rc;
 
-use vn_dom::{EventInit, EventKind};
+use vn_dom::EventInit;
+pub use vn_dom::EventKind;
 
 /// The dispatch that the sink is currently serving: a serial that changes per dispatch, and the event kind.
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -160,6 +161,8 @@ pub trait Host {
     fn style_set_property(&mut self, el: HostNode, name: &str, value: &str, important: bool) -> HostResult<()>;
     fn style_remove_property(&mut self, el: HostNode, name: &str) -> HostResult<()>;
     fn style_get_property(&self, el: HostNode, name: &str) -> String;
+    /// Computed CSS timing properties used by Transition, including stylesheet rules.
+    fn computed_style_property(&self, _el: HostNode, _name: &str) -> HostResult<String> { Err(HostError::Unsupported("computed style".to_string())) }
     fn style_css_text(&self, el: HostNode) -> String;
     fn style_set_css_text(&mut self, el: HostNode, text: &str) -> HostResult<()>;
     fn class_list_add(&mut self, el: HostNode, token: &str) -> HostResult<()>;
@@ -251,6 +254,7 @@ impl Host for SharedRef {
     fn style_set_property(&mut self, el: HostNode, name: &str, value: &str, important: bool) -> HostResult<()> { self.0.borrow_mut().style_set_property(el, name, value, important) }
     fn style_remove_property(&mut self, el: HostNode, name: &str) -> HostResult<()> { self.0.borrow_mut().style_remove_property(el, name) }
     fn style_get_property(&self, el: HostNode, name: &str) -> String { self.0.borrow().style_get_property(el, name) }
+    fn computed_style_property(&self, el: HostNode, name: &str) -> HostResult<String> { self.0.borrow().computed_style_property(el, name) }
     fn style_css_text(&self, el: HostNode) -> String { self.0.borrow().style_css_text(el) }
     fn style_set_css_text(&mut self, el: HostNode, text: &str) -> HostResult<()> { self.0.borrow_mut().style_set_css_text(el, text) }
     fn class_list_add(&mut self, el: HostNode, token: &str) -> HostResult<()> { self.0.borrow_mut().class_list_add(el, token) }

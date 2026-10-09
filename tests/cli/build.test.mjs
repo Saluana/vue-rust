@@ -31,15 +31,17 @@ test('build: usage mistakes exit 2', () => {
   assert.equal(capture(['build', path.join(EXAMPLES, 'counter'), 'extra', '--target', 'web', '--out', scratch('build-extra')]).code, 2);
 });
 
-// Until the runtime renderer runs on the browser host, a web build of a .vue project is refused with the reason and
-// writes nothing. This test pins that refusal; it changes when the web entry point is implemented.
-test('build --target web: a .vue project is refused with the reason, and nothing is written (exit 1)', () => {
-  const out = freshPath('build-web-refused');
+test('build --target web: a .vue project produces an app, styles and module metadata (exit 0)', () => {
+  const out = freshPath('build-web-counter');
   const r = capture(['build', path.join(EXAMPLES, 'counter'), '--target', 'web', '--out', out]);
-  assert.equal(r.code, 1);
-  assert.match(r.stderr, /web builds of .vue projects are not available yet/);
-  assert.match(r.stderr, /DomCtx::new takes a DocHost/);
-  assert.equal(fs.existsSync(out), false);
+  assert.equal(r.code, 0, r.stderr);
+  const manifest = JSON.parse(fs.readFileSync(path.join(out, 'manifest.json'), 'utf8'));
+  assert.ok(manifest.modules.some((name) => name.endsWith('App.vue')));
+  assert.ok(manifest.css && fs.existsSync(path.join(out, manifest.css)));
+  const module = new WebAssembly.Module(fs.readFileSync(path.join(out, manifest.wasm)));
+  const exports = WebAssembly.Module.exports(module).map((item) => item.name);
+  assert.ok(exports.includes('vn_start'));
+  assert.ok(exports.includes('vn_flush'));
 });
 
 // Invalid manifests must be rejected before cleanup, even when earlier entries are valid.

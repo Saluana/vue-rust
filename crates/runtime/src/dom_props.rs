@@ -7,7 +7,7 @@
 //! names are used as given (no vendor-prefix probing, which Vue does with `in style`), custom elements (`_isVueCE`)
 //! are not modelled, and `innerHTML` assignment throws a TypeError because a native host has no HTML parser.
 
-use vn_value::{JsStr, PropKey, Res, Rt, Value};
+use vn_value::{JsStr, ObjRef, PropKey, Res, Rt, Value};
 
 use crate::dom_events::{array_items, host_error, hyphenate, js_string, to_host_value, DomCtx};
 use crate::host::{HostError, HostNode, HostNs, HostValue};
@@ -547,6 +547,11 @@ pub(crate) fn should_set_as_prop(ctx: &DomCtx, el: HostNode, key: &str, value: &
 
 /// `patchProp(el, key, prev, next, namespace)` (runtime-dom 3.5.43), with the element in the host.
 pub fn patch_prop(ctx: &DomCtx, el: HostNode, key: &str, prev: &Value, next: &Value, ns: HostNs) -> Res<()> {
+    patch_prop_with_owner(ctx, el, key, prev, next, ns, None)
+}
+
+/// Component-owned prop patching carries the instance into native event error handling.
+pub(crate) fn patch_prop_with_owner(ctx: &DomCtx, el: HostNode, key: &str, prev: &Value, next: &Value, ns: HostNs, owner: Option<ObjRef>) -> Res<()> {
     let is_svg = ns == HostNs::Svg;
     if key == "class" {
         return patch_class(ctx, el, next, is_svg);
@@ -556,7 +561,7 @@ pub fn patch_prop(ctx: &DomCtx, el: HostNode, key: &str, prev: &Value, next: &Va
     }
     if is_on(key) {
         if !key.starts_with("onUpdate:") {
-            ctx.patch_event(el, key, next)?;
+            ctx.patch_event(el, key, next, owner)?;
         }
         return Ok(());
     }

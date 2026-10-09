@@ -139,7 +139,10 @@ pub fn compute_styles(doc: &mut Document, sheets: &[Sheet], env: &MediaEnv, stat
         let win = winners(&cas, &custom, inline_count, node, &mut sink);
         let parent_style = parent.map(|p| &styles[p]);
         let root_fs = styles.first().map_or(16.0, |s| s.font_size());
-        let style = compute_element(&win, custom, parent_style, root_fs, vp);
+        let mut style = compute_element(&win, custom, parent_style, root_fs, vp);
+        if parent.is_some_and(|p| {
+            !styles[p].is_resolved() || (snap.els[p].html && matches!(snap.els[p].local.as_str(), "input" | "textarea" | "img"))
+        }) { style.suppress_resolved_values(); }
         styles.push(style.clone());
         tree.elements.push(ElementStyle { node, parent, style });
         stack.push((i, cas));

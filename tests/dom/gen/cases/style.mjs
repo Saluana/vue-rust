@@ -272,3 +272,40 @@ def('style/camel-and-kebab-share-declarations', (b) => {
   b.op('cssText', d);
   b.op('styleGet', d, 'border-top-color');
 });
+
+// Box shorthands must expand, recompress, and obey per-longhand importance.
+for (const name of ['margin', 'padding']) {
+  def(`style/${name}-shorthand-values`, (b) => {
+    const d = b.el('html', 'div');
+    for (const value of ['0', '1px 2px', '1px 2px 3px', '1px 2px 3px 4px']) {
+      b.op('styleSet', d, name, value, false);
+      b.op('cssText', d);
+      b.op('styleGet', d, name);
+      for (const side of ['top', 'right', 'bottom', 'left']) b.op('styleGet', d, `${name}-${side}`);
+    }
+  });
+  def(`style/${name}-longhand-update-removal`, (b) => {
+    const d = b.el('html', 'div');
+    b.op('styleSet', d, name, '1px 2px', true);
+    b.op('styleSet', d, `${name}-left`, '3px', false);
+    b.op('cssText', d);
+    b.op('styleGet', d, name);
+    b.op('stylePriority', d, name);
+    b.op('styleRemove', d, name);
+    b.op('cssText', d);
+    b.op('styleSet', d, name, '4px', false);
+    b.op('styleRemove', d, `${name}-top`);
+    b.op('cssText', d);
+    b.op('styleGet', d, name);
+  });
+  def(`style/${name}-css-text-priority`, (b) => {
+    const d = b.el('html', 'div');
+    b.op('setCssText', d, `${name}: 1px !important; ${name}-left: 2px; color: red`);
+    b.op('cssText', d);
+    b.op('stylePriority', d, name);
+    b.op('styleSet', d, name, 'broken', false);
+    b.op('cssText', d);
+    b.op('styleSet', d, name, '', false);
+    b.op('cssText', d);
+  });
+}

@@ -193,5 +193,5 @@ function sortKeys(o) {
   return Object.fromEntries(Object.keys(o).sort().map((k) => [k, o[k]]));
 }
 
-if (flag('--ui')) runUiScenarios({ filter, writeStatus: flag('--write-status'), verbose: flag('--verbose') });
+if (flag('--ui')) runUiScenarios({ filter, writeStatus: flag('--write-status'), verbose: flag('--verbose'), gcStress: flag('--gc-stress') });
 else await main();

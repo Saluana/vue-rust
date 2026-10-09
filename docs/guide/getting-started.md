@@ -69,15 +69,16 @@ selectors (`main h1`) are refused with exit status 2. The binary prints one JSON
 node tooling/cli/vue-native.mjs build my-app --target web --out dist-web
 ```
 
-**Status: not available yet.** A web build of a `.vue` project stops with its reason. The runtime renderer is bound
-to the in-memory document (`DomCtx::new` takes a `DocHost`), so the browser host cannot be installed under it. The
-web packaging is proven with an app that uses only the browser host (`tests/cli/fixtures/host-only`): it produces
-`<name>-<hash>.wasm`, `vn-host.js`, `index.html` and `manifest.json`, and runs in headless Chrome.
+The output contains a content-hashed `.wasm`, `vn-host.js`, `index.html`, `manifest.json`, and a CSS file when the project has styles. Serve it over HTTP (for example `python3 -m http.server 8080 --directory dist-web`) and open `http://localhost:8080`. Rebuild after editing; development reload is not implemented yet.
+
+Counter and Quick Quote both run through the Rust Vue runtime in Chrome. Quick Quote's `defineModel`, validation, watcher, keyed rows, and hide/show recreation are exercised by `tests/platform/web/e2e-vue-apps.test.mjs`.
 
 ## Known limitations
 
-- `examples/quick-quote` does not build yet: its `FieldInput.vue` uses `defineModel`, which needs the runtime's
-  `useModel`, and the `vue` module does not export it.
+- TypeScript syntax is erased; semantic type checking is not integrated.
+- Teleport, Transition, KeepAlive, and async components remain unsupported.
+- Browser qualification is Chrome only. Native window rendering, SSR/hydration and persistence services remain unfinished.
+- Current demo WASM builds are approximately 2.1–2.25 MB (0.61–0.65 MB gzip), without a size-optimization pass. The small host-only artifact does not represent a compiled app.
 
 ## Tests
 

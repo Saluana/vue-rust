@@ -1,0 +1,8 @@
+group       total  pass  blocked  FAIL  compile-error
+computed       12    12        0     0              0
+effect          8     8        0     0              0
+reactive       25    25        0     0              0
+ref            18    18        0     0              0
+scheduler      12    12        0     0              0
+watch          27    27        0     0              0
+scenarios 102: pass 102, FAIL 0, blocked 0, compile-error 0; 0 unexpected

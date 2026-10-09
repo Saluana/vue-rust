@@ -184,29 +184,3 @@ impl<'a> Element for El<'a> {
         self.data().state
     }
 }
-
-#[cfg(test)]
-mod zz_debug {
-    use super::*;
-    use vn_dom::{Document, Namespace};
-    #[test]
-    fn links() {
-        let mut doc = Document::new();
-        let ul = doc.create_element(Namespace::Html, "ul", None).unwrap();
-        let div = doc.create_element(Namespace::Html, "div", None).unwrap();
-        let input = doc.create_element(Namespace::Html, "input", None).unwrap();
-        let ul2 = doc.create_element(Namespace::Html, "ul", None).unwrap();
-        let mut f = |_: &mut Document, _: vn_dom::ListenerId, _: &mut vn_dom::EventState| true;
-        doc.append_child(ul, div, &mut f).unwrap();
-        doc.append_child(ul, input, &mut f).unwrap();
-        doc.append_child(ul, ul2, &mut f).unwrap();
-        let body = doc.create_element(Namespace::Html, "body", None).unwrap();
-        doc.append_child(body, ul, &mut f).unwrap();
-        let root = doc.document();
-        doc.append_child(root, body, &mut f).unwrap();
-        let snap = snapshot(&mut doc, &NoStates);
-        for (i, e) in snap.els.iter().enumerate() {
-            eprintln!("LINK {i} local={} parent={:?} prev={:?} next={:?} first={:?} last={:?}", e.local, e.parent, e.prev, e.next, e.first, e.last);
-        }
-    }
-}

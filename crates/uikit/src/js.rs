@@ -70,6 +70,13 @@ impl NativeObject for MountRef {
 pub fn install(rt: &Rt, host: DocHost) {
     let ctx = DomCtx::new(rt, &host);
     vn_runtime::renderer::install(&ctx);
+    let global = Value::Object(rt.intrinsic(Intrinsic::Global));
+    let test_host = rt.get_str(&global, "testHost").expect("UI clock installed");
+    let timers = rt.get_str(&test_host, "timers").expect("UI clock timers");
+    for name in ["setTimeout", "clearTimeout"] {
+        rt.install_global(name, rt.get_str(&timers, name).expect("UI clock method"));
+    }
+    rt.install_global("requestAnimationFrame", Value::Object(rt.new_native_function(animation_frame, "requestAnimationFrame", 1, vec![timers])));
     let exports = vn_runtime::exports::all(rt);
     let export = |name: &str| -> Value {
         exports
@@ -644,4 +651,10 @@ fn mount_set_props(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     let next = props_copy(rt, &c.arg(0), "setProps: props")?;
     rt.set_str(&holder, "value", Value::Object(next))?;
     Ok(Value::Undefined)
+}
+
+// The UI oracle also maps requestAnimationFrame to its deterministic 16 ms clock.
+fn animation_frame(rt: &Rt, c: &Call<'_>) -> Res<Value> {
+    let timers = rt.fn_data(c.callee)[0].clone();
+    rt.call(&rt.get_str(&timers, "setTimeout")?, &timers, &[c.arg(0), Value::Number(16.0)])
 }

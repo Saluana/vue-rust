@@ -235,7 +235,8 @@ export function pageShell({ title, container, css }) {
     "  const manifest = await fetch('./manifest.json').then((response) => response.json());",
     '  const host = await createHost({ document, wasmBytesOrUrl: new URL(manifest.wasm, location.href) });',
     '  window.vnHost = host;',
-    '  host.exports.vn_start();',
+    '  const status = host.exports.vn_start();',
+    '  if (status !== undefined && status !== 0) throw new Error(`vue-native startup failed (status ${status})`);',
     '  return host;',
     '})();',
     '</script>',
@@ -350,11 +351,112 @@ export function buildWebApp({ out, name, libRs, projectFiles = {}, container = '
   }
 }
 
-// The lib.rs of a project's web app: the vue native module, the project's modules, and vn_start mounting the root
-// component into the container. Not written yet: the runtime renderer is bound to the in-memory DocHost (DomCtx::new takes
-// &DocHost, crates/runtime/src/dom_events.rs), so WebHost cannot be installed as the renderer's host.
+// The generated entry retains one realm for the wasm instance. Optional app exports let the glue
+// provide event identity/kind and drain Rust promise/scheduler jobs in a browser microtask.
 function projectLibRs() {
-  throw new BuildError('web builds of .vue projects are not available yet: the runtime renderer runs only on the in-memory DocHost (DomCtx::new takes a DocHost), so WebHost cannot be installed. Use --target headless to run an app.');
+  return `#![allow(dead_code)]
+mod project;
+mod vn_async;
+mod vn_config;
+
+use std::cell::RefCell;
+use vn_renderer_dom::{LogLevel, WebHost};
+use vn_runtime::{dom_events::DomCtx, host::Host, renderer};
+use vn_value::{JsStr, Res, Rt, Throw, Value};
+
+struct BrowserTimers;
+impl vn_runtime::timers::TimerDriver for BrowserTimers {
+    fn schedule(&self, id: u32, ms: f64) { WebHost::new().set_timeout(id, ms); }
+    fn cancel(&self, id: u32) { WebHost::new().clear_timeout(id); }
+}
+
+struct BrowserErrors;
+impl vn_runtime::errors::ErrorSink for BrowserErrors {
+    fn report(&self, rt: &Rt, err: &Value) {
+        let text = rt.to_string(err).map(|s| s.to_rust_string_lossy()).unwrap_or_else(|_| "unprintable error".to_string());
+        WebHost::new().log(LogLevel::Error, &text);
+    }
+}
+
+thread_local! {
+    static APP: RefCell<Option<(Rt, DomCtx)>> = const { RefCell::new(None) };
+}
+
+fn start() -> Res<()> {
+    let rt = Rt::new();
+    let outcome = (|| -> Res<()> {
+        vn_runtime::errors::set_error_sink(&rt, std::rc::Rc::new(BrowserErrors));
+        let mut host = WebHost::new();
+        let ctx = DomCtx::new(&rt, &host);
+        renderer::install(&ctx);
+        vn_runtime::timers::install(&rt, std::rc::Rc::new(BrowserTimers));
+        let weak = rt.downgrade();
+        vn_renderer_dom::set_timer_hook(std::rc::Rc::new(move |id| {
+            if let Some(rt) = weak.upgrade() {
+                if let Err(Throw(error)) = vn_runtime::timers::fire(&rt, id) {
+                    vn_runtime::errors::ErrorSink::report(&BrowserErrors, &rt, &error);
+                }
+                vn_flush();
+            }
+        }));
+        project::natives::register(&rt);
+        for def in project::modules::defs() { rt.register_module_def(def); }
+        let module = rt.load_module(project::modules::entry())?;
+        let cell = rt.module_export_cell(module, "default")?
+            .ok_or_else(|| rt.throw_type_error("the entry module has no default export"))?;
+        let root = rt.cell_get(cell);
+        let exports = vn_runtime::exports::all(&rt);
+        let create_app = exports.iter().find(|(name, _)| *name == "createApp")
+            .map(|(_, value)| value.clone()).ok_or_else(|| rt.throw_type_error("createApp is unavailable"))?;
+        if host.query_selector(vn_config::CONTAINER).map_err(|e| rt.throw_type_error(&format!("container: {e:?}")))?.is_none() {
+            return Err(rt.throw_type_error("the mount container does not exist"));
+        }
+        let app = rt.call(&create_app, &Value::Undefined, &[root])?;
+        rt.root(&app);
+        let mount = rt.get_str(&app, "mount")?;
+        rt.call(&mount, &app, &[Value::String(JsStr::from_str(vn_config::CONTAINER))])?;
+        APP.with(|slot| *slot.borrow_mut() = Some((rt.clone(), ctx)));
+        vn_flush();
+        Ok(())
+    })();
+    if let Err(Throw(error)) = &outcome {
+        vn_runtime::errors::ErrorSink::report(&BrowserErrors, &rt, error);
+    }
+    outcome
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn vn_start() -> u32 {
+    // Repeated start must not orphan an already mounted realm.
+    if APP.with(|slot| slot.borrow().is_some()) { return 0; }
+    match start() {
+        Ok(()) => 0,
+        Err(Throw(err)) => {
+            WebHost::new().log(LogLevel::Error, &format!("app startup failed: {err:?}"));
+            1
+        }
+    }
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn vn_event_context(serial: u32, kind: u32) {
+    vn_renderer_dom::set_event_context(serial, kind);
+}
+
+#[unsafe(no_mangle)]
+pub extern "C" fn vn_flush() {
+    let state = APP.with(|slot| slot.borrow().clone());
+    if let Some((rt, ctx)) = state {
+        rt.run_jobs();
+        ctx.flush_next_tick();
+        rt.run_jobs();
+        for err in ctx.take_errors() { WebHost::new().log(LogLevel::Error, &format!("event error: {err:?}")); }
+        for err in rt.take_uncaught_job_errors() { WebHost::new().log(LogLevel::Error, &format!("job error: {err:?}")); }
+        vn_renderer_dom::finish_dispatch();
+        rt.collect();
+    }
+}
+`;
 }
 
 // Compiles a project for a target; throws BuildError with the error diagnostics when it fails.

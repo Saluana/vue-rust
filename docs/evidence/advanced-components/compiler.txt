@@ -1,0 +1,10 @@
+ℹ V8 snippets: 59, real TDZ faults: 19, false negatives: 0
+ℹ safe snippets: 40, conservative false positives: 10, cleared: 30
+ℹ tests 568
+ℹ suites 9
+ℹ pass 568
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1688.805917

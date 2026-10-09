@@ -3,6 +3,7 @@
 #![forbid(unsafe_code)]
 
 pub mod app;
+pub mod async_component;
 pub mod component;
 pub mod directives;
 pub mod dom_events;
@@ -28,6 +29,7 @@ pub mod setup_helpers;
 pub mod shapes;
 pub mod slots;
 pub mod teleport;
+pub mod timers;
 pub mod transition;
 pub mod vmodel;
 pub mod vnode;

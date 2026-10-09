@@ -74,6 +74,7 @@ export async function createHost({ document, wasmBytesOrUrl, onLog = consoleLog,
   const state = {
     document, onLog, maxNodes, exports: null, memory: null,
     nodes: [], handles: [], gens: [], free: [], next: 1,
+    eventIds: new WeakMap(), nextEvent: 1, flushQueued: false,
     ids: new WeakMap(), listened: new WeakMap(), timers: new Map(), panics: [], lastError: '', destroyed: false,
   };
   const table = importTable(state);
@@ -325,11 +326,32 @@ function invoke(state, id, event) {
 }
 
 function callSink(state, id, event) {
+  // Optional generated-app exports extend the app entry contract without changing host ABI 1.
+  if (typeof state.exports.vn_event_context === 'function') {
+    let serial = state.eventIds.get(event);
+    if (serial === undefined) {
+      if (state.nextEvent > 0xffffffff) throw new RangeError('vue-native event identities exhausted');
+      serial = state.nextEvent++;
+      state.eventIds.set(event, serial);
+    }
+    const view = state.document.defaultView;
+    const kind = view && event instanceof view.KeyboardEvent ? 2
+      : view && event instanceof view.MouseEvent ? 1
+      : view && event instanceof view.InputEvent ? 3 : 0;
+    state.exports.vn_event_context(serial, kind);
+  }
   const payload = encodeEvent(state, event);
   try {
     return state.exports.vn_event(id, payload.ptr, payload.len) >>> 0;
   } finally {
     state.exports.vn_free(payload.ptr, payload.len);
+    if (!state.flushQueued && typeof state.exports.vn_flush === 'function') {
+      state.flushQueued = true;
+      queueMicrotask(() => {
+        state.flushQueued = false;
+        if (!state.destroyed) state.exports.vn_flush();
+      });
+    }
   }
 }
 
@@ -595,6 +617,10 @@ function importTable(state) {
     style_get_property: (el, np, nl, out) => run(state, () => {
       putText(state, out >>> 0, elementOf(state, el >>> 0).style.getPropertyValue(readText(state, np >>> 0, nl >>> 0)));
     }, 'style_get_property'),
+    computed_style_property: (el, np, nl, out) => run(state, () => {
+      const element = elementOf(state, el >>> 0);
+      putText(state, out >>> 0, element.ownerDocument.defaultView.getComputedStyle(element).getPropertyValue(readText(state, np >>> 0, nl >>> 0)));
+    }),
     style_css_text: (el, out) => run(state, () => putText(state, out >>> 0, elementOf(state, el >>> 0).style.cssText), 'style_css_text'),
     style_set_css_text: (el, tp, tl) => run(state, () => {
       elementOf(state, el >>> 0).style.cssText = readText(state, tp >>> 0, tl >>> 0);

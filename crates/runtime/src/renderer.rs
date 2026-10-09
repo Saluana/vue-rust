@@ -2,8 +2,8 @@
 //! mount and unmount of elements, text, comments and fragments; children (block, unkeyed and keyed in keyed.rs); props
 //! through `dom_props::patch_prop`; component dispatch (component.rs); refs (refs.rs); directive hooks (directives.rs);
 //! the render entry point with its flush. Behaviour per @vue/runtime-core 3.5.43 (production build).
-//! Deviations: no Suspense, Teleport, Static (hoisted) nodes, KeepAlive or Transition (each throws TypeError
-//! "unsupported: ..."); the hydration and dev-only paths do not exist. `parentSuspense` is absent.
+//! Deviations: Suspense, Static (hoisted) nodes and hydration are unsupported. Advanced components
+//! integrate through teleport.rs, transition.rs and keep_alive.rs; see their documented limitations.
 
 use std::cell::{Cell, RefCell};
 use std::collections::HashMap;
@@ -13,7 +13,7 @@ use std::rc::Rc;
 use vn_value::{payload_ref, strict_eq, Call, JsStr, NativeObject, ObjRef, PropKey, Res, Rt, Tracer, Value};
 
 use crate::dom_events::{host_error, DomCtx};
-use crate::dom_props::patch_prop;
+use crate::dom_props::patch_prop_with_owner;
 use crate::errors::{call_with_error_handling, ErrType};
 use crate::host::{Host, HostNode, HostNs, HostResult};
 use crate::instance::{inst_state, instance_of};
@@ -541,7 +541,7 @@ impl Renderer {
         } else if shape & ShapeFlags::COMPONENT != 0 {
             self.process_component(n1, n2, container, anchor, parent, ns, ssi, optimized)?;
         } else if shape & ShapeFlags::TELEPORT != 0 {
-            return Err(rt.throw_type_error("unsupported: Teleport"));
+            self.process_teleport(n1, n2, container, anchor, parent, ns, ssi)?;
         } else if shape & ShapeFlags::SUSPENSE != 0 {
             return Err(rt.throw_type_error("unsupported: Suspense"));
         }
@@ -731,12 +731,12 @@ impl Renderer {
                 let k = key_string(&key);
                 if k != "value" && !is_reserved_prop(&k) {
                     let v = rt.get_v(&props, &key)?;
-                    patch_prop(&self.ctx, el, &k, &Value::Null, &v, ns)?;
+                    patch_prop_with_owner(&self.ctx, el, &k, &Value::Null, &v, ns, parent)?;
                 }
             }
             if rt.has_property(props_obj(rt, &props)?, &PropKey::from_str("value"))? {
                 let v = rt.get_str(&props, "value")?;
-                patch_prop(&self.ctx, el, "value", &Value::Null, &v, ns)?;
+                patch_prop_with_owner(&self.ctx, el, "value", &Value::Null, &v, ns, parent)?;
             }
             let hook = rt.get_str(&props, "onVnodeBeforeMount")?;
             if hook.to_boolean() {
@@ -747,9 +747,10 @@ impl Renderer {
             self.invoke_directive_hook(vnode, None, parent, "beforeMount")?;
         }
         if transition_of(rt, vnode).to_boolean() {
-            return Err(rt.throw_type_error("unsupported: Transition"));
+            crate::transition::invoke(rt, vnode, "beforeEnter", &[])?;
         }
         self.ins(el, container, anchor)?;
+        if transition_of(rt, vnode).to_boolean() { crate::transition::queue_enter(rt, vnode)?; }
         let mounted_hook = if has_props { rt.get_str(&props, "onVnodeMounted")? } else { Value::Undefined };
         if mounted_hook.to_boolean() || dirs.to_boolean() {
             let mut steps = Vec::new();
@@ -888,12 +889,12 @@ impl Renderer {
                 if patch & PatchFlags::CLASS != 0 {
                     let (a, b) = (rt.get_str(&old_props, "class")?, rt.get_str(&new_props, "class")?);
                     if !strict_eq(&a, &b) {
-                        patch_prop(&self.ctx, el, "class", &Value::Null, &b, ns)?;
+                        patch_prop_with_owner(&self.ctx, el, "class", &Value::Null, &b, ns, parent)?;
                     }
                 }
                 if patch & PatchFlags::STYLE != 0 {
                     let (a, b) = (rt.get_str(&old_props, "style")?, rt.get_str(&new_props, "style")?);
-                    patch_prop(&self.ctx, el, "style", &a, &b, ns)?;
+                    patch_prop_with_owner(&self.ctx, el, "style", &a, &b, ns, parent)?;
                 }
                 if patch & PatchFlags::PROPS != 0 {
                     let to_update = dyn_props_of(rt, n2);
@@ -903,7 +904,7 @@ impl Renderer {
                         let prev = rt.get_v(&old_props, &pk)?;
                         let next = rt.get_v(&new_props, &pk)?;
                         if !strict_eq(&next, &prev) || key == "value" {
-                            patch_prop(&self.ctx, el, &key, &prev, &next, ns)?;
+                            patch_prop_with_owner(&self.ctx, el, &key, &prev, &next, ns, parent)?;
                         }
                     }
                 }
@@ -972,14 +973,13 @@ impl Renderer {
         ns: HostNs,
     ) -> Res<()> {
         let rt = self.rt();
-        let _ = parent;
         if old_props.to_boolean() && new_props.to_boolean() && !strict_eq(old_props, new_props) {
             // removed keys (old not in new)
             for key in for_in_keys(rt, old_props)? {
                 let k = key_string(&key);
                 if !is_reserved_prop(&k) && !rt.has_property(props_obj(rt, new_props)?, &key)? {
                     let prev = rt.get_v(old_props, &key)?;
-                    patch_prop(&self.ctx, el, &k, &prev, &Value::Null, ns)?;
+                    patch_prop_with_owner(&self.ctx, el, &k, &prev, &Value::Null, ns, parent)?;
                 }
             }
             for key in for_in_keys(rt, new_props)? {
@@ -990,13 +990,13 @@ impl Renderer {
                 let next = rt.get_v(new_props, &key)?;
                 let prev = rt.get_v(old_props, &key)?;
                 if !strict_eq(&next, &prev) && k != "value" {
-                    patch_prop(&self.ctx, el, &k, &prev, &next, ns)?;
+                    patch_prop_with_owner(&self.ctx, el, &k, &prev, &next, ns, parent)?;
                 }
             }
             if rt.has_property(props_obj(rt, new_props)?, &PropKey::from_str("value"))? {
                 let prev = rt.get_str(old_props, "value")?;
                 let next = rt.get_str(new_props, "value")?;
-                patch_prop(&self.ctx, el, "value", &prev, &next, ns)?;
+                patch_prop_with_owner(&self.ctx, el, "value", &prev, &next, ns, parent)?;
             }
         }
         Ok(())
@@ -1179,7 +1179,7 @@ impl Renderer {
             return Err(rt.throw_type_error("unsupported: Suspense"));
         }
         if shape & ShapeFlags::TELEPORT != 0 {
-            return Err(rt.throw_type_error("unsupported: Teleport"));
+            return self.move_teleport(vnode, container, anchor, 2);
         }
         let ty = ty_of(rt, vnode);
         if is_type(rt, &ty, "v-fgt") {
@@ -1199,7 +1199,11 @@ impl Renderer {
         let el = self.need(el_of(rt, vnode), "move")?;
         let transition = transition_of(rt, vnode);
         if move_type != 2 && shape & ShapeFlags::ELEMENT != 0 && transition.to_boolean() {
-            return Err(rt.throw_type_error("unsupported: Transition"));
+            if move_type == 0 {
+                crate::transition::invoke(rt, vnode, "beforeEnter", &[])?;
+                self.ins(el, container, anchor)?;
+                return crate::transition::queue_enter(rt, vnode);
+            }
         }
         self.ins(el, container, anchor)
     }
@@ -1239,7 +1243,7 @@ impl Renderer {
             }
         }
         if shape & ShapeFlags::COMPONENT_SHOULD_KEEP_ALIVE != 0 {
-            return Err(rt.throw_type_error("unsupported: KeepAlive"));
+            return self.deactivate_cached(vnode, self.need(parent, "KeepAlive parent")?);
         }
         let should_invoke_dirs = shape & ShapeFlags::ELEMENT != 0 && dirs.to_boolean();
         let before_unmount = if props.to_boolean() { rt.get_str(&props, "onVnodeBeforeUnmount")? } else { Value::Undefined };
@@ -1256,7 +1260,7 @@ impl Renderer {
                 self.invoke_directive_hook(vnode, None, parent, "beforeUnmount")?;
             }
             if shape & ShapeFlags::TELEPORT != 0 {
-                return Err(rt.throw_type_error("unsupported: Teleport"));
+                self.remove_teleport(vnode, parent, do_remove)?;
             } else if let Some(items) = block_items(rt, &dyn_children).filter(|_| !block_has_once(rt, &dyn_children)) {
                 if !is_type(rt, &ty, "v-fgt") || (patch > 0 && patch & PatchFlags::STABLE_FRAGMENT != 0) {
                     for child in items {
@@ -1268,7 +1272,7 @@ impl Renderer {
             } else {
                 self.after_block_check(&ty, patch, optimized, shape, &children, parent, do_remove)?;
             }
-            if do_remove {
+            if do_remove && shape & ShapeFlags::TELEPORT == 0 {
                 self.remove(vnode)?;
             }
         }
@@ -1334,7 +1338,9 @@ impl Renderer {
             return Err(rt.throw_type_error("unsupported: Static (hoisted) vnodes"));
         }
         if transition_of(rt, vnode).to_boolean() {
-            return Err(rt.throw_type_error("unsupported: Transition"));
+            if !rt.get_str(&transition_of(rt, vnode), "persisted")?.to_boolean() {
+                return crate::transition::remove(rt, vnode);
+            }
         }
         let el = self.need(el, "remove")?;
         self.rm(el)

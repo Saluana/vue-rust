@@ -545,6 +545,14 @@ impl Host for DocHost {
         }
     }
 
+    fn computed_style_property(&self, el: HostNode, name: &str) -> HostResult<String> {
+        // Document has no stylesheet/layout engine. Timing properties are inline or their CSS initial value.
+        if !matches!(name, "transition-duration" | "transition-delay" | "animation-duration" | "animation-delay") {
+            return Err(HostError::Unsupported(format!("computed style: {name}")));
+        }
+        let value = self.style_get_property(el, name);
+        Ok(if value.is_empty() { "0s".to_string() } else { value })
+    }
     fn style_css_text(&self, el: HostNode) -> String {
         match self.id(el) {
             Ok(id) => self.shared.doc.borrow().css_text(id).unwrap_or_default(),

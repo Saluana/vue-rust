@@ -6,14 +6,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { ROOT, call, ensureSite, openHostPage, reloadHost, skipOpt, startSite } from './support.mjs';
 
-// The 44 imports of ABI 1, as hosts/web/ABI.md lists them (hand-written here, not read from the glue).
+// The 45 imports of ABI 1, as hosts/web/ABI.md lists them (hand-written here, not read from the glue).
 const IMPORTS = [
   'host_now', 'host_set_timeout', 'host_clear_timeout', 'host_log', 'host_panic', 'host_error_message',
   'create_element', 'create_text', 'create_comment', 'set_text', 'set_element_text', 'insert', 'remove',
   'parent_node', 'next_sibling', 'query_selector', 'body', 'release', 'tag_name', 'is_element',
   'set_attribute', 'set_attribute_ns', 'remove_attribute', 'remove_attribute_ns', 'get_attribute',
   'has_attribute', 'has_property', 'get_property', 'set_property', 'style_set_property', 'style_remove_property',
-  'style_get_property', 'style_css_text', 'style_set_css_text', 'class_list_add', 'class_list_remove',
+  'style_get_property', 'computed_style_property', 'style_css_text', 'style_set_css_text', 'class_list_add', 'class_list_remove',
   'add_event_listener', 'remove_event_listener', 'focus', 'blur', 'active_element', 'option_nodes', 'outer_html',
   'inner_html',
 ];
@@ -86,7 +86,7 @@ describe('ABI tables and build outputs', skipOpt, () => {
     selftest = new WebAssembly.Module(fs.readFileSync(path.join(dir, JSON.parse(fs.readFileSync(path.join(dir, 'manifest.json'))).wasm)));
   });
 
-  test('the shipped build imports exactly the 44 vn_host functions of ABI 1', () => {
+  test('the shipped build imports exactly the 45 vn_host functions of ABI 1', () => {
     const imports = WebAssembly.Module.imports(shipped);
     assert.ok(imports.every((i) => i.module === 'vn_host' && i.kind === 'function'), 'only vn_host functions');
     assert.deepEqual(imports.map((i) => i.name).sort(), [...IMPORTS].sort());
@@ -197,9 +197,9 @@ describe('raw exports', skipOpt, () => {
     await site?.close();
   });
 
-  test('vn_host_probe links all 44 imports and returns 44', async () => {
+  test('vn_host_probe links all 45 imports and returns 45', async () => {
     await reloadHost(page, site);
-    assert.equal(await page.evaluate(() => window.vnHost.exports.vn_host_probe()), 44);
+    assert.equal(await page.evaluate(() => window.vnHost.exports.vn_host_probe()), 45);
   });
 
   test('vn_abi_version returns 1, vn_alloc(0) is non-null and vn_alloc/vn_free round-trip bytes', async () => {
