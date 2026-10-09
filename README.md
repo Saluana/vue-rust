@@ -41,11 +41,11 @@ The `vn-*` crates use no external crates; `Cargo.lock` lists only workspace pack
 
 | Status | Meaning in the manifest | Exports |
 |---|---|---|
-| P | Faithful: planned behaviour within the profile | 61 |
-| A | Adapted: explicit native or host adaptation | 5 |
+| P | Faithful: planned behaviour within the profile | 66 |
+| A | Adapted: explicit native or host adaptation | 9 |
 | W | Web only | 4 |
 | E | Experimental: not promised for production | 2 |
-| X | Excluded: rejected with a diagnostic | 99 |
+| X | Excluded: rejected with a diagnostic | 90 |
 
 The compiler accepts P and A names on both targets and W names on the web target only. It rejects X, E and unlisted names. The letters describe what the compiler permits, not what is tested. For example, `createSSRApp` is W, but server rendering and hydration are not built. The full list is in the [Vue export audit](docs/compatibility/vue-exports-audit.md).
 
@@ -73,10 +73,10 @@ Recorded in [docs/dev/STATUS.md](docs/dev/STATUS.md) on 2026-10-09:
 
 | Suite | Result |
 |---|---|
-| Rust workspace (`cargo test --workspace`) | 1323 passed, 0 failed |
+| Rust workspace (`cargo test --workspace`) | 1323 passed, 0 failed (1327 on the Linux re-run) |
 | Language scenarios, lowering, multi-file projects, SFC fixtures | 79/79, 166/166, 10/10, 37/37 |
-| Vue runtime against real `vue@3.5.43` (`npm run test:vue`) | 102/102 |
-| Component scenarios against recorded Vue output in Chrome | 160/160, also with GC at every safepoint |
+| Vue runtime against real `vue@3.5.43` (`npm run test:vue`) | 102/102 (112/112 on the Linux re-run after the API additions) |
+| Component scenarios against recorded Vue output in Chrome | 160/160, also with GC at every safepoint (165/165 on the Linux re-run) |
 | CLI (`tests/cli`) | 40/40 |
 | Browser host and compiled apps (`tests/platform/web`) | 299 passed, 0 failed, 109 skipped with stated reasons |
 
@@ -101,13 +101,13 @@ Recorded in [docs/dev/STATUS.md](docs/dev/STATUS.md) on 2026-10-09:
 - No development reload: rebuild after each edit.
 - Generated crates refer to this checkout's `crates/` by absolute path, so they are not self-contained.
 - The standard-library allowlist is incomplete. Only named constructors and objects are listed, and other methods are unsupported until they are listed ([allowlist](docs/compatibility/stdlib.md)).
-- The demo web build is about 2.2 MB of wasm, with no size-optimization pass yet.
+- The counter example builds to about 1.4 MB of wasm (460 KB gzipped) with the size-tuned release profile; there is no `wasm-opt` pass and unused built-ins are still linked.
 
 ## Quick start
 
 Prerequisites:
 
-- Node.js 20 or later. The docs record results on Node 26.5.1.
+- Node.js 22 or later (`.nvmrc`). The docs record results on Node 26.5.1.
 - Rust 1.99.0, pinned in `rust-toolchain.toml`, with the `wasm32-unknown-unknown` target for web builds (`rustup target add wasm32-unknown-unknown`). `source scripts/env.sh` puts a project-local toolchain under `toolchain/` on your `PATH`.
 - Google Chrome, only for the browser tests. Set `CHROME_PATH` if it is not found.
 
@@ -156,7 +156,7 @@ npm run test:vue         # the same scenarios against the Rust Vue runtime
 
 Browser suites need Google Chrome. Without it they are reported as skipped, with the reason `Google Chrome not found; install it or set CHROME_PATH`. Some suites run cargo builds and take several minutes.
 
-Results depend on the host. The recorded results in the docs come from macOS arm64 with Node 26.5.1. When this README was checked on Linux with Node 22.22.0 and no Chrome, these failed: several checks in `tests/profile` (one reports that the CJS interop keys of `vue` differ on that Node version), the manifest check in `tests/fixtures/prototype` (two logs are missing from the preserved copy), and `tests/ui/oracle.test.mjs` (it throws at load when Chrome is missing). Two floating-point checks in `cargo test --workspace` (`exponentiation_matches_v8` and `tan_cases_need_the_two_ulp_tolerance`) also failed against that host's math library. Compare with the recorded results before drawing conclusions.
+CI (`.github/workflows/ci.yml`) runs `cargo test --workspace`, `npm test` and the language, Vue and UI harnesses on Linux for every pull request.
 
 ## Repository layout
 
