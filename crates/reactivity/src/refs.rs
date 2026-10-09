@@ -533,7 +533,7 @@ fn js_proxy_refs(rt: &Rt, c: &Call<'_>) -> Res<Value> {
 }
 
 /// The public exports this module owns (`ref`, `shallowRef`, `triggerRef`, `customRef`, `toRef`, `toRefs`, `toValue`,
-/// `unref`, `isRef`).
+/// `unref`, `isRef`, `proxyRefs`).
 pub(crate) fn exported(rt: &Rt) -> Vec<(&'static str, Value)> {
     vec![
         ("ref", Value::Object(native(rt, "ref", 1, js_ref, Vec::new()))),
@@ -545,10 +545,6 @@ pub(crate) fn exported(rt: &Rt) -> Vec<(&'static str, Value)> {
         ("toValue", Value::Object(native(rt, "toValue", 1, js_to_value, Vec::new()))),
         ("unref", Value::Object(native(rt, "unref", 1, js_unref, Vec::new()))),
         ("isRef", Value::Object(native(rt, "isRef", 1, js_is_ref, Vec::new()))),
+        ("proxyRefs", Value::Object(native(rt, "proxyRefs", 1, js_proxy_refs, Vec::new()))),
     ]
-}
-
-/// The internal `proxyRefs` (the manifest marks it X for user code; tests and the runtime use it).
-pub(crate) fn internal(rt: &Rt) -> (&'static str, Value) {
-    ("proxyRefs", Value::Object(native(rt, "proxyRefs", 1, js_proxy_refs, Vec::new())))
 }

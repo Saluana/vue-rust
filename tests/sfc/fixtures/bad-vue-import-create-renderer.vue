@@ -1,4 +1,4 @@
 <script setup>
-import { h } from 'vue'
+import { createRenderer } from 'vue'
 </script>
 <template><p>x</p></template>

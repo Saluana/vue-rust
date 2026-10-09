@@ -1,0 +1,1 @@
+{"scenario":"ref/proxyrefs-nested-stays-ref","result":"ok","error":null,"entries":[{"label":"top-unwrapped","values":[1]},{"label":"nested","values":[true,true,7]}],"unhandledRejections":[]}

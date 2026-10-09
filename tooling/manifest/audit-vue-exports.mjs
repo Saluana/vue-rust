@@ -382,8 +382,8 @@ export function renderAuditReport(audit) {
     item.compilerInternal ? 'yes' : 'no',
     item.reason ?? '',
   ]));
-  const notEmitted = audit.exports.filter((entry) => entry.row === 'A11' && !entry.compilerInternal).map((entry) => entry.name);
-  line(`A11 members that the official compiler does not emit, so they stay X for both origins: ${notEmitted.join(', ')}.`);
+  const notEmitted = audit.exports.filter((entry) => entry.row === 'A11' && !entry.compilerInternal).map((entry) => `${entry.name} (${entry.status})`);
+  line(`A11 members that the official compiler does not emit, with their recorded status: ${notEmitted.join(', ')}.`);
   line();
   line('## Needs coordinator decision');
   line();

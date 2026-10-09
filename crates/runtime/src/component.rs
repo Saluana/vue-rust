@@ -431,8 +431,8 @@ impl Renderer {
         let options = rt.new_object();
         let sched = rt.new_native_function(scheduler_code, "", 0, vec![Value::Object(inst)]);
         rt.define_data(options, PropKey::from_str("scheduler"), Value::Object(sched), Flags::ALL)?;
-        rt.define_data(options, PropKey::from_str("lazy"), Value::Bool(true), Flags::ALL)?;
-        let effect_fn = reactivity_fn(rt, "effect");
+        // runtime-core builds the render effect with `new ReactiveEffect`, which does not run it; it is run below.
+        let effect_fn = reactivity_fn(rt, "effectWithoutRun");
         let runner = rt.call(&effect_fn, &Value::Undefined, &[Value::Object(update_fn), Value::Object(options)]);
         let off = call_method(rt, &scope, "off");
         let runner = runner?;

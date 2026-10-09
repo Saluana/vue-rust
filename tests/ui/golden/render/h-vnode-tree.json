@@ -1,0 +1,1 @@
+{"scenario":"render/h-vnode-tree","result":"ok","error":null,"entries":[{"label":"root","values":["div","wrap on","red",2,true]},{"label":"button","values":["button",false,true,"two"]},{"label":"after-listener-call","values":[1]},{"label":"shape-flags","values":[17,9,9]}],"unhandledRejections":[]}

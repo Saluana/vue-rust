@@ -15,8 +15,8 @@
     "classified": 171,
     "unclassified": 0,
     "interopExcluded": 2,
-    "compilerInternal": 40,
-    "compilerHelperExcluded": 17
+    "compilerInternal": 39,
+    "compilerHelperExcluded": 18
   },
   "interopArtifacts": [
     {
@@ -635,9 +635,25 @@
       "present": null
     },
     {
+      "name": "getCurrentInstance",
+      "rows": [
+        "A18"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
       "name": "getCurrentScope",
       "rows": [
         "V12"
+      ],
+      "category": "runtime export of vue",
+      "present": null
+    },
+    {
+      "name": "getCurrentWatcher",
+      "rows": [
+        "V16"
       ],
       "category": "runtime export of vue",
       "present": null
@@ -738,7 +754,7 @@
     {
       "name": "mergeProps",
       "rows": [
-        "A11"
+        "U13"
       ],
       "category": "runtime export of vue",
       "present": null
@@ -897,6 +913,14 @@
         "A15"
       ],
       "category": "vue/server-renderer export (not in vue)",
+      "present": null
+    },
+    {
+      "name": "proxyRefs",
+      "rows": [
+        "V07"
+      ],
+      "category": "runtime export of vue",
       "present": null
     },
     {
@@ -1097,7 +1121,8 @@
     {
       "name": "watchEffect",
       "rows": [
-        "V13"
+        "V13",
+        "V16"
       ],
       "category": "runtime export of vue",
       "present": null
@@ -1390,9 +1415,9 @@
         "compiler-core helperNameMap"
       ],
       "emissionSites": 3,
-      "status": "X",
-      "compilerInternal": true,
-      "reason": null
+      "status": "P",
+      "compilerInternal": false,
+      "reason": "Public API (U13, P): supported for user code. Emitted for merged bindings in compiled templates, so no internal flag."
     },
     {
       "name": "normalizeClass",
@@ -1813,7 +1838,7 @@
       ],
       "row": "V12",
       "status": "X",
-      "note": "Low-level effect class; watchEffect (V13) is the promised surface.",
+      "note": "Low-level effect class: excluded. Its constructor and prototype are not exposed; effect (V12) and watchEffect (V13) are the promised surface.",
       "compilerInternal": false
     },
     {
@@ -1962,8 +1987,8 @@
         "runtime"
       ],
       "row": "A11",
-      "status": "X",
-      "note": null,
+      "status": "A",
+      "note": "Adapted: runtime-core cloneVNode over native VNodes (extraProps merged with the mergeProps rules; mergeRef and cloneTransition honoured). A non-VNode argument is a TypeError, where Vue reads the fields of any object. Readable fields as in h.",
       "compilerInternal": false
     },
     {
@@ -2258,8 +2283,8 @@
         "runtime"
       ],
       "row": "V12",
-      "status": "X",
-      "note": "Low-level effect primitive; watchEffect (V13) is the promised surface.",
+      "status": "P",
+      "note": "Public (P): effect(fn, options) of @vue/reactivity 3.5.43, production build. fn runs once before effect returns. options.scheduler and options.onStop are read; lazy is ignored, so effect(fn, { lazy: true }) also runs fn. A runner passed in is replaced by its function. Other option keys are not copied onto the runner's effect (Vue copies them with Object.assign).",
       "compilerInternal": false
     },
     {
@@ -2278,8 +2303,8 @@
         "runtime"
       ],
       "row": "A18",
-      "status": "X",
-      "note": null,
+      "status": "A",
+      "note": "Adapted: returns an opaque handle of the current component instance, or null outside setup and render. The handle has a null prototype and no readable properties (proxy, props, attrs, slots, emit, uid, type, vnode, appContext and subTree are not reachable), so every property read is undefined. Supported: identity (one handle per instance) and null checks. Use defineProps, defineEmits, useAttrs and useSlots for those values.",
       "compilerInternal": false
     },
     {
@@ -2298,8 +2323,8 @@
         "runtime"
       ],
       "row": "V16",
-      "status": "X",
-      "note": "Returns the active watcher; not in the promised surface.",
+      "status": "P",
+      "note": "Public (P): returns the watcher whose callback or watchEffect getter is running, otherwise undefined. The source function of watch(source, cb) is not wrapped, so it sees undefined.",
       "compilerInternal": false
     },
     {
@@ -2328,8 +2353,8 @@
         "runtime"
       ],
       "row": "A11",
-      "status": "X",
-      "note": null,
+      "status": "A",
+      "note": "Adapted: runtime-core h argument rules (plain-object props, one VNode child, variadic children) over native VNodes. Readable VNode properties: type, props, key, ref, children, shapeFlag, patchFlag, dynamicChildren, dynamicProps, appContext, ce, scopeId, slotScopeIds, dirs, transition, component, memo, cacheIndex, ctx, placeholder. Not readable: el, anchor, suspense, target, targetAnchor, targetStart, staticCount, ssContent, ssFallback, __v_isVNode.",
       "compilerInternal": false
     },
     {
@@ -2508,8 +2533,8 @@
         "runtime"
       ],
       "row": "A11",
-      "status": "X",
-      "note": null,
+      "status": "A",
+      "note": "Adapted: true for a native VNode and for an object whose __v_isVNode property is true, as in runtime-core. The __v_isVNode property of a VNode is not readable (see h).",
       "compilerInternal": false
     },
     {
@@ -2547,10 +2572,10 @@
       "sources": [
         "runtime"
       ],
-      "row": "A11",
-      "status": "X",
-      "note": null,
-      "compilerInternal": true
+      "row": "U13",
+      "status": "P",
+      "note": "Public (P): runtime-core mergeProps (class and style normalized, listeners merged into arrays, later keys win). The compiler also emits it for merged bindings; see compilerHelperExclusions.",
+      "compilerInternal": false
     },
     {
       "name": "nextTick",
@@ -2788,8 +2813,8 @@
         "runtime"
       ],
       "row": "V07",
-      "status": "X",
-      "note": "Internal template-unwrapping proxy; isRef/unref (V07) are the promised surface.",
+      "status": "P",
+      "note": "Public (P): proxyRefs(objectWithRefs) of @vue/reactivity 3.5.43. Reactive objects are returned unchanged. Other objects get a proxy: reads unwrap top-level ref values, writes to a ref key set its value, and nested refs are not unwrapped.",
       "compilerInternal": false
     },
     {
@@ -3018,8 +3043,8 @@
         "runtime"
       ],
       "row": "V12",
-      "status": "X",
-      "note": "Raw effect stop; watch handles (V15) are the promised surface.",
+      "status": "P",
+      "note": "Public (P): stop(runner) stops runner.effect. Its dependencies are dropped and onStop runs once; later calls of the runner run fn untracked. Stopping a stopped effect does nothing.",
       "compilerInternal": false
     },
     {

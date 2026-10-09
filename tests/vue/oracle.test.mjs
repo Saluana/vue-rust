@@ -123,8 +123,9 @@ test('lint: every case is clean (Vue header, imports from the allowlist, no Vue 
 test('lint negative controls: each forbidden construct is reported with its code', () => {
   const head = '// @tier 1\n// @covers V01\n';
   const table = [
-    ['effect is X in the export map', "import {effect} from 'vue'\n", 'VUE_API'],
-    ['proxyRefs is X in the export map', "import {proxyRefs} from 'vue'\n", 'VUE_API'],
+    ['ReactiveEffect is X in the export map', "import {ReactiveEffect} from 'vue'\n", 'VUE_API'],
+    ['getCurrentInstance is A, outside the V01..V17 rows', "import {getCurrentInstance} from 'vue'\n", 'VUE_API'],
+    ['mergeProps is U13, outside the V01..V17 rows', "import {mergeProps} from 'vue'\n", 'VUE_API'],
     ['component API', "import {h} from 'vue'\n", 'VUE_API'],
     ['namespace import of vue', "import * as vue from 'vue'\n", 'VUE_API'],
     ['foreign module', "import {ref} from 'react'\n", 'IMPORT'],
@@ -217,10 +218,12 @@ test('lint: the header rules accept Vue tags and reject language IDs, unknown ti
 
 test('the import allowlist holds P-status V01..V17 exports only (no X export, no component or DOM API)', () => {
   const allowed = vueImportAllowlist();
-  for (const name of ['ref', 'reactive', 'computed', 'watch', 'watchEffect', 'watchSyncEffect', 'effectScope', 'onWatcherCleanup', 'nextTick', 'toRaw']) {
+  // effect and stop (V12), proxyRefs (V07) and getCurrentWatcher (V16) are P since decision 13.
+  for (const name of ['ref', 'reactive', 'computed', 'watch', 'watchEffect', 'watchSyncEffect', 'effectScope', 'onWatcherCleanup', 'nextTick', 'toRaw', 'effect', 'stop', 'proxyRefs', 'getCurrentWatcher']) {
     assert.ok(allowed.has(name), name);
   }
-  for (const name of ['effect', 'stop', 'ReactiveEffect', 'proxyRefs', 'getCurrentWatcher', 'queuePostFlushCb', 'TrackOpTypes', 'h', 'createApp', 'onMounted', 'inject']) {
+  // X (ReactiveEffect, queuePostFlushCb, TrackOpTypes), or P/A outside V01..V17 (render helpers, instance accessor, mergeProps), or components.
+  for (const name of ['ReactiveEffect', 'queuePostFlushCb', 'TrackOpTypes', 'h', 'mergeProps', 'getCurrentInstance', 'createApp', 'onMounted', 'inject']) {
     assert.equal(allowed.has(name), false, name);
   }
 });

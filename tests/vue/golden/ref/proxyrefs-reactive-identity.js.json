@@ -1,0 +1,1 @@
+{"scenario":"ref/proxyrefs-reactive-identity","result":"ok","error":null,"entries":[{"label":"same-object","values":[true]},{"label":"values","values":[3,3,1]},{"label":"after-write","values":[4,4]}],"unhandledRejections":[]}

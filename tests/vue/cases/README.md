@@ -7,7 +7,7 @@ is the Node oracle's output for the **production** build (`NODE_ENV=production`)
 ## Layout and header
 
 - Groups: `ref/` (V01 V02 V07 V08 V10 V11), `reactive/` (V03 V04 V05 V09 V10), `computed/` (V06), `effect/` (V12),
-  `watch/` (V13 V14 V15 V16), `scheduler/` (V17). The corpus has 102 scenarios.
+  `watch/` (V13 V14 V15 V16), `scheduler/` (V17). The corpus has 112 scenarios.
 - Line 1 `// @tier N`: 1 synchronous; 2 observed after `await testHost.tick()`; 3 promise, timer or async-watcher ordering.
 - Line 2 `// @covers V01,V06`: requirement IDs V01..V17 that the scenario observes.
 - Scenario name = path under this folder without `.js` (`watch/flush-order-pre-post-sync`). The language runner would
@@ -27,9 +27,11 @@ node --test "tests/vue/oracle.test.mjs"    # WP-V0 acceptance
 
 Enforced by the lint (`vueImportAllowlist()` and `lintVueSource()` in `tooling/oracle/vue-env.mjs`):
 
-- Imports only from `'vue'`, and only names that the export map classifies to V01..V17 with status P. Excluded (X in the
-  profile): `effect`, `stop`, `ReactiveEffect`, `proxyRefs`, `getCurrentWatcher`, `queuePostFlushCb`. Use `watchEffect`,
-  watch handles and `effectScope` instead. Component and DOM APIs are not allowed.
+- Imports only from `'vue'`, and only names that the export map classifies to V01..V17 with status P. `effect`, `stop`
+  (V12), `proxyRefs` (V07) and `getCurrentWatcher` (V16) are P and allowed (decision 13 of `docs/compatibility/README.md`).
+  Excluded: the X names (`ReactiveEffect`, `queuePostFlushCb`, `TrackOpTypes`, `TriggerOpTypes`), names outside V01..V17
+  (`h`, `mergeProps`, `getCurrentInstance`, ...), and component and DOM APIs. Use `watchEffect`, watch handles and
+  `effectScope` for the usual cases.
 - No reads of Vue internals (`__v_*`, `dep`, `flags`, `_value`, ...).
 - The language rules of `tooling/oracle/lint-cases.mjs` apply. Builtins and methods are checked against the stdlib manifest
   (`compiler/profile/stdlib.mjs`) for the test target: no classes, `Reflect`, `Proxy`, `Date`, `RegExp`, typed arrays, or
@@ -76,6 +78,13 @@ These look surprising. Each golden records what the oracle printed.
 - `watch/flush-order-vs-promise-jobs`, `scheduler/write-inside-nexttick`: a pre-flush job runs after promise jobs queued before the
   write and before `nextTick` callbacks registered after it.
 - `scheduler/nexttick-idle-same-promise`: with nothing pending, `nextTick()` returns the same promise object each time.
+- `effect/lazy-option-ignored`: `effect(fn, { lazy: true })` runs fn before it returns. Vue 3.5.43 never reads `lazy`.
+- `effect/runner-reuse-and-nested`: `effect(runner)` makes a new effect from the runner's function, so stopping one leaves the
+  other active. An effect created inside another effect is not disposed when the outer one reruns, so each rerun adds one.
+- `ref/proxyrefs-reactive-identity`: `proxyRefs` of a reactive object returns that object; the refs it holds were already unwrapped.
+- `watch/getcurrentwatcher-scopes`: the source function of `watch(source, cb)` runs with no current watcher. The callback and a
+  watchEffect getter see one. `watch/getcurrentwatcher-nested-restore`: a watchEffect created in a callback gets its own
+  watcher, and the callback's watcher is current again when it returns.
 
 ## Adding a scenario
 

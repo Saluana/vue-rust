@@ -53,7 +53,9 @@ test('W names are supported only on the web target', () => {
 
 test('X, E and unknown names are never supported for user code', () => {
   for (const target of ['native', 'web']) {
-    assert.equal(isSupported('vue', 'h', target), false, 'X vue export');
+    assert.equal(isSupported('vue', 'createRenderer', target), false, 'X vue export');
+    assert.equal(isSupported('vue', 'ReactiveEffect', target), false, 'X vue class');
+    assert.equal(isSupported('vue', 'resolveComponent', target), false, 'X vue render helper');
     assert.equal(isSupported('directive', 'v-html', target), false, 'X directive');
     assert.equal(isSupported('vue', 'Suspense', target), false, 'E component');
     assert.equal(isSupported('syntax', 'top-level await', target), false, 'E syntax');
@@ -92,9 +94,39 @@ test('origin compiler: compilerInternal helpers are supported on both targets', 
 });
 
 test('origin compiler does not grant names the official compiler never emits', () => {
-  for (const name of ['h', 'isVNode', 'cloneVNode', 'assertNumber', 'pushScopeId', 'popScopeId', 'capitalize', 'resolveFilter', 'BaseTransition', 'Suspense']) {
+  for (const name of ['assertNumber', 'pushScopeId', 'popScopeId', 'capitalize', 'resolveFilter', 'BaseTransition', 'Suspense']) {
     for (const target of ['native', 'web']) {
       assert.equal(isSupported('vue', name, target, { origin: 'compiler' }), false, `${name} ${target}`);
+    }
+  }
+});
+
+test('the promoted render helpers, instance accessor and effect API are A or P: supported for user code on both targets', () => {
+  const promoted = {
+    h: 'A', isVNode: 'A', cloneVNode: 'A', mergeProps: 'P', getCurrentInstance: 'A',
+    effect: 'P', stop: 'P', proxyRefs: 'P', getCurrentWatcher: 'P',
+  };
+  for (const [name, status] of Object.entries(promoted)) {
+    assert.equal(lookup('vue', name).status, status, `${name} status`);
+    assert.equal(lookup('vue', name).compilerInternal, false, `${name} is not compilerInternal`);
+    for (const target of ['native', 'web']) {
+      assert.equal(isSupported('vue', name, target), true, `${name} ${target}`);
+    }
+  }
+  assert.equal(lookup('vue', 'h').row, 'A11');
+  assert.equal(lookup('vue', 'getCurrentInstance').row, 'A18');
+  assert.equal(lookup('vue', 'mergeProps').row, 'U13');
+  assert.equal(lookup('vue', 'proxyRefs').row, 'V07');
+  assert.equal(lookup('vue', 'getCurrentWatcher').row, 'V16');
+  assert.equal(lookup('vue', 'effect').row, 'V12');
+  assert.equal(lookup('vue', 'stop').row, 'V12');
+});
+
+test('the names kept X in the same families stay unsupported: ReactiveEffect, resolveDirective, withDirectives', () => {
+  for (const name of ['ReactiveEffect', 'resolveDirective', 'withDirectives', 'withModifiers', 'createRenderer']) {
+    for (const target of ['native', 'web']) {
+      assert.equal(lookup('vue', name).status, 'X', name);
+      assert.equal(isSupported('vue', name, target), false, `${name} ${target}`);
     }
   }
 });

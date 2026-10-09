@@ -31,7 +31,8 @@ fn export_names_and_lengths_match_vue() {
     let public = [
         ("ref", 1), ("shallowRef", 1), ("triggerRef", 1), ("customRef", 1), ("toRef", 3), ("toRefs", 1),
         ("toValue", 1), ("unref", 1), ("isRef", 1), ("computed", 2), ("effectScope", 1), ("getCurrentScope", 0),
-        ("onScopeDispose", 1), ("onWatcherCleanup", 1), ("EffectScope", 0),
+        ("onScopeDispose", 1), ("onWatcherCleanup", 1), ("EffectScope", 0), ("effect", 2), ("stop", 1),
+        ("proxyRefs", 1), ("getCurrentWatcher", 0),
     ];
     for (name, len) in public {
         let f = e.api(name);
@@ -39,14 +40,37 @@ fn export_names_and_lengths_match_vue() {
         assert_eq!(js(&e.rt, &e.get(&f, "name")), name, "name of {name}");
     }
     let internal = [
-        ("effect", 2), ("stop", 1), ("onEffectCleanup", 1), ("pauseTracking", 0), ("enableTracking", 0),
-        ("resetTracking", 0), ("track", 3), ("trigger", 6), ("proxyRefs", 1), ("watch", 2), ("traverse", 1),
-        ("getCurrentWatcher", 0),
+        ("onEffectCleanup", 1), ("pauseTracking", 0), ("enableTracking", 0), ("resetTracking", 0), ("effectWithoutRun", 2),
+        ("track", 3), ("trigger", 6), ("watch", 2), ("traverse", 1),
     ];
     for (name, len) in internal {
         let f = e.api(name);
         assert_eq!(js(&e.rt, &e.get(&f, "length")), len.to_string(), "length of {name}");
     }
+}
+
+/// `effect(fn, { lazy: true })` runs fn before it returns: @vue/reactivity 3.5.43 (production build) never reads `lazy`.
+/// `effectWithoutRun`, which the runtime uses for the render effect, creates the same effect and runs nothing.
+#[test]
+fn effect_ignores_lazy_and_effect_without_run_does_not_run() {
+    let e = Env::new();
+    let n = e.invoke("ref", &[num(0.0)]);
+    let _root = e.rt.root(&n);
+    let runs = Rc::new(Cell::new(0u32));
+    let counter = runs.clone();
+    let body = e.func("body", 0, vec![n.clone()], move |rt, _, _, d| {
+        counter.set(counter.get() + 1);
+        rt.get_str(&d[0], "value")?;
+        Ok(undef())
+    });
+    let _root_body = e.rt.root(&body);
+    let options = e.rt.new_object();
+    e.rt.define_data(options, PropKey::from_str("lazy"), Value::Bool(true), Flags::ALL).expect("options object");
+    let runner = e.invoke("effect", &[body.clone(), Value::Object(options)]);
+    assert_eq!(runs.get(), 1, "effect runs fn before it returns, lazy or not");
+    assert!(matches!(e.get(&runner, "effect"), Value::Object(_)), "the runner carries its effect");
+    let _unrun = e.invoke("effectWithoutRun", &[body.clone(), Value::Undefined]);
+    assert_eq!(runs.get(), 1, "effectWithoutRun creates the effect without running fn");
 }
 
 /// `new EffectScope(detached)` builds a scope; a plain call is a TypeError, as for a class.
@@ -111,7 +135,7 @@ fn reactive_hook_is_used_by_refs() {
 fn register_vue_module_exposes_exports() {
     let rt = Rt::new();
     let module = register_vue_for_tests(&rt);
-    for name in ["ref", "computed", "effectScope", "onWatcherCleanup", "toRefs"] {
+    for name in ["ref", "computed", "effectScope", "onWatcherCleanup", "toRefs", "effect", "stop", "proxyRefs", "getCurrentWatcher"] {
         let cell = rt.module_export_cell(module, name).expect("export lookup").expect("export present");
         assert!(rt.cell_get(cell).is_object(), "{name} is a function object");
     }

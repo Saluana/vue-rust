@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "planning/vue-native-framework/design.md",
-  "sourceSha256": "18774bd03b27e59dde8fb0688b05692d2a842d97daddae5c99e6944d146f2d43",
+  "sourceSha256": "ca41e7a5542b1962d4ad8ff4c8cdb4786879e78cdf8bab776b93a1e0c6f85c51",
   "rowCount": 126,
   "rows": [
     {
@@ -789,16 +789,16 @@
     {
       "id": "V07",
       "section": "8.3",
-      "title": "isRef / unref",
+      "title": "isRef / unref / proxyRefs",
       "statusText": "P",
       "statuses": [
         "P"
       ],
       "primary": "P",
       "prototype": null,
-      "contract": "Introspection and one-level unwrapping",
-      "tests": "T04 plain/ref/computed values",
-      "rawRow": "| V07 isRef / unref | P; — | Introspection and one-level unwrapping | T04 plain/ref/computed values |",
+      "contract": "Introspection and one-level unwrapping; proxyRefs unwraps top-level ref keys, writes go through `.value`, nested refs stay refs (decision 13)",
+      "tests": "T04 plain/ref/computed values; proxyRefs unwrap, write-through and nested refs",
+      "rawRow": "| V07 isRef / unref / proxyRefs | P; — | Introspection and one-level unwrapping; proxyRefs unwraps top-level ref keys, writes go through `.value`, nested refs stay refs (decision 13) | T04 plain/ref/computed values; proxyRefs unwrap, write-through and nested refs |",
       "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
     },
     {
@@ -864,16 +864,16 @@
     {
       "id": "V12",
       "section": "8.3",
-      "title": "effectScope / getCurrentScope / onScopeDispose",
+      "title": "effectScope / getCurrentScope / onScopeDispose / effect / stop",
       "statusText": "P",
       "statuses": [
         "P"
       ],
       "primary": "P",
       "prototype": null,
-      "contract": "Nested/detached scopes, stop semantics and warning rules",
-      "tests": "T04 detached scope survives parent; explicit stop cleans subscriptions",
-      "rawRow": "| V12 effectScope / getCurrentScope / onScopeDispose | P; — | Nested/detached scopes, stop semantics and warning rules | T04 detached scope survives parent; explicit stop cleans subscriptions |",
+      "contract": "Nested/detached scopes, stop semantics and warning rules; effect and stop follow the production effect semantics, where lazy is ignored (decision 13)",
+      "tests": "T04 detached scope survives parent; explicit stop cleans subscriptions; effect runner stop and untracked runs",
+      "rawRow": "| V12 effectScope / getCurrentScope / onScopeDispose / effect / stop | P; — | Nested/detached scopes, stop semantics and warning rules; effect and stop follow the production effect semantics, where lazy is ignored (decision 13) | T04 detached scope survives parent; explicit stop cleans subscriptions; effect runner stop and untracked runs |",
       "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
     },
     {
@@ -924,16 +924,16 @@
     {
       "id": "V16",
       "section": "8.3",
-      "title": "onWatcherCleanup / callback onCleanup",
+      "title": "onWatcherCleanup / callback onCleanup / getCurrentWatcher",
       "statusText": "P",
       "statuses": [
         "P"
       ],
       "primary": "P",
       "prototype": null,
-      "contract": "Respect synchronous registration restriction for onWatcherCleanup; bound callback behavior separately",
-      "tests": "T05 cleanup before rerun/stop; invalid post-await registration",
-      "rawRow": "| V16 onWatcherCleanup / callback onCleanup | P; — | Respect synchronous registration restriction for onWatcherCleanup; bound callback behavior separately | T05 cleanup before rerun/stop; invalid post-await registration |",
+      "contract": "Respect synchronous registration restriction for onWatcherCleanup; bound callback behavior separately; getCurrentWatcher is set during watch callbacks and watchEffect getters only (decision 13)",
+      "tests": "T05 cleanup before rerun/stop; invalid post-await registration; getCurrentWatcher scopes",
+      "rawRow": "| V16 onWatcherCleanup / callback onCleanup / getCurrentWatcher | P; — | Respect synchronous registration restriction for onWatcherCleanup; bound callback behavior separately; getCurrentWatcher is set during watch callbacks and watchEffect getters only (decision 13) | T05 cleanup before rerun/stop; invalid post-await registration; getCurrentWatcher scopes |",
       "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
     },
     {
@@ -1318,16 +1318,16 @@
     {
       "id": "U13",
       "section": "8.4",
-      "title": "attrs/class/style fallthrough",
+      "title": "attrs/class/style fallthrough, mergeProps",
       "statusText": "P",
       "statuses": [
         "P"
       ],
       "primary": "P",
       "prototype": null,
-      "contract": "Single-root merge, multi-root explicit attrs, inheritAttrs false",
-      "tests": "T06 warning and merge precedence; stable attrs contract",
-      "rawRow": "| U13 attrs/class/style fallthrough | P; — | Single-root merge, multi-root explicit attrs, inheritAttrs false | T06 warning and merge precedence; stable attrs contract |",
+      "contract": "Single-root merge, multi-root explicit attrs, inheritAttrs false; public mergeProps applies the same class, style and listener merge rules (decision 11)",
+      "tests": "T06 warning and merge precedence; T12 mergeProps precedence cases; stable attrs contract",
+      "rawRow": "| U13 attrs/class/style fallthrough, mergeProps | P; — | Single-root merge, multi-root explicit attrs, inheritAttrs false; public mergeProps applies the same class, style and listener merge rules (decision 11) | T06 warning and merge precedence; T12 mergeProps precedence cases; stable attrs contract |",
       "sectionTitle": "Components and templates (R06–R09)"
     },
     {
@@ -1777,16 +1777,17 @@
     {
       "id": "A11",
       "section": "8.5",
-      "title": "h / mergeProps / cloneVNode / isVNode / resolveComponent / resolveDirective / withDirectives / withModifiers",
-      "statusText": "X public render-function API first production profile",
+      "title": "h / cloneVNode / isVNode / resolveComponent / resolveDirective / withDirectives / withModifiers",
+      "statusText": "X for resolveComponent, resolveDirective, withDirectives and withModifiers, A for h, cloneVNode and isVNode (adapted native VNodes, decision 11)",
       "statuses": [
-        "X"
+        "X",
+        "A"
       ],
       "primary": "X",
       "prototype": null,
-      "contract": "X public render-function API first production profile",
-      "tests": "T12 per-export rejection; compiler may use internal equivalents without advertising API support",
-      "rawRow": "| A11 h / mergeProps / cloneVNode / isVNode / resolveComponent / resolveDirective / withDirectives / withModifiers | X public render-function API first production profile | T12 per-export rejection; compiler may use internal equivalents without advertising API support |",
+      "contract": "X for resolveComponent, resolveDirective, withDirectives and withModifiers, A for h, cloneVNode and isVNode (adapted native VNodes, decision 11)",
+      "tests": "T12 per-export rejection for the X members; native VNode cases for the A members; compiler may use internal equivalents without advertising API support",
+      "rawRow": "| A11 h / cloneVNode / isVNode / resolveComponent / resolveDirective / withDirectives / withModifiers | X for resolveComponent, resolveDirective, withDirectives and withModifiers, A for h, cloneVNode and isVNode (adapted native VNodes, decision 11) | T12 per-export rejection for the X members; native VNode cases for the A members; compiler may use internal equivalents without advertising API support |",
       "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
     },
     {
@@ -1884,15 +1885,16 @@
       "id": "A18",
       "section": "8.5",
       "title": "Options API and instance `$` APIs",
-      "statusText": "X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`",
+      "statusText": "X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`, A for getCurrentInstance (opaque handle, decision 12)",
       "statuses": [
-        "X"
+        "X",
+        "A"
       ],
       "primary": "X",
       "prototype": null,
-      "contract": "X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`",
-      "tests": "T03 per-export/property diagnostics; template/component refs expose only declared interface",
-      "rawRow": "| A18 Options API and instance `$` APIs | X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el` | T03 per-export/property diagnostics; template/component refs expose only declared interface |",
+      "contract": "X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`, A for getCurrentInstance (opaque handle, decision 12)",
+      "tests": "T03 per-export/property diagnostics; template/component refs expose only declared interface; getCurrentInstance: T12 identity and null-outside-setup cases",
+      "rawRow": "| A18 Options API and instance `$` APIs | X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`, A for getCurrentInstance (opaque handle, decision 12) | T03 per-export/property diagnostics; template/component refs expose only declared interface; getCurrentInstance: T12 identity and null-outside-setup cases |",
       "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
     },
     {

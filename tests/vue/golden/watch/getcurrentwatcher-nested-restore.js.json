@@ -1,0 +1,1 @@
+{"scenario":"watch/getcurrentwatcher-nested-restore","result":"ok","error":null,"entries":[{"label":"nested","values":[true,true,true,true]}],"unhandledRejections":[]}

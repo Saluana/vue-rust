@@ -788,16 +788,16 @@
     {
       "id": "V07",
       "section": "8.3",
-      "title": "isRef / unref",
+      "title": "isRef / unref / proxyRefs",
       "statusText": "P",
       "statuses": [
         "P"
       ],
       "primary": "P",
       "prototype": null,
-      "contract": "Introspection and one-level unwrapping",
-      "tests": "T04 plain/ref/computed values",
-      "rawRow": "| V07 isRef / unref | P; — | Introspection and one-level unwrapping | T04 plain/ref/computed values |",
+      "contract": "Introspection and one-level unwrapping; proxyRefs unwraps top-level ref keys, writes go through `.value`, nested refs stay refs (decision 13)",
+      "tests": "T04 plain/ref/computed values; proxyRefs unwrap, write-through and nested refs",
+      "rawRow": "| V07 isRef / unref / proxyRefs | P; — | Introspection and one-level unwrapping; proxyRefs unwraps top-level ref keys, writes go through `.value`, nested refs stay refs (decision 13) | T04 plain/ref/computed values; proxyRefs unwrap, write-through and nested refs |",
       "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
     },
     {
@@ -863,16 +863,16 @@
     {
       "id": "V12",
       "section": "8.3",
-      "title": "effectScope / getCurrentScope / onScopeDispose",
+      "title": "effectScope / getCurrentScope / onScopeDispose / effect / stop",
       "statusText": "P",
       "statuses": [
         "P"
       ],
       "primary": "P",
       "prototype": null,
-      "contract": "Nested/detached scopes, stop semantics and warning rules",
-      "tests": "T04 detached scope survives parent; explicit stop cleans subscriptions",
-      "rawRow": "| V12 effectScope / getCurrentScope / onScopeDispose | P; — | Nested/detached scopes, stop semantics and warning rules | T04 detached scope survives parent; explicit stop cleans subscriptions |",
+      "contract": "Nested/detached scopes, stop semantics and warning rules; effect and stop follow the production effect semantics, where lazy is ignored (decision 13)",
+      "tests": "T04 detached scope survives parent; explicit stop cleans subscriptions; effect runner stop and untracked runs",
+      "rawRow": "| V12 effectScope / getCurrentScope / onScopeDispose / effect / stop | P; — | Nested/detached scopes, stop semantics and warning rules; effect and stop follow the production effect semantics, where lazy is ignored (decision 13) | T04 detached scope survives parent; explicit stop cleans subscriptions; effect runner stop and untracked runs |",
       "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
     },
     {
@@ -923,16 +923,16 @@
     {
       "id": "V16",
       "section": "8.3",
-      "title": "onWatcherCleanup / callback onCleanup",
+      "title": "onWatcherCleanup / callback onCleanup / getCurrentWatcher",
       "statusText": "P",
       "statuses": [
         "P"
       ],
       "primary": "P",
       "prototype": null,
-      "contract": "Respect synchronous registration restriction for onWatcherCleanup; bound callback behavior separately",
-      "tests": "T05 cleanup before rerun/stop; invalid post-await registration",
-      "rawRow": "| V16 onWatcherCleanup / callback onCleanup | P; — | Respect synchronous registration restriction for onWatcherCleanup; bound callback behavior separately | T05 cleanup before rerun/stop; invalid post-await registration |",
+      "contract": "Respect synchronous registration restriction for onWatcherCleanup; bound callback behavior separately; getCurrentWatcher is set during watch callbacks and watchEffect getters only (decision 13)",
+      "tests": "T05 cleanup before rerun/stop; invalid post-await registration; getCurrentWatcher scopes",
+      "rawRow": "| V16 onWatcherCleanup / callback onCleanup / getCurrentWatcher | P; — | Respect synchronous registration restriction for onWatcherCleanup; bound callback behavior separately; getCurrentWatcher is set during watch callbacks and watchEffect getters only (decision 13) | T05 cleanup before rerun/stop; invalid post-await registration; getCurrentWatcher scopes |",
       "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
     },
     {
@@ -1317,16 +1317,16 @@
     {
       "id": "U13",
       "section": "8.4",
-      "title": "attrs/class/style fallthrough",
+      "title": "attrs/class/style fallthrough, mergeProps",
       "statusText": "P",
       "statuses": [
         "P"
       ],
       "primary": "P",
       "prototype": null,
-      "contract": "Single-root merge, multi-root explicit attrs, inheritAttrs false",
-      "tests": "T06 warning and merge precedence; stable attrs contract",
-      "rawRow": "| U13 attrs/class/style fallthrough | P; — | Single-root merge, multi-root explicit attrs, inheritAttrs false | T06 warning and merge precedence; stable attrs contract |",
+      "contract": "Single-root merge, multi-root explicit attrs, inheritAttrs false; public mergeProps applies the same class, style and listener merge rules (decision 11)",
+      "tests": "T06 warning and merge precedence; T12 mergeProps precedence cases; stable attrs contract",
+      "rawRow": "| U13 attrs/class/style fallthrough, mergeProps | P; — | Single-root merge, multi-root explicit attrs, inheritAttrs false; public mergeProps applies the same class, style and listener merge rules (decision 11) | T06 warning and merge precedence; T12 mergeProps precedence cases; stable attrs contract |",
       "sectionTitle": "Components and templates (R06–R09)"
     },
     {
@@ -1776,16 +1776,17 @@
     {
       "id": "A11",
       "section": "8.5",
-      "title": "h / mergeProps / cloneVNode / isVNode / resolveComponent / resolveDirective / withDirectives / withModifiers",
-      "statusText": "X public render-function API first production profile",
+      "title": "h / cloneVNode / isVNode / resolveComponent / resolveDirective / withDirectives / withModifiers",
+      "statusText": "X for resolveComponent, resolveDirective, withDirectives and withModifiers, A for h, cloneVNode and isVNode (adapted native VNodes, decision 11)",
       "statuses": [
-        "X"
+        "X",
+        "A"
       ],
       "primary": "X",
       "prototype": null,
-      "contract": "X public render-function API first production profile",
-      "tests": "T12 per-export rejection; compiler may use internal equivalents without advertising API support",
-      "rawRow": "| A11 h / mergeProps / cloneVNode / isVNode / resolveComponent / resolveDirective / withDirectives / withModifiers | X public render-function API first production profile | T12 per-export rejection; compiler may use internal equivalents without advertising API support |",
+      "contract": "X for resolveComponent, resolveDirective, withDirectives and withModifiers, A for h, cloneVNode and isVNode (adapted native VNodes, decision 11)",
+      "tests": "T12 per-export rejection for the X members; native VNode cases for the A members; compiler may use internal equivalents without advertising API support",
+      "rawRow": "| A11 h / cloneVNode / isVNode / resolveComponent / resolveDirective / withDirectives / withModifiers | X for resolveComponent, resolveDirective, withDirectives and withModifiers, A for h, cloneVNode and isVNode (adapted native VNodes, decision 11) | T12 per-export rejection for the X members; native VNode cases for the A members; compiler may use internal equivalents without advertising API support |",
       "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
     },
     {
@@ -1883,15 +1884,16 @@
       "id": "A18",
       "section": "8.5",
       "title": "Options API and instance `$` APIs",
-      "statusText": "X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`",
+      "statusText": "X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`, A for getCurrentInstance (opaque handle, decision 12)",
       "statuses": [
-        "X"
+        "X",
+        "A"
       ],
       "primary": "X",
       "prototype": null,
-      "contract": "X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`",
-      "tests": "T03 per-export/property diagnostics; template/component refs expose only declared interface",
-      "rawRow": "| A18 Options API and instance `$` APIs | X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el` | T03 per-export/property diagnostics; template/component refs expose only declared interface |",
+      "contract": "X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`, A for getCurrentInstance (opaque handle, decision 12)",
+      "tests": "T03 per-export/property diagnostics; template/component refs expose only declared interface; getCurrentInstance: T12 identity and null-outside-setup cases",
+      "rawRow": "| A18 Options API and instance `$` APIs | X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`, A for getCurrentInstance (opaque handle, decision 12) | T03 per-export/property diagnostics; template/component refs expose only declared interface; getCurrentInstance: T12 identity and null-outside-setup cases |",
       "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
     },
     {
@@ -4932,7 +4934,7 @@
       "name": "cloneVNode",
       "kind": "vue",
       "row": "A11",
-      "status": "X",
+      "status": "A",
       "note": null,
       "compilerInternal": false
     },
@@ -5009,6 +5011,14 @@
       "compilerInternal": false
     },
     {
+      "name": "effect",
+      "kind": "vue",
+      "row": "V12",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
       "name": "effectScope",
       "kind": "vue",
       "row": "V12",
@@ -5020,7 +5030,7 @@
       "name": "getCurrentInstance",
       "kind": "vue",
       "row": "A18",
-      "status": "X",
+      "status": "A",
       "note": null,
       "compilerInternal": false
     },
@@ -5033,10 +5043,18 @@
       "compilerInternal": false
     },
     {
+      "name": "getCurrentWatcher",
+      "kind": "vue",
+      "row": "V16",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
       "name": "h",
       "kind": "vue",
       "row": "A11",
-      "status": "X",
+      "status": "A",
       "note": null,
       "compilerInternal": false
     },
@@ -5100,7 +5118,7 @@
       "name": "isVNode",
       "kind": "vue",
       "row": "A11",
-      "status": "X",
+      "status": "A",
       "note": null,
       "compilerInternal": false
     },
@@ -5115,8 +5133,8 @@
     {
       "name": "mergeProps",
       "kind": "vue",
-      "row": "A11",
-      "status": "X",
+      "row": "U13",
+      "status": "P",
       "note": null,
       "compilerInternal": false
     },
@@ -5249,6 +5267,14 @@
       "compilerInternal": false
     },
     {
+      "name": "proxyRefs",
+      "kind": "vue",
+      "row": "V07",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
       "name": "reactive",
       "kind": "vue",
       "row": "V03",
@@ -5308,6 +5334,14 @@
       "name": "shallowRef",
       "kind": "vue",
       "row": "V02",
+      "status": "P",
+      "note": null,
+      "compilerInternal": false
+    },
+    {
+      "name": "stop",
+      "kind": "vue",
+      "row": "V12",
       "status": "P",
       "note": null,
       "compilerInternal": false
@@ -5579,7 +5613,7 @@
       ],
       "row": "V12",
       "status": "X",
-      "note": "Low-level effect class; watchEffect (V13) is the promised surface.",
+      "note": "Low-level effect class: excluded. Its constructor and prototype are not exposed; effect (V12) and watchEffect (V13) are the promised surface.",
       "compilerInternal": false
     },
     {
@@ -5728,8 +5762,8 @@
         "runtime"
       ],
       "row": "A11",
-      "status": "X",
-      "note": null,
+      "status": "A",
+      "note": "Adapted: runtime-core cloneVNode over native VNodes (extraProps merged with the mergeProps rules; mergeRef and cloneTransition honoured). A non-VNode argument is a TypeError, where Vue reads the fields of any object. Readable fields as in h.",
       "compilerInternal": false
     },
     {
@@ -6024,8 +6058,8 @@
         "runtime"
       ],
       "row": "V12",
-      "status": "X",
-      "note": "Low-level effect primitive; watchEffect (V13) is the promised surface.",
+      "status": "P",
+      "note": "Public (P): effect(fn, options) of @vue/reactivity 3.5.43, production build. fn runs once before effect returns. options.scheduler and options.onStop are read; lazy is ignored, so effect(fn, { lazy: true }) also runs fn. A runner passed in is replaced by its function. Other option keys are not copied onto the runner's effect (Vue copies them with Object.assign).",
       "compilerInternal": false
     },
     {
@@ -6044,8 +6078,8 @@
         "runtime"
       ],
       "row": "A18",
-      "status": "X",
-      "note": null,
+      "status": "A",
+      "note": "Adapted: returns an opaque handle of the current component instance, or null outside setup and render. The handle has a null prototype and no readable properties (proxy, props, attrs, slots, emit, uid, type, vnode, appContext and subTree are not reachable), so every property read is undefined. Supported: identity (one handle per instance) and null checks. Use defineProps, defineEmits, useAttrs and useSlots for those values.",
       "compilerInternal": false
     },
     {
@@ -6064,8 +6098,8 @@
         "runtime"
       ],
       "row": "V16",
-      "status": "X",
-      "note": "Returns the active watcher; not in the promised surface.",
+      "status": "P",
+      "note": "Public (P): returns the watcher whose callback or watchEffect getter is running, otherwise undefined. The source function of watch(source, cb) is not wrapped, so it sees undefined.",
       "compilerInternal": false
     },
     {
@@ -6094,8 +6128,8 @@
         "runtime"
       ],
       "row": "A11",
-      "status": "X",
-      "note": null,
+      "status": "A",
+      "note": "Adapted: runtime-core h argument rules (plain-object props, one VNode child, variadic children) over native VNodes. Readable VNode properties: type, props, key, ref, children, shapeFlag, patchFlag, dynamicChildren, dynamicProps, appContext, ce, scopeId, slotScopeIds, dirs, transition, component, memo, cacheIndex, ctx, placeholder. Not readable: el, anchor, suspense, target, targetAnchor, targetStart, staticCount, ssContent, ssFallback, __v_isVNode.",
       "compilerInternal": false
     },
     {
@@ -6274,8 +6308,8 @@
         "runtime"
       ],
       "row": "A11",
-      "status": "X",
-      "note": null,
+      "status": "A",
+      "note": "Adapted: true for a native VNode and for an object whose __v_isVNode property is true, as in runtime-core. The __v_isVNode property of a VNode is not readable (see h).",
       "compilerInternal": false
     },
     {
@@ -6313,10 +6347,10 @@
       "sources": [
         "runtime"
       ],
-      "row": "A11",
-      "status": "X",
-      "note": null,
-      "compilerInternal": true
+      "row": "U13",
+      "status": "P",
+      "note": "Public (P): runtime-core mergeProps (class and style normalized, listeners merged into arrays, later keys win). The compiler also emits it for merged bindings; see compilerHelperExclusions.",
+      "compilerInternal": false
     },
     {
       "name": "nextTick",
@@ -6554,8 +6588,8 @@
         "runtime"
       ],
       "row": "V07",
-      "status": "X",
-      "note": "Internal template-unwrapping proxy; isRef/unref (V07) are the promised surface.",
+      "status": "P",
+      "note": "Public (P): proxyRefs(objectWithRefs) of @vue/reactivity 3.5.43. Reactive objects are returned unchanged. Other objects get a proxy: reads unwrap top-level ref values, writes to a ref key set its value, and nested refs are not unwrapped.",
       "compilerInternal": false
     },
     {
@@ -6784,8 +6818,8 @@
         "runtime"
       ],
       "row": "V12",
-      "status": "X",
-      "note": "Raw effect stop; watch handles (V15) are the promised surface.",
+      "status": "P",
+      "note": "Public (P): stop(runner) stops runner.effect. Its dependencies are dropped and onStop runs once; later calls of the runner run fn untracked. Stopping a stopped effect does nothing.",
       "compilerInternal": false
     },
     {

@@ -319,7 +319,8 @@ pub(crate) fn is_proxy(rt: &Rt, v: &Value) -> Res<bool> {
     Ok(rt.get_v(v, &PropKey::from_str("__v_raw"))?.to_boolean())
 }
 
-/// isVNode(value): a VNode object, or an object whose `__v_isVNode` is `true` (the latter is not representable here).
+/// isVNode(value): a native VNode, or an object whose `__v_isVNode` is `true` (runtime-core's rule; a native VNode does not
+/// expose `__v_isVNode` as a property).
 pub(crate) fn is_vnode_value(rt: &Rt, v: &Value) -> Res<bool> {
     if as_vnode(rt, v).is_some() {
         return Ok(true);

@@ -120,3 +120,25 @@ test('check: unsupported globals are rejected in scripts, templates and imported
     assert.ok(report.diagnostics.some(d => d.code === 'VN4016' && d.message.includes('structuredClone')));
   }
 });
+
+test('check: promoted vue names import cleanly on both targets; ReactiveEffect and createRenderer are rejected (VN6201)', () => {
+  const promoted = "import { h, mergeProps, getCurrentInstance, effect, stop, proxyRefs } from 'vue'";
+  for (const target of ['web', 'native']) {
+    const root = scratch(`check-promoted-${target}`);
+    fs.mkdirSync(path.join(root, 'src'));
+    const app = path.join(root, 'src', 'App.vue');
+    fs.writeFileSync(app, `<script setup>\n${promoted}\nconst instance = getCurrentInstance()\n</script>\n<template><p>x</p></template>\n`);
+    const ok = capture(['check', root, '--target', target, '--json']);
+    assert.equal(ok.code, 0, `${target}: ${ok.stderr}`);
+    assert.deepEqual(JSON.parse(ok.stdout).diagnostics, [], target);
+    for (const name of ['ReactiveEffect', 'createRenderer']) {
+      fs.writeFileSync(app, `<script setup>\nimport { ${name} } from 'vue'\n</script>\n<template><p>x</p></template>\n`);
+      const rejected = capture(['check', root, '--target', target, '--json']);
+      assert.equal(rejected.code, 1, `${name} ${target}`);
+      const diag = JSON.parse(rejected.stdout).diagnostics.find((d) => d.code === 'VN6201');
+      assert.ok(diag, `${name} ${target}: a VN6201 diagnostic`);
+      assert.equal(diag.file, 'src/App.vue');
+      assert.match(diag.message, new RegExp(`'${name}'`));
+    }
+  }
+});

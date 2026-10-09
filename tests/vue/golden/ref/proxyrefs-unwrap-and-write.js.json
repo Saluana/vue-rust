@@ -1,0 +1,1 @@
+{"scenario":"ref/proxyrefs-unwrap-and-write","result":"ok","error":null,"entries":[{"label":"read","values":[1,"a",3]},{"label":"after-ref-key-write","values":[5,5]},{"label":"after-label-write","values":["b","b"]},{"label":"after-plain-write","values":[4]},{"label":"after-direct-ref-write","values":[9]}],"unhandledRejections":[]}

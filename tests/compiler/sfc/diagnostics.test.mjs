@@ -53,7 +53,7 @@ const EXPECTED = [
   ['bad-modifier-unknown.vue', [['VN6115', '2:10-2:27']]],
   ['bad-attr-contenteditable.vue', [['VN6116', '2:5-2:27']]],
   ['bad-instance-el.vue', [['VN6117', '2:8-2:11']]],
-  ['bad-vue-import-h.vue', [['VN6201', '2:9-2:10']]],
+  ['bad-vue-import-create-renderer.vue', [['VN6201', '2:9-2:23']]],
   ['bad-vue-default-import.vue', [['VN6202', '2:7-2:10']]],
   ['bad-vue-namespace.vue', [['VN6202', '2:7-2:13']]],
   ['bad-vue-subpath.vue', [['VN6203', '2:0-2:52']]],

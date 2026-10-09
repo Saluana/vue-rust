@@ -350,8 +350,8 @@ fn h_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     if n == 2 {
         let p = arg(c, 1);
         if plain_object(&p) {
-            let is_vnode = crate::vnode::as_vnode(rt, &p).is_some();
-            if is_vnode {
+            // runtime-core's isVNode: a VNode, or any object whose __v_isVNode is true.
+            if crate::vnode::is_vnode_value(rt, &p)? {
                 let kids = Value::Object(rt.new_array(vec![p]));
                 return rt.call(&create, &Value::Undefined, &[ty, Value::Null, kids]);
             }
@@ -361,7 +361,7 @@ fn h_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     }
     let children = if n > 3 {
         Value::Object(rt.new_array(c.args[2..].to_vec()))
-    } else if n == 3 && crate::vnode::as_vnode(rt, &arg(c, 2)).is_some() {
+    } else if n == 3 && crate::vnode::is_vnode_value(rt, &arg(c, 2))? {
         Value::Object(rt.new_array(vec![arg(c, 2)]))
     } else {
         arg(c, 2)
