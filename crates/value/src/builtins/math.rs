@@ -1,8 +1,9 @@
 //! Builtin family: Math (ECMA-262 21.3). Math.random and Math.f16round are absent: the platform service provides
 //! randomness, and f16round is not in this runtime. The transcendental functions come from `crate::fdlibm`, a pure
 //! Rust port of fdlibm that returns the same bits on every platform. V8 computes some of them with other algorithms, so
-//! a few results may differ from V8 in the last ulp (the O2 corpus marks them approx). Math.pow is `number::js_pow`,
-//! which still uses the platform `powf`. Math.hypot follows V8's MathHypot, which is bit-exact.
+//! a few results may differ from V8 in the last ulp (the O2 corpus marks them approx). Math.exp and Math.pow
+//! (`number::js_pow`) still use the platform `exp` and `powf`: fdlibm's exp(1) is one ulp above Math.E, and V8's own
+//! pow is not bit-identical across platforms either. Math.hypot follows V8's MathHypot, which is bit-exact.
 
 use crate::fdlibm;
 use crate::function::{Call, CodeFn};
@@ -117,7 +118,8 @@ unary! {
     "clz32" => clz32 = |x| f64::from(number::to_uint32(x).leading_zeros());
     "cos" => cos = fdlibm::cos;
     "cosh" => cosh = fdlibm::cosh;
-    "exp" => exp = fdlibm::exp;
+    // Platform exp: fdlibm exp(1) is one ulp above Math.E, where V8 returns Math.E.
+    "exp" => exp = f64::exp;
     "expm1" => expm1 = fdlibm::expm1;
     "floor" => floor = f64::floor;
     "fround" => fround = |x| f64::from(x as f32);
