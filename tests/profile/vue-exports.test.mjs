@@ -20,7 +20,10 @@ const vueExports = JSON.parse(readFileSync(path.join(ROOT, 'compiler/profile/vue
 test('the only names in the vue import namespace that require("vue") lacks are the two interop keys', async () => {
   const namespaceKeys = Object.keys(await import('vue'));
   const cjsKeys = new Set(Object.keys(requireFromRoot('vue')));
-  assert.deepEqual(namespaceKeys.filter((key) => !cjsKeys.has(key)).sort(), [...INTEROP].sort());
+  // Whether Node adds the `module.exports` namespace key depends on the Node version; `__esModule` is always there.
+  const extra = namespaceKeys.filter((key) => !cjsKeys.has(key));
+  assert.ok(extra.includes('__esModule'), `missing __esModule in [${extra}]`);
+  assert.deepEqual(extra.filter((key) => !INTEROP.includes(key)), []);
 });
 
 test('the production CJS build exports the same names as the development build', () => {

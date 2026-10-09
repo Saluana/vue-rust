@@ -24,7 +24,7 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const repo = path.resolve(here, '../..');
 const SKIP = chromeSkipReason();
 // Chrome tests skip with the reason when Chrome is missing; the option is absent otherwise (node:test reads any skip value as skipped).
-const CHROME = SKIP === null ? {} : CHROME;
+const CHROME = SKIP === null ? {} : { skip: SKIP };
 const CORPUS = listUiCases(uiCasesRoot);
 const byName = (name) => path.join(uiCasesRoot, name);
 

@@ -22,5 +22,8 @@
   },
   "bin": {
     "vue-native": "tooling/cli/vue-native.mjs"
+  },
+  "engines": {
+    "node": ">=22"
   }
 }

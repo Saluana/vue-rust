@@ -5,3 +5,6 @@ build/
 **/target/
 **/pkg/
 *.log
+
+# Preserved prototype fixtures include test logs pinned by tests/fixtures/prototype/MANIFEST.json.
+!tests/fixtures/**/*.log
