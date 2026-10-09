@@ -1,116 +1,191 @@
-# Vue Rust Lab — first working slice
+# vue-native
 
-You write `.vue` components. This prototype generates Rust UI code from them. The native app does **not** embed a browser or JavaScript engine. The same generated Rust also builds to WebAssembly.
+vue-native compiles Vue 3 single-file components (`<script setup>`, JavaScript or TypeScript, Composition API) to Rust. The generated crate runs on a JavaScript value runtime written in Rust (`vn-value`) and is built either as WebAssembly for the browser or as a headless binary for scripted runs. The output embeds no JavaScript engine, webview or `eval`.
 
-**This is an experimental compiler, not a completed rewrite of Vue.** Do not use it for OR3 or production yet. Vue's official JavaScript parser is used at build time; the compiler frontend itself has not been rewritten in Rust. The generated application and its renderer are Rust.
+**Status: experimental, not production.** The web target works in Google Chrome and is tested there. The native window renderer, layout, accessibility, mobile hosts and Windows or Linux desktop windows are not built or not qualified. See [Limits](#limits).
 
-## Try it
+Vue's own SFC compiler (`@vue/compiler-sfc` 3.5.43) runs at build time. Vue 3.5.43 reactivity and runtime behaviour is ported to Rust and checked against the real `vue@3.5.43` package.
 
-Install Node.js and the stable Rust toolchain from their official sites. Then, inside this folder:
+## How it works
 
-```sh
-npm ci
-npm test
-npm run build:demo
-npm run native
+```text
+App.vue
+  -> @vue/compiler-sfc (official): script setup, template render function, styles
+  -> profile check: only the documented language and Vue API subset is accepted
+  -> compiler/frontend, compiler/analysis: parse and scope analysis
+  -> compiler/hir: lowering to a high-level intermediate representation
+  -> compiler/emit: Rust source for the generated crate
+  -> cargo, with the vn-* runtime crates in crates/
+  -> wasm32 web bundle (wasm, vn-host.js, index.html) or a headless binary
 ```
 
-Edit `examples/Counter.vue`. To generate another build without overwriting anything:
+Vue's own JavaScript runtime is not compiled. Its behaviour is reimplemented in the `vn-*` crates ([architecture](docs/dev/ARCHITECTURE.md)). Unsupported syntax and APIs fail at compile time with a diagnostic that has a code and a source span. The profile is closed: a name that is not in the compatibility manifest is rejected.
 
-```sh
-node compiler/cli.mjs examples/Counter.vue build/counter-2
-cargo run --manifest-path build/counter-2/Cargo.toml
-```
+| Crate | Role |
+|---|---|
+| `vn-value` (`crates/value`) | JavaScript value runtime: UTF-16 strings, ECMAScript number semantics, an object heap with collection at job boundaries, functions, promises and async frames, built-ins and ES modules. |
+| `vn-reactivity` (`crates/reactivity`) | Port of `@vue/reactivity` 3.5.43: effects, batching, computed values, effect scopes, refs, reactive and readonly proxies. |
+| `vn-runtime` (`crates/runtime`) | Port of Vue 3.5.43 `runtime-core` and `runtime-dom`: mount, patch and unmount, keyed diff, components, lifecycle, directives and the app API. Drives a DOM-like host. |
+| `vn-dom` (`crates/dom`) | In-memory DOM-like document: the host for headless runs and tests. |
+| `vn-css` (`crates/css`) | Tokenizer, parser, selectors, media queries and cascade for the documented CSS subset. |
+| `vn-ui` (`crates/ui`) | Typed CSS values, shorthand expansion and computed style per element. No layout or painting yet. |
+| `vn-uikit` (`crates/uikit`) | `testHost` for the component scenarios, over the in-memory document. |
+| `vn-renderer-dom` (`crates/renderer-dom`) | Browser host: `WebHost` over a hand-written wasm32 import and export ABI ([ABI](hosts/web/ABI.md)). |
+| `vn-testkit` (`crates/testkit`) | Rust side of the differential tests: encodes values in the Node oracle's trace format and runs scenarios. |
 
-The compiler refuses an existing output directory so it cannot overwrite your files. You do not need to write Rust. Cargo is currently the build tool behind the prototype; hiding it behind a polished CLI is future work.
+The `vn-*` crates use no external crates; `Cargo.lock` lists only workspace packages.
 
-Linux requires a working graphical session and system libraries expected by eframe. A Windows or Mac build requires that platform's Rust/linker setup. Those two platforms are not tested here.
+## What works today
 
-## What works
+**Vue API surface.** The [compatibility manifest](docs/compatibility/README.md) classifies all 171 runtime exports of `vue@3.5.43` (seven of them are also compile-time macros). Each export has one status:
 
-- `<script setup>` with normal JavaScript, optionally inside `lang="ts"`
-- `import { ref, computed } from 'vue'`
-- Primitive number, string and boolean refs; each component instance has its own state
-- Pure expression computed values; `.value` inside setup and automatic unwrapping inside templates
-- Zero-argument synchronous event functions, ref assignment and increment/decrement
-- Text interpolation, arithmetic, strict comparisons and boolean conditions
-- `<main>`, `<section>`, `<div>`, `<h1>`, `<h2>`, `<p>`, `<span>`, `<label>`
-- `<button @click="increment">`, inline updates and `:disabled`
-- `<input v-model="name" />` for a string ref
-- `v-if`
-- Rust/egui rendering, with the same generated application usable by the native and WASM hosts
+| Status | Meaning in the manifest | Exports |
+|---|---|---|
+| P | Faithful: planned behaviour within the profile | 61 |
+| A | Adapted: explicit native or host adaptation | 5 |
+| W | Web only | 4 |
+| E | Experimental: not promised for production | 2 |
+| X | Excluded: rejected with a diagnostic | 99 |
 
-## What does not work yet
+The compiler accepts P and A names on both targets and W names on the web target only. It rejects X, E and unlisted names. The letters describe what the compiler permits, not what is tested. For example, `createSSRApp` is W, but server rendering and hydration are not built. The full list is in the [Vue export audit](docs/compatibility/vue-exports-audit.md).
 
-CSS, nested custom components, props, emits, slots, lists, reactive objects, watchers, lifecycle hooks, async code, fetch, routing, npm imports, Vue plugins, DOM APIs and native device APIs are not implemented. TypeScript type annotations/generics are rejected; `lang="ts"` is accepted only for the currently supported syntax.
+**Components, renderer and DOM.** From [STATUS](docs/dev/STATUS.md):
 
-Unsupported constructs produce an error rather than being silently ignored. The supported language is intentionally small. It is **not** general JavaScript or full Composition API compatibility.
+- Mount, patch and unmount; keyed diff; props, emits and slots; lifecycle hooks; refs; error handling; directives; app API.
+- Teleport, Transition, KeepAlive and async components pass the recorded corpus of 160 component scenarios, recorded against real Vue in Chrome. Broader qualification is still partial (see [Limits](#limits)).
+- DOM tree, form state, events, selectors and styles; CSS parsing, cascade, custom properties, typed values and computed style for the documented subset.
 
-`computed` currently emits a pure Rust getter evaluated when the UI reads it. There is no Vue-style cached dependency graph, watcher scheduler or batching yet. Layout currently uses vertical native-rendered groups. These are custom-drawn controls, not OS-owned AppKit/UIKit/WinUI widgets. Eframe's accessibility integration is enabled, but accessibility has not been qualified.
+**Single-file components and projects.**
 
-## Verified on the assistant's own Linux computer
+- `<script setup>` in JavaScript or TypeScript (`lang="ts"`). TypeScript syntax is erased; there is no type checking.
+- Scoped `<style>` blocks, within the documented CSS subset.
+- Multi-file projects. Relative imports name the exact file, extension included (`./money.ts`, `./FieldInput.vue`). Only the `vue` package can be imported.
 
-Tool versions: Vue compiler 3.5.43 (the npm `latest` version checked October 9, 2026 UTC), Babel parser 7.29.9, Rust 1.99.0, eframe 0.36.2.
+**Browser delivery and tools.**
 
-- 25 compiler tests passed, including unsupported syntax, type mismatch and escaping controls
-- Four Rust runtime tests passed
-- Runtime tests exercise independent state, computed output, real egui paint shapes and synthetic pointer clicks through the generated button handlers
-- Six clicks update count and computed output and reveal conditional content; Reset clears both count and the conditional content
-- Linux executable compiled successfully
-- WASM library compiled and wasm-bindgen glue generated successfully
+- `build --target web` writes a content-hashed `.wasm`, `vn-host.js`, `index.html`, `manifest.json`, and a CSS file when the project has styles. Counter and Quick Quote run through the Rust Vue runtime in Chrome, and browser tests cover their interactions. Browser ABI: [web-app-entry](docs/guide/web-app-entry.md).
+- `build --target headless` writes a native binary that mounts the app in the in-memory document and runs a JSON interaction script.
+- `create`, `check` and `doctor` complete the CLI.
 
-A Chromium launch was attempted but failed because this cloud machine restricts browser sockets. **No browser playback, desktop-window visual check or mobile run is claimed.** Compilation and headless renderer tests are not complete platform qualification.
+### Scoreboard
 
-The `generated/` directory contains the exact tested example and its four Rust tests. To rerun them:
+Recorded in [docs/dev/STATUS.md](docs/dev/STATUS.md) on 2026-10-09:
 
-```sh
-cargo test --locked --manifest-path generated/Cargo.toml
-```
-
-The file `evidence/verification.txt` records the completed checks and limits. Dependency and build outputs are excluded from this source archive.
-
-## Web build
-
-```sh
-rustup target add wasm32-unknown-unknown
-cargo build --locked --manifest-path generated/Cargo.toml --lib --target wasm32-unknown-unknown
-cargo install wasm-bindgen-cli --version 0.2.129 --locked
-wasm-bindgen --target web --out-dir generated/pkg generated/target/wasm32-unknown-unknown/debug/vue_rust_demo.wasm
-python3 -m http.server 8080 --directory generated
-```
-
-Open `http://localhost:8080`. Use HTTP rather than opening the HTML as a file. The CLI version must match the locked wasm-bindgen crate. Release optimization and asset-size work are still needed.
+| Suite | Result |
+|---|---|
+| Rust workspace (`cargo test --workspace`) | 1323 passed, 0 failed |
+| Language scenarios, lowering, multi-file projects, SFC fixtures | 79/79, 166/166, 10/10, 37/37 |
+| Vue runtime against real `vue@3.5.43` (`npm run test:vue`) | 102/102 |
+| Component scenarios against recorded Vue output in Chrome | 160/160, also with GC at every safepoint |
+| CLI (`tests/cli`) | 40/40 |
+| Browser host and compiled apps (`tests/platform/web`) | 299 passed, 0 failed, 109 skipped with stated reasons |
 
 ## Platform status
 
 | Target | Status |
 |---|---|
-| Linux | Executable builds; headless UI/event tests pass; visible window untested |
-| Web | WASM/glue builds; browser run blocked by this environment |
-| Windows | eframe host path generated; no cross-platform build or run done |
-| macOS | eframe host path generated; no macOS build or run done |
-| iOS | No host, packaging or validation implemented |
-| Android | No host, packaging or validation implemented |
+| Web (compiled app in Google Chrome) | Built and tested. Browser suites need Chrome. |
+| Headless binary | Built and tested. Runs a script against the in-memory document; there is no window. |
+| Native desktop window | Not built. `check --target native` validates a project against the native profile only. |
+| Layout, painting, accessibility | Not built. |
+| iOS and Android | No host: `hosts/` contains only `web`. |
+| Safari, Firefox, Windows and Linux hardware | Not qualified. |
 
-Do not mistake the renderer's possible targets for supported targets in this prototype.
+## Limits
 
-## How to turn this into the product you asked for
+- Experimental. The manifest statuses are not a promise of full Vue behaviour. STATUS lists qualification still pending: block-stack unwinding in `withCtx` and render errors; keyed move-count comparisons; TransitionGroup, in-out transition mode, async retry and hydration, and nested or racing component cases.
+- No native window renderer, layout, painting or accessibility adapter. `build` supports only the web and headless targets.
+- No SSR, hydration or services (files, settings, SQLite, HTTP). No packaging or signing.
+- No TypeScript type checking, no npm imports other than `vue`, no runtime template compiler, and no template `|` filter syntax.
+- Browser qualification is Chrome only.
+- No development reload: rebuild after each edit.
+- Generated crates refer to this checkout's `crates/` by absolute path, so they are not self-contained.
+- The standard-library allowlist is incomplete. Only named constructors and objects are listed, and other methods are unsupported until they are listed ([allowlist](docs/compatibility/stdlib.md)).
+- The demo web build is about 2.2 MB of wasm, with no size-optimization pass yet.
 
-1. **Lock down the compatibility contract.** Pick exactly which Composition API features must behave like Vue, and test equivalent components against real Vue. Do not promise arbitrary npm libraries or browser APIs in a native app.
-2. **Build the Rust reactive runtime and typed intermediate representation.** Add dependency tracking, cached computed values, batching, effects and cleanup. Replace the experimental direct code emitter with a checked representation before expanding syntax.
-3. **Add components and layout.** Props/emits, slots, keyed lists and stable state ownership come first. Then add a documented CSS subset backed by a layout engine. Arbitrary browser CSS is a much larger commitment.
-4. **Qualify desktop and web.** Real window/browser tests, keyboard navigation, screen readers, text input/IME, fonts, clipboard, resize, packaging and crash recovery. No marketing claim until each platform passes.
-5. **Build mobile hosts.** iOS/Android need lifecycle, touch, keyboard, safe areas, accessibility, permissions, platform SDKs and signed packaging. Those are substantial separate deliverables.
-6. **Make the developer workflow pleasant.** One command, useful source-mapped errors, hot reload, editor support and platform builds. App authors should never need to inspect generated Rust.
+## Quick start
 
-This is a multi-stage framework project. The small working slice proves the syntax-to-native-code direction; it does not establish full Vue behavior, performance superiority or all-platform support.
+Prerequisites:
 
-## References and provenance
+- Node.js 20 or later. The docs record results on Node 26.5.1.
+- Rust 1.99.0, pinned in `rust-toolchain.toml`, with the `wasm32-unknown-unknown` target for web builds (`rustup target add wasm32-unknown-unknown`). `source scripts/env.sh` puts a project-local toolchain under `toolchain/` on your `PATH`.
+- Google Chrome, only for the browser tests. Set `CHROME_PATH` if it is not found.
 
-- Vue script setup: https://vuejs.org/api/sfc-script-setup.html
-- Vue rendering model: https://vuejs.org/guide/extras/rendering-mechanism.html
-- Current Vue package metadata: https://registry.npmjs.org/vue/latest
-- eframe native/web host API: https://docs.rs/eframe/0.36.2/eframe/
-- Rust installation: https://www.rust-lang.org/tools/install
+Run these from the repository root. The example app is created next to the checkout (`../my-app`), so the repository stays clean.
 
-Vue and the Rust renderer are third-party dependencies, not rewritten or authored here. Their licenses and notices remain in their packages; consult them before distributing compiled applications. This source bundle includes no third-party binary, vendored dependency or claim of affiliation with Vue.
+```sh
+npm ci --ignore-scripts
+node tooling/cli/vue-native.mjs doctor                 # reports missing pieces; installs nothing
+node tooling/cli/vue-native.mjs create ../my-app --template counter
+node tooling/cli/vue-native.mjs check ../my-app        # exit 0 when there are no errors
+node tooling/cli/vue-native.mjs build ../my-app --target web --out ../dist-web
+python3 -m http.server 8080 --directory ../dist-web    # then open http://localhost:8080
+```
+
+- `--out` must not exist yet, unless vue-native wrote it before, in which case it is replaced.
+- The first web build compiles the runtime crates for wasm32 and takes several minutes. Cargo output goes to `target/vue-native` in the checkout unless `CARGO_TARGET_DIR` is set.
+- Serve the output over HTTP. Do not open `index.html` from disk.
+- To start from the Quick Quote example instead, add `--template quick-quote` to `create`.
+
+Headless run, with no browser. This builds the counter example and runs a script against it:
+
+```sh
+node tooling/cli/vue-native.mjs build examples/counter --target headless --out target/counter-headless
+target/counter-headless/counter script.json
+```
+
+The script is an object with a `steps` array:
+
+```json
+{"steps": [
+  {"op": "click", "selector": "#increment"},
+  {"op": "html", "selector": "#count"}
+]}
+```
+
+Steps are `click`, `input` (sets a value and fires `input`), `html` (the markup of one element) and `snapshot` (the markup of the mount container). Selectors are `#id`, `.class`, `tag`, `[attr=value]` and `*`, combined without spaces, with comma lists; descendant selectors are refused. The binary prints one JSON array with a result per step. Exit status is 0 on success, 1 when the app throws or a step fails, and 2 for a usage or script error.
+
+## Running the tests
+
+```sh
+npm test                 # node --test "tests/**/*.test.mjs": compiler, CLI, profile, browser and tool suites
+cargo test --workspace   # the vn-* Rust crates
+npm run test:language    # language scenarios: compile to Rust, run, compare with golden output
+npm run test:vue         # the same scenarios against the Rust Vue runtime
+```
+
+Browser suites need Google Chrome. Without it they are reported as skipped, with the reason `Google Chrome not found; install it or set CHROME_PATH`. Some suites run cargo builds and take several minutes.
+
+Results depend on the host. The recorded results in the docs come from macOS arm64 with Node 26.5.1. When this README was checked on Linux with Node 22.22.0 and no Chrome, these failed: several checks in `tests/profile` (one reports that the CJS interop keys of `vue` differ on that Node version), the manifest check in `tests/fixtures/prototype` (two logs are missing from the preserved copy), and `tests/ui/oracle.test.mjs` (it throws at load when Chrome is missing). Two floating-point checks in `cargo test --workspace` (`exponentiation_matches_v8` and `tan_cases_need_the_two_ulp_tolerance`) also failed against that host's math library. Compare with the recorded results before drawing conclusions.
+
+## Repository layout
+
+| Path | Contents |
+|---|---|
+| `compiler/` | Node compiler: SFC frontend, profile checks, analysis, HIR lowering, Rust emission and the project graph. [`ABI.md`](compiler/ABI.md) describes the emitted module. |
+| `crates/` | The nine `vn-*` Rust crates. |
+| `hosts/web/` | Browser host glue (`vn-host.js`) and the wasm ABI notes. |
+| `tooling/` | `cli` (the `vue-native` command), `harness` (scenario runner), `oracle` (Node and real-Vue oracles), `chrome` (Chrome driver), `manifest` (compatibility manifest generator), `web` (wasm build), `sandbox`, `status`. |
+| `templates/` | Starter projects for `create`: `counter` and `quick-quote`. |
+| `examples/` | The `counter` and `quick-quote` apps used by tests and docs. |
+| `tests/` | Suites by area (`compiler`, `language`, `vue`, `ui`, `dom`, `css`, `profile`, `cli`, `platform/web`, `security`, `tooling`). `fixtures/prototype` is a preserved copy of the removed first prototype. |
+| `docs/` | Guides, compatibility manifest and audit, developer status and architecture, evidence. |
+| `planning/` | Requirements, design and task list. |
+| `release/` | Dependency policy. |
+| `scripts/` | `env.sh` (project toolchain on `PATH`) and `mirror.sh` (private repository copies for concurrent builds). |
+
+## Documentation
+
+- [Getting started](docs/guide/getting-started.md): CLI commands, headless and web builds, known limitations.
+- [Compiled browser app entry](docs/guide/web-app-entry.md): the browser host ABI used by generated apps.
+- [Status](docs/dev/STATUS.md): dated scoreboard, what is built and the honest limits.
+- [Architecture](docs/dev/ARCHITECTURE.md): the pipeline and engineering decisions.
+- [Compatibility manifest](docs/compatibility/README.md) and [Vue export audit](docs/compatibility/vue-exports-audit.md); [standard-library allowlist](docs/compatibility/stdlib.md).
+- Evidence: [advanced components](docs/evidence/advanced-components.md) and [web apps](docs/evidence/resume-web-apps.md).
+- Scope: [requirements](planning/vue-native-framework/requirements.md), [design](planning/vue-native-framework/design.md) and [tasks](planning/vue-native-framework/tasks.md).
+
+## License and provenance
+
+No license has been chosen. `Cargo.toml` sets `license = "UNLICENSED"`, and `package.json` declares no license.
+
+Vue (`vue@3.5.43`), `@vue/compiler-sfc`, `@vue/compiler-dom` and `@babel/parser` are third-party npm packages. Their licenses and notices stay with them. The compiler calls the official SFC and template compilers at build time. `vue` is a development dependency that serves as the test oracle. Vue's runtime is reimplemented in `crates/` rather than shipped as JavaScript. This project does not claim any affiliation with Vue.

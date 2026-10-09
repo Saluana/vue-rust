@@ -51,7 +51,7 @@ lazy component effects and effect/job recurse controls have implementations in
 `vnode.rs` and `component.rs`; they are no longer listed as missing APIs.
 
 ## Known deviations / honest limits
-- The framework native window renderer and accessibility adapter are not built. Headless DOM/CSS checks do not qualify native painting or controls. `npm run native` launches the older prototype. Native screenshots are unavailable here (`screencapture`: no Screen Recording permission; never use osascript/System Events — it triggers a permission prompt).
+- The framework native window renderer and accessibility adapter are not built. Headless DOM/CSS checks do not qualify native painting or controls. The older prototype was removed from the root (`npm run native` and `npm run build:demo` no longer exist); its preserved copy is in `tests/fixtures/prototype/`. Native screenshots are unavailable here (`screencapture`: no Screen Recording permission; never use osascript/System Events — it triggers a permission prompt).
 - Cargo staleness hazard (fixed): rsync -a preserved old mtimes, so cargo kept stale artifacts after mirror pull/push; mirror.sh now copies by checksum with fresh mtimes. If tests look inexplicable, `touch` sources or `cargo clean -p <crate>`.
 - Real devices, Windows, Linux hardware, Safari/Firefox, VoiceOver/NVDA/TalkBack, notarization and store signing cannot be exercised on this
   machine (macOS arm64, Chrome 155, Xcode with iOS simulators; Android SDK present but no NDK/JDK; Docker present). They stay unqualified in the ledger.
