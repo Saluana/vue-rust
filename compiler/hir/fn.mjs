@@ -1,8 +1,9 @@
 // Function values (WP-C1b). A function is lowered once into `cx.fnRecords[id]` with its own scope, parameters, body and
 // captures; the creation site (`fn` node) carries the captured references seen from the creating function. Name
 // inference, `length` (parameters before the first default or rest), named-expression self bindings and the
-// `this` cell of a non-arrow function that arrows read are decided here.
-import { hn, unsupported, internal, captureRefs } from './context.mjs';
+// `this` cell of a non-arrow function that arrows read are decided here. An async function (WP-C1c) has `async: true`;
+// its await expressions are `await` nodes.
+import { hn, unsupported, internal, captureRefs, resolveBinding } from './context.mjs';
 import { lowerDeclPattern } from './pattern.mjs';
 import { lowerExpr, lowerNamed } from './expr.mjs';
 import { lowerScopedBody, scopeEntry } from './stmt.mjs';
@@ -18,7 +19,6 @@ function fnIdOf(cx, node) {
 // returns the creation node `fn` in the creating function's context. opts: name (string|null), decl, method,
 // accessor ('get'|'set'|null), keyComputed (the name comes from a runtime key).
 export function lowerFunctionValue(cx, node, opts = {}) {
-  if (node.async) unsupported(cx, node, 'async function (WP-C1c)');
   if (node.generator) unsupported(cx, node, 'generator function');
   const fid = fnIdOf(cx, node);
   const info = cx.fns[fid];
@@ -41,6 +41,7 @@ export function lowerFunctionValue(cx, node, opts = {}) {
 
 function lowerFunctionBody(cx, node, fid, info, opts) {
   const fnScope = info.scopeId;
+  const bodyScope = info.bodyScopeId ?? fnScope;
   const isArrow = info.isArrow;
   const params = [];
   let length = 0;
@@ -64,11 +65,23 @@ function lowerFunctionBody(cx, node, fid, info, opts) {
   let scope;
   let body;
   if (node.body.type === 'BlockStatement') {
-    ({ scope, body } = lowerScopedBody(cx, fnScope, node.body.body));
+    ({ scope, body } = lowerScopedBody(cx, bodyScope, node.body.body));
   } else {
     if (!isArrow) internal(cx, node, 'non-arrow function with an expression body');
     scope = scopeEntry(cx, fnScope, []);
     body = [hn('ret', node.body, { e: lowerExpr(cx, node.body) })];
+  }
+
+  const paramCopies = [];
+  if (bodyScope !== fnScope) {
+    for (const d of scope.decls) {
+      const bid = cx.scopeNames[fnScope].get(d.name);
+      // Body vars start with the parameter value, but own a separate binding/cell.
+      if (d.kind === 'var' && bid !== undefined) {
+        paramCopies.push({ to: resolveBinding(cx, d.id, node), from: resolveBinding(cx, bid, node), name: d.name });
+      }
+    }
+    scope.decls = [...scopeEntry(cx, fnScope, []).decls, ...scope.decls];
   }
 
   // A named function expression binds its own name in its funcname scope; that binding belongs to the function.
@@ -103,8 +116,10 @@ function lowerFunctionBody(cx, node, fid, info, opts) {
     selfName: selfB === null ? null : node.id.name,
     selfSt: selfB === null ? null : cx.tables.storageOf(selfB),
     thisCell: !isArrow && cx.tables.thisOwned(fid),
+    async: !!node.async,
     scope,
     params,
+    paramCopies,
     body,
   };
 }

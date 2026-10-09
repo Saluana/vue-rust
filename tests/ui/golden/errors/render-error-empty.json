@@ -1,0 +1,1 @@
+{"scenario":"errors/render-error-empty","result":"ok","error":null,"entries":[{"label":"good","values":["<p id=\"ok\">fine</p>"]},{"label":"app","values":["bad render","https://vuejs.org/error-reference/#runtime-1"]},{"label":"bad","values":["<!---->"]},{"label":"recovered","values":["<p id=\"ok\">fine</p>"]}],"unhandledRejections":[]}

@@ -106,7 +106,7 @@ fn probe_contents(rt: &Rt, m: ObjRef) -> Res<()> {
     }
     log(format!("own:{}", own.join(",")));
     log(format!("proto:{}", rt.get_prototype_of(ns).is_none()));
-    log(format!("ext:{}", rt.is_extensible(ns)));
+    log(format!("ext:{}", rt.is_extensible(ns).expect("is_extensible")));
     let tag = rt.get_v(&nsv, &PropKey::Sym(rt.well_known(WellKnown::ToStringTag)))?;
     log(format!("tag:{}", text(rt, &tag)?));
 
@@ -226,7 +226,7 @@ fn namespace_is_created_once_and_has_null_prototype_and_no_extensions() {
     let ns = load_lib_namespace(&rt);
     assert_eq!(rt.module_namespace(module(&rt, "lib.mjs")), ns, "one namespace per module");
     assert_eq!(rt.get_prototype_of(ns), None);
-    assert!(!rt.is_extensible(ns));
+    assert!(!rt.is_extensible(ns).expect("is_extensible"));
     assert!(rt.set_prototype_of(ns, None), "keeping the null prototype is allowed");
     assert!(!rt.set_prototype_of(ns, Some(rt.new_object())), "no other prototype can be set");
 }

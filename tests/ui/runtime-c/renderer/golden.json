@@ -1,0 +1,181 @@
+{
+ "element-text": [
+  "<div id=\"a\">hello</div>",
+  "<div id=\"a\">bye</div>",
+  "<div id=\"a\"></div>",
+  "<div id=\"a\"></div>",
+  ""
+ ],
+ "element-attrs": [
+  "<p id=\"x\" class=\"a b\" title=\"T\">x</p>",
+  "<p id=\"y\" class=\"c\" data-k=\"1\">x</p>",
+  "<p id=\"y\">x</p>",
+  "<p id=\"y\" hidden=\"\">x</p>",
+  "<p id=\"y\">x</p>",
+  "<p id=\"y\" title=\"a&lt;b&amp;&quot;c\">x&amp;&lt;y&gt;</p>"
+ ],
+ "nested-children": [
+  "<div><span>a</span>bc<!--d--><!----><i></i></div>",
+  "<div><span>a2</span><b></b></div>",
+  "<div><span>a3</span>bb<i></i></div>",
+  "<div></div>",
+  "<div>text</div>",
+  "<div><em></em></div>",
+  "<div><em><b>deep</b>tail</em></div>"
+ ],
+ "type-change": [
+  "<div><span>x</span></div>",
+  "<div>x</div>",
+  "<div><!--c--></div>",
+  "<section>y</section>",
+  "root text",
+  "<!--root comment-->",
+  "<div>z</div>"
+ ],
+ "fragment-root": [
+  "<a>1</a><b>2</b>",
+  "<a>1</a>",
+  "",
+  "z<c></c>",
+  "<d></d><e></e><f></f>",
+  ""
+ ],
+ "fragment-in-element": [
+  "<ul><li>a</li><li>b</li><li>c</li></ul>",
+  "<ul><li>c2</li></ul>",
+  "<ul><li>n</li><li>m</li></ul>",
+  "<ul><li>p</li><li>q</li><li>r</li></ul>",
+  "<ul><li>r</li><li>p</li><li>q</li></ul>"
+ ],
+ "unkeyed-list": [
+  "<ul><li>1</li><li>2</li><li>3</li></ul>",
+  "<ul><li>x</li><li>y</li></ul>",
+  "<ul><li>x</li><b>y</b><li>z</li></ul>",
+  "<ul></ul>",
+  "<ul><li>again</li></ul>"
+ ],
+ "keyed-append-prepend": [
+  "<ul><li>1</li><li>2</li><li>3</li></ul>",
+  "<ul><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+  "<ul><li>0</li><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+  "<ul><li>0</li><li>4</li></ul>",
+  "<ul><li>4</li><li>0</li></ul>",
+  "<ul></ul>",
+  "<ul><li>9</li><li>8</li></ul>"
+ ],
+ "keyed-mixed-keys": [
+  "<ul><li>a</li><li>u1</li><li>b</li>txt</ul>",
+  "<ul><li>u2</li><li>b</li><li>a</li></ul>",
+  "<ul><li>1</li><li>1</li><li>true</li><li>0</li><li>0</li></ul>",
+  "<ul><li>0</li><li>1</li><li>1</li></ul>"
+ ],
+ "keyed-reverse-and-rotate": [
+  "<ul><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li></ul>",
+  "<ul><li>6</li><li>5</li><li>4</li><li>3</li><li>2</li><li>1</li></ul>",
+  "<ul><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>1</li></ul>",
+  "<ul><li>6</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li></ul>",
+  "<ul><li>3</li><li>1</li><li>5</li><li>2</li><li>6</li><li>4</li></ul>"
+ ],
+ "keyed-fragment-items": [
+  "<ul><li>1</li><li>s1</li><li>2</li><li>s2</li><li>3</li><li>s3</li></ul>",
+  "<ul><li>3</li><li>s3</li><li>1</li><li>s1</li></ul>",
+  "<ul><li>2</li><li>3</li><li>1</li></ul>",
+  "<ul><li>2</li><li>t2</li><li>3</li><li>t3</li><li>1</li><li>t1</li></ul>"
+ ],
+ "keyed-permutation-2": [
+  "<ul><li>0</li><li>1</li></ul>",
+  "<ul><li>1</li><li>0</li></ul>",
+  "<ul><li>1</li><li>0</li></ul>",
+  "<ul><li>1</li><li>0</li></ul>",
+  "<ul><li>0</li><li>1</li></ul>",
+  "<ul><li>0</li><li>1</li></ul>",
+  "<ul><li>0</li><li>1</li></ul>"
+ ],
+ "keyed-permutation-3": [
+  "<ul><li>0</li><li>1</li><li>2</li></ul>",
+  "<ul><li>2</li><li>1</li><li>0</li></ul>",
+  "<ul><li>2</li><li>0</li><li>1</li></ul>",
+  "<ul><li>2</li><li>0</li><li>1</li></ul>",
+  "<ul><li>0</li><li>2</li><li>1</li></ul>",
+  "<ul><li>0</li><li>2</li><li>1</li></ul>",
+  "<ul><li>2</li><li>0</li><li>1</li></ul>"
+ ],
+ "keyed-permutation-4": [
+  "<ul><li>0</li><li>1</li><li>2</li><li>3</li></ul>",
+  "<ul><li>0</li><li>3</li><li>2</li><li>1</li></ul>",
+  "<ul><li>2</li><li>3</li><li>0</li><li>1</li></ul>",
+  "<ul><li>2</li><li>0</li><li>3</li><li>1</li></ul>",
+  "<ul><li>1</li><li>0</li><li>3</li><li>2</li></ul>",
+  "<ul><li>3</li><li>1</li><li>0</li><li>2</li></ul>",
+  "<ul><li>0</li><li>3</li><li>1</li><li>2</li></ul>"
+ ],
+ "keyed-permutation-5": [
+  "<ul><li>0</li><li>1</li><li>2</li><li>3</li><li>4</li></ul>",
+  "<ul><li>3</li><li>2</li><li>4</li><li>0</li><li>1</li></ul>",
+  "<ul><li>2</li><li>0</li><li>3</li><li>4</li><li>1</li></ul>",
+  "<ul><li>1</li><li>0</li><li>3</li><li>4</li><li>2</li></ul>",
+  "<ul><li>1</li><li>4</li><li>0</li><li>3</li><li>2</li></ul>",
+  "<ul><li>4</li><li>1</li><li>3</li><li>0</li><li>2</li></ul>",
+  "<ul><li>0</li><li>2</li><li>4</li><li>1</li><li>3</li></ul>"
+ ],
+ "keyed-permutation-6": [
+  "<ul><li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li></ul>",
+  "<ul><li>5</li><li>2</li><li>3</li><li>4</li><li>0</li><li>1</li></ul>",
+  "<ul><li>5</li><li>3</li><li>0</li><li>4</li><li>1</li><li>2</li></ul>",
+  "<ul><li>4</li><li>1</li><li>0</li><li>5</li><li>3</li><li>2</li></ul>",
+  "<ul><li>5</li><li>0</li><li>1</li><li>2</li><li>4</li><li>3</li></ul>",
+  "<ul><li>2</li><li>0</li><li>4</li><li>5</li><li>1</li><li>3</li></ul>",
+  "<ul><li>5</li><li>1</li><li>4</li><li>0</li><li>2</li><li>3</li></ul>"
+ ],
+ "keyed-permutation-8": [
+  "<ul><li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li></ul>",
+  "<ul><li>5</li><li>4</li><li>6</li><li>1</li><li>0</li><li>3</li><li>7</li><li>2</li></ul>",
+  "<ul><li>6</li><li>5</li><li>2</li><li>0</li><li>1</li><li>4</li><li>7</li><li>3</li></ul>",
+  "<ul><li>0</li><li>4</li><li>2</li><li>7</li><li>1</li><li>6</li><li>5</li><li>3</li></ul>",
+  "<ul><li>1</li><li>3</li><li>5</li><li>7</li><li>2</li><li>6</li><li>0</li><li>4</li></ul>",
+  "<ul><li>6</li><li>7</li><li>0</li><li>5</li><li>3</li><li>1</li><li>2</li><li>4</li></ul>",
+  "<ul><li>2</li><li>6</li><li>1</li><li>0</li><li>7</li><li>3</li><li>4</li><li>5</li></ul>"
+ ],
+ "keyed-permutation-11": [
+  "<ul><li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li></ul>",
+  "<ul><li>6</li><li>0</li><li>7</li><li>4</li><li>2</li><li>8</li><li>10</li><li>1</li><li>9</li><li>5</li><li>3</li></ul>",
+  "<ul><li>9</li><li>3</li><li>5</li><li>7</li><li>10</li><li>0</li><li>1</li><li>2</li><li>6</li><li>8</li><li>4</li></ul>",
+  "<ul><li>2</li><li>0</li><li>10</li><li>7</li><li>5</li><li>9</li><li>6</li><li>3</li><li>8</li><li>1</li><li>4</li></ul>",
+  "<ul><li>10</li><li>8</li><li>0</li><li>6</li><li>3</li><li>2</li><li>7</li><li>9</li><li>1</li><li>4</li><li>5</li></ul>",
+  "<ul><li>0</li><li>1</li><li>7</li><li>9</li><li>4</li><li>2</li><li>8</li><li>5</li><li>3</li><li>10</li><li>6</li></ul>",
+  "<ul><li>2</li><li>4</li><li>0</li><li>8</li><li>10</li><li>3</li><li>1</li><li>6</li><li>5</li><li>9</li><li>7</li></ul>"
+ ],
+ "keyed-permutation-16": [
+  "<ul><li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li></ul>",
+  "<ul><li>15</li><li>8</li><li>10</li><li>12</li><li>11</li><li>14</li><li>3</li><li>1</li><li>2</li><li>6</li><li>7</li><li>9</li><li>5</li><li>13</li><li>0</li><li>4</li></ul>",
+  "<ul><li>11</li><li>1</li><li>7</li><li>14</li><li>3</li><li>10</li><li>8</li><li>5</li><li>13</li><li>0</li><li>9</li><li>12</li><li>15</li><li>2</li><li>4</li><li>6</li></ul>",
+  "<ul><li>4</li><li>0</li><li>13</li><li>6</li><li>12</li><li>15</li><li>2</li><li>1</li><li>9</li><li>11</li><li>10</li><li>3</li><li>14</li><li>5</li><li>8</li><li>7</li></ul>",
+  "<ul><li>13</li><li>14</li><li>2</li><li>9</li><li>4</li><li>6</li><li>1</li><li>5</li><li>3</li><li>7</li><li>11</li><li>0</li><li>10</li><li>15</li><li>12</li><li>8</li></ul>",
+  "<ul><li>5</li><li>10</li><li>8</li><li>0</li><li>4</li><li>6</li><li>7</li><li>13</li><li>3</li><li>1</li><li>14</li><li>15</li><li>12</li><li>11</li><li>2</li><li>9</li></ul>",
+  "<ul><li>1</li><li>11</li><li>7</li><li>8</li><li>4</li><li>2</li><li>12</li><li>9</li><li>15</li><li>5</li><li>3</li><li>14</li><li>13</li><li>0</li><li>6</li><li>10</li></ul>"
+ ],
+ "keyed-permutation-33": [
+  "<ul><li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li><li>32</li></ul>",
+  "<ul><li>28</li><li>27</li><li>7</li><li>30</li><li>6</li><li>15</li><li>21</li><li>26</li><li>5</li><li>13</li><li>22</li><li>1</li><li>29</li><li>4</li><li>31</li><li>2</li><li>32</li><li>16</li><li>24</li><li>14</li><li>12</li><li>8</li><li>18</li><li>9</li><li>20</li><li>23</li><li>25</li><li>11</li><li>3</li><li>0</li><li>19</li><li>17</li><li>10</li></ul>",
+  "<ul><li>27</li><li>29</li><li>0</li><li>13</li><li>32</li><li>5</li><li>6</li><li>1</li><li>11</li><li>18</li><li>17</li><li>2</li><li>9</li><li>10</li><li>19</li><li>21</li><li>22</li><li>16</li><li>14</li><li>3</li><li>7</li><li>28</li><li>20</li><li>24</li><li>31</li><li>23</li><li>8</li><li>15</li><li>30</li><li>4</li><li>25</li><li>26</li><li>12</li></ul>",
+  "<ul><li>22</li><li>30</li><li>5</li><li>31</li><li>27</li><li>1</li><li>26</li><li>7</li><li>29</li><li>32</li><li>11</li><li>13</li><li>25</li><li>20</li><li>10</li><li>14</li><li>4</li><li>16</li><li>28</li><li>12</li><li>2</li><li>9</li><li>24</li><li>6</li><li>21</li><li>23</li><li>19</li><li>18</li><li>17</li><li>8</li><li>0</li><li>3</li><li>15</li></ul>",
+  "<ul><li>30</li><li>11</li><li>29</li><li>32</li><li>6</li><li>15</li><li>27</li><li>28</li><li>23</li><li>18</li><li>13</li><li>3</li><li>14</li><li>25</li><li>26</li><li>4</li><li>20</li><li>16</li><li>0</li><li>1</li><li>19</li><li>9</li><li>22</li><li>5</li><li>8</li><li>24</li><li>2</li><li>21</li><li>10</li><li>31</li><li>7</li><li>12</li><li>17</li></ul>",
+  "<ul><li>20</li><li>6</li><li>7</li><li>26</li><li>5</li><li>1</li><li>22</li><li>8</li><li>18</li><li>9</li><li>4</li><li>23</li><li>11</li><li>30</li><li>17</li><li>32</li><li>15</li><li>29</li><li>2</li><li>27</li><li>14</li><li>10</li><li>0</li><li>28</li><li>31</li><li>24</li><li>12</li><li>25</li><li>3</li><li>16</li><li>13</li><li>21</li><li>19</li></ul>",
+  "<ul><li>13</li><li>3</li><li>7</li><li>6</li><li>14</li><li>32</li><li>1</li><li>15</li><li>29</li><li>17</li><li>10</li><li>18</li><li>8</li><li>5</li><li>22</li><li>27</li><li>12</li><li>16</li><li>4</li><li>30</li><li>28</li><li>11</li><li>26</li><li>2</li><li>9</li><li>25</li><li>23</li><li>0</li><li>24</li><li>20</li><li>19</li><li>31</li><li>21</li></ul>"
+ ],
+ "keyed-insert-remove-mix": [
+  "<ul><li>0</li><li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li></ul>",
+  "<ul><li>9</li><li>5</li><li>2</li><li>0</li><li>12</li><li>8</li><li>13</li><li>6</li><li>1</li><li>3</li><li>10</li><li>4</li><li>7</li><li>11</li></ul>",
+  "<ul><li>1</li><li>10</li><li>3</li><li>8</li><li>13</li><li>14</li><li>4</li><li>9</li><li>7</li><li>2</li><li>5</li><li>6</li><li>0</li><li>12</li><li>11</li></ul>",
+  "<ul><li>10</li><li>15</li><li>6</li><li>4</li><li>8</li><li>16</li><li>3</li><li>14</li><li>12</li><li>9</li><li>1</li><li>11</li><li>5</li><li>17</li><li>13</li><li>7</li><li>0</li><li>2</li></ul>",
+  "<ul><li>19</li><li>8</li><li>10</li><li>0</li><li>13</li><li>5</li><li>16</li><li>18</li><li>3</li><li>1</li><li>4</li><li>6</li><li>14</li><li>2</li><li>15</li><li>9</li><li>17</li><li>11</li><li>7</li><li>12</li></ul>",
+  "<ul><li>6</li><li>8</li><li>22</li><li>4</li><li>14</li><li>20</li><li>1</li><li>3</li><li>16</li><li>11</li><li>5</li><li>21</li><li>13</li><li>7</li><li>18</li><li>9</li><li>12</li><li>17</li><li>2</li><li>10</li><li>0</li><li>19</li><li>15</li></ul>",
+  "<ul><li>6</li><li>8</li><li>22</li><li>4</li><li>1</li><li>3</li><li>16</li><li>5</li><li>21</li><li>13</li><li>7</li><li>18</li><li>9</li><li>17</li><li>2</li><li>10</li><li>0</li><li>15</li></ul>",
+  "<ul><li>8</li><li>22</li><li>4</li><li>1</li><li>16</li><li>5</li><li>21</li><li>7</li><li>9</li><li>17</li><li>10</li><li>0</li><li>15</li></ul>",
+  "<ul><li>23</li><li>10</li><li>21</li><li>8</li><li>17</li><li>0</li><li>24</li><li>1</li><li>22</li><li>16</li><li>7</li><li>9</li><li>15</li><li>4</li><li>5</li></ul>",
+  "<ul><li>21</li><li>16</li><li>7</li><li>10</li><li>1</li><li>0</li><li>8</li><li>4</li><li>9</li><li>25</li><li>17</li><li>15</li><li>23</li><li>24</li><li>26</li><li>27</li><li>22</li><li>5</li></ul>",
+  "<ul><li>10</li><li>1</li><li>0</li><li>8</li><li>9</li><li>25</li><li>23</li><li>27</li><li>22</li><li>5</li></ul>",
+  "<ul><li>1</li><li>0</li><li>8</li><li>9</li><li>25</li><li>27</li><li>22</li><li>5</li></ul>",
+  "<ul><li>27</li><li>0</li><li>8</li><li>28</li><li>9</li><li>25</li><li>5</li><li>1</li><li>22</li></ul>"
+ ]
+}

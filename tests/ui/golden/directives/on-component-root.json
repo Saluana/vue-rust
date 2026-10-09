@@ -1,0 +1,1 @@
+{"scenario":"directives/on-component-root","result":"ok","error":null,"entries":[{"label":"log","values":["P c"]},{"label":"html","values":["<div><p class=\"c\">child</p></div>"]}],"unhandledRejections":[]}

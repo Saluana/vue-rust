@@ -3,6 +3,7 @@
 //! or `RefCell`; no borrow is held across a call into user code.
 
 use std::cell::{Cell, RefCell};
+use std::collections::HashMap;
 use std::ops::Deref;
 use std::rc::Rc;
 
@@ -13,6 +14,7 @@ use crate::effect::Effect;
 use crate::graph::{Dep, Link};
 use crate::refs::{CustomRef, GetterRef, PropRef, RefImpl};
 use crate::scope::Scope;
+use crate::watch::Watch;
 
 // Subscriber flags, as in @vue/reactivity 3.5.43 (EffectFlags).
 pub(crate) const ACTIVE: u32 = 1;
@@ -61,6 +63,9 @@ pub(crate) enum Node {
     Custom(CustomRef),
     Getter(GetterRef),
     Prop(PropRef),
+    Watch(Watch),
+    /// The seen-map of `traverse`: object -> depth already walked.
+    Seen(RefCell<HashMap<ObjRef, f64>>),
 }
 
 impl NativeObject for Node {
@@ -75,6 +80,12 @@ impl NativeObject for Node {
             Node::Custom(x) => x.trace(t),
             Node::Getter(x) => x.trace(t),
             Node::Prop(x) => x.trace(t),
+            Node::Watch(x) => x.trace(t),
+            Node::Seen(m) => {
+                for k in m.borrow().keys() {
+                    t.mark(*k);
+                }
+            }
         }
     }
 }
@@ -100,6 +111,14 @@ impl Node {
     variant!(custom, CustomRef, Custom);
     variant!(getter, GetterRef, Getter);
     variant!(prop, PropRef, Prop);
+    variant!(watch, Watch, Watch);
+
+    pub(crate) fn seen(&self) -> &RefCell<HashMap<ObjRef, f64>> {
+        match self {
+            Node::Seen(m) => m,
+            _ => panic!("reactivity: expected a seen-map (framework bug)"),
+        }
+    }
 
     /// The subscriber fields of an effect or a computed.
     pub(crate) fn sub(&self) -> &SubFields {

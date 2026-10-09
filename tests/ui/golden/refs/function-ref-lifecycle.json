@@ -1,0 +1,1 @@
+{"scenario":"refs/function-ref-lifecycle","result":"ok","error":null,"entries":[{"label":"log","values":["set P"]},{"label":"log","values":["null"]},{"label":"html","values":["<div><!--v-if--></div>"]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"props/required-validator","result":"ok","error":null,"entries":[{"label":"invalid","values":["a-x"]},{"label":"missing","values":["-s"]}],"unhandledRejections":[]}

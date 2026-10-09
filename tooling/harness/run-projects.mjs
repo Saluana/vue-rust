@@ -14,7 +14,7 @@ import { compileProject } from '../../compiler/project/index.mjs';
 import { modulesTableRs, moduleFileName } from '../../compiler/project/table.mjs';
 import { compareDocs, describeDiff } from '../oracle/compare.mjs';
 import { nativeEntries, nativeRustRs } from './natives.mjs';
-import { ROOT, TARGET_DIR, cargoEnv } from './build.mjs';
+import { ROOT, TARGET_DIR, cargoEnv, writeAsyncRuntime } from './build.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const args = process.argv.slice(2);
@@ -71,7 +71,8 @@ function writeCrate(projects) {
     `vn-testkit = { path = ${JSON.stringify(path.join(ROOT, 'crates', 'testkit'))} }`, '',
     '[workspace]', '',
   ].join('\n'));
-  const mains = [];
+  writeAsyncRuntime(path.join(CRATE, 'src'));
+  const mains = ['mod vn_async;'];
   const entries = [];
   projects.forEach((p, j) => {
     const dir = path.join(CRATE, 'src', `p${j}`);
@@ -159,7 +160,7 @@ function main() {
       continue;
     }
     const compiled = c.modules.filter((m) => m.rust !== null);
-    projects.push({ name, dir, hasVue, natives: nativeEntries(natives), compiled, entryId: c.entryId, natives_: natives });
+    projects.push({ name, dir, hasVue, natives: nativeEntries(natives), nativeJson: natives, compiled, entryId: c.entryId });
     outcomes.push({ name, outcome: null });
   }
 
@@ -182,7 +183,7 @@ function main() {
     const expFile = path.join(p.dir, 'expected.json');
     // --write-expected regenerates the Node oracle's document; a project with a .vue file keeps its hand-written one.
     if (flag('--write-expected') && !p.hasVue) {
-      const node = runNode(p.dir, p.natives_);
+      const node = runNode(p.dir, p.nativeJson);
       if (!node.ok) return Object.assign(o, { outcome: 'FAIL', reason: node.error });
       writeFileSync(expFile, `${JSON.stringify(withoutName(node.doc))}\n`);
     }

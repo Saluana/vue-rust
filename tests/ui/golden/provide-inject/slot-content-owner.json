@@ -1,0 +1,1 @@
+{"scenario":"provide-inject/slot-content-owner","result":"ok","error":null,"entries":[{"label":"html","values":["<div><p id=\"leaf\">mid</p></div>"]}],"unhandledRejections":[]}

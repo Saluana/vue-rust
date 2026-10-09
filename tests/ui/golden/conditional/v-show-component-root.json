@@ -1,0 +1,1 @@
+{"scenario":"conditional/v-show-component-root","result":"ok","error":null,"entries":[{"label":"hidden","values":["<div><p class=\"child\" style=\"display: none;\">child</p></div>"]},{"label":"shown","values":["<div><p class=\"child\" style=\"\">child</p></div>"]}],"unhandledRejections":[]}

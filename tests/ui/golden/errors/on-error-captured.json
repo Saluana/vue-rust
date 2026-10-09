@@ -1,0 +1,1 @@
+{"scenario":"errors/on-error-captured","result":"ok","error":null,"entries":[{"label":"log","values":["captured boom https://vuejs.org/error-reference/#runtime-0"]},{"label":"html","values":["<div><!----></div>"]}],"unhandledRejections":[]}

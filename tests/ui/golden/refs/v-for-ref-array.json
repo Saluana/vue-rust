@@ -1,0 +1,1 @@
+{"scenario":"refs/v-for-ref-array","result":"ok","error":null,"entries":[{"label":"log","values":["count 3 i1,i2,i3"]}],"unhandledRejections":[]}

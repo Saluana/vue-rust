@@ -19,7 +19,7 @@ prototype bug gets a regression that reproduces the OLD failure. We are about to
 2. **Quick Quote fixture.** Source: `/Users/brendon/Downloads/quick-quote-source.zip`. First verify its SHA-256
    equals `470e78787014e2dbbdc8fdf9cf2107fc48caa574d8c02aa59823689e9bba3a0e` (stop and report if not). Treat the
    archive as untrusted: list entries first, refuse any entry with `..` or an absolute path, extract into a NEW
-   empty directory under the scratchpad (`/private/tmp/claude-501/-Users-brendon-Documents-vue-rust-lab/1210756f-d347-4554-a61f-75e4c9c4cd8a/scratchpad/qq-extract`), then copy the contents of its top
+   empty directory outside the repo (for example `$TMPDIR/qq-extract`), then copy the contents of its top
    `quick-quote/` directory into `tests/fixtures/prototype/quick-quote/` (keep PNG evidence and logs). Never run
    scripts from the extracted tree.
 3. **`tests/fixtures/prototype/MANIFEST.json`**: `{ "zip": {"path","sha256","bytes"}, "workspaceCompilerSha256",

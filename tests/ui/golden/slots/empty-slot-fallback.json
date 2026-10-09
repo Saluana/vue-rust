@@ -1,0 +1,1 @@
+{"scenario":"slots/empty-slot-fallback","result":"ok","error":null,"entries":[{"label":"html","values":["<footer>fallback footer</footer>"]}],"unhandledRejections":[]}

@@ -2,6 +2,7 @@
 // the Options API form of a normal <script>, imports from vue and node built-ins, reserved names, and the profile
 // checks of the user's own code (checkSource: parse, scope analysis, profile rules), mapped back to the .vue file.
 import { checkSource } from '../frontend/check.mjs';
+import { checkStdlib } from '../analysis/stdlib-check.mjs';
 import { isNodeBuiltin, manifestEntry, vueSupported } from './context.mjs';
 
 const EXPORT_TYPES = new Set(['ExportNamedDeclaration', 'ExportDefaultDeclaration', 'ExportAllDeclaration']);
@@ -119,7 +120,13 @@ export function checkScript(ctx, block, role, { reserveRender }) {
 
   const base = block.loc.start.offset;
   const res = checkSource(block.content, { filename: ctx.rel, lang, target: ctx.target });
+  if (res.ast && !res.diagnostics.some(d => d.severity === 'error')) {
+    res.diagnostics.push(...checkStdlib(res.ast, { source: block.content, filename: ctx.rel, target: ctx.target, analysis: res.analysis }));
+  }
   for (const d of res.diagnostics) {
+    // Setup macros are compiler bindings; compileScript validates and removes their calls.
+    const ref = res.analysis?.references.find(r => r.start === d.start.offset && r.binding === -1);
+    if (role === 'setup' && d.code === 'VN4016' && ref && manifestEntry('macro', ref.name)) continue;
     ctx.report(d.code, ctx.rel, base + d.start.offset, base + d.end.offset, {
       message: d.message,
       hint: d.hint,

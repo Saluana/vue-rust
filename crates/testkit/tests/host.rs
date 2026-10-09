@@ -208,3 +208,41 @@ fn the_host_survives_a_collection_with_no_scenario_references() {
     let now = r.rt.get_str(&timers, "now").expect("now");
     assert_eq!(r.rt.call(&now, &timers, &[]).expect("now()"), num(0.0));
 }
+
+/// A timer callback: traces its first label now and queues a job that traces its second label (closure data).
+fn fire_and_queue(rt: &Rt, c: &Call<'_>) -> Res<Value> {
+    let d = rt.fn_data(c.callee);
+    rt.call(&global_trace(rt), &Value::Undefined, &[d[0].clone()])?;
+    rt.enqueue_job(global_trace(rt), vec![d[1].clone()]);
+    Ok(Value::Undefined)
+}
+
+#[test]
+fn an_async_advance_drains_the_job_queue_after_each_callback() {
+    // trace-format.md: the queue is drained completely before the next timer fires (timers/microtasks-between-timers).
+    let r = Realm::new();
+    let first = ov(r.rt.new_native_function(fire_and_queue, "first", 0, vec![s("timer-1"), s("micro-after-1")]));
+    timers_call(&r.rt, "setTimeout", &[first, num(0.0)]).expect("setTimeout");
+    timers_call(&r.rt, "setTimeout", &[timer(&r, "timer-2"), num(0.0)]).expect("setTimeout");
+    let p = timers_call(&r.rt, "advance", &[num(0.0)]).expect("advance");
+    r.rt.run_jobs();
+    assert_eq!(
+        r.entries_text(),
+        r#"[{"label":"timer-1","values":[]},{"label":"micro-after-1","values":[]},{"label":"timer-2","values":[]}]"#
+    );
+    assert_eq!(promise_state(&r.rt, &p), Some(PromiseState::Fulfilled(Value::Undefined)));
+}
+
+#[test]
+fn an_async_advance_fires_a_timer_scheduled_inside_it_when_it_is_due() {
+    let r = Realm::new();
+    let scheduler = ov(r.rt.new_native_function(schedule_nested, "scheduler", 0, Vec::new()));
+    timers_call(&r.rt, "setTimeout", &[scheduler, num(5.0)]).expect("setTimeout");
+    timers_call(&r.rt, "setTimeout", &[timer(&r, "late"), num(11.0)]).expect("setTimeout");
+    let p = timers_call(&r.rt, "advance", &[num(10.0)]).expect("advance");
+    r.rt.run_jobs();
+    assert_eq!(r.entries_text(), r#"[{"label":"nested","values":[]}]"#, "due at 8, inside the advance");
+    assert_eq!(r.timers.now(), 10.0);
+    assert_eq!(r.timers.pending_count(), 1);
+    assert_eq!(promise_state(&r.rt, &p), Some(PromiseState::Fulfilled(Value::Undefined)));
+}

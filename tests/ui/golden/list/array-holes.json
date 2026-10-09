@@ -1,0 +1,1 @@
+{"scenario":"list/array-holes","result":"ok","error":null,"entries":[{"label":"html","values":["<ol><li>0:{\n  \"id\": 1,\n  \"tag\": \"a\"\n}</li><li>1:</li><li>2:{\n  \"id\": 3,\n  \"tag\": \"c\"\n}</li></ol>"]}],"unhandledRejections":[]}

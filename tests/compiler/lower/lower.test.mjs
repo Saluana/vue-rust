@@ -37,11 +37,11 @@ test('literal pool numbers constants in first-use order and reuses equal strings
 
 test('compilation is deterministic and independent of the working directory', () => {
   const src = 'let a = 1\nfunction f(x) { return x + a }\ntrace("v", f(2))\n';
-  const first = compileModule(src, { filename: 'det.js', specifier: 'det' });
+  const first = compileModule(src, { filename: 'det.js', specifier: 'det', target: 'test' });
   const cwd = process.cwd();
   process.chdir(os.tmpdir());
   try {
-    const second = compileModule(src, { filename: 'det.js', specifier: 'det' });
+    const second = compileModule(src, { filename: 'det.js', specifier: 'det', target: 'test' });
     assert.equal(second.rust, first.rust);
   } finally {
     process.chdir(cwd);
@@ -50,11 +50,13 @@ test('compilation is deterministic and independent of the working directory', ()
 });
 
 test('unsupported constructs stop with VN9001 and a span; no Rust is produced', () => {
-  const r = compileModule('export async function run() { await 1 }\n', { filename: 'a.js', specifier: 'a' });
+  // import() passes the profile (literal specifier) but has no lowering yet (WP-C1c did not add dynamic import).
+  const src = "export function run() { return import('./x.js') }\n";
+  const r = compileModule(src, { filename: 'a.js', specifier: 'a' });
   assert.equal(r.rust, null);
   const d = r.diagnostics.find((x) => x.code === 'VN9001');
   assert.ok(d, 'expected VN9001');
-  assert.equal(d.start.offset, 'export '.length);
+  assert.equal(d.start.offset, src.indexOf('import('));
 });
 
 test('profile rejections are reported with their registered codes', () => {
@@ -68,7 +70,7 @@ test('profile rejections are reported with their registered codes', () => {
 
 test('TypeScript annotations are erased and compile like the JavaScript', () => {
   const ts = 'const k: number = 2 as number\nfunction g<T>(a: T): T { return a }\nexport type Alias = string\ntrace("ts", g<number>(k)!)\n';
-  const r = compileModule(ts, { filename: 'erase.ts', lang: 'ts', specifier: 'erase' });
+  const r = compileModule(ts, { filename: 'erase.ts', lang: 'ts', specifier: 'erase', target: 'test' });
   assert.equal(r.diagnostics.filter((d) => d.severity === 'error').length, 0);
   assert.notEqual(r.rust, null);
 });

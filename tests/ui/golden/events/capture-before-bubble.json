@@ -1,0 +1,1 @@
+{"scenario":"events/capture-before-bubble","result":"ok","error":null,"entries":[{"label":"log","values":["parent-capture"]},{"label":"log","values":["child"]},{"label":"log","values":["parent-bubble"]}],"unhandledRejections":[]}

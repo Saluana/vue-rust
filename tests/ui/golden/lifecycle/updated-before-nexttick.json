@@ -1,0 +1,1 @@
+{"scenario":"lifecycle/updated-before-nexttick","result":"ok","error":null,"entries":[{"label":"log","values":["bumped"]},{"label":"log","values":["updated 1"]},{"label":"log","values":["nextTick"]},{"label":"html","values":["<button id=\"b\">1</button>"]}],"unhandledRejections":[]}

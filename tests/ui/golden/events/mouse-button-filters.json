@@ -1,0 +1,1 @@
+{"scenario":"events/mouse-button-filters","result":"ok","error":null,"entries":[{"label":"b","values":["left"]},{"label":"b","values":["middle"]},{"label":"b","values":["right"]}],"unhandledRejections":[]}

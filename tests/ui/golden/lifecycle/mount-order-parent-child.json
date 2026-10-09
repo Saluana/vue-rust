@@ -1,0 +1,1 @@
+{"scenario":"lifecycle/mount-order-parent-child","result":"ok","error":null,"entries":[{"label":"log","values":["parent beforeMount"]},{"label":"log","values":["child beforeMount"]},{"label":"log","values":["child mounted"]},{"label":"log","values":["parent mounted"]}],"unhandledRejections":[]}

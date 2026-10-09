@@ -1,0 +1,1 @@
+{"scenario":"errors/event-handler-error","result":"ok","error":null,"entries":[{"label":"app","values":["first click","https://vuejs.org/error-reference/#runtime-5"]},{"label":"done","values":[]}],"unhandledRejections":[]}

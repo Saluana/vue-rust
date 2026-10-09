@@ -1,0 +1,63 @@
+{
+ "app-mount-unmount": {
+  "snaps": [
+   "<div id=\"app\" data-v-app=\"\"><p>hello</p></div>",
+   "<div id=\"app\" data-v-app=\"\"></div>"
+  ],
+  "log": []
+ },
+ "function-ref-order": {
+  "snaps": [
+   "<div id=\"app\" data-v-app=\"\"><p>x7</p></div>",
+   "<div id=\"app\" data-v-app=\"\"></div>"
+  ],
+  "log": [
+   "el:P",
+   "null"
+  ]
+ },
+ "directive-hooks": {
+  "snaps": [
+   "<div id=\"app\" data-v-app=\"\"><p data-m=\"42\">x</p></div>",
+   "<div id=\"app\" data-v-app=\"\"></div>"
+  ],
+  "log": [
+   "created",
+   "beforeMount",
+   "mounted:42",
+   "beforeUnmount",
+   "unmounted"
+  ]
+ },
+ "reactive-ref-update": {
+  "snaps": [
+   "<div id=\"app\" data-v-app=\"\"><b>0</b></div>",
+   "<div id=\"app\" data-v-app=\"\"><b>5</b></div>",
+   "<div id=\"app\" data-v-app=\"\"><b>9</b></div>",
+   "<div id=\"app\" data-v-app=\"\"></div>"
+  ],
+  "log": []
+ },
+ "scoped-styles": {
+  "snaps": [
+   "<div id=\"app\" data-v-app=\"\"><div data-v-root=\"\"><span data-v-root=\"\">s</span><p data-v-child=\"\" data-v-root=\"\">c</p><section data-v-card=\"\" data-v-root=\"\"><b data-v-root=\"\" data-v-card-s=\"\">x</b></section></div></div>",
+   "<div id=\"app\" data-v-app=\"\"></div>"
+  ],
+  "log": []
+ },
+ "use-model-emit": {
+  "snaps": [
+   "<div id=\"app\" data-v-app=\"\"><div><b>p:start</b><i>c:start</i></div></div>",
+   "<div id=\"app\" data-v-app=\"\"><div><b>p:child</b><i>c:child</i></div></div>",
+   "<div id=\"app\" data-v-app=\"\"></div>"
+  ],
+  "log": []
+ },
+ "props-helpers": {
+  "snaps": [
+   "<div id=\"app\" data-v-app=\"\"><div><i>dflt</i><u>12</u><s>b,c</s></div></div>",
+   "<div id=\"app\" data-v-app=\"\"></div>"
+  ],
+  "log": []
+ }
+}

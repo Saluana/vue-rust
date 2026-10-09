@@ -196,6 +196,35 @@ const graphs = [
     s.extra = 'x';
     t('sp', s);
   }],
+  ['promise-pending', (t) => {
+    t('p', new Promise(() => {}));
+  }],
+  ['promise-fulfilled-and-handled-rejection', (t) => {
+    const f = Promise.resolve(5);
+    const r = Promise.reject(1);
+    r.catch(() => {});
+    t('pr', f, r);
+  }],
+  ['promise-aliased-in-array', (t) => {
+    const p = new Promise(() => {});
+    t('pa', [p, p]);
+  }],
+  ['promise-own-props-are-not-traced', (t) => {
+    const p = new Promise(() => {});
+    p.x = 1;
+    t('px', p);
+  }],
+  ['promise-nonextensible', (t) => {
+    const p = new Promise(() => {});
+    p.x = 1;
+    Object.preventExtensions(p);
+    t('pn', p);
+  }],
+  ['promise-frozen', (t) => {
+    const p = new Promise(() => {});
+    Object.freeze(p);
+    t('pf', p);
+  }],
 ];
 
 function render() {

@@ -5,8 +5,9 @@ mod support;
 
 use std::sync::atomic::{AtomicU64, Ordering};
 
-use support::{key, num, ov, s};
+use support::{key, noop, num, ov, s};
 use vn_testkit::{run_scenario, run_scenario_isolated, run_scenario_with_gc_threshold, ScenarioEntry};
+use vn_value::builtins::promise::new_promise;
 use vn_value::{Call, Flags, FnInfo, FnKind, Intrinsic, Res, Rt, Throw, Value};
 
 fn global_trace(rt: &Rt) -> Value {
@@ -187,4 +188,149 @@ fn collecting_at_every_safepoint_does_not_change_the_document() {
     assert_eq!(default_schedule, expected);
     assert_eq!(at_every_safepoint, expected);
     assert!(seen_with_stress > 0, "the stressed schedule collected before run (saw {seen_with_stress})");
+}
+
+// ----- promises at the scenario level (trace-format.md steps 4-5). The expected documents are the Node oracle's
+// output for the same scenarios (node tooling/oracle/run.mjs <file>), recorded in each test. -----
+
+fn global_value(rt: &Rt, name: &str) -> Value {
+    rt.get_str(&Value::Object(rt.intrinsic(Intrinsic::Global)), name).expect("a global of the realm")
+}
+
+/// `Promise.<name>(args)` through the realm's global.
+fn promise_static(rt: &Rt, name: &str, args: &[Value]) -> Res<Value> {
+    let ctor = global_value(rt, "Promise");
+    let f = rt.get_str(&ctor, name)?;
+    rt.call(&f, &ctor, args)
+}
+
+/// `this[name](args)`.
+fn invoke(rt: &Rt, this: &Value, name: &str, args: &[Value]) -> Res<Value> {
+    let f = rt.get_str(this, name)?;
+    rt.call(&f, this, args)
+}
+
+/// Traces its closure data: the label and one value.
+fn trace_data(rt: &Rt, c: &Call<'_>) -> Res<Value> {
+    let d = rt.fn_data(c.callee);
+    let label = rt.to_string(&d[0])?.to_rust_string_lossy();
+    trace_in(rt, &label, &[d[1].clone()])?;
+    Ok(Value::Undefined)
+}
+
+/// A native function that traces `label` with `value` when called.
+fn tracer(rt: &Rt, label: &str, value: Value) -> Value {
+    Value::Object(rt.new_native_function(trace_data, label, 0, vec![s(label), value]))
+}
+
+fn run_fn(rt: &Rt, body: vn_value::CodeFn) -> ScenarioEntry {
+    ScenarioEntry { run: ov(rt.new_function(body, FnInfo::new("run", 0, FnKind::Normal), &[])) }
+}
+
+/// `testHost.tick()`.
+fn tick(rt: &Rt) -> Res<Value> {
+    let host = global_value(rt, "testHost");
+    invoke(rt, &host, "tick", &[])
+}
+
+fn run_rejects_after_a_trace(rt: &Rt, _c: &Call<'_>) -> Res<Value> {
+    trace_in(rt, "inside", &[num(1.0)])?;
+    promise_static(rt, "reject", &[s("boom")])
+}
+
+#[test]
+fn a_rejection_returned_by_run_is_the_result_after_the_earlier_entries() {
+    // Node: {"scenario":"rejected-run","result":"throw","error":"boom","entries":[{"label":"inside","values":[1]}],"unhandledRejections":[]}
+    let doc = run_scenario("rejected-run", |rt| Ok(run_fn(rt, run_rejects_after_a_trace)));
+    assert_eq!(
+        doc,
+        r#"{"scenario":"rejected-run","result":"throw","error":"boom","entries":[{"label":"inside","values":[1]}],"unhandledRejections":[]}"#
+    );
+}
+
+fn run_micro_then_tick(rt: &Rt, _c: &Call<'_>) -> Res<Value> {
+    let resolved = promise_static(rt, "resolve", &[Value::Undefined])?;
+    invoke(rt, &resolved, "then", &[tracer(rt, "micro", num(2.0))])?;
+    let ticked = tick(rt)?;
+    invoke(rt, &ticked, "then", &[tracer(rt, "after-tick", num(1.0))])?;
+    Ok(Value::Undefined)
+}
+
+#[test]
+fn run_waits_for_the_queue_so_the_tick_continuation_is_in_the_document() {
+    // Node: micro (the job queued first), then after-tick (the continuation of testHost.tick()).
+    let doc = run_scenario("tick-run", |rt| Ok(run_fn(rt, run_micro_then_tick)));
+    assert_eq!(
+        doc,
+        r#"{"scenario":"tick-run","result":"ok","error":null,"entries":[{"label":"micro","values":[2]},{"label":"after-tick","values":[1]}],"unhandledRejections":[]}"#
+    );
+}
+
+fn module_rejects_first(rt: &Rt) -> Res<ScenarioEntry> {
+    promise_static(rt, "reject", &[s("first")])?;
+    Ok(run_fn(rt, run_rejects_second_then_ticks))
+}
+
+fn run_rejects_second_then_ticks(rt: &Rt, _c: &Call<'_>) -> Res<Value> {
+    promise_static(rt, "reject", &[s("second")])?;
+    let ticked = tick(rt)?;
+    invoke(rt, &ticked, "then", &[tracer(rt, "done", Value::Bool(true))])?;
+    Ok(Value::Undefined)
+}
+
+#[test]
+fn unhandled_rejections_are_encoded_in_rejection_order() {
+    // Node: "unhandledRejections":["first","second"] (both rejected, never handled).
+    let doc = run_scenario("unhandled-order", module_rejects_first);
+    assert_eq!(
+        doc,
+        r#"{"scenario":"unhandled-order","result":"ok","error":null,"entries":[{"label":"done","values":[true]}],"unhandledRejections":["first","second"]}"#
+    );
+}
+
+fn module_handles_its_rejection(rt: &Rt) -> Res<ScenarioEntry> {
+    let rejected = promise_static(rt, "reject", &[s("caught")])?;
+    let handler = Value::Object(rt.new_native_function(noop, "noop", 0, Vec::new()));
+    invoke(rt, &rejected, "catch", &[handler])?;
+    Ok(run_fn(rt, run_traces_x))
+}
+
+fn run_traces_x(rt: &Rt, _c: &Call<'_>) -> Res<Value> {
+    trace_in(rt, "x", &[num(1.0)])?;
+    Ok(Value::Undefined)
+}
+
+#[test]
+fn a_rejection_with_a_handler_is_not_listed() {
+    // Node: "unhandledRejections":[] (the catch handles it before the end of the run).
+    let doc = run_scenario("handled-run", module_handles_its_rejection);
+    assert_eq!(doc, r#"{"scenario":"handled-run","result":"ok","error":null,"entries":[{"label":"x","values":[1]}],"unhandledRejections":[]}"#);
+}
+
+fn run_traces_a_pending_promise(rt: &Rt, _c: &Call<'_>) -> Res<Value> {
+    let p = new_promise(rt);
+    trace_in(rt, "p", &[ov(p)])?;
+    Ok(Value::Undefined)
+}
+
+#[test]
+fn a_promise_is_traced_as_an_opaque_object() {
+    // Node: the entry is {"$":"obj","id":1,"cls":"Promise","proto":"other","props":[]}.
+    let doc = run_scenario("promise-entry", |rt| Ok(run_fn(rt, run_traces_a_pending_promise)));
+    assert_eq!(
+        doc,
+        r#"{"scenario":"promise-entry","result":"ok","error":null,"entries":[{"label":"p","values":[{"$":"obj","id":1,"cls":"Promise","proto":"other","props":[]}]}],"unhandledRejections":[]}"#
+    );
+}
+
+fn run_returns_a_pending_promise(rt: &Rt, _c: &Call<'_>) -> Res<Value> {
+    Ok(Value::Object(new_promise(rt)))
+}
+
+#[test]
+fn a_value_returned_by_run_that_never_settles_is_a_harness_panic() {
+    // The oracle cannot finish this either (the process exits with "run() never settled"), so the runner reports a
+    // panic document rather than a result.
+    let doc = run_scenario("never-settles", |rt| Ok(run_fn(rt, run_returns_a_pending_promise)));
+    assert!(doc.contains(r#""result":"panic""#) && doc.contains("never settled"), "{doc}");
 }

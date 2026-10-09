@@ -1,0 +1,1 @@
+{"scenario":"errors/async-handler-rejection","result":"ok","error":null,"entries":[{"label":"sync-done","values":[]},{"label":"app","values":["later","https://vuejs.org/error-reference/#runtime-5"]},{"label":"after-tick","values":[]}],"unhandledRejections":[]}

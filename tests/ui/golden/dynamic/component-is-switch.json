@@ -1,0 +1,1 @@
+{"scenario":"dynamic/component-is-switch","result":"ok","error":null,"entries":[{"label":"a","values":["<div><button id=\"btn\">A 2</button></div>"]},{"label":"b","values":["<div><p id=\"btn\">B static</p></div>"]},{"label":"again","values":["<div><button id=\"btn\">A 0</button></div>"]}],"unhandledRejections":[]}

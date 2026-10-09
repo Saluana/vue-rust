@@ -29,5 +29,5 @@ pub use native::{payload_ref, Exotic, Hook, NativeObject};
 pub use object::{Flags, ObjClass, ObjectKind, Prop, PropertyMap, MAX_DENSE_LEN};
 pub use ops::{same_value_zero, strict_eq};
 pub use roots::{ProviderId, RootId, RootProvider, Trace, Tracer};
-pub use rt::{Hint, Intrinsic, Rt, WellKnown};
+pub use rt::{Hint, Intrinsic, Rt, WeakRt, WellKnown};
 pub use value::{same_value, ObjRef, PropKey, Res, Sym, Throw, Value};

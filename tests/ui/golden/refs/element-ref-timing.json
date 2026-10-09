@@ -1,0 +1,1 @@
+{"scenario":"refs/element-ref-timing","result":"ok","error":null,"entries":[{"label":"log","values":["setup sees true"]},{"label":"log","values":["mounted sees DIV"]}],"unhandledRejections":[]}

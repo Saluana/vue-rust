@@ -298,7 +298,7 @@ fn freezing_an_array_keeps_its_length_and_values_readable() {
 fn integrity_after(rt: &Rt, items: &[f64], op: &str) -> (bool, bool) {
     let (o, _) = arr(rt, items);
     match op {
-        "preventExtensions" => assert!(rt.prevent_extensions(o)),
+        "preventExtensions" => assert!(rt.prevent_extensions(o).expect("prevent_extensions")),
         "seal" => assert!(ok(rt, rt.seal(o))),
         "freeze" => assert!(ok(rt, rt.freeze(o))),
         other => panic!("unknown operation {other}"),
@@ -329,7 +329,7 @@ fn v8_integrity_of_a_non_extensible_array_of_holes_is_frozen_and_sealed() {
     // Holes are not own properties (Object.isFrozen(Object.preventExtensions(new Array(3))) is true).
     let rt = Rt::new();
     let a = rt.new_array(vec![Value::Hole; 3]);
-    assert!(rt.prevent_extensions(a));
+    assert!(rt.prevent_extensions(a).expect("prevent_extensions"));
     assert_eq!((ok(&rt, rt.is_frozen(a)), ok(&rt, rt.is_sealed(a))), (true, true));
 }
 
@@ -350,7 +350,7 @@ fn a_read_only_length_on_a_non_extensible_empty_array_is_still_frozen() {
     // Object.isFrozen(Object.defineProperty(Object.preventExtensions([]), 'length', {writable: false})) is true.
     let rt = Rt::new();
     let (o, _) = arr(&rt, &[]);
-    assert!(rt.prevent_extensions(o));
+    assert!(rt.prevent_extensions(o).expect("prevent_extensions"));
     ok(&rt, rt.define_data(o, key("length"), num(0.0), Flags::NONE));
     assert!(ok(&rt, rt.is_frozen(o)));
     assert!(ok(&rt, rt.is_sealed(o)));
@@ -377,11 +377,11 @@ fn named_properties_of_arrays_still_count_toward_integrity() {
     let rt = Rt::new();
     let (a, _) = arr(&rt, &[]);
     ok(&rt, rt.define_data(a, key("n"), num(1.0), Flags::ALL));
-    assert!(rt.prevent_extensions(a));
+    assert!(rt.prevent_extensions(a).expect("prevent_extensions"));
     assert_eq!((ok(&rt, rt.is_frozen(a)), ok(&rt, rt.is_sealed(a))), (false, false));
     let (b, _) = arr(&rt, &[]);
     ok(&rt, rt.define_data(b, key("n"), num(1.0), Flags::new(false, true, false)));
-    assert!(rt.prevent_extensions(b));
+    assert!(rt.prevent_extensions(b).expect("prevent_extensions"));
     assert_eq!((ok(&rt, rt.is_frozen(b)), ok(&rt, rt.is_sealed(b))), (true, true));
 }
 
@@ -390,11 +390,11 @@ fn plain_objects_keep_the_spec_integrity_rule() {
     // Object.isFrozen(Object.preventExtensions({})) is true; a writable property breaks it.
     let rt = Rt::new();
     let o = rt.new_object();
-    assert!(rt.prevent_extensions(o));
+    assert!(rt.prevent_extensions(o).expect("prevent_extensions"));
     assert!(ok(&rt, rt.is_frozen(o)));
     let p = rt.new_object();
     ok(&rt, rt.define_data(p, key("w"), num(1.0), Flags::ALL));
-    assert!(rt.prevent_extensions(p));
+    assert!(rt.prevent_extensions(p).expect("prevent_extensions"));
     assert!(!ok(&rt, rt.is_frozen(p)));
     assert!(!ok(&rt, rt.is_sealed(p)));
 }

@@ -89,4 +89,4 @@ diagnostics }`, JSON-serializable (no cyclic objects: use numeric ids). Implemen
 
 ## Acceptance
 `node --test "tests/compiler/frontend/*.test.mjs"` passes; each rejects fixture reports its expected code/span; no files outside owned
-paths changed. In your report list the rule table (id → code → one line) so the coordinator can review coverage.
+paths changed. In your report list the rule table (id → code → one line) so the maintainer can review coverage.

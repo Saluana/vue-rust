@@ -1,0 +1,1 @@
+{"scenario":"watch-in-component/computed-watch-chain","result":"ok","error":null,"entries":[{"label":"log","values":["doubled 6"]},{"label":"text","values":["6"]}],"unhandledRejections":[]}

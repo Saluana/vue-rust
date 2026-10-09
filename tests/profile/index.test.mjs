@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { isSupported, loadManifest, lookup } from '../../compiler/profile/index.mjs';
 
-// Expected values are hand-checked against design.md section 8 and the coordinator's decisions, not read back from
+// Expected values are hand-checked against design.md section 8 and the maintainer's decisions, not read back from
 // the manifest.
 
 test('the manifest loads with schemaVersion 1, vue 3.5.43, default deny and the 126 design rows', () => {

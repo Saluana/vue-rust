@@ -2,6 +2,7 @@
 // v-for and v-slot parameter lists. A fragment is wrapped so that the frontend's checkSource (parse, scope analysis,
 // profile rules) can read it as a module. Diagnostic offsets are mapped back to the fragment's place in its file.
 import { checkSource } from '../frontend/check.mjs';
+import { checkStdlib } from '../analysis/stdlib-check.mjs';
 import { manifestEntry } from './context.mjs';
 
 // Vue's own classification of v-on values: a member path or a function expression is an expression handler,
@@ -45,19 +46,25 @@ export function declarationOf(names) {
 
 // Checks one fragment that starts at file offset base. kind is expr, stmts, params or vfor-params; decl is the
 // declaration from declarationOf(). Names declared by the fragment itself (v-for or v-slot parameters) shadow decl.
-export function checkFragment(ctx, { file, base, text, kind, lang, decl = '' }) {
+export function checkFragment(ctx, { file, base, text, kind, lang, decl = '', scriptBroken = false }) {
   if (text.trim() === '') return;
   const { src, prefix } = wrap(kind, text, decl);
   const res = checkSource(src, { filename: file, lang, target: ctx.target });
+  if (res.ast && !ctx.diags.some(d => d.severity === 'error') && !res.diagnostics.some(d => d.severity === 'error')) {
+    res.diagnostics.push(...checkStdlib(res.ast, { source: src, filename: file, target: ctx.target, analysis: res.analysis }));
+  }
   const at = (offset) => base + Math.max(0, offset - prefix);
   for (const d of res.diagnostics) {
+    // Instance properties have their own policy and diagnostic below.
+    const ref = res.analysis?.references.find(r => r.start === d.start.offset && r.binding === -1);
+    if (d.code === 'VN4016' && (scriptBroken || (ref && manifestEntry('instance', ref.name)))) continue;
     ctx.report(d.code, file, at(d.start.offset), at(d.end.offset), {
       message: d.message,
       hint: d.hint,
       severity: d.severity,
     });
   }
-  if (!res.analysis) return;
+  if (!res.analysis) return new Set();
   // Instance properties that the profile excludes (A18, A12): $el, $parent, $root, $watch, $forceUpdate, $host.
   for (const ref of res.analysis.references) {
     if (ref.binding !== -1 || !ref.name.startsWith('$')) continue;
@@ -68,4 +75,6 @@ export function checkFragment(ctx, { file, base, text, kind, lang, decl = '' }) 
       hint: st.note ?? undefined,
     });
   }
+  const wrapper = res.analysis.functions.find(f => f.parentFnId === -1 && f.kind === 'arrow');
+  return new Set(res.analysis.bindings.filter(b => b.kind === 'param' && b.scopeId === wrapper?.scopeId).map(b => b.name));
 }

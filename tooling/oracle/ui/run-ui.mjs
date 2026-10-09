@@ -174,9 +174,10 @@ async function runInPage(cfg) {
 }
 
 // Runs one scenario directory in a fresh Chrome profile and page. Resolves with the trace document (an object).
-export async function runUiScenario(dir, { timeout = 30000 } = {}) {
+// name overrides the scenario name, for scratch scenarios outside tests/ui/cases (the tests use it).
+export async function runUiScenario(dir, { timeout = 30000, name } = {}) {
   const scenarioDir = path.resolve(dir);
-  const scenario = uiScenarioName(scenarioDir);
+  const scenario = name ?? uiScenarioName(scenarioDir);
   const compiled = compileCase(scenarioDir);
   const server = await startServer(scenarioDir, compiled);
   let page = null;

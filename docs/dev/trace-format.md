@@ -75,7 +75,7 @@ expands it again (current state), keeping the same `id`.
  "integrity":"nonextensible"|"sealed"|"frozen"}  // only present for NON-extensible objects: the strongest that holds
                                                // (`Object.isFrozen` → "frozen", else `Object.isSealed` → "sealed", else "nonextensible")
 ```
-(v1.1, coordinator amendment: the `integrity` field makes `Object.freeze/seal/preventExtensions` results observable. Absent ⇒ extensible.)
+(v1.1, amendment: the `integrity` field makes `Object.freeze/seal/preventExtensions` results observable. Absent ⇒ extensible.)
 
 - An accessor property is encoded as `[key, {"$":"accessor","get":true|false,"set":true|false}]`; getters
   are never invoked while tracing.

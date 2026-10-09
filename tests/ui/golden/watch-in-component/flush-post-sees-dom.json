@@ -1,0 +1,1 @@
+{"scenario":"watch-in-component/flush-post-sees-dom","result":"ok","error":null,"entries":[{"label":"log","values":["pre sees 1"]},{"label":"log","values":["post sees 2"]},{"label":"html","values":["<p>2</p>"]}],"unhandledRejections":[]}

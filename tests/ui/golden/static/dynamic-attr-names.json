@@ -1,0 +1,1 @@
+{"scenario":"static/dynamic-attr-names","result":"ok","error":null,"entries":[{"label":"first","values":["<div data-x=\"a\" id=\"same\">same</div>"]},{"label":"second","values":["<div id=\"same\" title=\"b\">same</div>"]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"async-params-this","result":"ok","error":null,"entries":[{"label":"named","values":["done"]},{"label":"method","values":[11]},{"label":"method2","values":[14]},{"label":"arrow","values":[8]}],"unhandledRejections":[]}

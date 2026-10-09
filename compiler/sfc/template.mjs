@@ -50,7 +50,8 @@ class Walker {
     this.scriptBroken = scriptBroken;
     this.lang = lang;
     this.reactiveConsts = reactiveConsts;
-    this.decl = declarationOf(names);
+    // These names are supplied by Vue's public instance proxy, rather than the global object.
+    this.decl = declarationOf(new Set([...names, '$attrs', '$emit', '$slots', '$props', '$refs', '$options', '$nextTick', '$data']));
   }
 
   report(code, start, end, extra) {
@@ -60,17 +61,19 @@ class Walker {
   // The AST offsets of this file (absolute for the component file, relative to the template text for src files).
   expr(exp, kind) {
     if (!exp || exp.content === undefined) return;
-    checkFragment(this.ctx, { file: this.file, base: exp.loc.start.offset, text: exp.content, kind, lang: this.lang, decl: this.decl });
+    checkFragment(this.ctx, { file: this.file, base: exp.loc.start.offset, text: exp.content, kind, lang: this.lang, decl: this.decl, scriptBroken: this.scriptBroken });
   }
 
   node(n) {
     if (!n) return;
+    const outerDecl = this.decl;
     if (n.type === NODE.ELEMENT) this.element(n);
     else if (n.type === NODE.INTERPOLATION) {
       if (n.content.content.trim() === '') this.report('VN1000', ...this.span(n.content), { message: 'empty interpolation' });
       else this.expr(n.content, 'expr');
     }
     for (const child of n.children ?? []) this.node(child);
+    this.decl = outerDecl;
   }
 
   span(n) {
@@ -81,10 +84,26 @@ class Walker {
     const tagStart = el.loc.start.offset + 1;
     this.tag(el, [tagStart, tagStart + el.tag.length]);
     if (el.tag === 'input') this.inputType(el);
+    // v-if is evaluated outside the v-for alias scope, regardless of attribute order.
+    const early = new Set(['if', 'else-if', 'for']);
+    for (const prop of el.props) {
+      if (prop.type === NODE.DIRECTIVE && ['if', 'else-if'].includes(prop.name)) this.directive(el, prop);
+    }
+    for (const prop of el.props) {
+      if (prop.type === NODE.DIRECTIVE && prop.name === 'for') {
+        const aliases = this.directive(el, prop);
+        if (aliases) this.decl += declarationOf(aliases);
+      }
+    }
+    let slotNames;
     for (const prop of el.props) {
       if (prop.type === NODE.ATTRIBUTE) this.attribute(el, prop);
-      else if (prop.type === NODE.DIRECTIVE) this.directive(el, prop);
+      else if (prop.type === NODE.DIRECTIVE && !early.has(prop.name)) {
+        const names = this.directive(el, prop);
+        if (prop.name === 'slot') slotNames = names;
+      }
     }
+    if (slotNames) this.decl += declarationOf(slotNames);
   }
 
   tag(el, span) {
@@ -206,10 +225,11 @@ class Walker {
       return;
     }
     if (name === 'bind') {
+      this.modifiers(prop, 'bind');
       if (prop.arg && !prop.arg.isStatic) this.expr(prop.arg, 'expr');
       this.expr(prop.exp, 'expr');
-      this.modifiers(prop, 'bind');
     } else if (name === 'on') {
+      this.modifiers(prop, 'on');
       if (prop.arg && !prop.arg.isStatic) this.expr(prop.arg, 'expr');
       if (prop.exp) {
         const text = prop.exp.content;
@@ -219,11 +239,12 @@ class Walker {
           text,
           kind: handlerKind(text) === 'expr' ? 'expr' : 'stmts',
           lang: this.lang,
-          decl: this.decl,
+          scriptBroken: this.scriptBroken,
+          decl: this.decl + 'var $event;',
         });
       }
-      this.modifiers(prop, 'on');
     } else if (name === 'model') {
+      this.modifiers(prop, 'model');
       const target = prop.exp?.content.trim();
       if (target && this.reactiveConsts.has(target)) {
         // Vue rebinds such a const as let so that v-model can write it, and prints a warning. Rejected instead.
@@ -233,7 +254,6 @@ class Walker {
         });
       }
       this.expr(prop.exp, 'expr');
-      this.modifiers(prop, 'model');
     } else if (name === 'html') {
       const st = manifestEntry('directive', 'v-html');
       if (this.ctx.target !== 'web' || !this.ctx.trustedHtml) {
@@ -249,18 +269,20 @@ class Walker {
       const parts = prop.exp ? splitFor(prop.exp.content) : null;
       if (parts) {
         const base = prop.exp.loc.start.offset;
-        checkFragment(this.ctx, { file: this.file, base, text: parts.left, kind: 'vfor-params', lang: this.lang, decl: this.decl });
-        checkFragment(this.ctx, { file: this.file, base: base + parts.rightStart, text: parts.right, kind: 'expr', lang: this.lang, decl: this.decl });
+        const aliases = checkFragment(this.ctx, { file: this.file, base, text: parts.left, kind: 'vfor-params', lang: this.lang, decl: this.decl, scriptBroken: this.scriptBroken });
+        checkFragment(this.ctx, { file: this.file, base: base + parts.rightStart, text: parts.right, kind: 'expr', lang: this.lang, decl: this.decl, scriptBroken: this.scriptBroken });
+        return aliases;
       }
     } else if (name === 'slot') {
       if (prop.arg && !prop.arg.isStatic) this.expr(prop.arg, 'expr');
       if (prop.exp) {
-        checkFragment(this.ctx, {
+        return checkFragment(this.ctx, {
           file: this.file,
           base: prop.exp.loc.start.offset,
           text: prop.exp.content,
           kind: 'params',
           lang: this.lang,
+          scriptBroken: this.scriptBroken,
           decl: this.decl,
         });
       }

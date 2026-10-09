@@ -1,0 +1,1 @@
+{"scenario":"lifecycle/setup-before-beforemount","result":"ok","error":null,"entries":[{"label":"log","values":["setup"]},{"label":"log","values":["beforeMount"]},{"label":"log","values":["mounted"]}],"unhandledRejections":[]}

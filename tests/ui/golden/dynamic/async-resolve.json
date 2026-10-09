@@ -1,0 +1,1 @@
+{"scenario":"dynamic/async-resolve","result":"ok","error":null,"entries":[{"label":"before","values":["<div><!----></div>"]},{"label":"after","values":["<div><p id=\"lazy\">lazy loaded</p></div>"]}],"unhandledRejections":[]}

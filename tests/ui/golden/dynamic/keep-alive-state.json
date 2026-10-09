@@ -1,0 +1,1 @@
+{"scenario":"dynamic/keep-alive-state","result":"ok","error":null,"entries":[{"label":"log","values":["A mounted"]},{"label":"log","values":["A activated"]},{"label":"log","values":["A deactivated"]},{"label":"log","values":["A activated"]},{"label":"html","values":["<div><button id=\"btn\">A 2</button></div>"]}],"unhandledRejections":[]}

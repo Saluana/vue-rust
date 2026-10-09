@@ -1,0 +1,1 @@
+{"scenario":"emits/undeclared-listener-fallthrough","result":"ok","error":null,"entries":[{"label":"ping","values":[]},{"label":"count","values":[1]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"emits/validator-function","result":"ok","error":null,"entries":[{"label":"save","values":[{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[["ok",false]]}]}],"unhandledRejections":[]}

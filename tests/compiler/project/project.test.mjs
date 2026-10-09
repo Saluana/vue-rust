@@ -61,18 +61,18 @@ test('the vue import policy: default and namespace imports, subpaths, excluded e
 
 test('closed world: packages, Node built-ins, missing modules, absolute and unknown file types are rejected', () => {
   const pkg = compileProject({ entry: 'a.js', files: { 'a.js': "import _ from 'lodash'\nexport const x = _\n" } });
-  assert.deepEqual(codes(pkg), ['VN9002']);
+  assert.deepEqual(codes(pkg), ['VN9001']);
   assert.match(pkg.diagnostics[0].message, /package import 'lodash'/);
   const builtin = compileProject({ entry: 'a.js', files: { 'a.js': "import fs from 'node:fs'\nexport const x = fs\n" } });
   assert.deepEqual(codes(builtin), ['VN6204']);
   const missing = compileProject({ entry: 'a.js', files: { 'a.js': "import { q } from './nope.js'\nexport const x = q\n" } });
-  assert.deepEqual(codes(missing), ['VN9002']);
+  assert.deepEqual(codes(missing), ['VN9001']);
   const abs = compileProject({ entry: 'a.js', files: { 'a.js': "import { q } from '/b.js'\nexport const x = q\n", 'b.js': 'export const q = 1\n' } });
-  assert.deepEqual(codes(abs), ['VN9002']);
+  assert.deepEqual(codes(abs), ['VN9001']);
   const kind = compileProject({ entry: 'a.js', files: { 'a.js': "import { q } from './b.css'\nexport const x = q\n", 'b.css': 'x{}' } });
-  assert.deepEqual(codes(kind), ['VN9002']);
+  assert.deepEqual(codes(kind), ['VN9001']);
   const noEntry = compileProject({ entry: 'missing.js', files: { 'a.js': 'export const x = 1\n' } });
-  assert.deepEqual(codes(noEntry), ['VN9002']);
+  assert.deepEqual(codes(noEntry), ['VN9001']);
 });
 
 test('negative control: the same graph with a valid import compiles, with a broken one it does not', () => {

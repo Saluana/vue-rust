@@ -1,7 +1,7 @@
 //! Decoder: the inverse of the encoder (trace-format.md v1.1). It builds runtime values from one encoding pass.
 //! It restores aliasing and cycles from `id`/`ref`, the holes of arrays, each object's prototype class, the
 //! `integrity` state (applied after the properties), symbols by id, and functions by name and length. Accessor
-//! markers, unknown classes (Promise has no kernel representation yet) and malformed input are
+//! markers, unknown classes (a Promise is rebuilt pending, with no properties) and malformed input are
 //! errors, never guesses.
 
 use std::collections::HashMap;
@@ -220,7 +220,23 @@ fn decode_object(rt: &Rt, e: &Json, ids: &mut IdTable) -> Res<Value> {
             }
             o
         }
-        "Promise" => return Err(invalid(rt, "the kernel has no Promise objects yet")),
+        "Promise" => {
+            if proto != "other" {
+                return Err(invalid(rt, "unsupported prototype of a promise"));
+            }
+            if e.field("props").and_then(Json::items).is_some_and(|p| !p.is_empty()) {
+                return Err(invalid(rt, "a promise has no traced properties"));
+            }
+            // A rebuilt promise has no properties, so only the integrity levels that hold for an empty object reproduce:
+            // none, or frozen. The sealed and nonextensible levels depend on the promise's own properties (not traced).
+            if matches!(e.field("integrity").and_then(Json::units).map(String::from_utf16_lossy).as_deref(), Some("sealed" | "nonextensible")) {
+                return Err(invalid(rt, "a promise's sealed or nonextensible integrity depends on its own properties, which are not traced"));
+            }
+            // trace-format v1: a promise is opaque. Its state is not in the encoding, so the rebuilt promise is pending.
+            let o = vn_value::builtins::promise::new_promise(rt);
+            ids.objects.insert(id, o);
+            o
+        }
         _ => return Err(invalid(rt, "unsupported class")),
     };
     for entry in e.field("props").and_then(Json::items).ok_or_else(|| invalid(rt, "object without props"))? {
@@ -238,7 +254,7 @@ fn decode_object(rt: &Rt, e: &Json, ids: &mut IdTable) -> Res<Value> {
             rt.seal(o)?;
         }
         Some("nonextensible") => {
-            rt.prevent_extensions(o);
+            rt.prevent_extensions(o)?;
         }
         Some(_) => return Err(invalid(rt, "unknown integrity state")),
     }

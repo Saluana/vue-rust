@@ -42,6 +42,8 @@ pub struct Fields {
     pub static_count: Value,
     pub el: Option<u64>,
     pub anchor: Option<u64>,
+    pub(crate) el_handle: Option<ObjRef>,
+    pub(crate) anchor_handle: Option<ObjRef>,
     pub target: Option<u64>,
     pub target_anchor: Option<u64>,
     pub target_start: Option<u64>,
@@ -76,6 +78,8 @@ impl Fields {
             static_count: Value::Number(0.0),
             el: None,
             anchor: None,
+            el_handle: None,
+            anchor_handle: None,
             target: None,
             target_anchor: None,
             target_start: None,
@@ -105,6 +109,7 @@ pub struct VNodeData {
 impl NativeObject for VNodeData {
     fn trace(&self, t: &mut Tracer) {
         let f = self.f.borrow();
+        for o in [f.el_handle, f.anchor_handle].into_iter().flatten() { t.mark(o); }
         for v in [
             &f.ty, &f.props, &f.key, &f.reference, &f.children, &f.shape, &f.patch, &f.dynamic_props, &f.dynamic_children,
             &f.static_count, &f.scope_id, &f.slot_scope_ids, &f.component, &f.suspense, &f.ss_content, &f.ss_fallback,
@@ -137,7 +142,7 @@ impl NativeObject for State {
 }
 
 /// Creates the state object of a realm. Every export of this module carries it as data[0].
-pub(crate) fn new_state(rt: &Rt) -> ObjRef {
+pub fn new_state(rt: &Rt) -> ObjRef {
     let empty = new_block(rt, false);
     let st = State { stack: RefCell::new(Vec::new()), current: Cell::new(None), tracking: Cell::new(1.0), empty };
     rt.new_native_object(None, Rc::new(st))
@@ -206,7 +211,80 @@ pub(crate) fn fields<R>(rt: &Rt, o: ObjRef, f: impl FnOnce(&mut Fields) -> R) ->
 }
 
 fn alloc(rt: &Rt, f: Fields) -> ObjRef {
-    rt.new_native_object(None, Rc::new(VNodeData { f: RefCell::new(f) }))
+    rt.new_native_object(Some(vnode_proto(rt)), Rc::new(VNodeData { f: RefCell::new(f) }))
+}
+
+/// The fields that JavaScript code and the instance layer read by property. Native vnodes keep them in the payload;
+/// the prototype exposes read-only accessors over the payload. `el` and `anchor` are host nodes and are not exposed.
+const VNODE_PROPS: &[&str] = &[
+    "type", "props", "key", "ref", "children", "shapeFlag", "patchFlag", "dynamicChildren", "dynamicProps", "appContext",
+    "ce", "scopeId", "slotScopeIds", "dirs", "transition", "component", "memo", "cacheIndex", "ctx", "placeholder",
+];
+const VNODE_PROTO: &str = "vn-runtime.vnode-proto";
+
+fn vnode_proto(rt: &Rt) -> ObjRef {
+    if let Some(p) = rt.builtin(VNODE_PROTO) {
+        return p;
+    }
+    let p = rt.new_object();
+    for name in VNODE_PROPS {
+        let getter = rt.new_native_function(vnode_getter, name, 0, vec![Value::String(JsStr::from_str(name))]);
+        rt.define_accessor(p, PropKey::from_str(name), Some(getter), None, Flags::new(false, true, true))
+            .expect("vnode prototype accessor (framework bug)");
+    }
+    rt.register_builtin(VNODE_PROTO, p);
+    p
+}
+
+/// The getter of one vnode property: the field named by the function's data, of the receiver.
+fn vnode_getter(rt: &Rt, c: &Call<'_>) -> Res<Value> {
+    let name = match rt.fn_data(c.callee).first() {
+        Some(Value::String(s)) => s.to_rust_string_lossy(),
+        _ => return Ok(Value::Undefined),
+    };
+    let Some(o) = as_vnode(rt, c.this) else { return Ok(Value::Undefined) };
+    Ok(fields(rt, o, |f| match name.as_str() {
+        "type" => f.ty.clone(),
+        "props" => f.props.clone(),
+        "key" => f.key.clone(),
+        "ref" => f.reference.clone(),
+        "children" => f.children.clone(),
+        "shapeFlag" => f.shape.clone(),
+        "patchFlag" => f.patch.clone(),
+        "dynamicChildren" => f.dynamic_children.clone(),
+        "dynamicProps" => f.dynamic_props.clone(),
+        "appContext" => f.app_context.clone(),
+        "ce" => f.ce.clone(),
+        "scopeId" => f.scope_id.clone(),
+        "slotScopeIds" => f.slot_scope_ids.clone(),
+        "dirs" => f.dirs.clone(),
+        "transition" => f.transition.clone(),
+        "component" => f.component.clone(),
+        "memo" => f.memo.clone(),
+        "cacheIndex" => f.cache_index.clone(),
+        "ctx" => f.ctx.clone(),
+        "placeholder" => f.placeholder.clone(),
+        _ => Value::Undefined,
+    }))
+}
+
+/// `currentRenderingInstance` as a value (null outside a render).
+fn current_rendering_value(rt: &Rt) -> Value {
+    match crate::instance::inst_state(rt).rendering.get() {
+        Some(i) => Value::Object(i),
+        None => Value::Null,
+    }
+}
+
+/// `currentScopeId`: the `__scopeId` of the component being rendered, or null (setCurrentRenderingInstance).
+fn current_scope_id(rt: &Rt) -> Res<Value> {
+    let Some(inst) = crate::instance::inst_state(rt).rendering.get() else { return Ok(Value::Null) };
+    let ty = crate::instance::instance_of(rt, inst).ty.borrow().clone();
+    if ty.is_nullish() {
+        return Ok(Value::Null);
+    }
+    let sid = rt.get_str(&ty, "__scopeId")?;
+    Ok(if sid.to_boolean() { sid } else { Value::Null })
 }
 
 fn sym_value(rt: &Rt, name: &str) -> Value {
@@ -330,7 +408,7 @@ fn normalize_ref(rt: &Rt, props: &Value) -> Res<Value> {
     }
     if matches!(r, Value::String(_)) || normalize::is_ref(rt, &r)? || rt.is_callable(&r) {
         let o = rt.new_object();
-        rt.define_data(o, PropKey::from_str("i"), Value::Null, Flags::ALL)?;
+        rt.define_data(o, PropKey::from_str("i"), current_rendering_value(rt), Flags::ALL)?;
         rt.define_data(o, PropKey::from_str("r"), r, Flags::ALL)?;
         rt.define_data(o, PropKey::from_str("k"), rk, Flags::ALL)?;
         rt.define_data(o, PropKey::from_str("f"), Value::Bool(rf.to_boolean()), Flags::ALL)?;
@@ -365,13 +443,13 @@ pub fn merge_props(rt: &Rt, args: &[Value]) -> Res<ObjRef> {
                 let dup = rt.is_array(&existing) && array_includes_same_value_zero(rt, &existing, &incoming)?;
                 if incoming.to_boolean() && !strict_eq(&existing, &incoming) && !dup {
                     let v = if existing.to_boolean() { js_concat(rt, &[existing, incoming])? } else { incoming };
-                    rt.set_v(&rv, &key, v)?;
+                    normalize::set_key(rt, &rv, &key, v)?;
                 } else if incoming.is_nullish() && existing.is_nullish() && !is_model_listener(&name) {
-                    rt.set_v(&rv, &key, incoming)?;
+                    normalize::set_key(rt, &rv, &key, incoming)?;
                 }
             } else if !name.units().is_empty() {
                 let v = rt.get_v(to_merge, &key)?;
-                rt.set_v(&rv, &key, v)?;
+                normalize::set_key(rt, &rv, &key, v)?;
             }
         }
     }
@@ -410,7 +488,7 @@ fn normalize_children(rt: &Rt, st: &State, vnode: ObjRef, children: Value) -> Re
         let slot_flag = rt.get_str(&children, "_")?;
         if !slot_flag.to_boolean() {
             // isInternalObject is never true here (no internal prototype), so `_ctx` is written.
-            rt.set_str(&children, "_ctx", Value::Null)?;
+            rt.set_str(&children, "_ctx", current_rendering_value(rt))?;
         }
     } else if rt.is_callable(&children) {
         if elem_or_teleport(rt)? {
@@ -420,7 +498,7 @@ fn normalize_children(rt: &Rt, st: &State, vnode: ObjRef, children: Value) -> Re
         }
         let holder = rt.new_object();
         rt.define_data(holder, PropKey::from_str("default"), children, Flags::ALL)?;
-        rt.define_data(holder, PropKey::from_str("_ctx"), Value::Null, Flags::ALL)?;
+        rt.define_data(holder, PropKey::from_str("_ctx"), current_rendering_value(rt), Flags::ALL)?;
         children = Value::Object(holder);
         ty = 32.0;
     } else {
@@ -463,6 +541,7 @@ pub(crate) fn create_base_vnode(
     let key = if props.to_boolean() { normalize_key(rt, &props)? } else { props.clone() };
     let reference = if props.to_boolean() { normalize_ref(rt, &props)? } else { props.clone() };
     let mut f = Fields::new();
+    f.scope_id = current_scope_id(rt)?;
     f.ty = ty.clone();
     f.props = props;
     f.key = key;
@@ -1085,4 +1164,18 @@ pub mod testing {
         write_value(rt, &f.app_context, out, depth + 1);
         out.push('}');
     }
+}
+
+/// normalizeVNode with the realm state object of `exports::all` (the renderer and the tests use this entry point).
+pub fn normalize_vnode_in(rt: &Rt, state: ObjRef, child: &Value) -> Res<ObjRef> {
+    let p = rt.native_payload(state).expect("vnode state object (framework bug)");
+    let st = payload_ref::<State>(&*p).expect("vnode state type (framework bug)");
+    normalize_vnode(rt, st, child)
+}
+
+/// isSameVNodeType (runtime-core): the same type and the same key. Both arguments must be VNodes.
+pub fn is_same_vnode_type(rt: &Rt, a: ObjRef, b: ObjRef) -> bool {
+    let (ta, ka) = fields(rt, a, |f| (f.ty.clone(), f.key.clone()));
+    let (tb, kb) = fields(rt, b, |f| (f.ty.clone(), f.key.clone()));
+    strict_eq(&ta, &tb) && strict_eq(&ka, &kb)
 }

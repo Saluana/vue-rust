@@ -37,6 +37,8 @@ import {fileURLToPath} from 'node:url';
 import {createRecorder} from './trace.mjs';
 import {compareDocs, describeDiff} from './compare.mjs';
 import {effectiveStatus, isStdlibSupported, lookupStdlib} from '../../compiler/profile/stdlib.mjs';
+import {createRequire} from 'node:module';
+import {isSupported as isProfileSupported} from '../../compiler/profile/index.mjs';
 
 // ---------------------------------------------------------------- callback presets
 
@@ -118,6 +120,28 @@ export function makePresets(log) {
   };
 }
 
+// ---------------------------------------------------------------- Vue targets (WP-RT-A)
+
+// `Vue.<name>` targets are the exports of require('vue') (production build), installed as a global `Vue` namespace.
+// A name is accepted when compiler/profile classifies it as a supported vue export for origin user or compiler.
+export const VUE_PREFIX = 'Vue.';
+const requireVue = createRequire(import.meta.url);
+export function installVueNamespace() {
+  if (process.env.NODE_ENV === undefined) process.env.NODE_ENV = 'production';
+  if (process.env.NODE_ENV !== 'production') {
+    throw new Error(`installVueNamespace: NODE_ENV is ${process.env.NODE_ENV}; the oracle needs the production build`);
+  }
+  if (!Object.hasOwn(globalThis, 'Vue')) {
+    Object.defineProperty(globalThis, 'Vue', {value: requireVue('vue'), writable: true, configurable: true, enumerable: false});
+  }
+  return globalThis.Vue;
+}
+function vueTargetProblem(name) {
+  if (!/^[A-Za-z_$][\w$]*$/.test(name)) return `Vue.${name} is not an identifier`;
+  const ok = isProfileSupported('vue', name, 'native', {origin: 'user'}) || isProfileSupported('vue', name, 'native', {origin: 'compiler'});
+  return ok ? null : `Vue.${name} is not a supported vue export (compiler/profile, origin user or compiler)`;
+}
+
 // ---------------------------------------------------------------- targets
 
 // Callback-taking methods and the number of arguments each call passes to its callback. The manifest cannot express this
@@ -127,7 +151,17 @@ export const CALLBACK_ARITY = new Map([
   ['Array.prototype.map', 3], // (element, index, array)
   ['Array.prototype.reduce', 4], // (accumulator, element, index, array)
   ['Array.prototype.sort', 2], // (a, b)
+  // Added by the maintainer for the builtin WPs (B1 B2 B3 B4 B6):
+  ['Array.prototype.forEach', 3], ['Array.prototype.filter', 3], ['Array.prototype.find', 3], ['Array.prototype.findIndex', 3],
+  ['Array.prototype.findLast', 3], ['Array.prototype.findLastIndex', 3], ['Array.prototype.some', 3], ['Array.prototype.every', 3],
+  ['Array.prototype.flatMap', 3], ['Array.prototype.reduceRight', 4], ['Array.prototype.toSorted', 2], ['Array.from', 2],
+  ['Object.groupBy', 2], ['Map.groupBy', 2], ['Map.prototype.forEach', 3], ['Set.prototype.forEach', 3],
+  ['JSON.parse', 2], ['JSON.stringify', 2], // reviver / replacer (key, value)
+  ['String.prototype.replace', 3], ['String.prototype.replaceAll', 3], // (match, offset, string)
+  ['Function.prototype.call', 3], ['Function.prototype.apply', 3], ['Function.prototype.bind', 3], // the function under test is a preset
 ]);
+// Vue targets that take callbacks (WP-RT-A): renderItem receives (item, index, undefined, cached) or (value, key, index, cached).
+export const VUE_CALLBACK_ARITY = new Map([['Vue.renderList', 4]]);
 export const TARGETS = new Set(CALLBACK_ARITY.keys());
 
 const CORPUS_KINDS = ['static', 'proto', 'ctor', 'const'];
@@ -148,6 +182,7 @@ const NONDETERMINISTIC = new Set(['Math.random', 'Date.now', 'performance.now'])
 // Why a target may not be used, or null. Decided by the standard-library manifest for target 'test', plus the
 // nondeterminism refusal above.
 export function targetProblem(p) {
+  if (p.startsWith(VUE_PREFIX)) return vueTargetProblem(p.slice(VUE_PREFIX.length));
   const entry = corpusEntry(p);
   if (entry === null) {
     if (lookupStdlib('global', p) !== null) {
@@ -173,6 +208,7 @@ const ownValue = (o, k, p) => {
 
 // Resolves a dotted path from the global object. owner is the object the last segment was read from.
 export function resolveTarget(p) {
+  if (p.startsWith(VUE_PREFIX)) installVueNamespace();
   const segs = p.split('.');
   let owner = globalThis;
   for (let i = 0; i < segs.length - 1; i++) owner = ownValue(owner, segs[i], p);
@@ -202,7 +238,7 @@ function makeSpec({id, path: p, isNew = false, isStatic = false, isGet = false, 
   }
   if (cbs !== null) {
     if (!Array.isArray(cbs)) throw new TypeError(`${id}: cbs must be an array`);
-    const passed = CALLBACK_ARITY.get(p);
+    const passed = CALLBACK_ARITY.get(p) ?? VUE_CALLBACK_ARITY.get(p);
     for (const n of cbs) {
       if (n === null || n === undefined) continue;
       if (!Object.hasOwn(PRESET_ARITY, n)) throw new TypeError(`${id}: unknown callback preset ${JSON.stringify(n)}`);

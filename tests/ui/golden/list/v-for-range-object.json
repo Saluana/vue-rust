@@ -1,0 +1,1 @@
+{"scenario":"list/v-for-range-object","result":"ok","error":null,"entries":[{"label":"html","values":["<div><span>1</span><span>2</span><span>3</span><em>x=1@0</em><em>y=two@1</em><b>a</b><b>b</b></div>"]}],"unhandledRejections":[]}

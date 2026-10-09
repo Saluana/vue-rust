@@ -1,0 +1,1 @@
+{"scenario":"dynamic/async-error","result":"ok","error":null,"entries":[{"label":"before","values":["<div><!----></div>"]},{"label":"after","values":["<div><p id=\"err\" error=\"Error: network\">failed</p></div>"]}],"unhandledRejections":[]}

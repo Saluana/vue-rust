@@ -1,0 +1,1 @@
+{"scenario":"props/attrs-fallthrough","result":"ok","error":null,"entries":[{"label":"html","values":["<div class=\"root p\" data-q=\"1\" title=\"t\" id=\"fx\">content</div>"]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"list/unkeyed-in-place","result":"ok","error":null,"entries":[{"label":"html","values":["<div><input id=\"f1\" data-i=\"1\"><input id=\"f2\" data-i=\"2\"></div>"]},{"label":"first-value","values":["typed",2]}],"unhandledRejections":[]}

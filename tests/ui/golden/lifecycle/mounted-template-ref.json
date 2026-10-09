@@ -1,0 +1,1 @@
+{"scenario":"lifecycle/mounted-template-ref","result":"ok","error":null,"entries":[{"label":"log","values":["mounted box"]}],"unhandledRejections":[]}

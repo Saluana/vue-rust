@@ -1,0 +1,1 @@
+{"scenario":"teleport/two-targets","result":"ok","error":null,"entries":[{"label":"a","values":["<p>first</p>","b","<p>second</p>"]}],"unhandledRejections":[]}

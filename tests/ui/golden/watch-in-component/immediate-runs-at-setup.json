@@ -1,0 +1,1 @@
+{"scenario":"watch-in-component/immediate-runs-at-setup","result":"ok","error":null,"entries":[{"label":"before","values":[]},{"label":"log","values":["watch 4"]},{"label":"after","values":[]}],"unhandledRejections":[]}

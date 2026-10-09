@@ -4,7 +4,7 @@ Read `docs/dev/AGENT-CONTRACT.md`, `docs/dev/ARCHITECTURE.md` §2, `crates/value
 `docs/dev/trace-format.md`, `docs/dev/builtin-corpus.md`, `tooling/oracle/builtin-corpus.mjs` (+ `tests/language/builtins/README.md`).
 
 ## Where code goes
-- One file per family under `crates/value/src/builtins/` (the coordinator has created `builtins/mod.rs` declaring every family and `install_all(rt)`, called at the end of
+- One file per family under `crates/value/src/builtins/` (the maintainer has created `builtins/mod.rs` declaring every family and `install_all(rt)`, called at the end of
   `Rt::new()`; each family exposes `pub fn install(rt: &Rt)`). You own only the files your WP lists; do not edit `mod.rs` or `rt.rs` — request changes.
 - Builtins are `CodeFn`s (`fn(&Rt, &Call<'_>) -> Res<Value>`) registered with the kernel helpers (`define_native_method`, `new_native_constructor`, `install_global`, …).
   Property attributes must match JS (methods: writable, non-enumerable, configurable = `Flags::HIDDEN`; constants: all false; `length`/`name` per spec; constructors get `prototype`
@@ -39,5 +39,8 @@ cd "$M" && source scripts/env.sh && export CARGO_TARGET_DIR="$VN_ROOT/target/<wp
 scripts/mirror.sh pull <wp-id>    # (run from the repo root) refresh others' finished work into the mirror, keeps your owned paths
 scripts/mirror.sh push <wp-id>    # (run from the repo root) copy your owned paths back, ONLY when they compile and your tests pass
 ```
-Push early and often once your file compiles (even partially implemented, with the unimplemented methods simply absent), so others and the coordinator can see progress.
+Push early and often once your file compiles (even partially implemented, with the unimplemented methods simply absent), so others and the maintainer can see progress.
 Node generators that write corpora run in the mirror too (`node tests/language/gen/gen-<x>.mjs` writes into the mirror's `tests/language/builtins/`); `push` copies them.
+
+### Shared-file rule (learned the hard way)
+`scripts/mirror.sh push` copies WHOLE files. Never list a file in your mirror's owned paths unless you are its only editor: two agents pushing the same file silently overwrite each other (this erased the maintainer's CALLBACK_ARITY edit and almost erased `exports.rs`). For shared files (`crates/runtime/src/{exports,lib}.rs`, `crates/reactivity/src/lib.rs`, `tooling/oracle/*`, `crates/testkit/src/*`) make your small change directly in the REPO file with the Edit tool after reading its current content, then rebuild in the repo. Always back up your owned files before `mirror.sh pull`.

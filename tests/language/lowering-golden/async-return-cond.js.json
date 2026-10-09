@@ -1,0 +1,1 @@
+{"scenario":"async-return-cond","result":"ok","error":null,"entries":[{"label":"f","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":["small","big"],"len":2}]},{"label":"opt","values":["k"]},{"label":"nullish","values":[{"$":"undef"}]},{"label":"count","values":[2]}],"unhandledRejections":[]}

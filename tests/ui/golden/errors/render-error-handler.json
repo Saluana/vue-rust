@@ -1,0 +1,1 @@
+{"scenario":"errors/render-error-handler","result":"ok","error":null,"entries":[{"label":"app","values":["render failed","https://vuejs.org/error-reference/#runtime-1"]},{"label":"html","values":["<!---->"]}],"unhandledRejections":[]}

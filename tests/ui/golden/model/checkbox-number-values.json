@@ -1,0 +1,1 @@
+{"scenario":"model/checkbox-number-values","result":"ok","error":null,"entries":[{"label":"out","values":["true"]},{"label":"again","values":["false"]}],"unhandledRejections":[]}

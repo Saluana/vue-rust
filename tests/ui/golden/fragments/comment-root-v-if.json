@@ -1,0 +1,1 @@
+{"scenario":"fragments/comment-root-v-if","result":"ok","error":null,"entries":[{"label":"hidden","values":["<!--v-if-->"]},{"label":"shown","values":["<p>x</p>"]}],"unhandledRejections":[]}

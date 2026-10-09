@@ -1,0 +1,220 @@
+{
+ "conditional/branch-identity": "pass",
+ "conditional/state-reset-child": "pass",
+ "conditional/template-v-if-fragment": "pass",
+ "conditional/truthiness": "pass",
+ "conditional/v-if-else-chain": "pass",
+ "conditional/v-show-component-root": "pass",
+ "conditional/v-show-display": "pass",
+ "directives/binding-args-modifiers": "pass",
+ "directives/dynamic-argument": "pass",
+ "directives/focus-directive": "pass",
+ "directives/hooks-order": "pass",
+ "directives/on-component-root": "pass",
+ "dynamic/async-error": {
+  "blocked": "missing feature: vue export 'defineAsyncComponent' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'defineAsyncComponent'"
+ },
+ "dynamic/async-loading-delay": {
+  "blocked": "missing feature: vue export 'defineAsyncComponent' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'defineAsyncComponent'"
+ },
+ "dynamic/async-resolve": {
+  "blocked": "missing feature: vue export 'defineAsyncComponent' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'defineAsyncComponent'"
+ },
+ "dynamic/component-is-native": "pass",
+ "dynamic/component-is-switch": "pass",
+ "dynamic/keep-alive-hooks-order": {
+  "blocked": "missing feature: vue export 'KeepAlive' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'KeepAlive'"
+ },
+ "dynamic/keep-alive-include": {
+  "blocked": "missing feature: vue export 'KeepAlive' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'KeepAlive'"
+ },
+ "dynamic/keep-alive-max-lru": {
+  "blocked": "missing feature: vue export 'KeepAlive' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'KeepAlive'"
+ },
+ "dynamic/keep-alive-state": {
+  "blocked": "missing feature: vue export 'KeepAlive' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'KeepAlive'"
+ },
+ "emits/declared-payloads": "pass",
+ "emits/emit-in-setup": "pass",
+ "emits/emit-no-payload": "pass",
+ "emits/kebab-listener": "pass",
+ "emits/once-modifier": "pass",
+ "emits/undeclared-listener-fallthrough": "pass",
+ "emits/v-model-arguments": "pass",
+ "emits/validator-function": "pass",
+ "errors/async-handler-rejection": {
+  "blocked": "wrong output: the trace differs from the golden: first difference at $.entries[1].label: \"after-tick\" vs \"app\""
+ },
+ "errors/event-handler-error": {
+  "blocked": "wrong output: the trace differs from the golden: first difference at $.entries[0].label: \"done\" vs \"app\""
+ },
+ "errors/on-error-captured": "pass",
+ "errors/render-error-empty": "pass",
+ "errors/render-error-handler": "pass",
+ "errors/return-false-stops": {
+  "blocked": "wrong output: the trace differs from the golden: first difference at $.entries[0].label: \"survived\" vs \"log\""
+ },
+ "errors/unhandled-continues": "pass",
+ "events/capture-before-bubble": "pass",
+ "events/click-modifiers": "pass",
+ "events/dynamic-event-name": "pass",
+ "events/exact-ctrl": "pass",
+ "events/focus-blur-sequence": "pass",
+ "events/handler-latest-props": "pass",
+ "events/inline-handler-args": "pass",
+ "events/input-change-order": "pass",
+ "events/keydown-modifiers": "pass",
+ "events/mouse-button-filters": "pass",
+ "events/nested-component-emit": "pass",
+ "events/submit-prevent": "pass",
+ "events/v-on-object": "pass",
+ "fragments/comment-root-v-if": "pass",
+ "fragments/empty-template-root": "pass",
+ "fragments/multi-root-children": "pass",
+ "fragments/text-root": "pass",
+ "fragments/v-for-root": "pass",
+ "lifecycle/child-only-update": "pass",
+ "lifecycle/mount-order-parent-child": "pass",
+ "lifecycle/mounted-template-ref": {
+  "blocked": "runtime defect: reactive() wraps a DOM element handle, whose extension slot is taken: threw TypeError: reactive: the object's extension slot is owned by another subsystem (unsupported)"
+ },
+ "lifecycle/setup-before-beforemount": "pass",
+ "lifecycle/siblings-mount-order": "pass",
+ "lifecycle/unmount-order": "pass",
+ "lifecycle/update-order": "pass",
+ "lifecycle/updated-before-nexttick": "pass",
+ "lifecycle/v-if-hooks": "pass",
+ "lifecycle/watch-stopped-on-unmount": "pass",
+ "list/array-holes": "pass",
+ "list/destructure-index": "pass",
+ "list/filter-with-template": "pass",
+ "list/keyed-clear-readd": "pass",
+ "list/keyed-insert-middle": "pass",
+ "list/large-keyed-reverse": "pass",
+ "list/map-iterable": "pass",
+ "list/nested-loops": "pass",
+ "list/unkeyed-in-place": "pass",
+ "list/v-for-keyed-reorder": "pass",
+ "list/v-for-range-object": "pass",
+ "model/checkbox-array": "pass",
+ "model/checkbox-number-values": "pass",
+ "model/component-v-model": "pass",
+ "model/composition-events": "pass",
+ "model/define-model-default": "pass",
+ "model/define-model-modifiers": "pass",
+ "model/define-model-named": "pass",
+ "model/number-empty": "pass",
+ "model/radio-group": "pass",
+ "model/select-multiple": "pass",
+ "model/select-number-values": "pass",
+ "model/select-single": "pass",
+ "model/text-input": "pass",
+ "model/textarea-multiline": "pass",
+ "props/attrs-class-style-merge": {
+  "blocked": "missing feature: vn-dom rejects a style property: threw TypeError: unsupported: UnsupportedStyleProperty"
+ },
+ "props/attrs-fallthrough": "pass",
+ "props/boolean-string-false": "pass",
+ "props/destructured-props": "pass",
+ "props/inherit-attrs-false": "pass",
+ "props/kebab-camel": "pass",
+ "props/multi-root-attrs": "pass",
+ "props/object-identity": "pass",
+ "props/required-validator": "pass",
+ "props/setprops-replaces-all": "pass",
+ "props/types-defaults": "pass",
+ "props/update-triggers-watch": "pass",
+ "provide-inject/defaults-and-factory": "pass",
+ "provide-inject/missing-undefined": "pass",
+ "provide-inject/nearest-provider": "pass",
+ "provide-inject/reactive-value": "pass",
+ "provide-inject/sibling-isolation": "pass",
+ "provide-inject/slot-content-owner": "pass",
+ "provide-inject/symbol-key": "pass",
+ "refs/component-ref-expose": "pass",
+ "refs/element-identity-update": {
+  "blocked": "runtime defect: reactive() wraps a DOM element handle, whose extension slot is taken: threw TypeError: reactive: the object's extension slot is owned by another subsystem (unsupported)"
+ },
+ "refs/element-ref-timing": {
+  "blocked": "runtime defect: reactive() wraps a DOM element handle, whose extension slot is taken: threw TypeError: reactive: the object's extension slot is owned by another subsystem (unsupported)"
+ },
+ "refs/expose-restricted": "pass",
+ "refs/function-ref-lifecycle": "pass",
+ "refs/null-after-v-if": {
+  "blocked": "runtime defect: reactive() wraps a DOM element handle, whose extension slot is taken: threw TypeError: reactive: the object's extension slot is owned by another subsystem (unsupported)"
+ },
+ "refs/slot-content-ref": {
+  "blocked": "runtime defect: reactive() wraps a DOM element handle, whose extension slot is taken: threw TypeError: reactive: the object's extension slot is owned by another subsystem (unsupported)"
+ },
+ "refs/use-template-ref-focus": "pass",
+ "refs/v-for-ref-array": {
+  "blocked": "runtime defect: reactive() wraps a DOM element handle, whose extension slot is taken: threw TypeError: reactive: the object's extension slot is owned by another subsystem (unsupported)"
+ },
+ "slots/default-fallback": "pass",
+ "slots/destructure-defaults": "pass",
+ "slots/dynamic-slot-names": "pass",
+ "slots/empty-slot-fallback": "pass",
+ "slots/fallback-with-props": "pass",
+ "slots/forwarding": "pass",
+ "slots/named-layout": "pass",
+ "slots/owner-scope": "pass",
+ "slots/scoped-props-list": "pass",
+ "slots/scoped-reactivity": "pass",
+ "slots/use-slots-presence": "pass",
+ "static/attrs-boolean": "pass",
+ "static/checkbox-checked-prop": "pass",
+ "static/class-style-merge": {
+  "blocked": "missing feature: vn-dom rejects a style property: threw TypeError: unsupported: UnsupportedStyleProperty"
+ },
+ "static/comments-stripped": "pass",
+ "static/deep-tree": "pass",
+ "static/dynamic-attr-names": "pass",
+ "static/elements-text": "pass",
+ "static/input-dirty-value-prop": "pass",
+ "static/input-range-value": "pass",
+ "static/interpolation-values": "pass",
+ "static/select-selected-props": "pass",
+ "static/textarea-value": "pass",
+ "static/v-bind-object-spread": "pass",
+ "static/v-once-pre": "pass",
+ "static/whitespace-condense": "pass",
+ "teleport/defer-target": {
+  "blocked": "missing feature: vue export 'Teleport' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'Teleport'"
+ },
+ "teleport/disabled-toggle": {
+  "blocked": "missing feature: vue export 'Teleport' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'Teleport'"
+ },
+ "teleport/events-through-teleport": {
+  "blocked": "missing feature: vue export 'Teleport' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'Teleport'"
+ },
+ "teleport/to-selector": {
+  "blocked": "missing feature: vue export 'Teleport' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'Teleport'"
+ },
+ "teleport/two-targets": {
+  "blocked": "missing feature: vue export 'Teleport' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'Teleport'"
+ },
+ "transition/appear-hooks": {
+  "blocked": "missing feature: vue export 'Transition' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'Transition'"
+ },
+ "transition/css-classes-clock": {
+  "blocked": "missing feature: vue export 'Transition' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'Transition'"
+ },
+ "transition/js-hooks-enter-leave": {
+  "blocked": "missing feature: vue export 'Transition' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'Transition'"
+ },
+ "transition/leave-cancelled": {
+  "blocked": "missing feature: vue export 'Transition' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'Transition'"
+ },
+ "transition/out-in-mode": {
+  "blocked": "missing feature: vue export 'Transition' is not provided by vn-runtime: threw SyntaxError: The requested module 'vue' does not provide an export named 'Transition'"
+ },
+ "watch-in-component/computed-watch-chain": "pass",
+ "watch-in-component/deep-object": "pass",
+ "watch-in-component/flush-post-sees-dom": {
+  "blocked": "runtime defect: reactive() wraps a DOM element handle, whose extension slot is taken: threw TypeError: reactive: the object's extension slot is owned by another subsystem (unsupported)"
+ },
+ "watch-in-component/flush-pre-before-render": "pass",
+ "watch-in-component/immediate-runs-at-setup": "pass",
+ "watch-in-component/sync-flush": "pass",
+ "watch-in-component/watcheffect-cleanup": "pass"
+}

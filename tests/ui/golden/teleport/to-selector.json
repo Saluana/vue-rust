@@ -1,0 +1,1 @@
+{"scenario":"teleport/to-selector","result":"ok","error":null,"entries":[{"label":"local","values":["<div><p id=\"local\">here</p></div>"]},{"label":"overlay","values":["<p id=\"t\">in overlay</p>"]}],"unhandledRejections":[]}

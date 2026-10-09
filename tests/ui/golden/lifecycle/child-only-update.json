@@ -1,0 +1,1 @@
+{"scenario":"lifecycle/child-only-update","result":"ok","error":null,"entries":[{"label":"log","values":["own beforeUpdate"]},{"label":"log","values":["own updated"]},{"label":"html","values":["<div><button id=\"b\">1</button></div>"]}],"unhandledRejections":[]}

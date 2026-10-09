@@ -614,7 +614,7 @@ impl Rt {
         let tag = PropKey::Sym(self.well_known(WellKnown::ToStringTag));
         let defined = self.define_own(ns, &tag, Prop::Data { value: Value::str("Module"), flags: Flags::NONE });
         assert!(matches!(defined, Ok(true)), "namespace @@toStringTag refused (framework bug)");
-        self.prevent_extensions(ns);
+        assert!(matches!(self.prevent_extensions(ns), Ok(true)), "namespace preventExtensions (framework bug)");
         rec.st.borrow_mut().namespace = Some(ns);
         ns
     }

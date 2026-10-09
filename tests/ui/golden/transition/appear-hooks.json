@@ -1,0 +1,1 @@
+{"scenario":"transition/appear-hooks","result":"ok","error":null,"entries":[{"label":"log","values":["before-appear"]},{"label":"log","values":["appear"]},{"label":"log","values":["after-appear"]},{"label":"html","values":["<div><p id=\"t\">first</p></div>"]}],"unhandledRejections":[]}

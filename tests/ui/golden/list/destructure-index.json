@@ -1,0 +1,1 @@
+{"scenario":"list/destructure-index","result":"ok","error":null,"entries":[{"label":"html","values":["<ol><li>0:x#7</li><li>1:y#9</li></ol>"]}],"unhandledRejections":[]}

@@ -314,7 +314,7 @@ fn sealed_object_has_integrity_sealed() {
 fn preventextensions_object_has_integrity_nonextensible() {
     let rt = Rt::new();
     let o = object(&rt, &[("a", num(1.0))]);
-    rt.prevent_extensions(o);
+    rt.prevent_extensions(o).expect("prevent_extensions");
     let got = values_of(&rt, vec![ov(o)]);
     assert_eq!(
         got,
@@ -326,7 +326,7 @@ fn preventextensions_object_has_integrity_nonextensible() {
 fn empty_object_after_preventextensions_is_frozen() {
     let rt = Rt::new();
     let o = rt.new_object();
-    rt.prevent_extensions(o);
+    rt.prevent_extensions(o).expect("prevent_extensions");
     let got = values_of(&rt, vec![ov(o)]);
     assert_eq!(got, one_call(r#"[{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","integrity":"frozen","props":[]}]"#));
 }
@@ -357,7 +357,7 @@ fn sealed_and_nonextensible_arrays() {
     let sealed = rt.new_array(vec![num(1.0)]);
     rt.seal(sealed).expect("seal");
     let open = rt.new_array(vec![num(7.0), num(8.0)]);
-    rt.prevent_extensions(open);
+    rt.prevent_extensions(open).expect("prevent_extensions");
     let got = values_of(&rt, vec![ov(sealed), ov(open)]);
     assert_eq!(
         got,
@@ -428,7 +428,7 @@ fn negative_control_a_doctored_expectation_is_reported() {
 fn negative_control_a_missing_field_is_reported() {
     let rt = Rt::new();
     let o = object(&rt, &[("a", num(1.0))]);
-    rt.prevent_extensions(o);
+    rt.prevent_extensions(o).expect("prevent_extensions");
     let actual = values_of(&rt, vec![ov(o)]);
     let without_field = one_call(r#"[{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[["a",1]]}]"#);
     let report = first_difference(&without_field, &actual).expect("a missing field must be reported");

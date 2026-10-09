@@ -1,0 +1,1 @@
+{"scenario":"events/nested-component-emit","result":"ok","error":null,"entries":[{"label":"seen","values":["from-inner"]},{"label":"seen","values":["outer-dom"]}],"unhandledRejections":[]}

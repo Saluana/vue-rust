@@ -1,0 +1,1 @@
+{"scenario":"dynamic/async-loading-delay","result":"ok","error":null,"entries":[{"label":"t0","values":["<div><!----></div>"]},{"label":"t50","values":["<div><p id=\"loading\">loading</p></div>"]},{"label":"t110","values":["<div><p id=\"lazy\">lazy loaded</p></div>"]}],"unhandledRejections":[]}

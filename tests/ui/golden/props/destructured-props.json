@@ -1,0 +1,1 @@
+{"scenario":"props/destructured-props","result":"ok","error":null,"entries":[{"label":"first","values":["md|a"]},{"label":"second","values":["lg|b"]}],"unhandledRejections":[]}

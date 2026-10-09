@@ -45,8 +45,9 @@ Header comments: `// @tier N`, `// @covers U14,V18`.
 - `props` appears only for `value`, `checked`, `selected`, `disabled` and only when the property differs from the value derived from the attributes
   (dirty value/checkedness). Order: value, checked, selected, disabled.
 - Adjacent text nodes are NOT merged (Vue creates separate nodes); empty text nodes are kept.
-- Fragment anchors are comment nodes `<!---->` (empty comment) and, for `v-if` false branches, `<!--v-if-->`: they are part of the snapshot — they are
-  Vue behaviour (production build emits `<!---->` for empty `v-if`; verify with the oracle, do not guess).
+- Fragment anchors (verified against real Vue 3.5.43 by WP-V1): `v-for`/multi-root fragment start and end anchors are **empty text nodes**; an empty template or a false `v-if` renders a comment (`<!---->` / `<!--v-if-->`). These nodes are part of the snapshot.
+- Snapshot `props` is an array of `[key, value]` pairs (not an object).
+- Oracle-side extensions (documented in `tests/ui/README.md`): `input()` also accepts range inputs; `find()` accepts a NodeHandle scope; `container(id)` creates a Teleport target; `check()` throws when the control does not change; `setProps` replaces all props.
 
 ## Comparison
 Same as trace-format.md: structural JSON equality of the traces. Additionally scenarios may call `trace('ops', testHost.opLog())` only in

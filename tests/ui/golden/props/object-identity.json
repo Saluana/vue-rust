@@ -1,0 +1,1 @@
+{"scenario":"props/object-identity","result":"ok","error":null,"entries":[{"label":"log","values":["same-object",true]},{"label":"text","values":["v"]}],"unhandledRejections":[]}

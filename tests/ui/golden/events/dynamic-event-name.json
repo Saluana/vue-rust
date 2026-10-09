@@ -1,0 +1,1 @@
+{"scenario":"events/dynamic-event-name","result":"ok","error":null,"entries":[{"label":"fired","values":["focus"]},{"label":"fired","values":["keydown"]}],"unhandledRejections":[]}

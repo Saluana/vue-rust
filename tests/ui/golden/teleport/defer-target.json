@@ -1,0 +1,1 @@
+{"scenario":"teleport/defer-target","result":"ok","error":null,"entries":[{"label":"sync","values":["<div></div>","<p id=\"t\">late</p>"]},{"label":"flushed","values":["<p id=\"t\">late</p>"]}],"unhandledRejections":[]}

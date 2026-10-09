@@ -10,9 +10,11 @@ use crate::scope;
 use crate::shared::native;
 use crate::state::{state, Protos};
 use crate::target;
+use crate::watch;
 
 /// Prototypes of the JS-visible reactivity objects (run once per realm, from `state::init`).
 pub(crate) fn install_protos(rt: &Rt) -> Protos {
+    crate::reactive::install(rt);
     Protos {
         reference: Some(refs::install_ref_proto(rt)),
         custom: Some(refs::install_custom_proto(rt)),
@@ -36,6 +38,8 @@ pub fn exports(rt: &Rt) -> Vec<(&'static str, Value)> {
     let mut list = refs::exported(rt);
     list.push(computed::exported(rt));
     list.extend(scope::exported(rt, proto));
+    list.extend(watch::exported_public(rt));
+    list.extend(crate::reactive::exported(rt));
     *state(rt).exports.borrow_mut() = Some(list.clone());
     list
 }
@@ -49,6 +53,8 @@ pub fn internal_exports(rt: &Rt) -> Vec<(&'static str, Value)> {
     }
     let mut list = effect::exported(rt);
     list.push(refs::internal(rt));
+    list.extend(crate::reactive::internal(rt));
+    list.extend(watch::exported_internal(rt));
     list.push(("track", Value::Object(native(rt, "track", 3, js_track, Vec::new()))));
     list.push(("trigger", Value::Object(native(rt, "trigger", 6, js_trigger, Vec::new()))));
     let keys = target::iterate_keys(rt);

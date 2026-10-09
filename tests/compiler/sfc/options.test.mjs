@@ -16,7 +16,7 @@ describe('options', () => {
     assert.throws(() => compileSfc('<template></template>', { filename: '' }), TypeError);
   });
 
-  test('target must be native or web', () => {
+  test('target must be native, web or test', () => {
     assert.throws(() => compileSfc('<template></template>', { filename: 'a.vue', target: 'desktop' }), TypeError);
   });
 
@@ -46,7 +46,7 @@ describe('options', () => {
 
 describe('targets', () => {
   test('v-html is rejected on native, and accepted on web only with trustedHtml', () => {
-    const src = '<template><p v-html="raw"></p></template>\n';
+    const src = '<script setup>const raw = "<b>trusted</b>"</script><template><p v-html="raw"></p></template>\n';
     const native = compileSfc(src, { filename: 'raw.vue' });
     assert.deepEqual(native.diagnostics.map((d) => d.code), ['VN6110']);
     const webNoTrust = compileSfc(src, { filename: 'raw.vue', target: 'web' });

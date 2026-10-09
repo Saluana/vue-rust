@@ -1,0 +1,1 @@
+{"scenario":"slots/dynamic-slot-names","result":"ok","error":null,"entries":[{"label":"first","values":["<div>from-parent</div>"]},{"label":"second","values":["<div>from-parent</div>"]}],"unhandledRejections":[]}

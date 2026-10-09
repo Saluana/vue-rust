@@ -1,0 +1,1 @@
+{"scenario":"transition/leave-cancelled","result":"ok","error":null,"entries":[{"label":"log","values":["leave"]},{"label":"log","values":["enter"]},{"label":"html","values":["<div><p id=\"t\">t</p></div>"]}],"unhandledRejections":[]}

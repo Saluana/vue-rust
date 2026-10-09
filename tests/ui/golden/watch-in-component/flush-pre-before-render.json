@@ -1,0 +1,1 @@
+{"scenario":"watch-in-component/flush-pre-before-render","result":"ok","error":null,"entries":[{"label":"log","values":["watch"]},{"label":"log","values":["updated"]},{"label":"html","values":["<p>2</p>"]}],"unhandledRejections":[]}

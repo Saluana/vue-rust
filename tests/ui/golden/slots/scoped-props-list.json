@@ -1,0 +1,1 @@
+{"scenario":"slots/scoped-props-list","result":"ok","error":null,"entries":[{"label":"html","values":["<ul><li>0:A</li><li>1:B</li></ul>"]}],"unhandledRejections":[]}

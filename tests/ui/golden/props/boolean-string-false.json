@@ -1,0 +1,1 @@
+{"scenario":"props/boolean-string-false","result":"ok","error":null,"entries":[{"label":"string","values":["false|false|false"]},{"label":"absent","values":["false|true|false"]}],"unhandledRejections":[]}

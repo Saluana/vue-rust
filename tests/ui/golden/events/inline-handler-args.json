@@ -1,0 +1,1 @@
+{"scenario":"events/inline-handler-args","result":"ok","error":null,"entries":[{"label":"pick","values":["a","click"]},{"label":"pick","values":["b","click",0]}],"unhandledRejections":[]}

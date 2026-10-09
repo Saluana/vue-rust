@@ -1,0 +1,40 @@
+{
+ "setup-render-fn": [
+  "<p class=\"c\">hi</p>",
+  ""
+ ],
+ "props-attrs-fallthrough": [
+  "<span class=\"inner outer\" id=\"x\">a:1</span>",
+  "<span class=\"inner outer\" id=\"x\">b:1</span>",
+  "<span class=\"inner outer\" id=\"x\">b:2</span>"
+ ],
+ "props-casting-defaults": [
+  "<i>true|Bob|2|3</i>",
+  "<i>true|anon|2|5</i>",
+  "<i>undefined|Al|2|x</i>"
+ ],
+ "slots-default-named": [
+  "<div class=\"card\"><h2>T1</h2><section><b>body</b> tail</section></div>",
+  "<div class=\"card\"><h2>T2</h2><section><b>body</b> tail</section></div>"
+ ],
+ "emit-and-lifecycle-order": [
+  "<div><p></p><em>v=1</em></div>",
+  "<div><p>bm,m,ping:1</p><em>v=2</em></div>",
+  "<div><p>bm,m,ping:1,bu,u</p><!----></div>"
+ ],
+ "render-error-comment": [
+  "<p>ok</p>",
+  "<!---->",
+  "<p>ok</p>"
+ ],
+ "keyed-component-list": [
+  "<ul><li>item1</li><li>item2</li><li>item3</li></ul>",
+  "<ul><li>item3</li><li>item1</li><li>item2</li></ul>",
+  "<ul><li>item2</li></ul>",
+  "<ul><li>item4</li><li>item2</li><li>item5</li></ul>"
+ ],
+ "inherit-attrs-false": [
+  "<span title=\"a\">x</span>",
+  "<span title=\"b\">x</span>"
+ ]
+}

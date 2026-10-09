@@ -5,14 +5,15 @@
 //! of functions are read with [[Get]], as the oracle reads them.
 //!
 //! Map and Set are encoded from their collection payloads (WP-B4, `map_entries`, `set_values`); iterator objects
-//! are plain objects. Promise is not encoded yet, so native host
-//! payloads (Date, RegExp, ...) are rejected with `TypeError("untraceable value")` before any ordinal is
-//! assigned. TODO(WP-B-promise). Exotic objects are traced through their hooks like
+//! are plain objects. Promise objects are opaque: `{"$":"obj","cls":"Promise","proto":"other","props":[]}` (trace-format
+//! v1). Other native host payloads (Date, RegExp, ...) are rejected with `TypeError("untraceable value")` before any
+//! ordinal is assigned. Exotic objects are traced through their hooks like
 //! ordinary objects, because the kernel's public API does not tell them apart (open question in the report).
 
 use std::cell::RefCell;
 use std::collections::{HashMap, HashSet};
 
+use vn_value::builtins::promise::promise_state;
 use vn_value::{number, Intrinsic, JsStr, ObjRef, Prop, PropKey, Res, Rt, Sym, Throw, Value};
 
 use crate::json::Json;
@@ -28,6 +29,7 @@ enum Class {
     Error,
     Map,
     Set,
+    Promise,
 }
 
 impl Class {
@@ -38,6 +40,7 @@ impl Class {
             Class::Error => "Error",
             Class::Map => "Map",
             Class::Set => "Set",
+            Class::Promise => "Promise",
         }
     }
 }
@@ -185,6 +188,11 @@ fn encode_object(rt: &Rt, rec: &RefCell<Recorder>, o: ObjRef) -> Res<Json> {
     if let Some(integrity) = integrity_of(rt, o)? {
         head.push(("integrity", Json::text(integrity)));
     }
+    if class == Class::Promise {
+        // trace-format v1: a promise is opaque (its state is not observable here), so its own properties are not traced.
+        head.push(("props", Json::Arr(Vec::new())));
+        return Ok(Json::obj(head));
+    }
 
     // Class-specific data is read before the own-key enumeration, as in the oracle.
     let mut tail: Vec<(&str, Json)> = Vec::new();
@@ -225,7 +233,7 @@ fn encode_object(rt: &Rt, rec: &RefCell<Recorder>, o: ObjRef) -> Res<Json> {
             }
             tail.push(("values", Json::Arr(out)));
         }
-        Class::Object => {}
+        Class::Object | Class::Promise => {}
     }
 
     let mut props = Vec::new();
@@ -270,6 +278,9 @@ fn prop_json(rt: &Rt, rec: &RefCell<Recorder>, p: Prop) -> Res<Json> {
 /// Arrays come next, then Error by prototype chain (`instanceof Error`), then plain objects.
 fn class_of(rt: &Rt, o: ObjRef) -> Res<Class> {
     if rt.native_payload(o).is_some() {
+        if promise_state(rt, &Value::Object(o)).is_some() {
+            return Ok(Class::Promise);
+        }
         if vn_value::builtins::map_set::map_entries(rt, o).is_some() {
             return Ok(Class::Map);
         }
@@ -316,7 +327,7 @@ fn proto_text(rt: &Rt, o: ObjRef) -> &'static str {
 /// trace-format v1.1: `integrity` appears only on non-extensible objects, as frozen, else sealed, else
 /// nonextensible. An empty non-extensible object is frozen (its integrity test holds vacuously).
 fn integrity_of(rt: &Rt, o: ObjRef) -> Res<Option<&'static str>> {
-    if rt.is_extensible(o) {
+    if rt.is_extensible(o)? {
         return Ok(None);
     }
     if rt.is_frozen(o)? {

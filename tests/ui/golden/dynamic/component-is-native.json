@@ -1,0 +1,1 @@
+{"scenario":"dynamic/component-is-native","result":"ok","error":null,"entries":[{"label":"span","values":["<div><span>hi</span></div>"]},{"label":"em","values":["<div><em>hi</em></div>"]}],"unhandledRejections":[]}

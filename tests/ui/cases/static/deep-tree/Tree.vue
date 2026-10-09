@@ -1,0 +1,13 @@
+<template>
+  <section>
+    <header><h1>Title</h1></header>
+    <main>
+      <ul>
+        <li><label for="x">Name</label><input id="x" type="text" value="v"></li>
+        <li><button type="button">Go</button><em><strong>deep</strong> <code>c</code></em></li>
+      </ul>
+      <pre>  kept   spaces  </pre>
+      <img id="pic" src="a.png" alt="pic"><br><hr>
+    </main>
+  </section>
+</template>

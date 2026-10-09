@@ -1,0 +1,1 @@
+{"scenario":"conditional/branch-identity","result":"ok","error":null,"entries":[{"label":"html","values":["<div><input id=\"x\" value=\"b\"></div>"]},{"label":"released","values":[true,true,true]}],"unhandledRejections":[]}

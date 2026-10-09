@@ -1,0 +1,1 @@
+{"scenario":"props/attrs-class-style-merge","result":"ok","error":null,"entries":[{"label":"html","values":["<div class=\"c p\" style=\"color: red; margin: 0px;\">x</div>"]}],"unhandledRejections":[]}

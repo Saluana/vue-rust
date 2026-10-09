@@ -9,6 +9,7 @@ publish.workspace = true
 [dependencies]
 vn-value = { path = "../value" }
 vn-dom = { path = "../dom" }
+vn-reactivity = { path = "../reactivity" }
 
 [dev-dependencies]
 vn-testkit = { path = "../testkit" }

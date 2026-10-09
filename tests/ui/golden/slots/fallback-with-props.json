@@ -1,0 +1,1 @@
+{"scenario":"slots/fallback-with-props","result":"ok","error":null,"entries":[{"label":"html","values":["<div><div>got 1</div><div>fb</div></div>"]}],"unhandledRejections":[]}

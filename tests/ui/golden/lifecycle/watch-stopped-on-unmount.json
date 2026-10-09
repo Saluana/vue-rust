@@ -1,0 +1,1 @@
+{"scenario":"lifecycle/watch-stopped-on-unmount","result":"ok","error":null,"entries":[{"label":"log","values":["watch 2"]},{"label":"done","values":[]}],"unhandledRejections":[]}

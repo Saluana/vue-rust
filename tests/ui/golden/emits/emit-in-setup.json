@@ -1,0 +1,1 @@
+{"scenario":"emits/emit-in-setup","result":"ok","error":null,"entries":[{"label":"before-mount","values":[]},{"label":"ready","values":["during-setup"]},{"label":"after-mount","values":["set"]}],"unhandledRejections":[]}

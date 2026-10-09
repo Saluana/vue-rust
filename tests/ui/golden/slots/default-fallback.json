@@ -1,0 +1,1 @@
+{"scenario":"slots/default-fallback","result":"ok","error":null,"entries":[{"label":"html","values":["<div><div class=\"card\">fallback</div><div class=\"card\">custom</div></div>"]}],"unhandledRejections":[]}

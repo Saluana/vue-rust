@@ -1,0 +1,1 @@
+{"scenario":"events/keydown-modifiers","result":"ok","error":null,"entries":[{"label":"key","values":["enter"]},{"label":"key","values":["enter"]},{"label":"key","values":["ctrl-enter"]},{"label":"key","values":["enter"]},{"label":"key","values":["esc"]},{"label":"count","values":[1]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"props/types-defaults","result":"ok","error":null,"entries":[{"label":"absent","values":["1|false|d|v|lbl"]},{"label":"present","values":["5|true|d|v|lbl"]}],"unhandledRejections":[]}

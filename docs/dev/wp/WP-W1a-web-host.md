@@ -1,6 +1,6 @@
 # WP-W1a — Browser host: `WebHost` (wasm32 imports) + JS glue + wasm build pipeline, verified in real Chrome
 
-Read `docs/dev/AGENT-CONTRACT.md`, `docs/dev/ARCHITECTURE.md` §4, **`crates/runtime/src/host.rs`** (the `Host`/`EventSink` contract you implement; coordinator-owned — propose changes in your report, don't edit it),
+Read `docs/dev/AGENT-CONTRACT.md`, `docs/dev/ARCHITECTURE.md` §4, **`crates/runtime/src/host.rs`** (the `Host`/`EventSink` contract you implement; maintainer-owned — propose changes in your report, don't edit it),
 `tooling/chrome/README.md` + `chrome.mjs`, and skim `crates/dom/src/*.rs` (the Rust in-memory DOM that implements the same contract for headless/native hosts: your glue must behave like a real browser, which `vn-dom` mimics).
 WP id `w1a`; `export CARGO_TARGET_DIR="$VN_ROOT/target/w1a"`. Create `Cargo.toml` **and** `src/lib.rs` of a new crate in the same command (workspace glob).
 **Owned paths:** new crate `crates/renderer-dom/**` (package `vn-renderer-dom`, library `vn_renderer_dom`, `crate-type = ["rlib","cdylib"]`; depends on `vn-runtime` by path for the `host` module types only — add the dependency line; `vn-value` if needed),

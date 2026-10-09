@@ -2,8 +2,7 @@
 // Output is JSON-serializable: scopes, bindings, references and functions use numeric ids (index = id).
 //
 // Documented approximations:
-// - A function's parameters and the top-level statements of its body share one scope. Default-value TDZ between
-//   parameters is handled by the textual rule (a read before the parameter's end is a TDZ read).
+// - Default-value TDZ between parameters is handled by the textual rule (a read before the parameter's end is a TDZ read).
 // - Lexical initialization completes at the end of its declarator (for-in/of heads: at the end of the iterable).
 // - needsTdzCheck is conservative (no false negatives): a read or write textually before initialization completes,
 //   a read from a closure created before initialization completes (a function declaration counts as created at the
@@ -121,7 +120,7 @@ export function analyzeScopes(ast, { source, filename = '<input>' } = {}) {
   function varTarget(scope) {
     const through = [];
     let s = scope;
-    while (s.kind !== 'function' && s.kind !== 'module') {
+    while (s.kind !== 'function' && s.kind !== 'function-body' && s.kind !== 'module') {
       through.push(s);
       s = scopes[s.parentId];
     }
@@ -332,7 +331,18 @@ export function analyzeScopes(ast, { source, filename = '<input>' } = {}) {
     for (const p of node.params) {
       bindPattern(p, fnScope, { kind: 'param', cat: 'PARAM', initEnd: p.end, declStart: p.start, declEnd: p.end });
     }
-    visitFunctionBody(node, fnScope);
+    const parameterExpression = p => {
+      if (p.type === 'AssignmentPattern') return true;
+      if (p.type === 'RestElement') return parameterExpression(p.argument);
+      if (p.type === 'ArrayPattern') return p.elements.some(e => e && parameterExpression(e));
+      if (p.type === 'ObjectPattern') return p.properties.some(prop => prop.computed || parameterExpression(prop.value ?? prop.argument));
+      return false;
+    };
+    const hasExpressions = node.params.some(parameterExpression);
+    const bodyScope = hasExpressions && node.body.type === 'BlockStatement'
+      ? newScope('function-body', fnScope, bodyStart, node.end, fn.id) : fnScope;
+    fn.bodyScopeId = bodyScope.id;
+    visitFunctionBody(node, bodyScope);
     fnStack.pop();
     return fn;
   }
@@ -799,7 +809,7 @@ export function analyzeScopes(ast, { source, filename = '<input>' } = {}) {
   function visitFunctionDeclaration(node, scope, { exportName }) {
     if (node.declare) return;
     if (node.id) {
-      const cat = scope.kind === 'function' ? 'VAR' : 'LEX';
+      const cat = ['function', 'function-body'].includes(scope.kind) ? 'VAR' : 'LEX';
       declare(scope, node.id, { kind: 'function', cat, initEnd: -1, declStart: node.start, declEnd: node.end });
       if (exportName) exportPending.push({ local: node.id.name, exported: exportName });
     }

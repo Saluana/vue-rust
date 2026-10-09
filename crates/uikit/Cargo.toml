@@ -1,0 +1,18 @@
+# vn-uikit: the UI testHost of the component scenarios (WP-T2): mount, find, events and element snapshots over the headless
+# DocHost of vn-runtime, plus the realm setup of the UI harness. Mirrors tooling/oracle/ui/page-host.mjs and snapshot.mjs.
+[package]
+name = "vn-uikit"
+version = "0.0.1"
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lib]
+name = "vn_uikit"
+path = "src/lib.rs"
+
+[dependencies]
+vn-value = { path = "../value" }
+vn-testkit = { path = "../testkit" }
+vn-runtime = { path = "../runtime" }
+vn-dom = { path = "../dom" }

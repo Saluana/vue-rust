@@ -41,7 +41,7 @@ const NATIVE_SUPPORTED = ['main', 'section', 'div', 'header', 'footer', 'nav', '
   'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'label', 'strong', 'em', 'b', 'i', 'small', 'code', 'pre', 'br', 'a',
   'button', 'input', 'textarea', 'select', 'option', 'img'];
 
-// Coordinator decision (U31): the supported native tag set is exactly this list; excluded tags carry a use-instead note.
+// Maintainer decision (U31): the supported native tag set is exactly this list; excluded tags carry a use-instead note.
 test('native tags: the supported set is the coordinator list, and every excluded tag says what to use instead', () => {
   const manifest = JSON.parse(readFileSync(abs(path.join(PROFILE_REL, 'manifest.json')), 'utf8'));
   const native = manifest.entries.filter((entry) => entry.kind === 'native-tag');

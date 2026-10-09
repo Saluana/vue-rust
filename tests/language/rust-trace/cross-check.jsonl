@@ -41,3 +41,9 @@
 {"name":"map-after-delete-and-readd","entries":[{"label":"md","values":[{"$":"obj","id":1,"cls":"Map","proto":"other","props":[],"entries":[[2,"b"],[1,"c"]]}]}]}
 {"name":"collection-iterators-are-plain-objects","entries":[{"label":"it","values":[{"$":"obj","id":1,"cls":"Object","proto":"other","props":[]},{"$":"obj","id":2,"cls":"Object","proto":"other","props":[]}]}]}
 {"name":"set-with-own-property","entries":[{"label":"sp","values":[{"$":"obj","id":1,"cls":"Set","proto":"other","props":[["extra","x"]],"values":[1]}]}]}
+{"name":"promise-pending","entries":[{"label":"p","values":[{"$":"obj","id":1,"cls":"Promise","proto":"other","props":[]}]}]}
+{"name":"promise-fulfilled-and-handled-rejection","entries":[{"label":"pr","values":[{"$":"obj","id":1,"cls":"Promise","proto":"other","props":[]},{"$":"obj","id":2,"cls":"Promise","proto":"other","props":[]}]}]}
+{"name":"promise-aliased-in-array","entries":[{"label":"pa","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":[{"$":"obj","id":2,"cls":"Promise","proto":"other","props":[]},{"$":"ref","id":2}],"len":2}]}]}
+{"name":"promise-own-props-are-not-traced","entries":[{"label":"px","values":[{"$":"obj","id":1,"cls":"Promise","proto":"other","props":[]}]}]}
+{"name":"promise-nonextensible","entries":[{"label":"pn","values":[{"$":"obj","id":1,"cls":"Promise","proto":"other","integrity":"nonextensible","props":[]}]}]}
+{"name":"promise-frozen","entries":[{"label":"pf","values":[{"$":"obj","id":1,"cls":"Promise","proto":"other","integrity":"frozen","props":[]}]}]}

@@ -41,6 +41,8 @@ const REFUSED: &[(&str, &str)] = &[
     ("proto-kinds", "unsupported prototype"),
     // Iterator objects encode as plain objects with another prototype; the decoder never rebuilds them.
     ("collection-iterators-are-plain-objects", "unsupported prototype"),
+    // A promise's nonextensible integrity depends on its own (untraced) properties, so an empty rebuild cannot reproduce it.
+    ("promise-nonextensible", "depends on its own properties"),
 ];
 
 #[test]
@@ -92,7 +94,7 @@ fn hand_written_encodings_round_trip() {
 fn inputs_the_decoder_must_refuse_are_errors() {
     let refused = [
         r#"[{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[["x",{"$":"accessor","get":true,"set":false}]]}]"#,
-        r#"[{"$":"obj","id":1,"cls":"Promise","proto":"other","props":[]}]"#,
+        r#"[{"$":"obj","id":1,"cls":"Promise","proto":"other","integrity":"sealed","props":[]}]"#,
         r#"[{"$":"ref","id":1}]"#,
         r#"[{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[]},{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[]}]"#,
         r#"[{"$":"weird"}]"#,

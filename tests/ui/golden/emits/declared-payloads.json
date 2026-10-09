@@ -1,0 +1,1 @@
+{"scenario":"emits/declared-payloads","result":"ok","error":null,"entries":[{"label":"save","values":[1,"two",{"$":"obj","id":1,"cls":"Object","proto":"Object.prototype","props":[["three",3]]}]}],"unhandledRejections":[]}

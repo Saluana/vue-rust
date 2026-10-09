@@ -54,6 +54,16 @@ pub trait Exotic {
         Ok(Hook::Ordinary)
     }
 
+    /// `[[PreventExtensions]]` of the object. `Hook::Ordinary` clears the object's own extensible flag.
+    fn prevent_extensions(&self, _rt: &Rt, _obj: ObjRef) -> Res<Hook<bool>> {
+        Ok(Hook::Ordinary)
+    }
+
+    /// `[[IsExtensible]]` of the object. `Hook::Ordinary` reads the object's own extensible flag.
+    fn is_extensible(&self, _rt: &Rt, _obj: ObjRef) -> Res<Hook<bool>> {
+        Ok(Hook::Ordinary)
+    }
+
     /// `Array.isArray` for the object this hook belongs to: a proxy of an array answers true. Only
     /// `Rt::is_array` reads it; element storage and the array algorithms do not change (ABI.md section 13).
     fn is_array(&self) -> bool {

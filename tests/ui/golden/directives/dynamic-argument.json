@@ -1,0 +1,1 @@
+{"scenario":"directives/dynamic-argument","result":"ok","error":null,"entries":[{"label":"log","values":["beta=2"]},{"label":"html","values":["<p>x</p>"]}],"unhandledRejections":[]}

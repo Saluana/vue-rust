@@ -333,7 +333,18 @@ impl Rt {
         self.with_obj(o, |ob| ob.proto)
     }
 
-    pub fn is_extensible(&self, o: ObjRef) -> bool {
+    /// [[IsExtensible]]: the exotic hook's answer when it handles the call, else the object's own flag.
+    pub fn is_extensible(&self, o: ObjRef) -> Res<bool> {
+        if let Some(ex) = self.exotic_of(o) {
+            if let Hook::Handled(b) = ex.is_extensible(self, o)? {
+                return Ok(b);
+            }
+        }
+        Ok(self.ordinary_extensible(o))
+    }
+
+    /// The object's own extensible flag, without exotic hooks.
+    pub(crate) fn ordinary_extensible(&self, o: ObjRef) -> bool {
         self.with_obj(o, |ob| ob.extensible)
     }
 
@@ -466,7 +477,7 @@ impl Rt {
     fn ordinary_define(&self, o: ObjRef, key: &PropKey, prop: Prop) -> bool {
         match self.with_obj(o, |ob| ob.props.get(key).cloned()) {
             None => {
-                if !self.is_extensible(o) {
+                if !self.ordinary_extensible(o) {
                     return false;
                 }
                 self.with_obj_mut(o, |ob| ob.props.push(key.clone(), prop));
@@ -740,7 +751,7 @@ impl Rt {
         if self.get_prototype_of(o) == proto {
             return true;
         }
-        if !self.is_extensible(o) {
+        if !self.ordinary_extensible(o) {
             return false;
         }
         let mut p = proto;
@@ -754,17 +765,24 @@ impl Rt {
         true
     }
 
-    /// [[PreventExtensions]].
-    pub fn prevent_extensions(&self, o: ObjRef) -> bool {
+    /// [[PreventExtensions]]: the exotic hook's answer when it handles the call, else the object's own flag is cleared.
+    pub fn prevent_extensions(&self, o: ObjRef) -> Res<bool> {
+        if let Some(ex) = self.exotic_of(o) {
+            if let Hook::Handled(b) = ex.prevent_extensions(self, o)? {
+                return Ok(b);
+            }
+        }
         self.with_obj_mut(o, |ob| ob.extensible = false);
-        true
+        Ok(true)
     }
 
     /// SetIntegrityLevel: `freeze` (frozen) or `seal` (sealed). Arrays change their shared element
     /// attributes and the length attribute uniformly.
     fn set_integrity(&self, o: ObjRef, frozen: bool) -> Res<bool> {
         if self.exotic_of(o).is_some() {
-            self.prevent_extensions(o);
+            if !self.prevent_extensions(o)? {
+                return Ok(false);
+            }
             for k in self.own_keys(o)? {
                 let Some(p) = self.get_own_property(o, &k)? else { continue };
                 let prop = match p {
@@ -818,7 +836,7 @@ impl Rt {
     /// `is_frozen`). For arrays `length` is not consulted, as in V8 (ABI.md section 12): element slots are still
     /// checked through `get_own_property`, and `freeze` still makes `length` read-only.
     fn test_integrity(&self, o: ObjRef, frozen: bool) -> Res<bool> {
-        if self.is_extensible(o) {
+        if self.is_extensible(o)? {
             return Ok(false);
         }
         let array = self.is_array_obj(o);

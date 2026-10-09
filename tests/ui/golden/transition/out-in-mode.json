@@ -1,0 +1,1 @@
+{"scenario":"transition/out-in-mode","result":"ok","error":null,"entries":[{"label":"log","values":["leave a"]},{"label":"leaving","values":["<div><p>a</p><!----></div>"]},{"label":"log","values":["enter b"]},{"label":"entering","values":["<div><p>b</p></div>"]},{"label":"done","values":["<div><p>b</p></div>"]}],"unhandledRejections":[]}

@@ -1,0 +1,1 @@
+{"scenario":"events/handler-latest-props","result":"ok","error":null,"entries":[{"label":"hit","values":["one"]},{"label":"hit","values":["two"]}],"unhandledRejections":[]}

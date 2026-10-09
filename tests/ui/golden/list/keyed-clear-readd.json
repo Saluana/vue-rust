@@ -1,0 +1,1 @@
+{"scenario":"list/keyed-clear-readd","result":"ok","error":null,"entries":[{"label":"empty","values":["<ul></ul>"]},{"label":"again","values":["<ul><li>a</li><li>b</li></ul>",true]}],"unhandledRejections":[]}

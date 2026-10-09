@@ -546,3 +546,15 @@ fn combinator_resolution_takes_the_ticks_v8_takes() {
         assert_eq!(env.entries(), s(expected), "{name}");
     }
 }
+
+#[test]
+fn ten_thousand_chained_thens_run_without_deep_recursion() {
+    // Each reaction is a job, so the chain never nests on the Rust stack.
+    let env = Env::new();
+    let mut p = env.resolved(Value::Number(0.0));
+    for _ in 0..10_000 {
+        p = env.method(&p, "then", &[Value::Undefined]).expect("then");
+    }
+    env.drain();
+    assert_eq!(promise::promise_state(&env.rt, &p), Some(PromiseState::Fulfilled(Value::Number(0.0))));
+}

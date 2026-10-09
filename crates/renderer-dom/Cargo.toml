@@ -1,0 +1,19 @@
+# vn-renderer-dom: the browser host (WP-W1a). `WebHost` implements vn_runtime::host::Host over a hand-written wasm32 import/export
+# ABI (version 1, hosts/web/ABI.md); the JavaScript glue (hosts/web/vn-host.js) applies every operation to the real DOM.
+[package]
+name = "vn-renderer-dom"
+version = "0.0.1"
+edition.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[lib]
+name = "vn_renderer_dom"
+crate-type = ["rlib", "cdylib"]
+
+[features]
+# Adds the self-test export `selftest_call` (JSON in, JSON out) used by tests/platform/web. Not part of the shipped build.
+selftest = []
+
+[dependencies]
+vn-runtime = { path = "../runtime" }

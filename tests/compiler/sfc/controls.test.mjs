@@ -46,3 +46,12 @@ describe('negative controls', () => {
     assert.equal(typeof r.code, 'string');
   });
 });
+
+test('slot aliases do not expose parameters of nested default functions to the template', () => {
+  const prefix = '<script setup>const Child = {}</script><template><Child v-slot="{ item = (inner) => inner }">';
+  const valid = compileSfc(`${prefix}{{ item }}</Child></template>`, { filename: 'scope.vue' });
+  assert.deepEqual(valid.diagnostics, []);
+  const invalid = compileSfc(`${prefix}{{ inner }}</Child></template>`, { filename: 'scope.vue' });
+  assert.equal(invalid.code, null);
+  assert.ok(invalid.diagnostics.some(d => d.code === 'VN4016' && d.message.includes('inner')));
+});

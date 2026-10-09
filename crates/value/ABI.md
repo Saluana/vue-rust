@@ -172,6 +172,8 @@ Rules:
 - Generation counters are `u32`; a slot freed 2^32 times could alias a stale handle (not reachable in practice).
 - Removing a property is O(n) (insertion order is kept); lookup is O(1) past 8 properties.
 
+- Integrity through exotic hooks (WP-R1b follow-up): `Exotic::prevent_extensions` and `Exotic::is_extensible` (default `Hook::Ordinary`) are consulted by `Rt::prevent_extensions` and `Rt::is_extensible`, which now return `Res<bool>`; `freeze`, `seal`, `is_frozen` and `is_sealed` go through them, so an exotic that forwards both to a target freezes the target. Ordinary storage paths (defining a new property, `set_prototype_of`) still read the object's own flag.
+
 ## 13. Operators & conversions (WP-L2b)
 
 Code: `src/coerce.rs` (conversions), `src/ops.rs` (operators), with the kernel amendments below. This section

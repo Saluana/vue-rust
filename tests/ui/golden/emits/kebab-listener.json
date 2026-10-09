@@ -1,0 +1,1 @@
+{"scenario":"emits/kebab-listener","result":"ok","error":null,"entries":[{"label":"log","values":["kebab","x"]}],"unhandledRejections":[]}

@@ -4,13 +4,23 @@
 
 use vn_value::{Flags, ObjRef, PropKey, Rt, Value};
 
-/// Every export of the runtime's `vue` module. Each native export carries the realm's vnode state as its data, so call
-/// this once per realm (a second call creates a second state, unrelated to the first).
+/// Every export of the runtime's `vue` module. Each native export carries the realm's vnode state as its data; the
+/// state is shared with the renderer (`renderer::vnode_state`), so every call returns exports of the same realm state.
 pub fn all(rt: &Rt) -> Vec<(&'static str, Value)> {
-    let state = crate::vnode::new_state(rt);
+    let state = crate::renderer::vnode_state(rt);
     let mut out = crate::normalize::exports(rt);
     out.extend(crate::vnode::exports(rt, state));
     out.extend(crate::helpers::exports(rt, state));
+    out.extend(vn_reactivity::exports(rt));
+    out.extend(crate::scheduler::exports(rt));
+    out.extend(crate::watch::exports(rt));
+    out.extend(crate::lifecycle::exports(rt));
+    out.extend(crate::inject::exports(rt));
+    out.extend(crate::dom_events::exports(rt));
+    out.extend(crate::vmodel::exports(rt));
+    out.extend(crate::vshow::exports(rt));
+    out.extend(crate::setup_helpers::exports(rt));
+    out.extend(crate::app::exports(rt));
     out
 }
 

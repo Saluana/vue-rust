@@ -1,0 +1,1 @@
+{"scenario":"props/kebab-camel","result":"ok","error":null,"entries":[{"label":"camel","values":["a"]},{"label":"kebab","values":["b"]}],"unhandledRejections":[]}

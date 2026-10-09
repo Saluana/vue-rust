@@ -1,0 +1,1 @@
+{"scenario":"errors/return-false-stops","result":"ok","error":null,"entries":[{"label":"log","values":["parent saw click https://vuejs.org/error-reference/#runtime-5"]},{"label":"survived","values":[]}],"unhandledRejections":[]}

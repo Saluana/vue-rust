@@ -1,0 +1,1 @@
+{"scenario":"static/v-once-pre","result":"ok","error":null,"entries":[{"label":"html","values":["<div><p id=\"once\">first</p><p id=\"pre\">{{ msg }} raw</p><p id=\"live\">second</p></div>"]}],"unhandledRejections":[]}

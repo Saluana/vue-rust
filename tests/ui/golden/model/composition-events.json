@@ -1,0 +1,1 @@
+{"scenario":"model/composition-events","result":"ok","error":null,"entries":[{"label":"composing","values":[""]},{"label":"committed","values":["ka"]}],"unhandledRejections":[]}

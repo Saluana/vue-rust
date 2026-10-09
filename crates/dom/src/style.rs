@@ -1,6 +1,8 @@
 //! CSSOM declarations and the `style` attribute (WP-U0).
 //!
-//! Supported properties: the table PROPS (about 60 longhands, custom properties `--*`). A name outside the table is an
+//! Supported properties: the table PROPS (about 60 longhands, custom properties `--*`, and the SVG paint and stroke
+//! properties fill, stroke, stroke-width, fill-opacity, stroke-opacity, stroke-linecap, stroke-linejoin, with SVG 2
+//! grammars: paint is `none` or a colour, widths are non-negative). A name outside the table is an
 //! error (UnsupportedStyleProperty). Values are checked against a small grammar per property: an invalid value leaves
 //! the declarations unchanged (CSSOM behaviour). Chrome normalises more than this model does, so the corpora avoid:
 //! hex and named colours other than the subset in NAMED_COLORS (Chrome rewrites hex as rgb()); shorthands, which
@@ -44,6 +46,10 @@ enum Kind {
     Num,
     Int,
     IntAuto,
+    /// SVG paint (fill, stroke): `none` or a colour.
+    Paint,
+    /// SVG stroke width: a non-negative number or length.
+    SvgLen,
 }
 
 const KW_DISPLAY: &[&str] = &["block", "inline", "inline-block", "flex", "inline-flex", "grid", "inline-grid", "none", "contents", "table", "table-cell", "list-item", "flow-root"];
@@ -61,6 +67,8 @@ const KW_FONT_STYLE: &[&str] = &["normal", "italic", "oblique"];
 const KW_FONT_SIZE: &[&str] = &["xx-small", "x-small", "small", "medium", "large", "x-large", "xx-large", "xxx-large", "smaller", "larger"];
 const KW_BORDER_WIDTH: &[&str] = &["thin", "medium", "thick"];
 const KW_NORMAL: &[&str] = &["normal"];
+const KW_LINECAP: &[&str] = &["butt", "round", "square"];
+const KW_LINEJOIN: &[&str] = &["miter", "miter-clip", "round", "bevel"];
 
 /// Named colours accepted by the colour grammar (a subset of the CSS list; the rest are unsupported values).
 const NAMED_COLORS: &[&str] = &[
@@ -87,6 +95,8 @@ const PROPS: &[(&str, Kind)] = &[
     ("text-transform", Kind::Kw(KW_TEXT_TRANSFORM)), ("float", Kind::Kw(KW_FLOAT)), ("flex-direction", Kind::Kw(KW_FLEX_DIRECTION)),
     ("white-space", Kind::Kw(KW_WHITE_SPACE)), ("font-style", Kind::Kw(KW_FONT_STYLE)),
     ("opacity", Kind::Num), ("flex-grow", Kind::Num), ("flex-shrink", Kind::Num), ("z-index", Kind::IntAuto), ("order", Kind::Int),
+    ("fill", Kind::Paint), ("stroke", Kind::Paint), ("stroke-width", Kind::SvgLen), ("fill-opacity", Kind::Num),
+    ("stroke-opacity", Kind::Num), ("stroke-linecap", Kind::Kw(KW_LINECAP)), ("stroke-linejoin", Kind::Kw(KW_LINEJOIN)),
 ];
 
 const LENGTH_UNITS: &[&str] = &["px", "em", "rem", "%", "vw", "vh", "vmin", "vmax", "pt", "pc", "cm", "mm", "in", "ex", "ch"];
@@ -202,6 +212,8 @@ fn check_value(kind: Kind, v: &str) -> Option<String> {
         Kind::Num => number(v),
         Kind::Int => integer(v),
         Kind::IntAuto => (lower == "auto").then_some(lower).or_else(|| integer(v)),
+        Kind::Paint => (lower == "none").then_some(lower).or_else(|| color(v)),
+        Kind::SvgLen => number(v).or_else(|| length(v)).filter(|n| !n.starts_with('-')),
     }
 }
 

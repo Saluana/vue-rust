@@ -1,0 +1,1 @@
+{"scenario":"teleport/disabled-toggle","result":"ok","error":null,"entries":[{"label":"disabled","values":["<div><p id=\"t\">moved</p></div>",""]},{"label":"enabled","values":["<div></div>","<p id=\"t\">moved</p>"]}],"unhandledRejections":[]}

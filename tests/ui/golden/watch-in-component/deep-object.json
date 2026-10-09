@@ -1,0 +1,1 @@
+{"scenario":"watch-in-component/deep-object","result":"ok","error":null,"entries":[{"label":"log","values":["deep change"]},{"label":"log","values":["deep change"]},{"label":"text","values":["<p>5</p>"]}],"unhandledRejections":[]}

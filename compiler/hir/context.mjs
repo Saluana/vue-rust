@@ -106,7 +106,7 @@ export function declaredBinding(cx, scopeId, name, node) {
 // Scope id that holds the var declarations of the current function (or the module).
 export function varScopeOf(cx, scopeId) {
   let s = scopeId;
-  while (cx.scopes[s].kind !== 'function' && cx.scopes[s].kind !== 'module') s = cx.scopes[s].parentId;
+  while (!['function', 'function-body', 'module'].includes(cx.scopes[s].kind)) s = cx.scopes[s].parentId;
   return s;
 }
 

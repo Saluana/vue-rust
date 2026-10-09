@@ -18,7 +18,7 @@ what built-ins the compiler may reference and the runtime must provide; a later 
 2. `tooling/manifest/build-stdlib.mjs` → deterministic `compiler/profile/stdlib.json` (+ `--check`), and `docs/compatibility/stdlib.md` (human table).
 3. `compiler/profile/stdlib.mjs`: `lookupStdlib(kind, path)`, `isStdlibSupported(path, target)`, `listSupported(kind?)`, `resolveGlobal(name, target) → {status, hint}|null`. Unknown → null (= unsupported). Provide `memberPath(node)` helper to turn a Babel `MemberExpression` chain of identifiers (`Object.keys`, `Math.PI`) into a dotted path or null, for the compiler to use.
 4. Tests: every supported entry of the B-specs present exactly once; no duplicates; all X entries have hints; O2's `TARGETS` (tooling/oracle/builtin-corpus.mjs) ⊆ manifest P entries; deterministic regeneration; negative control (remove an entry → test detecting a missing B-spec method fails); `lookupStdlib('static','Object.defineProperty')` is X with the C1a code mapping (VN4008) noted.
-5. Document in the report the places the compiler front half should now consult it (C1a `scope.mjs` globalsUsed → VN4xxx diagnostics for X/unknown globals; C1a member-call checks for static paths) — **do not edit C1a files**; the coordinator will schedule the integration.
+5. Document in the report the places the compiler front half should now consult it (C1a `scope.mjs` globalsUsed → VN4xxx diagnostics for X/unknown globals; C1a member-call checks for static paths) — **do not edit C1a files**; the maintainer will schedule the integration.
 
 ## Acceptance
 `node --test "tests/profile/*.test.mjs"` (old + new) green; generator deterministic; counts reported (supported / excluded entries by kind).

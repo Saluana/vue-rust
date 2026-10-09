@@ -1,0 +1,1 @@
+{"scenario":"emits/v-model-arguments","result":"ok","error":null,"entries":[{"label":"out","values":["1|second-changed"]}],"unhandledRejections":[]}

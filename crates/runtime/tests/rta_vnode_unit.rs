@@ -182,3 +182,66 @@ fn is_vnode_and_text_helpers() {
     assert_eq!(call(&rt, "isVNode", &[s("t")]), Value::Bool(false));
     assert!(describe(&rt, &v).contains("\"type\":{\"$\":\"sym\",\"desc\":\"v-txt\"}"));
 }
+
+#[test]
+fn vnodes_reachable_only_through_dynamic_children_survive_collection() {
+    let rt = realm();
+    call(&rt, "openBlock", &[]);
+    let kid = call(&rt, "createElementVNode", &[s("kid"), Value::Null, Value::Null, Value::Number(1.0)]);
+    let _ = kid; // tracked by the open block only
+    let block = call(&rt, "createElementBlock", &[s("root"), Value::Null, Value::Null, Value::Number(0.0)]);
+    let id = rt.root(&block);
+    let before = describe(&rt, &block);
+    assert!(before.contains("\"kinds\":[\"kid\"]"), "{before}");
+    rt.collect();
+    assert_eq!(describe(&rt, &block), before);
+    rt.unroot(id);
+}
+
+#[test]
+fn normalize_vnode_kinds_and_identity() {
+    // runtime-core normalizeVNode: null/boolean -> comment, array -> fragment (a copy), string/number -> text,
+    // an unmounted vnode is used as it is, a vnode with patch -1 is cloned.
+    let rt = realm();
+    let vue = rt.get_str(&Value::Object(rt.intrinsic(Intrinsic::Global)), "Vue").unwrap();
+    let create = rt.get_str(&vue, "createVNode").unwrap();
+    let Value::Object(create_obj) = create else { panic!("createVNode is a function") };
+    let state = rt.fn_data(create_obj)[0].as_object().expect("the state object");
+    let norm = |child: Value| vn_runtime::vnode::normalize_vnode_in(&rt, state, &child).expect("normalizes");
+    assert!(describe(&rt, &Value::Object(norm(Value::Null))).contains("\"type\":{\"$\":\"sym\",\"desc\":\"v-cmt\"}"));
+    assert!(describe(&rt, &Value::Object(norm(Value::Bool(false)))).contains("\"type\":{\"$\":\"sym\",\"desc\":\"v-cmt\"}"));
+    let frag = describe(&rt, &Value::Object(norm(Value::Object(rt.new_array(vec![Value::Number(1.0), Value::Number(2.0)])))));
+    assert!(frag.contains("\"type\":{\"$\":\"sym\",\"desc\":\"v-fgt\"}") && frag.contains("\"children\":[1,2]") && frag.contains("\"shapeFlag\":16"), "{frag}");
+    let text = describe(&rt, &Value::Object(norm(Value::Number(5.0))));
+    assert!(text.contains("\"type\":{\"$\":\"sym\",\"desc\":\"v-txt\"}") && text.contains("\"children\":\"5\"") && text.contains("\"shapeFlag\":8"), "{text}");
+    let v = call(&rt, "createElementVNode", &[s("u"), Value::Null, Value::Null, Value::Number(1.0)]);
+    let Value::Object(vo) = v else { panic!("a vnode") };
+    assert_eq!(norm(v.clone()), vo, "an unmounted vnode is used as it is");
+    let patched = call(&rt, "createVNode", &[s("w"), Value::Null, Value::Null, Value::Number(-1.0)]);
+    let Value::Object(po) = patched else { panic!("a vnode") };
+    assert_ne!(norm(patched.clone()), po, "a vnode with patch -1 is cloned");
+}
+
+#[test]
+fn is_same_vnode_type_compares_type_and_key() {
+    let rt = realm();
+    let a = call(&rt, "createElementVNode", &[s("div"), obj(&rt, &[("key", s("k"))])]);
+    let b = call(&rt, "createElementVNode", &[s("div"), obj(&rt, &[("key", s("k"))])]);
+    let c = call(&rt, "createElementVNode", &[s("div"), obj(&rt, &[("key", s("other"))])]);
+    let d = call(&rt, "createElementVNode", &[s("span"), obj(&rt, &[("key", s("k"))])]);
+    let (Value::Object(a), Value::Object(b), Value::Object(c), Value::Object(d)) = (a, b, c, d) else { panic!("vnodes") };
+    assert!(vn_runtime::vnode::is_same_vnode_type(&rt, a, b));
+    assert!(!vn_runtime::vnode::is_same_vnode_type(&rt, a, c));
+    assert!(!vn_runtime::vnode::is_same_vnode_type(&rt, a, d));
+}
+
+#[test]
+fn register_vue_module_exports_the_names_of_vue() {
+    let rt = Rt::new();
+    let m = vn_runtime::exports::register_vue_module(&rt);
+    for name in ["createVNode", "createElementVNode", "toDisplayString", "renderList", "mergeProps", "Fragment", "isMemoSame"] {
+        assert!(rt.module_export_cell(m, name).expect("no throw").is_some(), "{name} is exported");
+    }
+    assert!(rt.module_export_cell(m, "hyphenate").expect("no throw").is_none(), "hyphenate is not a vue export");
+    rt.load_module("vue").expect("the vue module loads");
+}

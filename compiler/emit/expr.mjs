@@ -1,6 +1,8 @@
-// Expression emission (WP-C1b). emitExpr(em, node) writes the statements that evaluate the node into em's buffer and
-// returns a Rust expression of type Value: a temporary (for anything with effects or reads) or a constant. Operands are
-// evaluated into temporaries in source order, so the Rust order is the JavaScript order.
+// Expression emission (WP-C1b, extended by WP-C1c). emitExpr(em, node) writes the statements that evaluate the node into
+// em's buffer and returns a Rust expression of type Value: a temporary (for anything with effects or reads) or a constant.
+// Operands are evaluated into temporaries in source order, so the Rust order is the JavaScript order. In an async function
+// the temporaries are frame slots (buf.mjs); argument and element lists are accumulators (vn_acc_* in the prelude), and
+// await is `await_value(rt, v).await?` stored in a slot.
 import { readVar, cellExpr, assignVar, prepareMember, putPrepared, bindPattern } from './vars.mjs';
 import { rstr, f64Lit, fnName } from './names.mjs';
 
@@ -12,7 +14,7 @@ const FN_KIND = { normal: 'Normal', arrow: 'Arrow', method: 'Method', getter: 'G
 
 function bindTmp(em, expr) {
   const t = em.tmp();
-  em.line(`let ${t}: Value = ${expr};`);
+  em.def(t, expr);
   return t;
 }
 
@@ -29,8 +31,23 @@ function binaryOp(em, op, l, r) {
   return `rt.${fn}(&${l}, &${r})?`;
 }
 
-// Arguments into a Vec<Value> (spread expands the iterable in order).
+// Arguments as a Vec<Value> expression (spread expands the iterable in order). Synchronously the Vec is a Rust local; in
+// an async function the values go to an accumulator held in a frame slot and the Vec is taken when the call happens.
 function emitArgs(em, args) {
+  if (em.async) {
+    const acc = em.tmp();
+    em.def(acc, 'vn_acc_new(rt)');
+    for (const a of args) {
+      if (a.k === 'spread') {
+        const x = emitExpr(em, a.e);
+        em.line(`vn_acc_spread(rt, &${acc}, &${x})?;`);
+      } else {
+        const x = emitExpr(em, a);
+        em.line(`vn_acc_push(rt, &${acc}, ${x}.clone())?;`);
+      }
+    }
+    return `vn_acc_take(rt, &${acc})?`;
+  }
   const va = em.uniq('a');
   em.line(`let mut ${va}: Vec<Value> = Vec::new();`);
   for (const a of args) {
@@ -57,10 +74,11 @@ function fnCreate(em, n) {
   if (!rec) throw new Error(`no function record ${n.f}`);
   const caps = n.caps.map((r) => {
     if (r.k === 'L') throw new Error('a captured binding is a Rust local (analysis mismatch)');
-    return cellExpr(r);
+    return cellExpr(em, r);
   });
   const name = rec.name ?? '';
-  return `Value::Object(rt.new_function(${fnName(n.f, rec.name)}, FnInfo::new(${rstr(name)}, ${rec.length}, FnKind::${FN_KIND[rec.kind]}), &[${caps.join(', ')}]))`;
+  const kind = rec.async ? 'Async' : FN_KIND[rec.kind];
+  return `Value::Object(rt.new_function(${fnName(n.f, rec.name)}, FnInfo::new(${rstr(name)}, ${rec.length}, FnKind::${kind}), &[${caps.join(', ')}]))`;
 }
 
 // Lowers an optional chain. Result: { v, t } temporaries; t is the `this` of the final member link (for a callee).
@@ -68,11 +86,11 @@ function emitChain(em, n) {
   const label = em.uniq('oc');
   const v = em.tmp();
   const th = em.tmp();
-  em.line(`let mut ${v}: Value = Value::Undefined;`);
-  em.line(`let mut ${th}: Value = Value::Undefined;`);
+  em.defMut(v, 'Value::Undefined');
+  em.defMut(th, 'Value::Undefined');
   const base = emitExpr(em, n.base);
   const cur = em.tmp();
-  em.line(`let mut ${cur}: Value = ${base}.clone();`);
+  em.defMut(cur, `${base}.clone()`);
   em.line(`'${label}: {`);
   em.depth += 1;
   let prevMember = false;
@@ -81,12 +99,12 @@ function emitChain(em, n) {
     if (link.k === 'm') {
       if (link.opt) em.line(`if ${cur}.is_nullish() { break '${label}; }`);
       const obj = em.tmp();
-      em.line(`let ${obj}: Value = ${cur}.clone();`);
+      em.def(obj, `${cur}.clone()`);
       if (link.key.k === 's') {
-        em.line(`${cur} = rt.get_v(&${obj}, &PropKey::from_str(${rstr(link.key.s)}))?;`);
+        em.set(cur, `rt.get_v(&${obj}, &PropKey::from_str(${rstr(link.key.s)}))?`);
       } else {
         const kv = emitExpr(em, link.key.e);
-        em.line(`${cur} = vn_get(rt, &${obj}, &${kv})?;`);
+        em.set(cur, `vn_get(rt, &${obj}, &${kv})?`);
       }
       thisv = obj;
       prevMember = true;
@@ -94,13 +112,13 @@ function emitChain(em, n) {
       if (link.opt) em.line(`if ${cur}.is_nullish() { break '${label}; }`);
       const args = emitArgs(em, link.args);
       const callThis = prevMember && thisv !== null ? thisv : null;
-      em.line(`${cur} = rt.call(&${cur}, &${callThis ? `${callThis}.clone()` : 'Value::Undefined'}, &${args})?;`);
+      em.set(cur, `rt.call(&${cur}, &${callThis ? `${callThis}.clone()` : 'Value::Undefined'}, &${args})?`);
       thisv = null;
       prevMember = false;
     }
   }
-  em.line(`${v} = ${cur}.clone();`);
-  if (thisv !== null && prevMember) em.line(`${th} = ${thisv}.clone();`);
+  em.set(v, `${cur}.clone()`);
+  if (thisv !== null && prevMember) em.set(th, `${thisv}.clone()`);
   em.depth -= 1;
   em.line('}');
   return { v, t: th };
@@ -167,23 +185,23 @@ function emitLogAssign(em, n) {
   if (t.k === 'tmem') {
     const prep = prepareMember(em, t);
     const cur = memberRead(em, prep);
-    em.line(`let mut ${res}: Value = ${cur}.clone();`);
+    em.defMut(res, `${cur}.clone()`);
     em.line(`if ${cond(cur)} {`);
     em.depth += 1;
     const r = emitExpr(em, n.v);
     memberWrite(em, prep, r);
-    em.line(`${res} = ${r}.clone();`);
+    em.set(res, `${r}.clone()`);
     em.depth -= 1;
     em.line('}');
     return res;
   }
   const cur = targetRead(em, t);
-  em.line(`let mut ${res}: Value = ${cur}.clone();`);
+  em.defMut(res, `${cur}.clone()`);
   em.line(`if ${cond(cur)} {`);
   em.depth += 1;
   const r = emitExpr(em, n.v);
   targetWrite(em, t, r);
-  em.line(`${res} = ${r}.clone();`);
+  em.set(res, `${r}.clone()`);
   em.depth -= 1;
   em.line('}');
   return res;
@@ -226,12 +244,27 @@ export function emitExpr(em, n) {
     case 'gvar':
       return bindTmp(em, `vn_gget(rt, ${rstr(n.name)})?`);
     case 'thisval':
-      return bindTmp(em, 'call.this.clone()');
+      return bindTmp(em, em.async ? 'frame_get(rt, fr, 0)' : 'call.this.clone()');
     case 'thiscell':
-      return bindTmp(em, `rt.cell_get(${cellExpr(n.r)})`);
+      return bindTmp(em, `rt.cell_get(${cellExpr(em, n.r)})`);
     case 'fn':
       return bindTmp(em, fnCreate(em, n));
     case 'arr': {
+      if (em.async) {
+        const acc = em.tmp();
+        em.def(acc, 'vn_acc_new(rt)');
+        for (const el of n.elems) {
+          if (el.k === 'hole') em.line(`vn_acc_push(rt, &${acc}, Value::Hole)?;`);
+          else if (el.k === 'spread') {
+            const x = emitExpr(em, el.e);
+            em.line(`vn_acc_spread(rt, &${acc}, &${x})?;`);
+          } else {
+            const x = emitExpr(em, el);
+            em.line(`vn_acc_push(rt, &${acc}, ${x}.clone())?;`);
+          }
+        }
+        return bindTmp(em, `vn_array(rt, vn_acc_take(rt, &${acc})?)?`);
+      }
       const va = em.uniq('e');
       em.line(`let mut ${va}: Vec<Value> = Vec::new();`);
       for (const el of n.elems) {
@@ -299,31 +332,31 @@ export function emitExpr(em, n) {
     case 'log': {
       const res = em.tmp();
       const l = emitExpr(em, n.l);
-      em.line(`let mut ${res}: Value = ${l}.clone();`);
+      em.defMut(res, `${l}.clone()`);
       const test = n.op === '&&' ? `vn_truth(&${res})`
         : n.op === '||' ? `!vn_truth(&${res})`
           : `${res}.is_nullish()`;
       em.line(`if ${test} {`);
       em.depth += 1;
       const r = emitExpr(em, n.r);
-      em.line(`${res} = ${r}.clone();`);
+      em.set(res, `${r}.clone()`);
       em.depth -= 1;
       em.line('}');
       return res;
     }
     case 'cond': {
       const res = em.tmp();
-      em.line(`let mut ${res}: Value = Value::Undefined;`);
+      em.defMut(res, 'Value::Undefined');
       const t = emitExpr(em, n.t);
       em.line(`if vn_truth(&${t}) {`);
       em.depth += 1;
       const c = emitExpr(em, n.c);
-      em.line(`${res} = ${c}.clone();`);
+      em.set(res, `${c}.clone()`);
       em.depth -= 1;
       em.line('} else {');
       em.depth += 1;
       const a = emitExpr(em, n.a);
-      em.line(`${res} = ${a}.clone();`);
+      em.set(res, `${a}.clone()`);
       em.depth -= 1;
       em.line('}');
       return res;
@@ -352,12 +385,19 @@ export function emitExpr(em, n) {
           em.line(`${s} = ${s}.concat(&JsStr::from_units(${em.strConst(p.u)}));`);
         } else {
           const x = emitExpr(em, p);
-          const sv = em.tmp();
+          const sv = em.async ? em.uniq('sv') : em.tmp();
           em.line(`let ${sv}: JsStr = rt.to_string(&${x})?;`);
           em.line(`${s} = ${s}.concat(&${sv});`);
         }
       }
       return bindTmp(em, `Value::String(${s})`);
+    }
+    case 'await': {
+      if (!em.async) throw new Error('await outside an async function');
+      const v = emitExpr(em, n.e);
+      const r = em.tmp();
+      em.def(r, `await_value(rt, ${v}.clone()).await?`);
+      return r;
     }
     default:
       throw new Error(`emitExpr: unknown expression ${n.k}`);
@@ -390,8 +430,8 @@ function emitCall(em, n) {
 
 // Object literal: keys are converted before their values are evaluated (computed names), accessors merge.
 function emitObject(em, n) {
-  const o = em.uniq('o');
-  em.line(`let ${o}: ObjRef = rt.new_object();`);
+  const o = em.objTmp();
+  em.defObj(o, 'rt.new_object()');
   for (const p of n.props) {
     if (p.k === 'spread') {
       const x = emitExpr(em, p.e);
@@ -404,8 +444,8 @@ function emitObject(em, n) {
         em.line(`rt.define_data(${o}, PropKey::from_str(${rstr(p.key.s)}), ${v}.clone(), Flags::ALL)?;`);
       } else {
         const kv = emitExpr(em, p.key.e);
-        const kk = em.tmp();
-        em.line(`let ${kk}: PropKey = vn_key(rt, &${kv})?;`);
+        const kk = em.keyTmp();
+        em.defKey(kk, `vn_key(rt, &${kv})?`);
         const v = emitExpr(em, p.v);
         em.line(`rt.define_data(${o}, ${kk}.clone(), ${v}.clone(), Flags::ALL)?;`);
         if (p.v.k === 'fn' && em.hir.fns[p.v.f].nameFromKey) {
@@ -415,11 +455,11 @@ function emitObject(em, n) {
       continue;
     }
     // get / set: the key is converted first, then the function value is created.
-    const kk = em.tmp();
-    if (p.key.k === 's') em.line(`let ${kk}: PropKey = PropKey::from_str(${rstr(p.key.s)});`);
+    const kk = em.keyTmp();
+    if (p.key.k === 's') em.defKey(kk, `PropKey::from_str(${rstr(p.key.s)})`);
     else {
       const kv = emitExpr(em, p.key.e);
-      em.line(`let ${kk}: PropKey = vn_key(rt, &${kv})?;`);
+      em.defKey(kk, `vn_key(rt, &${kv})?`);
     }
     const f = emitExpr(em, p.v);
     if (p.v.k === 'fn' && em.hir.fns[p.v.f].nameFromKey) {

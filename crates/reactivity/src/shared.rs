@@ -4,7 +4,7 @@
 
 use std::collections::HashSet;
 
-use vn_value::{CodeFn, Flags, JsStr, ObjRef, Prop, PropKey, Res, Rt, Value};
+use vn_value::{CodeFn, Flags, JsStr, ObjRef, PropKey, Res, Rt, Value};
 
 use crate::state::{state, to_reactive};
 
@@ -160,6 +160,22 @@ pub(crate) fn for_in_keys(rt: &Rt, o: ObjRef) -> Res<Vec<PropKey>> {
             }
         }
         cur = rt.get_prototype_of(obj);
+    }
+    Ok(out)
+}
+
+/// Enumerable own symbol keys (`Object.getOwnPropertySymbols` filtered by `propertyIsEnumerable`).
+pub(crate) fn enumerable_symbol_keys(rt: &Rt, o: ObjRef) -> Res<Vec<PropKey>> {
+    let mut out = Vec::new();
+    for k in rt.own_keys(o)? {
+        if !matches!(k, PropKey::Sym(_)) {
+            continue;
+        }
+        if let Some(p) = rt.get_own_property(o, &k)? {
+            if p.flags().enumerable {
+                out.push(k);
+            }
+        }
     }
     Ok(out)
 }

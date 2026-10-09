@@ -33,7 +33,7 @@ primitives or `{"$":"ref"}`-free scalars only; callbacks for object elements log
 `defineSuite(name, cases)` where a case is `{ id, target, make: () => ({ this?, args: [...] }), cbs?, static?, construct? }` — `make` builds fresh JS inputs for each execution (Node
 runs it twice: once to record `pre`, once to execute). `writeSuite(path, suite)` runs everything in Node, encodes with `tooling/oracle/trace.mjs`, and writes deterministic JSON.
 
-## Format additions (WP-O2, coordinator-approved)
+## Format additions (WP-O2, approved)
 - `"get": 1` — the target is a data property such as `Math.PI`; nothing is called, `pre` is `[]`, `post.ret` is the value read.
 - `"approx": 1` — transcendental results may differ from the platform libm in the last ulp: the Rust replay compares numbers within 1 ulp for these cases only.
 - `cbs` is aligned with `pre` (same positions; `null` where the argument is a plain value).

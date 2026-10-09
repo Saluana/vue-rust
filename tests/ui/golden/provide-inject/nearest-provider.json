@@ -1,0 +1,1 @@
+{"scenario":"provide-inject/nearest-provider","result":"ok","error":null,"entries":[{"label":"html","values":["<div><div><p id=\"leaf\">mid</p></div></div>"]}],"unhandledRejections":[]}

@@ -4,7 +4,7 @@
 
 use std::cell::{Cell, RefCell};
 use std::collections::{HashMap, VecDeque};
-use std::rc::Rc;
+use std::rc::{Rc, Weak};
 
 use crate::error;
 use crate::function::{CodeFn, FunctionData, FnKind, function_prototype_code};
@@ -108,7 +108,17 @@ pub enum Hint {
 #[derive(Clone)]
 pub struct Rt(pub(crate) Rc<RtState>);
 
+/// A non-owning realm reference for callbacks stored by the realm or its host.
+#[derive(Clone)]
+pub struct WeakRt(Weak<RtState>);
+
+impl WeakRt {
+    pub fn upgrade(&self) -> Option<Rt> { self.0.upgrade().map(Rt) }
+}
+
 impl Rt {
+    pub fn downgrade(&self) -> WeakRt { WeakRt(Rc::downgrade(&self.0)) }
+
     /// Creates a realm: global object, the core prototypes, the Error hierarchy and the well-known symbols.
     pub fn new() -> Rt {
         let st = RtState {
@@ -479,8 +489,7 @@ impl Default for Rt {
     }
 }
 
-impl Rt {
-    /// An object whose kind is `ObjectKind::Native(payload)`. The payload must trace every `ObjRef` it holds.
+impl Rt {    /// An object whose kind is `ObjectKind::Native(payload)`. The payload must trace every `ObjRef` it holds.
     pub fn new_native_object(&self, proto: Option<ObjRef>, payload: Rc<dyn NativeObject>) -> ObjRef {
         self.alloc(Obj::new(proto, ObjectKind::Native(payload)))
     }
@@ -510,8 +519,7 @@ impl Rt {
 
 // ----- value-level property access (wrappers over the object operations in object.rs) -----
 
-impl Rt {
-    /// The prototype used for property lookup on a primitive base (None for objects and null/undefined).
+impl Rt {    /// The prototype used for property lookup on a primitive base (None for objects and null/undefined).
     fn proto_for_primitive(&self, base: &Value) -> Option<ObjRef> {
         let i = match base {
             Value::String(_) => Intrinsic::StringPrototype,
@@ -577,7 +585,7 @@ impl Rt {
         let k = self.key_text(key);
         match base {
             Value::Object(o) => {
-                let absent = !self.is_extensible(*o) && matches!(self.has_property(*o, key), Ok(false));
+                let absent = !self.ordinary_extensible(*o) && matches!(self.has_property(*o, key), Ok(false));
                 if absent {
                     self.throw_type_error(&format!("Cannot add property {k}, object is not extensible"))
                 } else {

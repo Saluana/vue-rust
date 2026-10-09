@@ -1,0 +1,1 @@
+{"scenario":"lifecycle/v-if-hooks","result":"ok","error":null,"entries":[{"label":"log","values":["child beforeMount"]},{"label":"log","values":["child mounted"]},{"label":"log","values":["child beforeUnmount"]},{"label":"log","values":["child unmounted"]},{"label":"html","values":["<div><!--v-if--></div>"]}],"unhandledRejections":[]}

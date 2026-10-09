@@ -1,0 +1,341 @@
+{
+ "asOf": "2026-10-09 08:12 PDT (paused)",
+ "tasks": {
+  "2.1": {
+   "status": "done",
+   "summary": "Both prototypes preserved byte-for-byte as immutable fixtures with a SHA-256 manifest; baseline reproduced on this Mac (counter 25 + Quick Quote 28 compiler tests; counter 4 and Quick Quote 4 Rust tests — Quick Quote only with its own target dir because both crates share a name; native and wasm32 library builds); KNOWN-BUG regressions pin the old defects (dynamic `@[click]` accepted, Rust Display numbers, tie-to-even toFixed, uncached computed).",
+   "evidence": "`node --test \"tests/fixtures/prototype/*.test.mjs\" \"tests/fixtures/prototype/counter/tests/*.test.mjs\" \"tests/fixtures/prototype/quick-quote/tests/*.test.mjs\"` (74 tests); `cargo test --locked --manifest-path generated/Cargo.toml`; artifacts `tests/fixtures/prototype/MANIFEST.json`, `docs/evidence/baseline/{claims-ledger.md,js-tests.txt,rust-claims.md,rust-*.txt}`."
+  },
+  "2.2": {
+   "status": "partial",
+   "summary": "Machine-readable manifest generated from design §8: 126 inventory rows, 446 named entries (incl. 52 native tags), all 171 runtime exports of vue@3.5.43 classified (`isShallow` confirmed exported, 40 compiler-internal helpers flagged), Options API excluded, experimental APIs labelled E, default-deny lookup; plus a 465-entry closed-world standard-library/globals manifest.",
+   "evidence": "`node --test \"tests/profile/*.test.mjs\"` (92 tests); `node tooling/manifest/build-manifest.mjs --check`; `node tooling/manifest/build-stdlib.mjs --check`; artifacts `compiler/profile/{manifest.json,stdlib.json}`, `docs/compatibility/`.",
+   "missing": "TypeScript 7 vs TypeScript 6 tooling distinction and the exact TS 6 / Vue language-tools pair (needs the `typescript` package, not installed)."
+  },
+  "2.3": {
+   "status": "done",
+   "summary": "Untrusted build steps run under a deny-default macOS `sandbox-exec` profile (workspace-only writes, no network, no inherited env); hostile npm-postinstall-style and Cargo build.rs-style fixtures prove the sentinel secret, outside writes and network are blocked while the same attacks succeed unsandboxed; dependency policy and a candidate-obligation ledger exist (13 of 15 entries honestly 'unresolved'). Limits documented: sandbox-exec is deprecated/best-effort, containers and VMs not verified.",
+   "evidence": "`node --test \"tests/security/build-isolation/*.test.mjs\"` (27 tests); artifacts `docs/security/build-trust.md`, `release/dependency-policy/{POLICY.md,candidates.json}`, `tooling/sandbox/run-untrusted.mjs`."
+  },
+  "3.1": {
+   "status": "partial",
+   "summary": "Instead of a throw-away experiment the real AOT path was built: JS/TS → HIR → Rust calling a managed `vn-value` runtime (UTF-16 strings, V8-exact number formatting, closures via heap cells, TDZ, exceptions, cycles, async frames); no interpreter or eval. Verified differentially against Node/V8.",
+   "evidence": "`node tooling/harness/run-language.mjs` (79/79) and `--dir tests/language/lowering` (164/164); `cargo test -p vn-value`; corpora `tests/language/corpora`, `tests/language/builtins`.",
+   "missing": "Cost comparison against an engine-backed alternative, release-artifact size/allocation report, selected Test262 cases."
+  },
+  "3.2": {
+   "status": "partial",
+   "summary": "Non-moving generation-checked heap with iterative mark-sweep run only at safepoints; cycles, escaping closures, roots/providers, native/exotic tracing and a randomized reachability-model stress test pass; GC-stress runs (collect at every safepoint) leave all scenario outputs identical.",
+   "evidence": "`cargo test -p vn-value` (kernel_gc.rs, 29 tests + stress); harness GC-stress mode (`run_scenario_with_gc_threshold`).",
+   "missing": "Measured p99 collection pauses under graph churn, comparison with `gc-arena`, Miri/unsafe review (the crate forbids `unsafe`)."
+  },
+  "3.3": {
+   "status": "partial",
+   "summary": "Exact Vue 3.5 scheduler, watchers, nextTick and effect graph run against the real vue@3.5.43 goldens: 102/102 V0 scenarios; 403 random promise programs match V8 job ordering.",
+   "evidence": "`node tooling/harness/run-language.mjs --with-vue` (102/102); `cargo test -p vn-runtime -p vn-reactivity`; `crates/testkit/tests/promise_programs.rs`.",
+   "missing": "Scope-owned service cancellation and stale-completion rejection (services layer not built)."
+  },
+  "3.4": {
+   "status": "notstarted",
+   "summary": "Not done. A CSS parser/selector/cascade crate (`vn-css`) and a style crate (`vn-ui`, in progress) exist, but no renderer comparison (egui vs Blitz vs alternatives) was run."
+  },
+  "3.5": {
+   "status": "blocked",
+   "summary": "Needs real iPhone/iPad and Android devices with VoiceOver/TalkBack and IME; none are available here (iOS simulators exist, Android has no NDK/JDK). A simulator alone cannot pass this gate."
+  },
+  "3.6": {
+   "status": "partial",
+   "summary": "Rust/WASM DOM boundary proven in headless Chrome: `WebHost` (44 imports, 38 KB wasm) + hand-written JS glue.",
+   "evidence": "`node --test \"tests/platform/web/*.test.mjs\"` (290 pass, 0 fail, 105 skipped with reasons); `cargo test -p vn-renderer-dom`.",
+   "missing": "SSR/hydration identity probe, three-engine browser run (only Chrome available), input-before-hydration test."
+  },
+  "3.7": {
+   "status": "notstarted",
+   "summary": "Not done (requires installing `typescript`/Vue language tools; not yet approved)."
+  },
+  "3.8": {
+   "status": "notstarted",
+   "summary": "The G1/G2 decision record has not been written yet (evidence is accumulating in docs/dev/STATUS.md)."
+  },
+  "4.1": {
+   "status": "partial",
+   "summary": "Source-located versioned HIR (`hirVersion: 1`), checked emitter, identifier mangling and diagnostics with `.vue`-mapped spans replace the prototype's direct string emission; the SFC frontend reuses the official compiler so dynamic event arguments are compiled by Vue itself.",
+   "evidence": "`node --test \"tests/compiler/**/*.test.mjs\"` (474 tests); `node tooling/harness/run-language.mjs --dir tests/language/lowering`; `compiler/hir/README.md`, `compiler/ABI.md`.",
+   "missing": "Explicit regression fixture showing the old `@[click]` defect is fixed through the new pipeline; IR schema content hashes."
+  },
+  "4.2": {
+   "status": "partial",
+   "summary": "Primitive math/strings/booleans, mutable captured aliases and JS decimal formatting execute correctly natively with automatic GC roots.",
+   "evidence": "`node tooling/harness/run-language.mjs --dir tests/language/lowering` (164/164).",
+   "missing": "Execution of compiled scenarios on wasm32 (the crates compile to wasm and the host is tested, but compiled-app execution in the browser is still being wired)."
+  },
+  "4.3": {
+   "status": "partial",
+   "summary": "Reactivity ownership model complete (cached computed, scopes, watchers with cleanup, dependency release on stop); component instance record exists; component mounting/unmounting is being written.",
+   "evidence": "`cargo test -p vn-reactivity` (240+ tests); `node tooling/harness/run-language.mjs --with-vue`.",
+   "missing": "Props/emit components, keyed child removal stopping watchers, unmount/recreate leak counts through the renderer."
+  },
+  "4.4": {
+   "status": "partial",
+   "summary": "Event/prop layer, DOM host and component rendering work over the headless DocHost and the browser host contract (131/160 real-Vue component scenarios pass); native desktop renderer and an assembled quote form on web/native not done.",
+   "evidence": "`cargo test -p vn-runtime` (rtd_* tests); `node --test \"tests/platform/web/*.test.mjs\"`.",
+   "missing": "Native desktop host, end-to-end quote form on both hosts, keyboard/AT operation."
+  },
+  "4.5": {
+   "status": "partial",
+   "summary": "`vue-native` CLI exists (check/build/create/doctor, `--json`, refuses existing output dirs); web packaging pipeline proven with a host-only app in headless Chrome (53.9 KB wasm / 20.3 KB gz, first render 24 ms after navigation); headless target mounts a compiled `.vue` app in the Rust Vue runtime and runs scripted interactions — Counter (mount, click, v-if threshold, reset, disabled) and Quick Quote with `defineModel` (full interaction sequence: validation, watcher status line, hide/show, remove line) both pass end to end.",
+   "evidence": "`node --test \"tests/cli/*.test.mjs\"` (38/38) and `node --test \"tests/platform/web/*.test.mjs\"` (398 tests: 293 pass, 0 fail, 105 skipped with a stated reason — corpus cases that need Host operations that do not exist yet); run each with a fresh private CARGO_TARGET_DIR; `node tooling/cli/vue-native.mjs check examples/counter`; artifacts `tooling/cli/`, `examples/{counter,quick-quote}`, `docs/guide/getting-started.md`.",
+   "missing": "`vue-native build --target web` for `.vue` projects still refuses them (the renderer is Host-generic now: wire WebHost + a generated vn_start entry, update the refusal test in tests/cli/build.test.mjs) and a Chrome e2e of Counter and Quick Quote; measured startup/memory/edit latency; G3 report."
+  },
+  "5.1": {
+   "status": "done",
+   "summary": "Lexical environments, TDZ, hoisting, closures, per-iteration let capture, labels/switch/loops/try-finally and evaluation order match Node.",
+   "evidence": "`node tooling/harness/run-language.mjs --dir tests/language/lowering` (164/164); `node tooling/harness/run-language.mjs` (79/79); rejects fixtures `tests/language/rejects` via `node --test \"tests/compiler/frontend/*.test.mjs\"`. Note: Test262 not used; correctness is checked against 243 differential scenarios."
+  },
+  "5.2": {
+   "status": "done",
+   "summary": "Objects (key order, accessors, freeze/seal with V8's array rules), arrays with holes, Map/Set (mutation during iteration), Symbols and identity/aliasing match V8 on large recorded corpora; classes/prototype mutation/descriptor mutation are rejected with spans.",
+   "evidence": "`cargo test -p vn-value -p vn-testkit` (1000+ tests); corpora `tests/language/builtins/*.json` (≈14k cases, zero failures)."
+  },
+  "5.3": {
+   "status": "done",
+   "summary": "Number formatting/parsing (toString radix, toFixed ties, toPrecision, parseInt/Float) and UTF-16 string semantics (lone surrogates) match V8 on 40k+ corpus cases; operators/coercions on 46k pairs; String/Number/Math/JSON builtins; closed-world standard-method manifest rejects the rest.",
+   "evidence": "`cargo test -p vn-value --test number_corpus --test string_corpus --test ops_corpus`; `crates/testkit/tests/replay_b*.rs`. Note: transcendental Math functions are within 1–2 ulp of V8 (documented); Date/Intl/RegExp/BigInt are rejected by the profile."
+  },
+  "5.4": {
+   "status": "done",
+   "summary": "try/finally abrupt completions, promises (all combinators, thenable assimilation, exact V8 tick counts), async functions lowered to Rust async blocks with heap frames, unhandled-rejection tracking, async watchdog; stacks to source are not yet mapped (see 9.5).",
+   "evidence": "`node tooling/harness/run-language.mjs` (promises 8/8, async 5/5, timers 5/5); `crates/testkit/tests/promise_programs.rs` (403 programs equal Node, mutation check kills 101)."
+  },
+  "5.5": {
+   "status": "partial",
+   "summary": "Static ESM across multiple files, live bindings, cycles, re-exports, namespace objects, native module imports and `.vue` imports compile and run.",
+   "evidence": "`node tooling/harness/run-projects.mjs` (10/10); `cargo test -p vn-value --test modules_graph` etc.",
+   "missing": "Dynamic `import()` lowering (still VN9001), chunk graph and web chunk loading."
+  },
+  "5.6": {
+   "status": "partial",
+   "summary": "Heap limit and execution-budget watchdogs, GC safepoint discipline and stress tests exist.",
+   "evidence": "`cargo test -p vn-value` (kernel_gc, kernel_jobs).",
+   "missing": "Miri/ASan/FFI audit, long-churn latency tails, native-resource disposal."
+  },
+  "5.7": {
+   "status": "partial",
+   "summary": "SFC frontend wraps the official compileScript/compileTemplate/compileStyle with profile checks, native template validation and `.vue` spans; macros come from Vue itself; TypeScript is erased at lowering; all 37 real SFC fixtures lower to Rust that passes `cargo check`.",
+   "evidence": "`node --test \"tests/compiler/sfc/*.test.mjs\"` (210 tests, 31 components rendered in real Vue in Chrome); `node tooling/harness/check-sfc-lowering.mjs` (37/37).",
+   "missing": "Type checking via a pinned TypeScript 6 + Vue virtual-file pair, imported-type props, `<style module>` (async CSS modules)."
+  },
+  "6.1": {
+   "status": "done",
+   "summary": "reactive/readonly/shallowReactive/shallowReadonly proxies with array and Map/Set instrumentation, raw/proxy identity, toRaw/markRaw/is* utilities and ref unwrapping rules match the real package.",
+   "evidence": "`node tooling/harness/run-language.mjs --with-vue` (ref 18/18, reactive 25/25); `cargo test -p vn-reactivity`; `node tests/vue/rust/gen-expected.mjs --check` (≈230 snippets from real @vue/reactivity)."
+  },
+  "6.2": {
+   "status": "done",
+   "summary": "Lazy cached computed (branching, chains, diamonds, writable, oldValue), customRef, effect scopes (nested/detached/stop order) match the real package.",
+   "evidence": "`node tooling/harness/run-language.mjs --with-vue` (computed 12/12, effect 8/8); `cargo test -p vn-reactivity`."
+  },
+  "6.3": {
+   "status": "done",
+   "summary": "watch/watchEffect/watchPostEffect/watchSyncEffect with all options, handles (stop/pause/resume), cleanup, the exact 3.5 job queue and nextTick over real promises; recursion watchdog fails visibly.",
+   "evidence": "`node tooling/harness/run-language.mjs --with-vue` (watch 27/27, scheduler 12/12); `cargo test -p vn-runtime` (rtb_*)."
+  },
+  "6.4": {
+   "status": "partial",
+   "summary": "Component props (casting, defaults), emits (modifiers), slots, attrs fallthrough, provide/inject, v-model/defineModel via useModel run through the real renderer; against real-Vue UI goldens: props 11/12, emits 8/8, slots 11/11, provide-inject 7/7, model 14/14 (the single props miss is a vn-dom style-shorthand gap, not props logic).",
+   "missing": "two-app-root and dynamic-slot-name edge scenarios beyond the recorded 160; mergeModels/defineModel edge cases; Options API remains unsupported by design.",
+   "evidence": "`node tooling/harness/run-language.mjs --with-vue --ui` (131/160 overall, 0 fail); `cargo test -p vn-runtime`."
+  },
+  "6.5": {
+   "status": "partial",
+   "summary": "Lifecycle hooks (order verified: lifecycle 9/10), error capture/app errorHandler routing (errors 4/7), template refs (refs 4/9) implemented; remaining misses are classified.",
+   "evidence": "`node tooling/harness/run-language.mjs --with-vue --ui`; `cargo test -p vn-runtime` (rtb_errors_lifecycle, rtc_*).",
+   "missing": "reactive() must not wrap DOM element handles (crates/reactivity/src/reactive.rs) — blocks 5 refs scenarios and 2 others; DOM-event listener errors must reach handleError (pass owning instance to patch_event, crates/runtime/src/dom_events.rs) — blocks 3 errors scenarios."
+  },
+  "6.6": {
+   "status": "notstarted",
+   "summary": "Not started: KeepAlive, Teleport, Transition, defineAsyncComponent exports missing — 17 of the 29 blocked UI scenarios (teleport 0/5, transition 0/5, dynamic 2/9)."
+  },
+  "6.7": {
+   "status": "partial",
+   "summary": "Official-compiler template lowering plus runtime semantics verified end to end: events 13/13, model 14/14, list 11/11, conditional 7/7, fragments 5/5, directives 5/5, static 14/15 against real-Vue goldens.",
+   "evidence": "`node tooling/harness/run-language.mjs --with-vue --ui`; 944 patchProp cases and 174 directive scenarios (`cargo test -p vn-runtime`).",
+   "missing": "vn-dom margin/style shorthands (blocks 2 scenarios), v-html native rejection fixture in the UI corpus, custom-element/SVG breadth."
+  },
+  "6.8": {
+   "status": "partial",
+   "summary": "createApp/mount/unmount/use/component/directive/provide/runWithContext/onUnmount implemented; advanced-API boundary diagnostics via manifest + SFC frontend."
+  },
+  "7.1": {
+   "status": "partial",
+   "summary": "Semantic element tree exists (`vn-dom`: tree, attributes, properties with dirty flags, events with activation behaviour, focus, selectors, serialization; 284 Chrome-recorded cases). Retained native renderer adapter not started.",
+   "evidence": "`cargo test -p vn-dom`.",
+   "missing": "retained renderer adapter, hit testing with transforms/clipping, gestures."
+  },
+  "7.2": {
+   "status": "partial",
+   "summary": "CSS tokenizer/parser, selectors, media queries, cascade and custom properties (`vn-css`: 98 tests, ~3400 Chrome comparisons); typed values/computed style (`vn-ui`) in progress.",
+   "evidence": "`cargo test -p vn-css`; `node --test \"tests/css/gen/*.test.mjs\"`.",
+   "missing": "typed values and shorthands, computed style, layout (Taffy), scoped/deep/slotted handling in the renderer, units."
+  },
+  "7.3": {
+   "status": "notstarted",
+   "summary": "International text editing/IME not started."
+  },
+  "7.4": {
+   "status": "notstarted",
+   "summary": "Semantic accessibility tree and focus management for the native host not started."
+  },
+  "7.5": {
+   "status": "notstarted",
+   "summary": "Media, transitions and rendering resilience not started."
+  },
+  "8.1": {
+   "status": "notstarted",
+   "summary": "Not started (services layer: capability and service interfaces)."
+  },
+  "8.2": {
+   "status": "notstarted",
+   "summary": "Not started (services layer: HTTP, streaming and WebSockets)."
+  },
+  "8.3": {
+   "status": "notstarted",
+   "summary": "Not started (services layer: scoped files and export)."
+  },
+  "8.4": {
+   "status": "notstarted",
+   "summary": "Not started (services layer: SQLite access and migrations)."
+  },
+  "8.5": {
+   "status": "notstarted",
+   "summary": "Not started (services layer: web KV/SQL persistence)."
+  },
+  "8.6": {
+   "status": "notstarted",
+   "summary": "Not started (services layer: settings and secure storage)."
+  },
+  "8.7": {
+   "status": "notstarted",
+   "summary": "Not started (services layer: navigation, deep links and windows)."
+  },
+  "8.8": {
+   "status": "notstarted",
+   "summary": "Not started (services layer: notifications and background jobs)."
+  },
+  "9.1": {
+   "status": "partial",
+   "summary": "`vue-native` CLI: check (diagnostics with spans, --json), build (web packaging, headless), create (2 templates), doctor (no installs); getting-started guide written from what runs.",
+   "missing": "locked toolchain setup/offline mirror, dev/test/package/upgrade commands, config schema, clean-room documentation exercise.",
+   "evidence": "`node --test \"tests/cli/*.test.mjs\"`; `tooling/cli/`, `docs/guide/getting-started.md`."
+  },
+  "9.2": {
+   "status": "notstarted",
+   "summary": "Incremental graph/cache invalidation not started (builds are full rebuilds)."
+  },
+  "9.3": {
+   "status": "notstarted",
+   "summary": "Preview/reload not started."
+  },
+  "9.4": {
+   "status": "notstarted",
+   "summary": "Editor integration/type checking not started."
+  },
+  "9.5": {
+   "status": "partial",
+   "summary": "Compiler diagnostics carry codes, `.vue` spans (UTF-16 exact) and formatted source frames.",
+   "evidence": "`node --test \"tests/compiler/frontend/*.test.mjs\" \"tests/compiler/sfc/*.test.mjs\"`.",
+   "missing": "runtime source-mapped stacks, async stacks, component/effect inspector."
+  },
+  "9.6": {
+   "status": "notstarted",
+   "summary": "Ecosystem package qualification not started."
+  },
+  "10.1": {
+   "status": "notstarted",
+   "summary": "Quick Quote upgrade not started (a first demo form without persistence is part of the CLI work)."
+  },
+  "10.2": {
+   "status": "notstarted",
+   "summary": "Fieldboard not started."
+  },
+  "10.3": {
+   "status": "notstarted",
+   "summary": "SSR/SSG/hydration not started."
+  },
+  "10.4": {
+   "status": "partial",
+   "summary": "Browser host runs in headless Chrome 155 (wasm loading, events, DOM semantics) with size measured; no multi-browser, storage, offline or WCAG qualification.",
+   "evidence": "`node --test \"tests/platform/web/*.test.mjs\"`.",
+   "missing": "Firefox/Safari, mobile browsers, storage/quota/offline, accessibility audit."
+  },
+  "10.5": {
+   "status": "notstarted",
+   "summary": "G4 audit not yet possible."
+  },
+  "11.1": {
+   "status": "blocked",
+   "summary": "Windows needs real x64/ARM64 machines; none available."
+  },
+  "11.2": {
+   "status": "notstarted",
+   "summary": "macOS native host not built yet (this Mac is the only machine that can verify it)."
+  },
+  "11.3": {
+   "status": "blocked",
+   "summary": "Linux needs real hardware and distros; none available (Docker is installed but unused)."
+  },
+  "12.1": {
+   "status": "blocked",
+   "summary": "iOS needs physical devices, signing identities and VoiceOver; simulators only available."
+  },
+  "12.2": {
+   "status": "blocked",
+   "summary": "Android needs NDK/JDK/devices; none installed."
+  },
+  "12.3": {
+   "status": "blocked",
+   "summary": "Depends on 12.1 and real devices."
+  },
+  "12.4": {
+   "status": "blocked",
+   "summary": "Depends on 12.2 and real devices."
+  },
+  "13.1": {
+   "status": "notstarted",
+   "summary": "Security fuzzing not started (sandbox runner and resource limits exist)."
+  },
+  "13.2": {
+   "status": "notstarted",
+   "summary": "Benchmarks not started."
+  },
+  "13.3": {
+   "status": "partial",
+   "summary": "Dependency policy and candidate ledger exist; licence audit of the actual dependency graph not done.",
+   "evidence": "`release/dependency-policy/`.",
+   "missing": "licence scan of the full Rust/npm graph, SBOM, branding review."
+  },
+  "13.4": {
+   "status": "notstarted",
+   "summary": "Update verification not started."
+  },
+  "13.5": {
+   "status": "notstarted",
+   "summary": "Reproducible release artifacts not started."
+  },
+  "13.6": {
+   "status": "partial",
+   "summary": "Differential scoreboards with ratchet ledgers (`tests/language/status.json`, `tests/vue/status.json`) fail on regressions or unexpected passes; no CI matrix.",
+   "evidence": "`node tooling/harness/run-language.mjs [--with-vue]`.",
+   "missing": "CI matrix, tier evidence automation, dependency-upgrade rehearsals."
+  },
+  "13.7": {
+   "status": "partial",
+   "summary": "Compatibility and architecture docs exist (`docs/compatibility`, `docs/dev`).",
+   "missing": "Author guide, migration guide, runbooks."
+  },
+  "13.8": {
+   "status": "notstarted",
+   "summary": "Production go/no-go cannot be made yet."
+  }
+ }
+}

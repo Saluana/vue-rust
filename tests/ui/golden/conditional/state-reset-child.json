@@ -1,0 +1,1 @@
+{"scenario":"conditional/state-reset-child","result":"ok","error":null,"entries":[{"label":"clicked","values":["2"]},{"label":"remounted","values":["0"]}],"unhandledRejections":[]}

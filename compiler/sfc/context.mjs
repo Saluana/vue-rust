@@ -11,7 +11,7 @@ import { createAnyDiagnostic } from './codes.mjs';
 
 export const VUE_REFERENCE = '3.5.43';
 export const GENERATOR = 'vue-native SFC frontend (WP-F1, generator 1)';
-const TARGETS = new Set(['native', 'web']);
+const TARGETS = new Set(['native', 'web', 'test']);
 const ID_RE = /^[A-Za-z0-9_-]+$/;
 const NODE_BUILTINS = new Set(builtinModules);
 
@@ -31,7 +31,7 @@ export function resolveOptions(source, options) {
   if (options === null || typeof options !== 'object') throw new TypeError('compileSfc: options must be an object');
   const { filename, id, target = 'native', rootDir, trustedHtml = false } = options;
   if (typeof filename !== 'string' || filename === '') throw new TypeError('compileSfc: options.filename must be a non-empty string');
-  if (!TARGETS.has(target)) throw new TypeError(`compileSfc: target must be "native" or "web", got ${String(target)}`);
+  if (!TARGETS.has(target)) throw new TypeError(`compileSfc: target must be "native", "web" or "test", got ${String(target)}`);
   if (id !== undefined && (typeof id !== 'string' || !ID_RE.test(id))) {
     throw new TypeError('compileSfc: options.id must be a non-empty string of letters, digits, "_" or "-"');
   }
@@ -176,11 +176,11 @@ export function manifestEntry(kind, name) {
 }
 
 export function vueSupported(name, target) {
-  return isSupported('vue', name, target, { origin: 'user' });
+  return isSupported('vue', name, target === 'test' ? 'native' : target, { origin: 'user' });
 }
 
 export function vueCompilerSupported(name, target) {
-  return isSupported('vue', name, target, { origin: 'compiler' });
+  return isSupported('vue', name, target === 'test' ? 'native' : target, { origin: 'compiler' });
 }
 
 export function isNodeBuiltin(spec) {

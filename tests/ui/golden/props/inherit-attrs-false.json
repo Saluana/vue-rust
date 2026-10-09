@@ -1,0 +1,1 @@
+{"scenario":"props/inherit-attrs-false","result":"ok","error":null,"entries":[{"label":"html","values":["<div class=\"wrap\"><input id=\"field\" placeholder=\"type\" aria-label=\"name\"></div>"]}],"unhandledRejections":[]}

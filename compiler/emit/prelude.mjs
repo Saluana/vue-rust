@@ -263,3 +263,162 @@ fn vn_iter_close_throw(rt: &Rt, it: &IterRecord) {
     let _ = iter_close(rt, it, true);
 }
 `;
+
+// The helpers of an async module (WP-C1c): emitted only when the module has an async function. The frame operations come
+// from crate::vn_async (the async runtime, WP-B5: new_frame, frame_get, frame_set, async_start, await_value). Frames hold
+// Values; an object reference is a frame slot holding Value::Object. Accumulators are JavaScript arrays (no holes unless
+// a Value::Hole is pushed), so a list can wait in a frame across awaits. Iterator records are three slots (iterator, next,
+// done). A completion (Res<Flow>) is three slots (kind 0..4, value, label).
+export const ASYNC_PRELUDE = `use crate::vn_async::{async_start, await_value, frame_get, frame_set, new_frame};
+
+/// The object of a frame slot (a framework invariant: such slots hold objects).
+fn vn_obj(v: &Value) -> ObjRef {
+    match v {
+        Value::Object(o) => *o,
+        _ => unreachable!("frame slot does not hold an object"),
+    }
+}
+
+/// A frame slot read as a count or index (numbers are stored as f64; usize::MAX saturates back).
+fn vn_idx_of(v: &Value) -> usize {
+    match v {
+        Value::Number(n) => *n as usize,
+        _ => 0,
+    }
+}
+
+/// A new accumulator (an empty array).
+fn vn_acc_new(rt: &Rt) -> Value {
+    Value::Object(rt.new_array(Vec::new()))
+}
+
+fn vn_acc_len(rt: &Rt, acc: &Value) -> Res<u32> {
+    match rt.get_v(acc, &PropKey::from_str("length"))? {
+        Value::Number(n) => Ok(n as u32),
+        _ => Ok(0),
+    }
+}
+
+/// Appends one element. Value::Hole leaves a hole, so the length grows without a property.
+fn vn_acc_push(rt: &Rt, acc: &Value, v: Value) -> Res<()> {
+    let n = vn_acc_len(rt, acc)?;
+    if let Value::Hole = v {
+        rt.set_v_strict(acc, &PropKey::from_str("length"), Value::Number((n + 1) as f64))?;
+        return Ok(());
+    }
+    rt.create_data_property(vn_obj(acc), PropKey::Index(n), v)?;
+    Ok(())
+}
+
+/// Appends the values of an iterable (spread in an argument list or an array literal).
+fn vn_acc_spread(rt: &Rt, acc: &Value, v: &Value) -> Res<()> {
+    let mut it = get_iterator(rt, v)?;
+    while let Some(x) = iter_step(rt, &mut it)? {
+        vn_acc_push(rt, acc, x)?;
+    }
+    Ok(())
+}
+
+/// The elements of an accumulator as a Vec (a missing element is a hole).
+fn vn_acc_take(rt: &Rt, acc: &Value) -> Res<Vec<Value>> {
+    let o = vn_obj(acc);
+    let n = vn_acc_len(rt, acc)?;
+    let mut out = Vec::with_capacity(n as usize);
+    for i in 0..n {
+        match rt.get_own_property(o, &PropKey::Index(i))? {
+            Some(Prop::Data { value, .. }) => out.push(value),
+            _ => out.push(Value::Hole),
+        }
+    }
+    Ok(out)
+}
+
+/// The property keys held by an accumulator (object rest excludes them).
+fn vn_acc_keys(rt: &Rt, acc: &Value) -> Res<Vec<PropKey>> {
+    let mut out = Vec::new();
+    for v in vn_acc_take(rt, acc)? {
+        out.push(rt.to_property_key(&v)?);
+    }
+    Ok(out)
+}
+
+fn vn_arr_len(rt: &Rt, arr: &Value) -> Res<usize> {
+    Ok(vn_acc_len(rt, arr)? as usize)
+}
+
+fn vn_arr_at(rt: &Rt, arr: &Value, i: usize) -> Res<Value> {
+    rt.get_v(arr, &PropKey::Index(i as u32))
+}
+
+/// The iterator record in three slots from base: iterator, next, done.
+fn vn_it_save(rt: &Rt, fr: ObjRef, base: usize, it: &IterRecord) {
+    frame_set(rt, fr, base, it.iterator.clone());
+    frame_set(rt, fr, base + 1, it.next.clone());
+    frame_set(rt, fr, base + 2, Value::Bool(it.done));
+}
+
+fn vn_it_load(rt: &Rt, fr: ObjRef, base: usize) -> IterRecord {
+    IterRecord {
+        iterator: frame_get(rt, fr, base),
+        next: frame_get(rt, fr, base + 1),
+        done: frame_get(rt, fr, base + 2).to_boolean(),
+    }
+}
+
+/// GetIterator into the slots (the iterator method is read once, as in the synchronous code).
+fn vn_it_new(rt: &Rt, fr: ObjRef, base: usize, src: &Value) -> Res<()> {
+    let it = get_iterator(rt, src)?;
+    vn_it_save(rt, fr, base, &it);
+    Ok(())
+}
+
+/// One IteratorStep on the slots: the record is written back before the result is used.
+fn vn_it_step(rt: &Rt, fr: ObjRef, base: usize) -> Res<Option<Value>> {
+    let mut it = vn_it_load(rt, fr, base);
+    let r = iter_step(rt, &mut it);
+    vn_it_save(rt, fr, base, &it);
+    r
+}
+
+fn vn_it_done(rt: &Rt, fr: ObjRef, base: usize) -> bool {
+    frame_get(rt, fr, base + 2).to_boolean()
+}
+
+/// IteratorClose on the slots: a throw completion ignores the return() result, a normal one propagates its errors.
+fn vn_it_close(rt: &Rt, fr: ObjRef, base: usize, throwing: bool) -> Res<()> {
+    let it = vn_it_load(rt, fr, base);
+    if throwing {
+        vn_iter_close_throw(rt, &it);
+        Ok(())
+    } else {
+        vn_iter_close_normal(rt, &it)
+    }
+}
+
+/// A completion (Res<Flow>) in three slots, so that it survives the awaits of a finally block.
+fn vn_cmpl_store(rt: &Rt, fr: ObjRef, base: usize, c: Res<Flow>) {
+    let (kind, v, label) = match c {
+        Ok(Flow::Normal) => (0.0, Value::Undefined, 0.0),
+        Ok(Flow::Return(v)) => (1.0, v, 0.0),
+        Ok(Flow::Break(l)) => (2.0, Value::Undefined, l as f64),
+        Ok(Flow::Continue(l)) => (3.0, Value::Undefined, l as f64),
+        Err(Throw(e)) => (4.0, e, 0.0),
+    };
+    frame_set(rt, fr, base, Value::Number(kind));
+    frame_set(rt, fr, base + 1, v);
+    frame_set(rt, fr, base + 2, Value::Number(label));
+}
+
+fn vn_cmpl_load(rt: &Rt, fr: ObjRef, base: usize) -> Res<Flow> {
+    let kind = vn_idx_of(&frame_get(rt, fr, base));
+    let v = frame_get(rt, fr, base + 1);
+    let label = vn_idx_of(&frame_get(rt, fr, base + 2)) as u32;
+    match kind {
+        0 => Ok(Flow::Normal),
+        1 => Ok(Flow::Return(v)),
+        2 => Ok(Flow::Break(label)),
+        3 => Ok(Flow::Continue(label)),
+        _ => Err(Throw(v)),
+    }
+}
+`;

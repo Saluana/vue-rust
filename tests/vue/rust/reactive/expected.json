@@ -1,0 +1,709 @@
+{
+  "oracle": "@vue/reactivity 3.5.43 production build (NODE_ENV=production)",
+  "cases": {
+    "r1b-flags-reactive": [
+      "same true false true",
+      "flags true false false true",
+      "raw false false false false",
+      "toRaw true true 1"
+    ],
+    "r1b-readonly-flags": [
+      "flags false true false true true",
+      "same true true true",
+      "nested true true true false",
+      "reactive-of-nested true"
+    ],
+    "r1b-shallow-flags": [
+      "sr true false true false true",
+      "sro false true true false",
+      "nested-shallow false false false"
+    ],
+    "r1b-get-tracks-property": [
+      "read 1",
+      "read 2",
+      "runs 2",
+      "runs-same 2",
+      "runs-new-key 2"
+    ],
+    "r1b-has-tracks-key": [
+      "has false",
+      "has true",
+      "runs 2",
+      "has false",
+      "runs-after-delete 3"
+    ],
+    "r1b-delete-missing-no-trigger": [
+      "ok 1",
+      "del-missing true 1",
+      "ok undefined",
+      "del true 2"
+    ],
+    "r1b-ownkeys-tracks-iterate": [
+      "keys a",
+      "keys a,b",
+      "after-add 2",
+      "after-set 2",
+      "keys b",
+      "after-delete 3"
+    ],
+    "r1b-for-in-tracks": [
+      "forin ab",
+      "forin abc",
+      "runs 2",
+      "runs-set 2"
+    ],
+    "r1b-set-same-value-no-trigger": [
+      "read NaN 0",
+      "read NaN 0",
+      "runs 2",
+      "read NaN 1",
+      "runs2 3"
+    ],
+    "r1b-getter-receiver-tracks": [
+      "v 10",
+      "v 20",
+      "runs 2"
+    ],
+    "r1b-setter-receiver-is-proxy": [
+      "setter 1 true 5 5"
+    ],
+    "r1b-symbol-keys": [
+      "sym 1",
+      "sym 2",
+      "runs 2",
+      "has-sym true true"
+    ],
+    "r1b-nested-object-tracks": [
+      "x 1",
+      "x 2",
+      "runs 2",
+      "same-inner true true"
+    ],
+    "r1b-proxy-cache-identity": [
+      "reactive-cached true true",
+      "readonly-cached true false true",
+      "shallow-cached true true"
+    ],
+    "r1b-readonly-set-and-delete-silent": [
+      "after set 1 1",
+      "delete true 1"
+    ],
+    "r1b-readonly-nested-wrapped": [
+      "inner-ro 1 true",
+      "inner-after 1 1"
+    ],
+    "r1b-markraw-skips-wrapping": [
+      "marked true true",
+      "skip true false false",
+      "nested-marked false 1"
+    ],
+    "r1b-frozen-and-nonextensible-bypass": [
+      "frozen true false true",
+      "nonext true true"
+    ],
+    "r1b-non-plain-and-primitives-bypass": [
+      "wrapper true false true",
+      "fn true",
+      "prims 1 s null undefined"
+    ],
+    "r1b-refs-unwrap-in-reactive": [
+      "unwrap 1 false",
+      "written 5 5",
+      "replaced 0 5 0"
+    ],
+    "r1b-shallow-reactive-keeps-refs": [
+      "shallow-keep true 2",
+      "deep-unwrap false 2"
+    ],
+    "r1b-tor-chain-and-isproxy": [
+      "chain true true false",
+      "sr true true"
+    ],
+    "r1b-array-index-and-length-tracking": [
+      "idx 2 3",
+      "idx 5 3",
+      "runs 2",
+      "idx 5 6",
+      "runs-grow 3 6",
+      "idx 5 2",
+      "runs-shrink 4 2"
+    ],
+    "r1b-array-push-effects": [
+      "len 0",
+      "len 1",
+      "len 3",
+      "runs 3 3"
+    ],
+    "r1b-array-pop-shift-unshift": [
+      "first 1 3",
+      "first 1 2",
+      "pop 3 2",
+      "first 2 1",
+      "shift 1 3",
+      "first 7 3",
+      "unshift 4 7-8-2"
+    ],
+    "r1b-array-splice-effect": [
+      "sp 4 b",
+      "sp 3 x",
+      "removed 2 b 3 2"
+    ],
+    "r1b-array-sort-reverse-effect": [
+      "s 3",
+      "s 1",
+      "sorted-runs 2 1",
+      "s 3",
+      "rev-runs 3 3"
+    ],
+    "r1b-array-includes-identity": [
+      "incl-raw true 0 0",
+      "incl-proxy true 0 0",
+      "nan true -1",
+      "same-proxy false"
+    ],
+    "r1b-array-method-identity": [
+      "identity true true true",
+      "own-hasOwn true true true"
+    ],
+    "r1b-array-isarray-and-tostring": [
+      "isArray true 2 true [object Array]",
+      "ro true 1,2"
+    ],
+    "r1b-array-iteration-wraps-items": [
+      "iter r,number",
+      "entry 0 true",
+      "entry 1 false",
+      "forEach true:true;false:true;"
+    ],
+    "r1b-map-flags-and-identity": [
+      "same true false true true",
+      "flags true false false true true",
+      "readonly false true false true true",
+      "shallow true false false true",
+      "proto true [object Map]"
+    ],
+    "r1b-map-get-set-has-size-effects": [
+      "size 0 false undefined",
+      "size 1 true 1",
+      "runs 2",
+      "runs-same 2",
+      "size 1 true 2",
+      "runs-change 3",
+      "size 0 false undefined",
+      "runs-delete 4",
+      "runs-missing 4",
+      "runs-clear-empty 4"
+    ],
+    "r1b-map-clear-triggers": [
+      "size 2",
+      "size 0",
+      "after-clear 2 0"
+    ],
+    "r1b-set-add-delete-has-tracking": [
+      "has2 false 1",
+      "has2 true 2",
+      "add-ret true 2",
+      "add-dup true 2",
+      "has2 true 1",
+      "delete-ret false 3",
+      "final 1 false 3"
+    ],
+    "r1b-map-foreach-wraps-values": [
+      "forEach true,k,true",
+      "get-wrapped true true"
+    ],
+    "r1b-map-iterators-wrap-entries": [
+      "iter a,true,b,false",
+      "keys a,b",
+      "values true,false",
+      "entries 2"
+    ],
+    "r1b-map-keys-tracking-iterate-key": [
+      "keys a",
+      "runs-value-change 1",
+      "keys a|b",
+      "runs-add 2"
+    ],
+    "r1b-map-values-track-on-value-change": [
+      "values 1",
+      "values 5",
+      "runs 2"
+    ],
+    "r1b-map-object-keys-raw-and-proxy": [
+      "get-raw raw raw true true",
+      "stored-raw-key true false"
+    ],
+    "r1b-map-set-stores-raw-value": [
+      "stored true true 1"
+    ],
+    "r1b-map-readonly-methods": [
+      "ro-set true false 1",
+      "ro-delete false true 1",
+      "ro-clear 1",
+      "ro-get true 1"
+    ],
+    "r1b-shallow-map-values-not-wrapped": [
+      "shallow-get true false",
+      "size 1",
+      "size 2",
+      "runs 2 2"
+    ],
+    "r1b-readonly-map-values-wrapped": [
+      "ro-of-reactive true true 1",
+      "ro-values true true"
+    ],
+    "r1b-set-foreach-and-iteration": [
+      "foreach true,true,true,false,true,true",
+      "iter true,false",
+      "keys-same 2 true"
+    ],
+    "r1b-set-tracks-iteration-on-add": [
+      "count 0",
+      "count 1",
+      "count 0",
+      "runs 3"
+    ],
+    "r1b-collection-mutate-during-iteration": [
+      "seen a,b 2",
+      "set-seen 1,2,3"
+    ],
+    "r1b-map-chainable-and-size": [
+      "chain true 2"
+    ],
+    "r1b-map-nan-zero-keys": [
+      "nan n true z true 2"
+    ],
+    "r1b-collection-get-tracks-key": [
+      "get-b undefined",
+      "runs-other 1",
+      "get-b 2",
+      "runs-b 2"
+    ],
+    "r1b-readonly-set-clear-silent": [
+      "clear undefined true false 1 true"
+    ],
+    "r1b-map-entry-object-deep-tracking": [
+      "sum 1",
+      "sum 4",
+      "runs 2"
+    ],
+    "r1b-set-of-proxies-stores-raw": [
+      "stored true true true 1"
+    ],
+    "r1b-map-delete-during-iteration": [
+      "seen a,c 2"
+    ],
+    "r1b-shallow-set-values-not-wrapped": [
+      "shallow-set true false false"
+    ],
+    "r1b-readonly-raw-map-no-tracking": [
+      "ro-size 0",
+      "runs 1 1"
+    ],
+    "r1b-collection-proto-and-tag": [
+      "set-tag true [object Set] true",
+      "map-tag true [object Map] true"
+    ],
+    "r1b-readonly-set-iteration-wraps": [
+      "ro-iter true,number"
+    ],
+    "r1b-arr-includes-from-index": [
+      "from true 2 0 2",
+      "missing true 0 2"
+    ],
+    "r1b-arr-concat-spreads-wrapped": [
+      "concat 3 true false true 2 3"
+    ],
+    "r1b-arr-join-and-tostring-wrapped": [
+      "join 1-2,3-x 1,2,3,x true"
+    ],
+    "r1b-arr-copies-tracking-iterate": [
+      "sorted 1,2,3",
+      "rev 2,1,3 3,1,2 1",
+      "spliced 3,z,2 3 1",
+      "sorted 1,2,3,4",
+      "after-push 2"
+    ],
+    "r1b-arr-find-family-wraps": [
+      "find true 2 1 true -1"
+    ],
+    "r1b-arr-filter-map-wrap-results": [
+      "filter 2 true 3",
+      "map true:1 true:2 true:3"
+    ],
+    "r1b-arr-some-every-callback-args": [
+      "some true true 0,true,1,true"
+    ],
+    "r1b-arr-reduce-accumulator-wrap": [
+      "reduce 3 true,true 13"
+    ],
+    "r1b-arr-reduce-initial-accumulator-wrapped": [
+      "step true true",
+      "result true 1"
+    ],
+    "r1b-arr-reduce-empty-init-not-wrapped": [
+      "empty-init false",
+      "empty-noinit TypeError"
+    ],
+    "r1b-arr-readonly-push-silent": [
+      "ro-push 2 1 1 undefined"
+    ],
+    "r1b-arr-readonly-pop-shift-silent": [
+      "ro-pop 6 5 2 2"
+    ],
+    "r1b-arr-shallow-elements-not-wrapped": [
+      "shallow-el true false true",
+      "first 1",
+      "first 2",
+      "runs 2"
+    ],
+    "r1b-arr-delete-index-hole-tracking": [
+      "has0 true 1",
+      "has0 false undefined",
+      "after-delete 2 false 2",
+      "has0 true 9",
+      "after-set 3"
+    ],
+    "r1b-arr-length-set-truncates-effects": [
+      "tail 4 4",
+      "tail undefined 2",
+      "after 2 2 undefined"
+    ],
+    "r1b-arr-sparse-holes-iteration": [
+      "holes 0:1,2:3 false 3"
+    ],
+    "r1b-arr-index-string-keys": [
+      "k a undefined",
+      "k b undefined",
+      "k b x",
+      "runs 3 x"
+    ],
+    "r1b-arr-ownkeys-tracks-length": [
+      "keys 0",
+      "keys 0,1",
+      "runs 2",
+      "keys 0",
+      "runs2 3"
+    ],
+    "r1b-arr-unshift-push-return-and-tracking": [
+      "last undefined",
+      "last x",
+      "push-ret 1 2",
+      "last x",
+      "unshift-ret 2 wx 3"
+    ],
+    "r1b-arr-includes-tracks-after-mutation": [
+      "has5 false",
+      "has5 true",
+      "runs 2",
+      "has5 true",
+      "runs2 3"
+    ],
+    "r1b-arr-nested-array-identity": [
+      "nested-id true true true"
+    ],
+    "r1b-arr-index-nan-and-string-search": [
+      "idx 1 0 true -1"
+    ],
+    "r1b-arr-spread-and-destructure": [
+      "destructure true 2 2 true"
+    ],
+    "r1b-readonly-tracks-underlying": [
+      "ro-read 1",
+      "ro-read 2",
+      "runs 2 2"
+    ],
+    "r1b-readonly-of-raw-no-tracking": [
+      "ro-read 1",
+      "runs 1 2"
+    ],
+    "r1b-shallow-nested-not-tracked": [
+      "shallow-n 1",
+      "runs 1",
+      "shallow-n 3",
+      "runs2 2"
+    ],
+    "r1b-shallow-readonly-root-only": [
+      "sro-root false false true",
+      "sro-write 5"
+    ],
+    "r1b-readonly-vs-shallow-on-refs": [
+      "ro-unwrap 3 false true true"
+    ],
+    "r1b-is-flags-on-primitives": [
+      "prims false false false false false null undefined 7"
+    ],
+    "r1b-proto-chain-get-and-flags": [
+      "proto-get 1 false false"
+    ],
+    "r1b-set-through-prototype-chain": [
+      "b 1",
+      "b 2",
+      "runs 2 1 1"
+    ],
+    "r1b-define-property-no-trigger": [
+      "a 1",
+      "runs 1 9",
+      "runs2 1 2"
+    ],
+    "r1b-gopd-returns-raw-value": [
+      "gopd true true true inner"
+    ],
+    "r1b-object-entries-values-wrapped": [
+      "entries 2 true 2",
+      "values true 2",
+      "assign true 2 true"
+    ],
+    "r1b-in-operator-inherited-tracking": [
+      "in true true",
+      "in true false",
+      "runs 2 true"
+    ],
+    "r1b-proto-of-proxy-is-raw": [
+      "proto true false"
+    ],
+    "r1b-cycles-through-proxies": [
+      "name n",
+      "name m",
+      "runs 2 true true true"
+    ],
+    "r1b-frozen-nested-not-proxied": [
+      "frozen-inner true false true"
+    ],
+    "r1b-freeze-readonly-proxy-freezes-target": [
+      "ro-after-freeze true true 1"
+    ],
+    "r1b-reactive-of-readonly-unchanged": [
+      "rr true false true"
+    ],
+    "r1b-readonly-of-shallow-reactive": [
+      "ro-of-shallow true false"
+    ],
+    "r1b-markraw-under-readonly": [
+      "mark-ro false 1"
+    ],
+    "r1b-tostringtag-object-proxied-as-collection": [
+      "tag true [object Map] 1"
+    ],
+    "r1b-array-like-object-not-array": [
+      "arraylike false 0 [object Object]"
+    ],
+    "r1b-numeric-and-string-keys-same": [
+      "k undefined",
+      "k a",
+      "runs 2 a"
+    ],
+    "r1b-ref-value-is-reactive-object": [
+      "ref-obj true true true"
+    ],
+    "r1b-shallowref-value-raw": [
+      "shallow-ref true false"
+    ],
+    "r1b-ref-assign-same-raw-no-trigger": [
+      "n 1",
+      "runs-same 1",
+      "n 2",
+      "runs-new 2"
+    ],
+    "r1b-reactive-unwraps-nested-ref-writes": [
+      "count 1",
+      "count 2",
+      "runs 2",
+      "count 3",
+      "runs2 3 3"
+    ],
+    "r1b-ref-in-array-not-unwrapped": [
+      "arr-ref true true 7",
+      "arr-set false 8"
+    ],
+    "r1b-ref-in-map-value-wrapped": [
+      "map-ref true false"
+    ],
+    "r1b-ref-of-proxy-reads-through": [
+      "ref-of-proxy true true"
+    ],
+    "r1b-torefs-over-reactive": [
+      "a 1",
+      "a 5",
+      "runs 2 2",
+      "a 7",
+      "runs2 3 7"
+    ],
+    "r1b-toref-over-readonly": [
+      "toref-ro 1"
+    ],
+    "r1b-ref-deep-object-value-tracking": [
+      "deep 1",
+      "deep 2",
+      "runs 2",
+      "deep 3",
+      "runs2 3"
+    ],
+    "r1b-unref-toValue-on-reactive": [
+      "unref 4 4 false [object Object]"
+    ],
+    "r1b-ref-deep-array-push-tracking": [
+      "len 2",
+      "len 3",
+      "runs 2 true"
+    ],
+    "r1b-ref-of-readonly-value": [
+      "ref-ro true false"
+    ],
+    "r1b-gc-cross-references": [
+      "peer-name a",
+      "after 1 true B"
+    ],
+    "r1b-gc-proxy-identity-across-collections": [
+      "identity true true true"
+    ],
+    "r1b-effect-stop-stops-proxy-tracking": [
+      "n 1",
+      "runs 1 2"
+    ],
+    "r1b-computed-over-proxy-fields": [
+      "sum 3",
+      "sum 12",
+      "runs 2 12"
+    ],
+    "r1b-computed-cache-unrelated-key": [
+      "first 2 1",
+      "after-b 2 1",
+      "after-a 6 2"
+    ],
+    "r1b-effect-scope-disposes-proxy-effect": [
+      "n 1",
+      "n 2",
+      "runs 2"
+    ],
+    "r1b-arr-computed-length": [
+      "c1 10",
+      "c2 20"
+    ],
+    "r1b-arr-sort-proxy-elements": [
+      "sorted 1,2 true"
+    ],
+    "r1b-arr-keys-tracking": [
+      "keys 0",
+      "keys 0,1",
+      "runs 2"
+    ],
+    "r1b-arr-fill-triggers-per-write": [
+      "sum 3",
+      "sum 2",
+      "sum 0",
+      "runs 3 0"
+    ],
+    "r1b-map-has-tracks-object-key": [
+      "has false",
+      "has true",
+      "runs 2",
+      "has false",
+      "runs2 3"
+    ],
+    "r1b-map-nested-map-values": [
+      "x 1",
+      "runs 1 true",
+      "x 3",
+      "runs2 2 3"
+    ],
+    "r1b-set-of-arrays-identity": [
+      "set-arr true true"
+    ],
+    "r1b-readonly-array-iteration-wrapped": [
+      "ro-arr-iter true true 0"
+    ],
+    "r1b-shallow-array-push-tracks": [
+      "len 1",
+      "len 2",
+      "runs 2 2"
+    ],
+    "r1b-shallowref-in-reactive-not-rewrapped": [
+      "sr-unwrapped false 1 true"
+    ],
+    "r1b-map-entries-tracking-add-in-effect": [
+      "entries 0",
+      "entries 1",
+      "entries 2",
+      "runs 3"
+    ],
+    "r1b-set-clear-triggers-size": [
+      "size 2",
+      "size 0",
+      "runs 2 0"
+    ],
+    "r1b-array-of-maps-proxied": [
+      "map-in-arr true 0 [object Map]"
+    ],
+    "r1b-object-with-map-field-size": [
+      "size 0",
+      "size 1",
+      "runs 2"
+    ],
+    "r1b-proxy-function-property-not-proxied": [
+      "fn-prop true false function"
+    ],
+    "r1b-method-this-is-proxy": [
+      "method-this true",
+      "via-method 1",
+      "via-method 2",
+      "runs 2"
+    ],
+    "r1b-keys-order-after-delete-readd": [
+      "keys b,a"
+    ],
+    "r1b-json-stringify-proxy": [
+      "json {\"a\":1,\"b\":[2,3],\"c\":{\"d\":\"x\"}}"
+    ],
+    "r1b-arr-length-after-index-add": [
+      "len 0",
+      "len 4",
+      "runs 2 4"
+    ],
+    "r1b-readonly-keys-and-shallow-readonly-set": [
+      "ro-keys a,b 1"
+    ],
+    "r1b-class-instance-getter-receiver": [
+      "dbl 2",
+      "dbl 10",
+      "runs 2 10"
+    ],
+    "r1b-two-proxies-independent-tracking": [
+      "sum 2",
+      "sum 6",
+      "runs 2",
+      "sum 7",
+      "runs2 3"
+    ],
+    "r1b-set-delete-during-foreach": [
+      "seen 1,3 2"
+    ],
+    "r1b-map-foreach-add-during-visits-new": [
+      "seen a,b 2"
+    ],
+    "r1b-arr-foreach-push-visits-original": [
+      "visits 2 4"
+    ],
+    "r1b-nested-reactive-arrays-deep-tracking": [
+      "cell 2",
+      "runs 1",
+      "cell 7",
+      "runs2 2"
+    ],
+    "r1b-null-prototype-object-proxied": [
+      "null-proto true 1 true"
+    ],
+    "r1b-arr-holes-for-of-undefined": [
+      "holes-iter 1,undefined,3"
+    ],
+    "r1b-arr-at-tracks-length": [
+      "last 1",
+      "last 7",
+      "runs 2 7"
+    ],
+    "r1b-push-in-effect-untracked": [
+      "runs 1 1",
+      "runs2 1 2"
+    ]
+  }
+}

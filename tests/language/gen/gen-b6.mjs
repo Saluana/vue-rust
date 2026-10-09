@@ -2,7 +2,7 @@
 // V8 when a suite is compiled (tooling/oracle/builtin-corpus.mjs); nothing here is a hand-written expectation.
 // Deterministic: fixed inputs, no clock, no randomness.
 //   node tests/language/gen/gen-b6.mjs [--out <dir>]        (default: tests/language/builtins)
-// The library's TARGETS must list JSON.parse and JSON.stringify (a coordinator change, see the WP-B6 report).
+// The library's TARGETS must list JSON.parse and JSON.stringify (a maintainer change, see the WP-B6 report).
 // Escapes: a JSON text that contains the six characters of a \uXXXX escape is written as '\\uXXXX' in a normal string;
 // raw code units (lone surrogates, U+2028, DEL, NBSP) are JS escapes of the string itself.
 import path from 'node:path';

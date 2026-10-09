@@ -167,7 +167,7 @@ fn object_is_sealed(rt: &Rt, c: &Call<'_>) -> Res<Value> {
 fn object_prevent_extensions(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     let v = c.arg(0);
     if let Value::Object(o) = v {
-        if !rt.prevent_extensions(o) {
+        if !rt.prevent_extensions(o)? {
             return Err(rt.throw_type_error("Cannot prevent extensions"));
         }
     }
@@ -176,7 +176,7 @@ fn object_prevent_extensions(rt: &Rt, c: &Call<'_>) -> Res<Value> {
 
 fn object_is_extensible(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     match c.arg(0) {
-        Value::Object(o) => Ok(Value::Bool(rt.is_extensible(o))),
+        Value::Object(o) => Ok(Value::Bool(rt.is_extensible(o)?)),
         _ => Ok(Value::Bool(false)),
     }
 }

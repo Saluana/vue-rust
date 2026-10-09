@@ -1,0 +1,1 @@
+{"scenario":"props/multi-root-attrs","result":"ok","error":null,"entries":[{"label":"html","values":["<p>first</p><span>second</span>"]}],"unhandledRejections":[]}

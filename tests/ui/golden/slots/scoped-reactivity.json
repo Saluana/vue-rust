@@ -1,0 +1,1 @@
+{"scenario":"slots/scoped-reactivity","result":"ok","error":null,"entries":[{"label":"html","values":["<div><button id=\"inc\">+</button><div>a-2</div></div>"]}],"unhandledRejections":[]}

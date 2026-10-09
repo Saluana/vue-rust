@@ -1,0 +1,1 @@
+{"scenario":"refs/expose-restricted","result":"ok","error":null,"entries":[{"label":"log","values":["visible yes secret-undefined true"]}],"unhandledRejections":[]}

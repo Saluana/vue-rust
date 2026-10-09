@@ -7,11 +7,15 @@ use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::rc::Rc;
 
 use vn_value::rt::DEFAULT_GC_THRESHOLD;
-use vn_value::{Res, Rt, Throw, Value};
+use std::future::Future;
+use std::pin::Pin;
+
+use vn_value::builtins::promise::{async_start, await_value, frame_get, frame_set, new_frame, promise_state, PromiseState};
+use vn_value::{ObjRef, PropKey, RootId, Res, Rt, Throw, Value};
 
 use crate::host::install_host;
 use crate::json::Json;
-use crate::trace::{encode_standalone, Recorder};
+use crate::trace::{encode_pass, encode_standalone, Recorder};
 
 /// Stack of the thread a scenario runs on, so deep JavaScript recursion cannot overflow the Rust stack.
 const STACK_BYTES: usize = 256 * 1024 * 1024;
@@ -24,6 +28,12 @@ pub struct ScenarioEntry {
 /// A generated scenario entry. It evaluates the module in the given realm; its throw is `result: "throw"`.
 pub type ScenarioFn = fn(&Rt) -> Res<ScenarioEntry>;
 
+/// Runs on the fresh realm after the host globals are installed and before the entry evaluates the module. A generated
+/// binary uses it to install its native modules (for example vn-runtime's "vue" module, WP-C1c follow-up).
+pub type RealmSetup = fn(&Rt);
+
+fn no_setup(_rt: &Rt) {}
+
 /// Runs one scenario on the current thread and returns its document: one line of compact JSON.
 pub fn run_scenario(name: &str, entry: ScenarioFn) -> String {
     run_scenario_with_gc_threshold(name, entry, DEFAULT_GC_THRESHOLD)
@@ -33,16 +43,21 @@ pub fn run_scenario(name: &str, entry: ScenarioFn) -> String {
 /// default is 10 000; 1 collects at every safepoint). The document must not depend on the threshold.
 pub fn run_scenario_with_gc_threshold(name: &str, entry: ScenarioFn, threshold: usize) -> String {
     let rec = Rc::new(RefCell::new(Recorder::new()));
-    scenario_document(name, entry, threshold, &rec)
+    scenario_document(name, entry, no_setup, threshold, &rec)
 }
 
 /// Runs a scenario on a fresh thread with a 256 MiB stack and joins it. A panic (a framework bug) becomes a
 /// document with `result: "panic"` and the panic message, plus the entries recorded before the panic.
 pub fn run_scenario_isolated(name: &str, entry: ScenarioFn) -> String {
+    run_scenario_isolated_with_setup(name, entry, no_setup)
+}
+
+/// Like `run_scenario_isolated`, with `setup` run on the fresh realm first (see RealmSetup).
+pub fn run_scenario_isolated_with_setup(name: &str, entry: ScenarioFn, setup: RealmSetup) -> String {
     let owned = name.to_string();
     let worker = std::thread::Builder::new().stack_size(STACK_BYTES).spawn(move || {
         let rec = Rc::new(RefCell::new(Recorder::new()));
-        match catch_unwind(AssertUnwindSafe(|| scenario_document(&owned, entry, DEFAULT_GC_THRESHOLD, &rec))) {
+        match catch_unwind(AssertUnwindSafe(|| scenario_document(&owned, entry, setup, DEFAULT_GC_THRESHOLD, &rec))) {
             Ok(doc) => doc,
             Err(payload) => panic_document(&owned, &payload_text(payload), &rec),
         }
@@ -65,6 +80,11 @@ pub fn run_scenario_isolated(name: &str, entry: ScenarioFn) -> String {
 /// Process entry point of a generated scenario binary. `argv[1]` names the scenario, and `--list` prints the
 /// names. The document is printed as one line and the process exits 0, even for `result: "throw"`.
 pub fn scenario_main(table: &[(&str, ScenarioFn)]) {
+    scenario_main_with_setup(table, no_setup);
+}
+
+/// Like `scenario_main`, with `setup` run on the fresh realm of every scenario (see RealmSetup).
+pub fn scenario_main_with_setup(table: &[(&str, ScenarioFn)], setup: RealmSetup) {
     let args: Vec<String> = std::env::args().collect();
     match args.get(1).map(String::as_str) {
         Some("--list") => {
@@ -92,7 +112,7 @@ pub fn scenario_main(table: &[(&str, ScenarioFn)]) {
             }
         }
         Some(name) => match table.iter().find(|(n, _)| *n == name) {
-            Some((n, entry)) => println!("{}", run_scenario_isolated(n, *entry)),
+            Some((n, entry)) => println!("{}", run_scenario_isolated_with_setup(n, *entry, setup)),
             None => {
                 eprintln!("vn-testkit: unknown scenario {name:?} (try --list)");
                 std::process::exit(2);
@@ -106,19 +126,20 @@ pub fn scenario_main(table: &[(&str, ScenarioFn)]) {
 }
 
 /// Steps 1-5 with a recorder owned by the caller, so a panic can still report the entries recorded so far.
-fn scenario_document(name: &str, entry: ScenarioFn, threshold: usize, rec: &Rc<RefCell<Recorder>>) -> String {
-    match run_steps(name, entry, threshold, rec) {
+fn scenario_document(name: &str, entry: ScenarioFn, setup: RealmSetup, threshold: usize, rec: &Rc<RefCell<Recorder>>) -> String {
+    match run_steps(name, entry, setup, threshold, rec) {
         Ok(doc) => doc,
         Err(message) => panic_document(name, &message, rec),
     }
 }
 
 /// Steps 1-5. An `Err` is a harness failure: the run cannot be reported faithfully, so the caller reports a panic.
-fn run_steps(name: &str, entry: ScenarioFn, threshold: usize, rec: &Rc<RefCell<Recorder>>) -> Result<String, String> {
-    // Step 1: a fresh realm with the host globals installed.
+fn run_steps(name: &str, entry: ScenarioFn, setup: RealmSetup, threshold: usize, rec: &Rc<RefCell<Recorder>>) -> Result<String, String> {
+    // Step 1: a fresh realm with the host globals installed, then the caller's setup (native modules).
     let rt = Rt::new();
     rt.set_gc_threshold(threshold);
     let _clock = install_host(&rt, rec);
+    setup(&rt);
 
     // Step 2: evaluate the module. A throw is the result. The `run` export is rooted until it is called,
     // because the drains below may collect garbage.
@@ -143,13 +164,26 @@ fn run_steps(name: &str, entry: ScenarioFn, threshold: usize, rec: &Rc<RefCell<R
     // Step 3: drain the jobs.
     drain(&rt)?;
 
-    // Step 4: call `run`. Its throw is the result. Its return value is ignored until promises exist
-    // (TODO(WP-B-promise)): a returned promise would be awaited here.
+    // Step 4: call `run`. A sync throw is the result. A returned value is awaited the way the oracle awaits it (`await p`),
+    // so a rejection is handled; the outcome is read after the queue drains. A value that never settles is a harness failure.
     if let Some(root) = run_root {
         let run = rt.root_value(root);
         rt.unroot(root); // nothing can collect between this line and the call
         match rt.call(&run, &Value::Undefined, &[]) {
-            Ok(_) => {}
+            Ok(returned) => {
+                let holder_root = await_returned(&rt, returned);
+                drain(&rt)?;
+                let holder = rt.root_value(holder_root);
+                rt.unroot(holder_root);
+                if !slot_is(&rt, &holder, 2) {
+                    return Err("the value returned by run never settled before the job queue emptied".to_string());
+                }
+                if slot_is(&rt, &holder, 1) {
+                    let reason = rt.get_v(&holder, &PropKey::Index(0)).expect("the holder is an array");
+                    result = "throw";
+                    error = encode_thrown(&rt, rec, &reason)?;
+                }
+            }
             Err(Throw(thrown)) => {
                 result = "throw";
                 error = encode_thrown(&rt, rec, &thrown)?;
@@ -158,10 +192,54 @@ fn run_steps(name: &str, entry: ScenarioFn, threshold: usize, rec: &Rc<RefCell<R
         drain(&rt)?;
     }
 
-    // Step 5: the final drain. unhandledRejections stays empty until promises exist (TODO(WP-B-promise)).
+    // Step 5: the final drain, then the rejections still unhandled, in rejection order (one encoding pass).
     drain(&rt)?;
+    let unhandled = unhandled_reasons(&rt, rec)?;
     let entries = rec.borrow().entries().to_vec();
-    Ok(document(name, result, error, entries, Vec::new()))
+    Ok(document(name, result, error, entries, unhandled))
+}
+
+/// `await v` for the value `run` returned. The await runs in a host async body (`async_start`), so its handler is in
+/// place before the queue runs, as the oracle's `await p` is. The body fills a rooted holder `[reason, rejected, finished]`.
+fn await_returned(rt: &Rt, returned: Value) -> RootId {
+    let holder = Value::Object(rt.new_array(vec![Value::Undefined, Value::Bool(false), Value::Bool(false)]));
+    let root = rt.root(&holder);
+    let frame = new_frame(rt, 2);
+    frame_set(rt, frame, 0, holder);
+    frame_set(rt, frame, 1, returned);
+    let body: Pin<Box<dyn Future<Output = Res<Value>>>> = Box::pin(await_body(rt.clone(), frame));
+    let _ = async_start(rt, frame, body);
+    root
+}
+
+/// The body of `await_returned`: await the value, then record the outcome in the holder (read from the frame after the await).
+async fn await_body(rt: Rt, frame: ObjRef) -> Res<Value> {
+    let value = frame_get(&rt, frame, 1);
+    let outcome = await_value(&rt, value).await;
+    let holder = frame_get(&rt, frame, 0);
+    if let Err(Throw(reason)) = outcome {
+        rt.set_v_strict(&holder, &PropKey::Index(0), reason)?;
+        rt.set_v_strict(&holder, &PropKey::Index(1), Value::Bool(true))?;
+    }
+    rt.set_v_strict(&holder, &PropKey::Index(2), Value::Bool(true))?;
+    Ok(Value::Undefined)
+}
+
+fn slot_is(rt: &Rt, holder: &Value, i: u32) -> bool {
+    matches!(rt.get_v(holder, &PropKey::Index(i)), Ok(Value::Bool(true)))
+}
+
+/// The reasons of the promises still unhandled, in rejection order (`Rt::take_unhandled_rejections`), encoded in one pass.
+fn unhandled_reasons(rt: &Rt, rec: &Rc<RefCell<Recorder>>) -> Result<Vec<Json>, String> {
+    let reasons: Vec<Value> = rt
+        .take_unhandled_rejections()
+        .iter()
+        .filter_map(|p| match promise_state(rt, p) {
+            Some(PromiseState::Rejected(reason)) => Some(reason),
+            _ => None,
+        })
+        .collect();
+    encode_pass(rt, rec, &reasons).map_err(|Throw(e)| describe(rt, &e))
 }
 
 /// A safepoint between jobs: drain the queue, refuse uncaught job errors (no host job throws), and collect when due.

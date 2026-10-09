@@ -4,6 +4,7 @@
 // test pins the statuses these cases rely on; Math.random and Date.now are judged from whatever status they have.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { compileModule } from '../../../compiler/index.mjs';
 import { checkSource } from '../../../compiler/frontend/check.mjs';
 import { lookupStdlib, isStdlibSupported } from '../../../compiler/profile/stdlib.mjs';
 import { spanText } from './helpers.mjs';
@@ -209,4 +210,12 @@ test('without the stdlib option, the legacy codes are reported and console is no
 
 test('target test is accepted and a supported global passes on it', () => {
   assert.deepEqual(lines(diagnose('const n = Math.PI;\nvoid n;', { target: 'test' })), []);
+});
+
+test('standalone compilation enforces the stdlib manifest before producing Rust', () => {
+  for (const target of ['native', 'web', 'test']) {
+    const result = compileModule('export const value = structuredClone({a: 1});', { specifier: '/app.js', target });
+    assert.equal(result.rust, null);
+    assert.ok(result.diagnostics.some(d => d.code === 'VN4016' && d.message.includes('structuredClone')));
+  }
 });

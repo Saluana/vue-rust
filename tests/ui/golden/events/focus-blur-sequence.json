@@ -1,0 +1,1 @@
+{"scenario":"events/focus-blur-sequence","result":"ok","error":null,"entries":[{"label":"ev","values":["focus-a"]},{"label":"ev","values":["blur-a"]},{"label":"ev","values":["focus-b"]}],"unhandledRejections":[]}

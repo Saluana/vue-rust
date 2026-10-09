@@ -323,11 +323,6 @@ export const CODES = Object.freeze({
     'The frontend reached an unexpected state. This is a compiler bug, not a user error.',
     'Report the input and the message to the compiler maintainers.',
   ),
-  VN9002: entry(
-    'Module graph error (WP-C1c)',
-    'A project module cannot be resolved or loaded: a relative specifier names no module of the project, a bare specifier is not a native module (package imports from node_modules are outside the closed world), or a specifier is absolute, an unsupported file type, or the entry is missing.',
-    'Import project modules by their exact path, and native modules by name (vue, @vue-native/platform). Packages cannot be imported.',
-  ),
 });
 
 export function isKnownCode(code) {

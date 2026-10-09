@@ -1,0 +1,1 @@
+{"scenario":"transition/css-classes-clock","result":"ok","error":null,"entries":[{"label":"0","values":["<div><p id=\"t\" class=\"v-enter-from v-enter-active\">t</p></div>"]},{"label":"16","values":["<div><p id=\"t\" class=\"v-enter-from v-enter-active\">t</p></div>"]},{"label":"80","values":["<div><p id=\"t\" class=\"\">t</p></div>"]}],"unhandledRejections":[]}

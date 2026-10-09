@@ -347,7 +347,7 @@ fn strict_assignment_to_read_only_throws_with_the_spec_message() {
 fn strict_add_to_non_extensible_object_throws_add_message() {
     let rt = Rt::new();
     let o = rt.new_object();
-    assert!(rt.prevent_extensions(o));
+    assert!(rt.prevent_extensions(o).expect("prevent_extensions"));
     let t = throws(rt.set_strict(o, &key("fresh"), num(1.0)));
     assert_eq!(msg(&rt, &t), "Cannot add property fresh, object is not extensible");
 }
@@ -357,8 +357,8 @@ fn prevent_extensions_blocks_new_keys_and_allows_existing_writes() {
     let rt = Rt::new();
     let o = rt.new_object();
     ok(&rt, rt.define_data(o, key("a"), num(1.0), Flags::ALL));
-    assert!(rt.prevent_extensions(o));
-    assert!(!rt.is_extensible(o));
+    assert!(rt.prevent_extensions(o).expect("prevent_extensions"));
+    assert!(!rt.is_extensible(o).expect("is_extensible"));
     assert!(!ok(&rt, rt.define_data(o, key("b"), num(1.0), Flags::ALL)));
     assert!(ok(&rt, rt.set(o, &key("a"), num(5.0), &Value::Object(o))));
     assert_eq!(ok(&rt, rt.get(o, &key("a"), &Value::Object(o))), num(5.0));
@@ -409,7 +409,7 @@ fn set_prototype_of_rejects_cycles_and_non_extensible_targets() {
     let b = rt.new_object_with_proto(Some(a));
     assert!(!rt.set_prototype_of(a, Some(b)), "a -> b -> a would be a cycle");
     let c = rt.new_object();
-    assert!(rt.prevent_extensions(c));
+    assert!(rt.prevent_extensions(c).expect("prevent_extensions"));
     assert!(!rt.set_prototype_of(c, Some(a)));
     assert!(rt.set_prototype_of(b, None));
     assert_eq!(rt.get_prototype_of(b), None);

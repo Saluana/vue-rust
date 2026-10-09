@@ -1,0 +1,1 @@
+{"scenario":"directives/binding-args-modifiers","result":"ok","error":null,"entries":[{"label":"log","values":["arg mod.other value"]}],"unhandledRejections":[]}

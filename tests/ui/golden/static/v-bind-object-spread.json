@@ -1,0 +1,1 @@
+{"scenario":"static/v-bind-object-spread","result":"ok","error":null,"entries":[{"label":"spread","values":["<a class=\"base extra on\" href=\"/x\" title=\"t\" on=\"true\">x</a>"]},{"label":"respread","values":["<a class=\"base\" title=\"u\" on=\"false\">x</a>"]}],"unhandledRejections":[]}

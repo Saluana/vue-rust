@@ -1,0 +1,1 @@
+{"scenario":"conditional/truthiness","result":"ok","error":null,"entries":[{"label":"truthy-flags","values":[{"$":"obj","id":1,"cls":"Array","proto":"other","props":[],"elems":[true,false,false,false,true,true,true],"len":7}]}],"unhandledRejections":[]}

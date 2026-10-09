@@ -281,7 +281,7 @@ export function lowerExpr(cx, n) {
     case 'ParenthesizedExpression':
       return lowerExpr(cx, n.expression);
     case 'AwaitExpression':
-      return unsupported(cx, n, 'await (WP-C1c)');
+      return hn('await', n, { e: lowerExpr(cx, n.argument) });
     case 'TaggedTemplateExpression':
       return unsupported(cx, n, 'tagged template');
     case 'ClassExpression':

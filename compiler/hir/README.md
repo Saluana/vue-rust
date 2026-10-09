@@ -8,7 +8,7 @@ References `r` (where the value lives, seen from the current function): `L` Rust
 the string `th<fn>` for `this`), `K` captured cell (`i` = index in the function's captures), `M` module cell, `I` import cell.
 
 Expressions: `undef null bool num(s: JS number text) str(u: UTF-16 units) var(r,name,tdz) gvar(name) thisval thiscell(r)
-fn(f, caps) arr(elems: expr|spread|hole) obj(props: init|get|set|spread) mem(o,key) call(f,args) new(f,args) chain(base,
+fn(f, caps) await(e) arr(elems: expr|spread|hole) obj(props: init|get|set|spread) mem(o,key) call(f,args) new(f,args) chain(base,
 links: m|c with opt) un(op,e) typeof(e) void(e) del(o,key) delv(e) bin(op,l,r) log(op,l,r) cond(t,c,a) seq(es)
 asgn(op,t,v) asgnp(pat,v) logasgn(op,t,v) upd(prefix,inc,t) tmpl(parts)`.
 Targets: `tvar(r,name,tdz,ro)`, `tglobal(name)`, `tmem(o,key)`.
@@ -20,5 +20,5 @@ for(lid,scope{decls,perIter},init,t,upd,body) forof(lid,scope,left{k:decl|target
 switch(lid,disc,scope,cases{t,body}) try(block,handler{scope,param,body},fin) ret(e) throw(e) break(lid) continue(lid)
 label(lid,body) empty`. A scope is `{decls:[{id,name,kind,st:'cell'|'local',tdz}], hoist:[{target,fn}]}`.
 
-Functions (`fns[id]`): `{id,name,nameFromKey,length,kind,arrow,s,e,caps,selfB,selfName,selfSt,thisCell,scope,params:
-[{t,d,rest}],body}`.
+Functions (`fns[id]`): `{id,name,nameFromKey,length,kind,arrow,s,e,caps,selfB,selfName,selfSt,thisCell,async,scope,params:
+[{t,d,rest}],body}`. `async` functions (WP-C1c) contain `await` nodes; `for await` is rejected.

@@ -18,10 +18,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "vn-renderer-dom"
+version = "0.0.1"
+dependencies = [
+ "vn-runtime",
+]
+
+[[package]]
 name = "vn-runtime"
 version = "0.0.1"
 dependencies = [
  "vn-dom",
+ "vn-reactivity",
  "vn-testkit",
  "vn-value",
 ]
@@ -39,6 +47,16 @@ version = "0.0.1"
 dependencies = [
  "vn-css",
  "vn-dom",
+]
+
+[[package]]
+name = "vn-uikit"
+version = "0.0.1"
+dependencies = [
+ "vn-dom",
+ "vn-runtime",
+ "vn-testkit",
+ "vn-value",
 ]
 
 [[package]]

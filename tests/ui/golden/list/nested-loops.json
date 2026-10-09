@@ -1,0 +1,1 @@
+{"scenario":"list/nested-loops","result":"ok","error":null,"entries":[{"label":"html","values":["<section><div class=\"row\"><span>r1.a</span><span>r1.b</span></div><div class=\"row\"><span>r2.c</span></div></section>"]}],"unhandledRejections":[]}

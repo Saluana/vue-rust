@@ -2,7 +2,8 @@
 // is a break of that block and the loop's update still runs. A jump that leaves a try/finally or a for-of body (both are
 // Rust closures returning Res<Flow>) returns a Flow value; the code after the closure dispatches it in the enclosing
 // context, where it becomes a Rust break/continue/return again or another Flow value. A for-of body also closes its
-// iterator on every abrupt completion (ECMA-262 7.4.11).
+// iterator on every abrupt completion (ECMA-262 7.4.11). In an async function (WP-C1c) these bodies are async blocks
+// (they may await), and the loop state (iterator record, keys, index, discriminant, completion) lives in frame slots.
 import { declareScope, bindPattern, initVar } from './vars.mjs';
 import { emitExpr } from './expr.mjs';
 import { rstr } from './names.mjs';
@@ -185,7 +186,10 @@ function emitFor(em, s) {
   declareScope(em, s.scope.decls);
   if (s.init) emitStmt(em, s.init);
   const copies = () => {
-    for (const id of s.scope.perIter) em.line(`c${id} = rt.new_cell(rt.cell_get(c${id}));`);
+    for (const id of s.scope.perIter) {
+      if (em.async) em.line(`frame_set(rt, fr, ${em.slotFor(`b:${id}`)}, Value::Object(rt.new_cell(rt.cell_get(vn_obj(&frame_get(rt, fr, ${em.slotFor(`b:${id}`)}))))));`);
+      else em.line(`c${id} = rt.new_cell(rt.cell_get(c${id}));`);
+    }
   };
   copies();
   em.line(`'l${s.lid}: loop {`);
@@ -205,6 +209,10 @@ function emitFor(em, s) {
 // for-in: the keys are snapshotted; each key is visited only if it is still present. No closure is needed: the loop has
 // no iterator to close, so break and continue are plain Rust jumps.
 function emitForIn(em, s) {
+  if (em.async) return emitForInAsync(em, s);
+  em.line('{');
+  em.depth += 1;
+  declareScope(em, s.scope.decls);
   const obj = em.tmp();
   const right = emitExpr(em, s.right);
   em.line(`let ${obj}: Option<ObjRef> = if ${right}.is_nullish() { None } else { Some(rt.to_object(&${right})?) };`);
@@ -221,6 +229,7 @@ function emitForIn(em, s) {
   em.close('}');
   em.ctl.pop();
   em.close('}');
+  em.close('}');
 }
 
 // Declares the scope of a for-in/of head, binds the loop variable (declaration or assignment target) and emits the body.
@@ -236,6 +245,10 @@ function emitForHead(em, s, valueName) {
 // for-of: the iterator is closed on break, return, an outer jump and a throw; continue to this loop just goes on. The body
 // is a closure, so the loop's own target sits below it and every jump to the loop leaves the closure as a Flow value.
 function emitForOf(em, s) {
+  if (em.async) return emitForOfAsync(em, s);
+  em.line('{');
+  em.depth += 1;
+  declareScope(em, s.scope.decls);
   const right = emitExpr(em, s.right);
   const it = em.uniq('it');
   em.line(`let mut ${it} = get_iterator(rt, &${right})?;`);
@@ -270,6 +283,7 @@ function emitForOf(em, s) {
   em.depth -= 1;
   em.line('}');
   em.ctl.pop();
+  em.close('}');
   em.close('}');
 }
 
@@ -317,6 +331,7 @@ function emitIdArms(em, kind, set, skipLid = null) {
 // switch: the case tests run in source order (default skipped) until one matches; then the bodies run from that index
 // on, so they fall through. Bodies are guarded by `idx <= i`.
 function emitSwitch(em, s) {
+  if (em.async) return emitSwitchAsync(em, s);
   const d = emitExpr(em, s.disc);
   const dv = em.uniq('d');
   em.line(`let ${dv}: Value = ${d}.clone();`);
@@ -359,6 +374,7 @@ function emitSwitch(em, s) {
 // try / catch / finally. Each part is a closure returning Res<Flow>; the completion is the try (or catch) result, unless
 // the finally completes abruptly (then its completion wins). Any throw is an Err that the handler sees.
 function emitTry(em, s) {
+  if (em.async) return emitTryAsync(em, s);
   const block = closureEntry('try');
   const r = em.uniq('r');
   em.line(`let mut ${r}: Res<Flow> = (|| -> Res<Flow> {`);
@@ -454,3 +470,203 @@ function emitDispatchArms(em, merged, name) {
 }
 
 export { rstr };
+
+// ---- async function bodies (WP-C1c) ----
+
+// for-in in an async function: the object and the key list are Values (the key list is a JavaScript array); the position
+// is a number in a frame slot. A key is visited only if it is still present, as in emitForIn.
+function emitForInAsync(em, s) {
+  em.line('{');
+  em.depth += 1;
+  declareScope(em, s.scope.decls);
+  const objT = em.tmp();
+  const right = emitExpr(em, s.right);
+  em.def(objT, `if ${right}.is_nullish() { Value::Null } else { Value::Object(rt.to_object(&${right})?) }`);
+  const keysT = em.tmp();
+  em.def(keysT, `vn_array(rt, vn_for_in_keys(rt, &${right})?)?`);
+  const idxT = em.tmp();
+  em.defMut(idxT, 'Value::Number(0.0)');
+  em.line(`'l${s.lid}: loop {`);
+  em.depth += 1;
+  em.line(`if vn_idx_of(&${idxT}) >= vn_arr_len(rt, &${keysT})? { break 'l${s.lid}; }`);
+  em.line('rt.tick()?;');
+  const kvT = em.tmp();
+  em.def(kvT, `vn_arr_at(rt, &${keysT}, vn_idx_of(&${idxT}))?`);
+  em.set(idxT, `Value::Number(vn_idx_of(&${idxT}) as f64 + 1.0)`);
+  em.line(`if let Value::Object(o) = ${objT} { if !vn_for_in_present(rt, o, &${kvT})? { continue; } }`);
+  em.ctl.push({ type: 'loop', lid: s.lid });
+  em.line(`'c${s.lid}: {`);
+  em.depth += 1;
+  emitForHead(em, s, kvT);
+  em.close('}');
+  em.ctl.pop();
+  em.close('}');
+  em.close('}');
+}
+
+// for-of in an async function: the iterator record is in three frame slots (vn_it_* in the prelude); the body is an async
+// block, so every jump out of it is a Flow value, as in emitForOf.
+function emitForOfAsync(em, s) {
+  em.line('{');
+  em.depth += 1;
+  declareScope(em, s.scope.decls);
+  const right = emitExpr(em, s.right);
+  const base = em.newSlot();
+  em.newSlot();
+  em.newSlot();
+  em.line(`vn_it_new(rt, fr, ${base}, &${right})?;`);
+  em.line(`'l${s.lid}: loop {`);
+  em.depth += 1;
+  em.line('rt.tick()?;');
+  const v = em.tmp();
+  em.def(v, `match vn_it_step(rt, fr, ${base})? { Some(x) => x, None => break 'l${s.lid} }`);
+  em.ctl.push({ type: 'loop', lid: s.lid });
+  const clo = closureEntry('forof');
+  const res = em.uniq('r');
+  em.line(`let ${res}: Res<Flow> = async {`);
+  em.depth += 1;
+  em.ctl.push(clo);
+  emitForHead(em, s, v);
+  em.ctl.pop();
+  em.line('Ok::<Flow, Throw>(Flow::Normal)');
+  em.depth -= 1;
+  em.line('}.await;');
+  em.line(`match ${res} {`);
+  em.depth += 1;
+  em.line(`Err(e) => { if !vn_it_done(rt, fr, ${base}) { let _ = vn_it_close(rt, fr, ${base}, true); } return Err(e); }`);
+  em.line('Ok(Flow::Normal) => {}');
+  em.line(`Ok(Flow::Continue(cid)) if cid == ${s.lid} => {}`);
+  em.line(`Ok(Flow::Break(bid)) if bid == ${s.lid} => { vn_it_close(rt, fr, ${base}, false)?; break 'l${s.lid}; }`);
+  em.line('Ok(other) => {');
+  em.depth += 1;
+  em.line(`vn_it_close(rt, fr, ${base}, false)?;`);
+  emitDispatch(em, clo, 'other', s.lid);
+  em.depth -= 1;
+  em.line('}');
+  em.depth -= 1;
+  em.line('}');
+  em.ctl.pop();
+  em.close('}');
+  em.close('}');
+}
+
+// switch in an async function: the discriminant and the matched index are frame values; the case tests may await.
+function emitSwitchAsync(em, s) {
+  const d = emitExpr(em, s.disc);
+  const dv = em.tmp();
+  em.def(dv, `${d}.clone()`);
+  em.line(`'l${s.lid}: {`);
+  em.depth += 1;
+  em.ctl.push({ type: 'switch', lid: s.lid });
+  declareScope(em, s.scope.decls);
+  emitHoist(em, s.scope.hoist);
+  const idx = em.tmp();
+  em.defMut(idx, 'Value::Number(usize::MAX as f64)');
+  let defaultIndex = -1;
+  s.cases.forEach((c, i) => {
+    if (c.t === null) {
+      defaultIndex = i;
+      return;
+    }
+    em.line(`if vn_idx_of(&${idx}) == usize::MAX {`);
+    em.depth += 1;
+    const t = emitExpr(em, c.t);
+    em.line(`if strict_eq(&${dv}, &${t}) {`);
+    em.depth += 1;
+    em.set(idx, `Value::Number(${i}.0)`);
+    em.depth -= 1;
+    em.line('}');
+    em.depth -= 1;
+    em.line('}');
+  });
+  if (defaultIndex >= 0) {
+    em.line(`if vn_idx_of(&${idx}) == usize::MAX {`);
+    em.depth += 1;
+    em.set(idx, `Value::Number(${defaultIndex}.0)`);
+    em.depth -= 1;
+    em.line('}');
+  } else {
+    em.line(`if vn_idx_of(&${idx}) == usize::MAX { break 'l${s.lid}; }`);
+  }
+  s.cases.forEach((c, i) => {
+    em.line(`if vn_idx_of(&${idx}) <= ${i} {`);
+    em.depth += 1;
+    emitStatements(em, c.body);
+    em.depth -= 1;
+    em.line('}');
+  });
+  em.ctl.pop();
+  em.close('}');
+}
+
+// try / catch / finally in an async function. Each part is an async block returning Res<Flow>. The completion of the try
+// (or catch) is stored in three frame slots while the finally block runs (vn_cmpl_store / vn_cmpl_load), so it survives
+// the awaits of the finally block; a finally that completes abruptly wins, as in emitTry.
+function emitTryAsync(em, s) {
+  const block = closureEntry('try');
+  const r = em.uniq('r');
+  em.line(`let mut ${r}: Res<Flow> = async {`);
+  em.depth += 1;
+  em.ctl.push(block);
+  emitStmt(em, s.block);
+  em.ctl.pop();
+  em.line('Ok::<Flow, Throw>(Flow::Normal)');
+  em.depth -= 1;
+  em.line('}.await;');
+  const entries = [block];
+  if (s.handler) {
+    const catchClo = closureEntry('catch');
+    entries.push(catchClo);
+    const ex = em.uniq('x');
+    em.line(`${r} = match ${r} {`);
+    em.depth += 1;
+    em.line(`Err(Throw(${ex})) => async {`);
+    em.depth += 1;
+    em.ctl.push(catchClo);
+    const exT = em.tmp();
+    em.def(exT, `${ex}.clone()`);
+    declareScope(em, s.handler.scope.decls);
+    if (s.handler.param) bindPattern(em, s.handler.param, exT);
+    emitHoist(em, s.handler.scope.hoist);
+    emitStatements(em, s.handler.body);
+    em.ctl.pop();
+    em.line('Ok::<Flow, Throw>(Flow::Normal)');
+    em.depth -= 1;
+    em.line('}.await,');
+    em.line('other => other,');
+    em.depth -= 1;
+    em.line('};');
+  }
+  let completion = r;
+  if (s.fin) {
+    const finClo = closureEntry('finally');
+    entries.push(finClo);
+    const base = em.newSlot();
+    em.newSlot();
+    em.newSlot();
+    em.line(`vn_cmpl_store(rt, fr, ${base}, ${r});`);
+    const f = em.uniq('f');
+    em.line(`let ${f}: Res<Flow> = async {`);
+    em.depth += 1;
+    em.ctl.push(finClo);
+    emitStmt(em, s.fin);
+    em.ctl.pop();
+    em.line('Ok::<Flow, Throw>(Flow::Normal)');
+    em.depth -= 1;
+    em.line('}.await;');
+    completion = em.uniq('c');
+    em.line(`let ${completion}: Res<Flow> = match ${f} { Ok(Flow::Normal) => vn_cmpl_load(rt, fr, ${base}), other => other };`);
+  }
+  const merged = {
+    pendingBreak: new Set(entries.flatMap((e) => [...e.pendingBreak])),
+    pendingCont: new Set(entries.flatMap((e) => [...e.pendingCont])),
+    pendingRet: entries.some((e) => e.pendingRet),
+  };
+  em.line(`match ${completion} {`);
+  em.depth += 1;
+  em.line('Err(e) => { return Err(e); }');
+  em.line('Ok(Flow::Normal) => {}');
+  emitDispatchArms(em, merged, completion);
+  em.depth -= 1;
+  em.line('}');
+}

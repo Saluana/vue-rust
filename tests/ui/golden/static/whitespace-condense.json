@@ -1,0 +1,1 @@
+{"scenario":"static/whitespace-condense","result":"ok","error":null,"entries":[{"label":"html","values":["<div id=\"w\"><span>a</span> <span>b</span><p> spaced out text </p></div>"]}],"unhandledRejections":[]}

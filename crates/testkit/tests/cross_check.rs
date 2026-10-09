@@ -126,6 +126,12 @@ const GRAPHS: &[(&str, Graph)] = &[
     ("map-after-delete-and-readd", map_after_delete_and_readd),
     ("collection-iterators-are-plain-objects", collection_iterators_are_plain_objects),
     ("set-with-own-property", set_with_own_property),
+    ("promise-pending", promise_pending),
+    ("promise-fulfilled-and-handled-rejection", promise_fulfilled_and_handled_rejection),
+    ("promise-aliased-in-array", promise_aliased_in_array),
+    ("promise-own-props-are-not-traced", promise_own_props_are_not_traced),
+    ("promise-nonextensible", promise_nonextensible),
+    ("promise-frozen", promise_frozen),
 ];
 
 fn primitives(r: &Realm) -> Res<()> {
@@ -358,13 +364,13 @@ fn sealed(r: &Realm) -> Res<()> {
 
 fn nonextensible(r: &Realm) -> Res<()> {
     let o = r.obj(&[("a", num(1.0))]);
-    r.rt.prevent_extensions(o);
+    r.rt.prevent_extensions(o).expect("prevent_extensions");
     r.t("ne", &[ov(o)])
 }
 
 fn empty_nonextensible_is_frozen(r: &Realm) -> Res<()> {
     let o = r.obj(&[]);
-    r.rt.prevent_extensions(o);
+    r.rt.prevent_extensions(o).expect("prevent_extensions");
     r.t("ep", &[ov(o)])
 }
 
@@ -387,13 +393,13 @@ fn sealed_array(r: &Realm) -> Res<()> {
 
 fn nonextensible_array(r: &Realm) -> Res<()> {
     let a = r.rt.new_array(vec![num(1.0)]);
-    r.rt.prevent_extensions(a);
+    r.rt.prevent_extensions(a).expect("prevent_extensions");
     r.t("na", &[ov(a)])
 }
 
 fn nonextensible_empty_array(r: &Realm) -> Res<()> {
     let a = r.rt.new_array(vec![]);
-    r.rt.prevent_extensions(a);
+    r.rt.prevent_extensions(a).expect("prevent_extensions");
     r.t("nea", &[ov(a)])
 }
 
@@ -540,4 +546,39 @@ fn negative_control_a_mutated_input_is_reported() {
     // The same object without freeze: the encoder must not invent `integrity`.
     let actual = run_graph(graph("extensible-has-no-integrity"));
     assert!(support::first_difference(expected, &actual).is_some(), "a missing integrity field must be reported");
+}
+
+// Promise graphs (trace-format v1): a promise is opaque, `props` is always empty, and `integrity` follows the usual rule.
+fn promise_pending(r: &Realm) -> Res<()> {
+    let p = vn_value::builtins::promise::new_promise(&r.rt);
+    r.t("p", &[ov(p)])
+}
+fn promise_fulfilled_and_handled_rejection(r: &Realm) -> Res<()> {
+    let ctor = r.rt.get_str(&r.global(), "Promise")?;
+    let f = call_method(r, &ctor, "resolve", &[num(5.0)])?;
+    let rej = call_method(r, &ctor, "reject", &[num(1.0)])?;
+    let handler = ov(r.rt.new_native_function(noop, "noop", 0, Vec::new()));
+    call_method(r, &rej, "catch", &[handler])?;
+    r.t("pr", &[f, rej])
+}
+fn promise_aliased_in_array(r: &Realm) -> Res<()> {
+    let p = vn_value::builtins::promise::new_promise(&r.rt);
+    let a = r.rt.new_array(vec![ov(p), ov(p)]);
+    r.t("pa", &[ov(a)])
+}
+fn promise_own_props_are_not_traced(r: &Realm) -> Res<()> {
+    let p = vn_value::builtins::promise::new_promise(&r.rt);
+    r.rt.define_data(p, key("x"), num(1.0), Flags::ALL)?;
+    r.t("px", &[ov(p)])
+}
+fn promise_nonextensible(r: &Realm) -> Res<()> {
+    let p = vn_value::builtins::promise::new_promise(&r.rt);
+    r.rt.define_data(p, key("x"), num(1.0), Flags::ALL)?;
+    r.rt.prevent_extensions(p).expect("prevent_extensions");
+    r.t("pn", &[ov(p)])
+}
+fn promise_frozen(r: &Realm) -> Res<()> {
+    let p = vn_value::builtins::promise::new_promise(&r.rt);
+    r.rt.freeze(p)?;
+    r.t("pf", &[ov(p)])
 }

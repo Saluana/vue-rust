@@ -21,7 +21,8 @@ pub mod trace;
 
 pub use host::{install_host, Timers};
 pub use runner::{
-    run_scenario, run_scenario_isolated, run_scenario_with_gc_threshold, scenario_main, ScenarioEntry, ScenarioFn,
+    run_scenario, run_scenario_isolated, run_scenario_isolated_with_setup, run_scenario_with_gc_threshold, scenario_main,
+    scenario_main_with_setup, RealmSetup, ScenarioEntry, ScenarioFn,
 };
 pub use decode::{decode, decode_pass, IdTable};
 pub use replay::{replay_suite, Failure, Missing, ReplayOptions, ReplayReport};

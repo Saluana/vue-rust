@@ -324,7 +324,7 @@ fn freeze_seal_and_prevent_extensions_round_trip() {
     assert_eq!(static_call(&rt, "isFrozen", &[o.clone()]).unwrap(), Value::Bool(true));
     assert_eq!(static_call(&rt, "isSealed", &[o.clone()]).unwrap(), Value::Bool(true));
     assert_eq!(static_call(&rt, "isExtensible", &[o.clone()]).unwrap(), Value::Bool(false));
-    assert!(!rt.is_extensible(ob));
+    assert!(!rt.is_extensible(ob).expect("is_extensible"));
 
     // seal: non-extensible and non-configurable, but writable data stays writable
     let p = plain(&rt, &[("a", n(1.0))]);

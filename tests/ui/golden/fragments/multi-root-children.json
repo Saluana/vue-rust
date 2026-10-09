@@ -1,0 +1,1 @@
+{"scenario":"fragments/multi-root-children","result":"ok","error":null,"entries":[{"label":"html","values":["<div><i>before</i><p>a</p><span>b</span><i>after</i></div>"]}],"unhandledRejections":[]}

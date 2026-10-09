@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>vue-native web host</title>
+</head>
+<body>
+<div id="app"></div>
+<script type="module">
+// Loads the renderer named by manifest.json next to this page. window.vnReady resolves once the host is ready (see ABI.md).
+import { createHost } from './vn-host.js';
+const manifest = await fetch('./manifest.json').then((response) => response.json());
+window.vnReady = createHost({ document, wasmBytesOrUrl: new URL(manifest.wasm, location.href) })
+  .then((host) => {
+    window.vnHost = host;
+  });
+</script>
+</body>
+</html>

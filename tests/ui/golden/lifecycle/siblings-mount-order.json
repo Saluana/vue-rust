@@ -1,0 +1,1 @@
+{"scenario":"lifecycle/siblings-mount-order","result":"ok","error":null,"entries":[{"label":"log","values":["a beforeMount"]},{"label":"log","values":["b beforeMount"]},{"label":"log","values":["a mounted"]},{"label":"log","values":["b mounted"]}],"unhandledRejections":[]}

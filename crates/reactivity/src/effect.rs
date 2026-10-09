@@ -215,18 +215,23 @@ fn js_effect(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     }
     let e = new_effect(rt, f);
     let options = c.arg(1);
+    let mut lazy = false;
     if truthy(&options) {
         let sched = rt.get_str(&options, "scheduler")?;
         let on_stop = rt.get_str(&options, "onStop")?;
+        lazy = rt.get_str(&options, "lazy")?.to_boolean();
         let en = node(rt, e);
         *en.effect().scheduler.borrow_mut() = sched;
         *en.effect().on_stop.borrow_mut() = on_stop;
     }
-    if let Err(err) = effect_run(rt, e) {
-        return match effect_stop(rt, e) {
-            Err(e2) => Err(e2),
-            Ok(()) => Err(err),
-        };
+    // `lazy: true` creates the effect without its first run (runtime-core's ReactiveEffect: the caller runs it).
+    if !lazy {
+        if let Err(err) = effect_run(rt, e) {
+            return match effect_stop(rt, e) {
+                Err(e2) => Err(e2),
+                Ok(()) => Err(err),
+            };
+        }
     }
     let runner = native(rt, "bound run", 0, runner_code, vec![Value::Object(e)]);
     rt.define_data(runner, PropKey::from_str("effect"), Value::Object(e), Flags::ALL)?;

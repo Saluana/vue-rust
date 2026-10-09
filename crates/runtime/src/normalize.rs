@@ -191,7 +191,7 @@ pub fn parse_string_style(rt: &Rt, s: &JsStr) -> Res<ObjRef> {
             if colon + 1 < item.len() {
                 let key = trim_units(&item[..colon]);
                 let val = trim_units(&item[colon + 1..]);
-                rt.set_v(&Value::Object(ret), &PropKey::from_jsstr(key), Value::String(val))?;
+                set_key(rt, &Value::Object(ret), &PropKey::from_jsstr(key), Value::String(val))?;
             }
         }
     }
@@ -213,7 +213,7 @@ pub fn normalize_style(rt: &Rt, v: &Value) -> Res<Value> {
             if normalized.to_boolean() {
                 for k in for_in_keys(rt, &normalized)? {
                     let val = rt.get_v(&normalized, &k)?;
-                    rt.set_v(&Value::Object(res), &k, val)?;
+                    set_key(rt, &Value::Object(res), &k, val)?;
                 }
             }
             i += 1;
@@ -704,4 +704,21 @@ pub(crate) fn exports(rt: &Rt) -> Vec<(&'static str, Value)> {
         func(rt, "camelize", 1, n_camelize, &[]),
         func(rt, "capitalize", 1, n_capitalize, &[]),
     ]
+}
+
+/// `obj[key] = value` as JavaScript writes it. A key of "__proto__" goes through Object.prototype.__proto__, which
+/// ignores primitive values and sets the prototype for objects and null (the kernel has no such accessor yet).
+pub(crate) fn set_key(rt: &Rt, obj: &Value, key: &PropKey, value: Value) -> Res<()> {
+    if let (PropKey::Str(s), Value::Object(o)) = (key, obj) {
+        if s.units() == "__proto__".encode_utf16().collect::<Vec<u16>>().as_slice() {
+            return match value {
+                Value::Object(p) if rt.set_prototype_of(*o, Some(p)) => Ok(()),
+                Value::Null if rt.set_prototype_of(*o, None) => Ok(()),
+                Value::Object(_) | Value::Null => Err(rt.throw_type_error("Object.prototype.__proto__ setter: cyclic prototype")),
+                _ => Ok(()),
+            };
+        }
+    }
+    rt.set_v(obj, key, value)?;
+    Ok(())
 }

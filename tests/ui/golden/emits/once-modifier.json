@@ -1,0 +1,1 @@
+{"scenario":"emits/once-modifier","result":"ok","error":null,"entries":[{"label":"log","values":["once"]}],"unhandledRejections":[]}

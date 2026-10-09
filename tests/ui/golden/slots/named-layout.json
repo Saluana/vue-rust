@@ -1,0 +1,1 @@
+{"scenario":"slots/named-layout","result":"ok","error":null,"entries":[{"label":"html","values":["<div><header>H</header><main><p>body</p></main></div>"]}],"unhandledRejections":[]}

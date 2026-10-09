@@ -1,8 +1,8 @@
-# Architecture decisions (coordinator, binding for all work packages)
+# Architecture decisions (maintainer, binding for all work packages)
 
 Source of truth for *requirements and scope*: `planning/vue-native-framework/{requirements,design,tasks}.md`.
 This file records the concrete engineering decisions taken to implement them. It is a living document owned by
-the coordinator; implementers read it, they do not edit it.
+the maintainer; implementers read it, they do not edit it.
 
 ## 1. Pipeline
 

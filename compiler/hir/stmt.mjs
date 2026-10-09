@@ -226,7 +226,7 @@ function lowerFor(cx, s) {
 
 function lowerForInOf(cx, s, scopeId) {
   const isOf = s.type === 'ForOfStatement';
-  if (s.await) unsupported(cx, s, 'for await (WP-C1c)');
+  if (s.await) unsupported(cx, s, 'for await loop (not supported: async iteration is outside the profile)');
   const forScope = scopeIdOf(cx, 'for', s);
   const names = withLabels(cx, []);
   const lid = newLid(cx);

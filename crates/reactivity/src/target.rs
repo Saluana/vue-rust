@@ -4,7 +4,7 @@
 //! notification.
 
 use std::any::Any;
-use std::cell::{Cell, RefCell};
+use std::cell::{Cell, OnceCell, RefCell};
 use std::collections::HashMap;
 use std::rc::Rc;
 
@@ -87,8 +87,8 @@ impl TargetMap {
     }
 }
 
-impl NativeObject for TargetMap {
-    fn trace(&self, t: &mut Tracer) {
+impl TargetMap {
+    pub(crate) fn trace(&self, t: &mut Tracer) {
         for e in self.entries.borrow().values() {
             t.mark(e.dep);
             t.mark_value(&e.key);
@@ -96,24 +96,75 @@ impl NativeObject for TargetMap {
     }
 }
 
-/// The depsMap of a target, if it has one.
-pub(crate) fn target_map(rt: &Rt, target: ObjRef) -> Option<Rc<TargetMap>> {
-    let ext = rt.ext(target)?;
-    let any: Rc<dyn Any> = ext;
-    match any.downcast::<TargetMap>() {
-        Ok(m) => Some(m),
-        Err(_) => panic!("the extension slot of a reactive target is reserved for the targetMap (framework bug)"),
+/// The extension payload of an object: its targetMap and its cached reactive proxies (the reactiveMap, shallowReactiveMap,
+/// readonlyMap and shallowReadonlyMap of @vue/reactivity; the slot order is that of `reactive::slot`). The object's single
+/// extension slot (ABI.md section 9) holds exactly this type, so `track`/`trigger` and the reactive wrappers share it.
+pub(crate) struct ObjExt {
+    map: OnceCell<Rc<TargetMap>>,
+    proxies: [Cell<Option<ObjRef>>; 4],
+}
+
+impl Default for ObjExt {
+    fn default() -> Self {
+        ObjExt { map: OnceCell::new(), proxies: std::array::from_fn(|_| Cell::new(None)) }
     }
 }
 
-fn target_map_or_create(rt: &Rt, target: ObjRef) -> Rc<TargetMap> {
-    if let Some(m) = target_map(rt, target) {
-        return m;
+impl NativeObject for ObjExt {
+    fn trace(&self, t: &mut Tracer) {
+        if let Some(m) = self.map.get() {
+            m.trace(t);
+        }
+        for p in &self.proxies {
+            if let Some(o) = p.get() {
+                t.mark(o);
+            }
+        }
     }
-    let m = Rc::new(TargetMap::default());
-    let payload: Rc<dyn NativeObject> = m.clone();
+}
+
+/// The payload of `target`: `Ok(None)` when its slot is empty; `Err` when another subsystem owns the slot.
+fn payload_of(rt: &Rt, target: ObjRef) -> Result<Option<Rc<ObjExt>>, ()> {
+    let Some(ext) = rt.ext(target) else {
+        return Ok(None);
+    };
+    let any: Rc<dyn Any> = ext;
+    any.downcast::<ObjExt>().map(Some).map_err(|_| ())
+}
+
+/// The payload of `target`, created when its slot is empty; `Err` when another subsystem owns the slot.
+fn ext_or_create(rt: &Rt, target: ObjRef) -> Result<Rc<ObjExt>, ()> {
+    if let Some(p) = payload_of(rt, target)? {
+        return Ok(p);
+    }
+    let p = Rc::new(ObjExt::default());
+    let payload: Rc<dyn NativeObject> = p.clone();
     rt.set_ext(target, payload);
-    m
+    Ok(p)
+}
+
+/// The depsMap of a target, if it has one.
+pub(crate) fn target_map(rt: &Rt, target: ObjRef) -> Option<Rc<TargetMap>> {
+    let payload = payload_of(rt, target)
+        .expect("the extension slot of a reactive target is reserved for the reactivity payload (framework bug)")?;
+    payload.map.get().cloned()
+}
+
+fn target_map_or_create(rt: &Rt, target: ObjRef) -> Rc<TargetMap> {
+    let payload = ext_or_create(rt, target)
+        .expect("the extension slot of a reactive target is reserved for the reactivity payload (framework bug)");
+    payload.map.get_or_init(|| Rc::new(TargetMap::default())).clone()
+}
+
+/// The cached reactive proxy of `target` for a mode (`slot` as in `reactive::slot`).
+pub(crate) fn cached_proxy(rt: &Rt, target: ObjRef, slot: usize) -> Option<ObjRef> {
+    payload_of(rt, target).ok()??.proxies[slot].get()
+}
+
+/// Caches the reactive proxy of `target` for a mode; `Err` when another subsystem owns the object's extension slot.
+pub(crate) fn set_cached_proxy(rt: &Rt, target: ObjRef, slot: usize, proxy: ObjRef) -> Result<(), ()> {
+    ext_or_create(rt, target)?.proxies[slot].set(Some(proxy));
+    Ok(())
 }
 
 /// `getDepFromReactive(target, key)`: the dep of a key, if one exists.

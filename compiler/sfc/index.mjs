@@ -1,7 +1,7 @@
 // .vue single-file component frontend (WP-F1). compileSfc wraps the official @vue/compiler-sfc 3.5.43 with the
 // language-profile checks, native template validation, style extraction and .vue-mapped diagnostics:
 //
-//   compileSfc(source, { filename, id?, target: 'native'|'web', rootDir?, trustedHtml? })
+//   compileSfc(source, { filename, id?, target: 'native'|'web'|'test', rootDir?, trustedHtml? })
 //     -> { code, map, styles, bindings, diagnostics, dependencies, scopeId, lang, sources }
 //
 // Pipeline: parse blocks (official) -> block policy -> script profile checks -> template validation on the untouched
@@ -341,6 +341,18 @@ export function compileSfc(source, options = {}) {
   if (setupInfo) {
     for (const n of setupInfo.names) names.add(n);
     for (const n of normalInfo?.names ?? []) names.add(n);
+  }
+  // Type-form defineProps can expose template names without declaring script variables.
+  // Use Vue's binding analysis, including imported types, rather than approximating those names.
+  if (setup && !scriptBroken && !ctx.diags.some(d => d.severity === 'error')) {
+    try {
+      const metadata = compileScript(descriptor, { id: ctx.shortId, isProd: true, fs: ctx.scriptFs() });
+      for (const name of Object.keys(metadata.bindings ?? {})) {
+        if (/^[A-Za-z_$][\w$]*$/.test(name)) names.add(name);
+      }
+    } catch (err) {
+      reportCompilerException(ctx, err, setup, ctx.rel);
+    }
   }
   const outLang = scripts.some((s) => s.lang === 'ts') ? 'ts' : 'js';
   const fragmentLang = setupInfo?.lang === 'ts' ? 'ts' : 'js';

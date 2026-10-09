@@ -207,8 +207,8 @@ function focus(node) {
 
 function input(node, value) {
   const el = elOf(node);
-  if (!(el instanceof HTMLTextAreaElement || (el instanceof HTMLInputElement && el.type === 'text'))) {
-    throw new TypeError('input: the target must be a text input or a textarea');
+  if (!(el instanceof HTMLTextAreaElement || (el instanceof HTMLInputElement && (el.type === 'text' || el.type === 'range')))) {
+    throw new TypeError('input: the target must be a text input, a range or a textarea');
   }
   requireString(value, 'input: value');
   el.value = value;

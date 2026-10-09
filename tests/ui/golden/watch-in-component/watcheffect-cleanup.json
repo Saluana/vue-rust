@@ -1,0 +1,1 @@
+{"scenario":"watch-in-component/watcheffect-cleanup","result":"ok","error":null,"entries":[{"label":"log","values":["run 1"]},{"label":"log","values":["cleanup 1"]},{"label":"log","values":["run 2"]},{"label":"log","values":["cleanup 2"]},{"label":"unmounted","values":[]}],"unhandledRejections":[]}

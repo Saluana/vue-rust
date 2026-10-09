@@ -2,13 +2,25 @@
 //!
 //! Implementations: `DocHost` (over `vn_dom::Document`; headless tests, native renderer, SSR) in `dom_events`/`dom_props`'s owning WP, and the
 //! browser host (`hosts/web`: wasm imports + generated JS glue) in `crates/renderer-dom`. The trait mirrors the subset of the DOM that
-//! `@vue/runtime-dom` 3.5 uses (nodeOps + patchProp + directives), so the ported logic is the same on every host. Coordinator-owned contract:
-//! change it only through the coordinator (it fans out to every host).
+//! `@vue/runtime-dom` 3.5 uses (nodeOps + patchProp + directives), so the ported logic is the same on every host. Maintainer-owned contract:
+//! change it only through the maintainer (it fans out to every host).
 //!
 //! Events flow the other way through [`EventSink`]: hosts call it for every listener invocation; the runtime builds the JS `Event` object and
 //! runs the handler. A host implementation may be mid-mutation when it calls the sink (e.g. blur fires before a focused subtree is detached), so
 //! the runtime may call back into the host from inside the sink (re-entrancy is part of the contract; `DocHost` achieves it by swapping its
 //! document into a shared cell for the duration of the call).
+
+use std::cell::RefCell;
+use std::rc::Rc;
+
+use vn_dom::{EventInit, EventKind};
+
+/// The dispatch that the sink is currently serving: a serial that changes per dispatch, and the event kind.
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct EventInfo {
+    pub serial: u64,
+    pub kind: EventKind,
+}
 
 /// Opaque handle of a host node (element, text or comment). Stable until `release`.
 #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug, PartialOrd, Ord)]
@@ -93,6 +105,8 @@ pub struct ListenerOutcome {
 /// Implemented by the runtime; hosts call it once per listener invocation.
 pub trait EventSink {
     fn dispatch(&self, listener: ListenerId, event: &HostEvent) -> ListenerOutcome;
+    /// The outermost host dispatch has finished; event identity caches can be dropped.
+    fn finish_dispatch(&self) {}
 }
 
 /// DOM-like operations. All string arguments are UTF-8. `&mut self` methods may invoke the registered [`EventSink`] re-entrantly.
@@ -122,6 +136,8 @@ pub trait Host {
     fn body(&self) -> Option<HostNode>;
     /// Frees a detached subtree's resources (browser hosts drop their JS references). No-op allowed.
     fn release(&mut self, node: HostNode);
+    /// Mapped handles in a subtree, including its root, for resource lifetime tracking.
+    fn subtree_nodes(&self, node: HostNode) -> Vec<HostNode> { vec![node] }
 
     // ---- introspection used by prop/patch decisions
     fn tag_name(&self, el: HostNode) -> String; // uppercase for HTML elements like DOM `tagName`
@@ -164,4 +180,92 @@ pub trait Host {
     // ---- serialization (SSR, tests)
     fn outer_html(&mut self, node: HostNode) -> Option<String>;
     fn inner_html(&mut self, node: HostNode) -> Option<String>;
+
+    // ---- capabilities the DOM layer uses; the defaults suit hosts without dispatch identity or a test surface
+    /// The identity of the dispatch being served (events of one dispatch share a serial).
+    fn event_info(&self) -> EventInfo {
+        EventInfo { serial: 0, kind: EventKind::Event }
+    }
+    /// Registers a hook that runs when a node is released.
+    fn add_release_hook(&self, _hook: Rc<dyn Fn(HostNode)>) {}
+    /// A click on the node (`el.click()`); hosts without event dispatch refuse it.
+    fn click(&mut self, _node: HostNode) -> HostResult<()> {
+        Err(HostError::Unsupported("click".to_string()))
+    }
+    /// The document node (the root of every connected node), when the host has one.
+    fn document_node(&self) -> Option<HostNode> {
+        None
+    }
+    /// Dispatches an event at `target` (returns whether the default was not prevented).
+    fn dispatch_event(&mut self, _target: HostNode, _init: EventInit) -> HostResult<bool> {
+        Err(HostError::Unsupported("dispatchEvent".to_string()))
+    }
+}
+
+/// A handle to a host the DOM layer shares. Clones of a handle act on one host; `handle()` gives a handle for one call.
+pub trait HostProvider {
+    fn handle(&self) -> Box<dyn Host>;
+}
+
+/// The host of a DOM context (see `HostProvider`).
+pub type SharedHost = Rc<dyn HostProvider>;
+
+/// A host behind `Rc<RefCell<dyn Host>>`: each call borrows the host for its own duration. A host that calls its
+/// listeners from inside one of its own calls must hand out clone-based handles instead (as DocHost does), since a
+/// listener that calls back into the host would find the cell borrowed.
+impl HostProvider for Rc<RefCell<dyn Host>> {
+    fn handle(&self) -> Box<dyn Host> {
+        Box::new(SharedRef(Rc::clone(self)))
+    }
+}
+
+struct SharedRef(Rc<RefCell<dyn Host>>);
+
+impl Host for SharedRef {
+    fn set_event_sink(&mut self, sink: Rc<dyn EventSink>) { self.0.borrow_mut().set_event_sink(sink) }
+    fn now_ms(&self) -> f64 { self.0.borrow().now_ms() }
+    fn create_element(&mut self, ns: HostNs, tag: &str, is: Option<&str>) -> HostResult<HostNode> { self.0.borrow_mut().create_element(ns, tag, is) }
+    fn create_text(&mut self, text: &str) -> HostNode { self.0.borrow_mut().create_text(text) }
+    fn create_comment(&mut self, text: &str) -> HostNode { self.0.borrow_mut().create_comment(text) }
+    fn set_text(&mut self, node: HostNode, text: &str) -> HostResult<()> { self.0.borrow_mut().set_text(node, text) }
+    fn set_element_text(&mut self, el: HostNode, text: &str) -> HostResult<()> { self.0.borrow_mut().set_element_text(el, text) }
+    fn insert(&mut self, child: HostNode, parent: HostNode, anchor: Option<HostNode>) -> HostResult<()> { self.0.borrow_mut().insert(child, parent, anchor) }
+    fn remove(&mut self, child: HostNode) -> HostResult<()> { self.0.borrow_mut().remove(child) }
+    fn parent_node(&self, node: HostNode) -> Option<HostNode> { self.0.borrow().parent_node(node) }
+    fn next_sibling(&self, node: HostNode) -> Option<HostNode> { self.0.borrow().next_sibling(node) }
+    fn query_selector(&self, selector: &str) -> HostResult<Option<HostNode>> { self.0.borrow().query_selector(selector) }
+    fn body(&self) -> Option<HostNode> { self.0.borrow().body() }
+    fn release(&mut self, node: HostNode) { self.0.borrow_mut().release(node) }
+    fn subtree_nodes(&self, node: HostNode) -> Vec<HostNode> { self.0.borrow().subtree_nodes(node) }
+    fn tag_name(&self, el: HostNode) -> String { self.0.borrow().tag_name(el) }
+    fn is_element(&self, node: HostNode) -> bool { self.0.borrow().is_element(node) }
+    fn set_attribute(&mut self, el: HostNode, name: &str, value: &str) -> HostResult<()> { self.0.borrow_mut().set_attribute(el, name, value) }
+    fn set_attribute_ns(&mut self, el: HostNode, ns: Option<&str>, qualified: &str, value: &str) -> HostResult<()> { self.0.borrow_mut().set_attribute_ns(el, ns, qualified, value) }
+    fn remove_attribute(&mut self, el: HostNode, name: &str) -> HostResult<()> { self.0.borrow_mut().remove_attribute(el, name) }
+    fn remove_attribute_ns(&mut self, el: HostNode, ns: Option<&str>, local: &str) -> HostResult<()> { self.0.borrow_mut().remove_attribute_ns(el, ns, local) }
+    fn get_attribute(&self, el: HostNode, name: &str) -> Option<String> { self.0.borrow().get_attribute(el, name) }
+    fn has_attribute(&self, el: HostNode, name: &str) -> bool { self.0.borrow().has_attribute(el, name) }
+    fn has_property(&self, el: HostNode, name: &str) -> bool { self.0.borrow().has_property(el, name) }
+    fn get_property(&mut self, el: HostNode, name: &str) -> HostResult<HostValue> { self.0.borrow_mut().get_property(el, name) }
+    fn set_property(&mut self, el: HostNode, name: &str, value: HostValue) -> HostResult<()> { self.0.borrow_mut().set_property(el, name, value) }
+    fn style_set_property(&mut self, el: HostNode, name: &str, value: &str, important: bool) -> HostResult<()> { self.0.borrow_mut().style_set_property(el, name, value, important) }
+    fn style_remove_property(&mut self, el: HostNode, name: &str) -> HostResult<()> { self.0.borrow_mut().style_remove_property(el, name) }
+    fn style_get_property(&self, el: HostNode, name: &str) -> String { self.0.borrow().style_get_property(el, name) }
+    fn style_css_text(&self, el: HostNode) -> String { self.0.borrow().style_css_text(el) }
+    fn style_set_css_text(&mut self, el: HostNode, text: &str) -> HostResult<()> { self.0.borrow_mut().style_set_css_text(el, text) }
+    fn class_list_add(&mut self, el: HostNode, token: &str) -> HostResult<()> { self.0.borrow_mut().class_list_add(el, token) }
+    fn class_list_remove(&mut self, el: HostNode, token: &str) -> HostResult<()> { self.0.borrow_mut().class_list_remove(el, token) }
+    fn add_event_listener(&mut self, el: HostNode, ty: &str, id: ListenerId, opts: ListenerOpts) -> HostResult<()> { self.0.borrow_mut().add_event_listener(el, ty, id, opts) }
+    fn remove_event_listener(&mut self, el: HostNode, ty: &str, id: ListenerId, capture: bool) -> HostResult<()> { self.0.borrow_mut().remove_event_listener(el, ty, id, capture) }
+    fn focus(&mut self, el: HostNode) -> HostResult<()> { self.0.borrow_mut().focus(el) }
+    fn blur(&mut self, el: HostNode) -> HostResult<()> { self.0.borrow_mut().blur(el) }
+    fn active_element(&self) -> Option<HostNode> { self.0.borrow().active_element() }
+    fn option_nodes(&self, select: HostNode) -> Vec<HostNode> { self.0.borrow().option_nodes(select) }
+    fn outer_html(&mut self, node: HostNode) -> Option<String> { self.0.borrow_mut().outer_html(node) }
+    fn inner_html(&mut self, node: HostNode) -> Option<String> { self.0.borrow_mut().inner_html(node) }
+    fn event_info(&self) -> EventInfo { self.0.borrow().event_info() }
+    fn add_release_hook(&self, hook: Rc<dyn Fn(HostNode)>) { self.0.borrow().add_release_hook(hook) }
+    fn click(&mut self, node: HostNode) -> HostResult<()> { self.0.borrow_mut().click(node) }
+    fn document_node(&self) -> Option<HostNode> { self.0.borrow().document_node() }
+    fn dispatch_event(&mut self, target: HostNode, init: EventInit) -> HostResult<bool> { self.0.borrow_mut().dispatch_event(target, init) }
 }

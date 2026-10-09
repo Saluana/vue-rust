@@ -31,5 +31,5 @@ visible; reproduced evidence must be recorded (requirements R01.AC2, tasks 2.1).
 
 ## Acceptance
 Evidence files exist with real output; the summary distinguishes passed / failed / not run. No source files
-modified. At the end print `du -sh $CARGO_TARGET_DIR` and leave the target dir in place (coordinator decides on
+modified. At the end print `du -sh $CARGO_TARGET_DIR` and leave the target dir in place (maintainer decides on
 cleanup).
