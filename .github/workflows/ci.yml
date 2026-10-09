@@ -1,0 +1,43 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_INCREMENTAL: "0"
+
+jobs:
+  rust:
+    name: Rust workspace
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      # rustup reads rust-toolchain.toml (Rust 1.99.0 + wasm32-unknown-unknown) on first use.
+      - run: rustup show active-toolchain
+      - uses: Swatinem/rust-cache@v2
+      - run: cargo test --workspace --locked --no-fail-fast
+
+  node:
+    name: Compiler, CLI and browser suites
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: rustup show active-toolchain
+      - uses: Swatinem/rust-cache@v2
+      - run: npm ci --ignore-scripts
+      # Suites that need Chrome use the runner's preinstalled Google Chrome and skip with a reason without it.
+      - run: npm test
+      - run: npm run test:language
+      - run: npm run test:vue
+      - run: node tooling/harness/run-language.mjs --with-vue --ui
