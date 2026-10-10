@@ -1,0 +1,12 @@
+# Experiment only (WP-3.2): the same churn shape as crates/value's gc_churn_bench, on gc-arena. Standalone: it has its own
+# workspace table, so the root workspace (crates/*) does not include it. Not a dependency of any vn-* crate.
+[package]
+name = "gc-arena-churn"
+version = "0.0.1"
+edition = "2024"
+publish = false
+
+[dependencies]
+gc-arena = "=0.7.0"
+
+[workspace]
