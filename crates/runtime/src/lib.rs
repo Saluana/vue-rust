@@ -20,6 +20,7 @@ pub mod keep_alive;
 pub mod keyed;
 pub mod lifecycle;
 pub mod normalize;
+pub mod operations;
 pub mod props;
 pub mod public_instance;
 pub mod refs;
