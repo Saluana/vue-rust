@@ -5,6 +5,9 @@
 //                           {"op": "input", "selector": "#customer", "value": "Ada"},
 //                           {"op": "html", "selector": "#count"},
 //                           {"op": "snapshot", "name": "initial"}]}
+// `--stats` (WP 3.1, the release size and allocation report): the app is rooted and the heap is collected at each safepoint
+// (after each step), as the web host's vn_flush does, and one JSON line with the vn-value heap counters is printed to
+// stderr after the mount ("afterMount") and at the end ("end"). The results printed on stdout do not change.
 // Exit status: 0 ok; 1 the app threw or a step failed (message on stderr); 2 usage or script error.
 #![allow(dead_code)]
 
@@ -28,8 +31,9 @@ enum Failure {
 
 fn main() {
     let args: Vec<String> = std::env::args().collect();
-    let Some(path) = args.get(1) else {
-        eprintln!("usage: {} <script.json>", args.first().map(String::as_str).unwrap_or("app"));
+    let stats = args.iter().skip(1).any(|a| a == "--stats");
+    let Some(path) = args.iter().skip(1).find(|a| !a.starts_with("--")) else {
+        eprintln!("usage: {} <script.json> [--stats]", args.first().map(String::as_str).unwrap_or("app"));
         std::process::exit(2);
     };
     let script = match std::fs::read_to_string(path) {
@@ -39,7 +43,7 @@ fn main() {
             std::process::exit(2);
         }
     };
-    match run(&script) {
+    match run(&script, stats) {
         Ok(out) => println!("{out}"),
         Err(Failure::Script(message)) => {
             eprintln!("script error: {message}");
@@ -52,7 +56,7 @@ fn main() {
     }
 }
 
-fn run(script: &str) -> Result<String, Failure> {
+fn run(script: &str, stats: bool) -> Result<String, Failure> {
     let spec = parse(script).map_err(|e| Failure::Script(format!("not JSON: {e:?}")))?;
     let steps = spec
         .field("steps")
@@ -83,10 +87,13 @@ fn run(script: &str) -> Result<String, Failure> {
         .map(|(_, v)| v.clone())
         .ok_or_else(|| Failure::App("the vue module has no createApp".to_string()))?;
     let app = js(&rt, rt.call(&create_app, &Value::Undefined, &[root, Value::Undefined]))?;
+    // The web host roots the app (projectLibRs in tooling/cli/build.mjs); so does this runner, so a collection keeps it.
+    let _app_root = rt.root(&app);
     let mount = js(&rt, rt.get_str(&app, "mount"))?;
     js(&rt, rt.call(&mount, &app, &[Value::String(JsStr::from_str(vn_config::CONTAINER))]))?;
     settle(&rt, &ctx);
     check_errors(&rt, &ctx, "mount")?;
+    let after_mount = rt.heap_stats();
 
     let mut results = Vec::new();
     for (i, step) in steps.iter().enumerate() {
@@ -94,8 +101,28 @@ fn run(script: &str) -> Result<String, Failure> {
         results.push(run_step(&mut h, container, i, step)?);
         settle(&rt, &ctx);
         check_errors(&rt, &ctx, &format!("step {i}"))?;
+        if stats {
+            rt.collect();
+        }
+    }
+    if stats {
+        let line = Json::obj([("afterMount", heap_json(after_mount)), ("end", heap_json(rt.heap_stats()))]);
+        eprintln!("{}", line.to_json());
     }
     Ok(Json::Arr(results).to_json())
+}
+
+// The heap counters of vn-value as a JSON object (--stats).
+fn heap_json(s: vn_value::HeapStats) -> Json {
+    Json::obj([
+        ("live_objects", Json::int(s.live_objects as u64)),
+        ("allocated_total", Json::int(s.allocated_total)),
+        ("freed_total", Json::int(s.freed_total)),
+        ("collections", Json::int(s.collections)),
+        ("bytes_estimate", Json::int(s.bytes_estimate as u64)),
+        ("peak_live_objects", Json::int(s.peak_live_objects as u64)),
+        ("peak_bytes_estimate", Json::int(s.peak_bytes_estimate as u64)),
+    ])
 }
 
 // The container the page would create: an element with the id of vn_config::CONTAINER, appended to the body.

@@ -1,0 +1,459 @@
+{
+ "built-ins/Array/prototype/filter/15.4.4.20-1-1": "pass",
+ "built-ins/Array/prototype/filter/15.4.4.20-2-11": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 22)"
+ },
+ "built-ins/Array/prototype/filter/15.4.4.20-3-16": "pass",
+ "built-ins/Array/prototype/filter/15.4.4.20-4-2": {
+  "blocked": "rejected-by-profile: VN4016 global 'foo' is not available in the test profile (line 13)"
+ },
+ "built-ins/Array/prototype/filter/15.4.4.20-5-23": "pass",
+ "built-ins/Array/prototype/filter/15.4.4.20-9-4": "pass",
+ "built-ins/Array/prototype/filter/15.4.4.20-9-c-i-10": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 18)"
+ },
+ "built-ins/Array/prototype/filter/15.4.4.20-9-c-i-31": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 24)"
+ },
+ "built-ins/Array/prototype/filter/15.4.4.20-9-c-ii-5": "pass",
+ "built-ins/Array/prototype/filter/15.4.4.20-9-c-iii-2": "pass",
+ "built-ins/Array/prototype/indexOf/15.4.4.14-1-1": "pass",
+ "built-ins/Array/prototype/indexOf/15.4.4.14-2-11": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 14)"
+ },
+ "built-ins/Array/prototype/indexOf/15.4.4.14-3-13": "pass",
+ "built-ins/Array/prototype/indexOf/15.4.4.14-3-6": "pass",
+ "built-ins/Array/prototype/indexOf/15.4.4.14-5-13": "pass",
+ "built-ins/Array/prototype/indexOf/15.4.4.14-5-30": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 14)"
+ },
+ "built-ins/Array/prototype/indexOf/15.4.4.14-8-4": "pass",
+ "built-ins/Array/prototype/indexOf/15.4.4.14-9-a-16": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 13)"
+ },
+ "built-ins/Array/prototype/indexOf/15.4.4.14-9-b-i-16": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 11) (+2 more)"
+ },
+ "built-ins/Array/prototype/indexOf/15.4.4.14-9-b-i-7": "pass",
+ "built-ins/Array/prototype/map/15.4.4.19-1-1": "pass",
+ "built-ins/Array/prototype/map/15.4.4.19-2-13": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 16) (+1 more)"
+ },
+ "built-ins/Array/prototype/map/15.4.4.19-3-15": "pass",
+ "built-ins/Array/prototype/map/15.4.4.19-3-8": "pass",
+ "built-ins/Array/prototype/map/15.4.4.19-5-14": "pass",
+ "built-ins/Array/prototype/map/15.4.4.19-8-1": "pass",
+ "built-ins/Array/prototype/map/15.4.4.19-8-b-5": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 21) (+1 more)"
+ },
+ "built-ins/Array/prototype/map/15.4.4.19-8-c-i-22": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 18)"
+ },
+ "built-ins/Array/prototype/map/15.4.4.19-8-c-ii-13": {
+  "blocked": "rejected-by-profile: VN2015 The arguments object is not supported (line 12) (+2 more)"
+ },
+ "built-ins/Array/prototype/map/15.4.4.19-8-c-iii-4": "pass",
+ "built-ins/Array/prototype/push/S15.4.4.7_A1_T1": "pass",
+ "built-ins/Array/prototype/push/S15.4.4.7_A2_T1": "pass",
+ "built-ins/Array/prototype/push/S15.4.4.7_A2_T3": "pass",
+ "built-ins/Array/prototype/push/S15.4.4.7_A4_T1": "pass",
+ "built-ins/Array/prototype/push/S15.4.4.7_A4_T3": "pass",
+ "built-ins/Array/prototype/push/call-with-boolean": "pass",
+ "built-ins/Array/prototype/push/length-near-integer-limit-set-failure": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 34)"
+ },
+ "built-ins/Array/prototype/push/set-length-array-is-frozen": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 32)"
+ },
+ "built-ins/Array/prototype/push/set-length-zero-array-is-frozen": "pass",
+ "built-ins/Array/prototype/push/throws-if-integer-limit-exceeded": "pass",
+ "built-ins/JSON/parse/15.12.1.1-0-1": "pass",
+ "built-ins/JSON/parse/15.12.1.1-0-6": "pass",
+ "built-ins/JSON/parse/15.12.1.1-g1-4": "pass",
+ "built-ins/JSON/parse/15.12.1.1-g4-1": "pass",
+ "built-ins/JSON/parse/15.12.1.1-g5-2": "pass",
+ "built-ins/JSON/parse/15.12.1.1-g6-5": "pass",
+ "built-ins/JSON/parse/15.12.2-2-3": "pass",
+ "built-ins/JSON/parse/15.12.2-2-8": "pass",
+ "built-ins/JSON/parse/reviver-array-non-configurable-prop-create": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 39)"
+ },
+ "built-ins/JSON/parse/reviver-object-non-configurable-prop-create": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 41)"
+ },
+ "built-ins/JSON/stringify/property-order": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 17)"
+ },
+ "built-ins/JSON/stringify/replacer-array-number": "pass",
+ "built-ins/JSON/stringify/replacer-function-arguments": "pass",
+ "built-ins/JSON/stringify/replacer-function-result-undefined": "pass",
+ "built-ins/JSON/stringify/space-number-object": "pass",
+ "built-ins/JSON/stringify/space-string-range": "pass",
+ "built-ins/JSON/stringify/value-function": "pass",
+ "built-ins/JSON/stringify/value-number": "pass",
+ "built-ins/JSON/stringify/value-string-escape-unicode": "pass",
+ "built-ins/JSON/stringify/value-tojson-arguments": "pass",
+ "built-ins/Math/abs/S15.8.2.1_A1": "pass",
+ "built-ins/Math/abs/S15.8.2.1_A2": "pass",
+ "built-ins/Math/abs/S15.8.2.1_A3": "pass",
+ "built-ins/Math/abs/absolute-value": "pass",
+ "built-ins/Math/floor/S15.8.2.9_A1": "pass",
+ "built-ins/Math/floor/S15.8.2.9_A2": "pass",
+ "built-ins/Math/floor/S15.8.2.9_A3": "pass",
+ "built-ins/Math/floor/S15.8.2.9_A4": "pass",
+ "built-ins/Math/floor/S15.8.2.9_A5": "pass",
+ "built-ins/Math/floor/S15.8.2.9_A6": "pass",
+ "built-ins/Math/floor/S15.8.2.9_A7": "pass",
+ "built-ins/Math/max/15.8.2.11-1": "pass",
+ "built-ins/Math/max/Math.max_each-element-coerced": "pass",
+ "built-ins/Math/max/S15.8.2.11_A1": "pass",
+ "built-ins/Math/max/S15.8.2.11_A2": "pass",
+ "built-ins/Math/max/S15.8.2.11_A4": "pass",
+ "built-ins/Math/max/zeros": "pass",
+ "built-ins/Math/min/15.8.2.12-1": "pass",
+ "built-ins/Math/min/Math.min_each-element-coerced": "pass",
+ "built-ins/Math/min/S15.8.2.12_A1": "pass",
+ "built-ins/Math/min/S15.8.2.12_A2": "pass",
+ "built-ins/Math/min/S15.8.2.12_A4": "pass",
+ "built-ins/Math/min/zeros": "pass",
+ "built-ins/Number/prototype/toFixed/S15.7.4.5_A1.1_T01": "pass",
+ "built-ins/Number/prototype/toFixed/S15.7.4.5_A1.1_T02": "pass",
+ "built-ins/Number/prototype/toFixed/S15.7.4.5_A1.3_T01": {
+  "blocked": "rejected-by-profile: VN4016 global 's' is not available in the test profile (line 31)"
+ },
+ "built-ins/Number/prototype/toFixed/S15.7.4.5_A1.3_T02": {
+  "blocked": "rejected-by-profile: VN4016 global 's' is not available in the test profile (line 21)"
+ },
+ "built-ins/Number/prototype/toFixed/S15.7.4.5_A1.4_T01": {
+  "blocked": "rejected-by-profile: VN4016 global 's' is not available in the test profile (line 70)"
+ },
+ "built-ins/Number/prototype/toFixed/S15.7.4.5_A2_T01": "pass",
+ "built-ins/Number/prototype/toFixed/exactness": "pass",
+ "built-ins/Number/prototype/toFixed/range": "pass",
+ "built-ins/Number/prototype/toFixed/return-type": "pass",
+ "built-ins/Number/prototype/toFixed/toFixed-tonumber-throws-typeerror-symbol": "pass",
+ "built-ins/Number/prototype/toString/S15.7.4.2_A1_T01": "pass",
+ "built-ins/Number/prototype/toString/S15.7.4.2_A2_T06": "pass",
+ "built-ins/Number/prototype/toString/S15.7.4.2_A2_T15": "pass",
+ "built-ins/Number/prototype/toString/S15.7.4.2_A2_T23": "pass",
+ "built-ins/Number/prototype/toString/S15.7.4.2_A2_T32": "pass",
+ "built-ins/Number/prototype/toString/S15.7.4.2_A4_T03": {
+  "blocked": "rejected-by-profile: VN4016 global 'Date' is not available in the test profile (line 13) (+2 more)"
+ },
+ "built-ins/Number/prototype/toString/numeric-literal-tostring-radix-12": "pass",
+ "built-ins/Number/prototype/toString/numeric-literal-tostring-radix-20": "pass",
+ "built-ins/Number/prototype/toString/numeric-literal-tostring-radix-28": "pass",
+ "built-ins/Number/prototype/toString/numeric-literal-tostring-radix-36": "pass",
+ "built-ins/String/prototype/charAt/S15.5.4.4_A1.1": {
+  "blocked": "rejected-by-profile: VN2007 `new` is supported only for built-in constructors and imported bindings (line 18) (+1 more)"
+ },
+ "built-ins/String/prototype/charAt/S15.5.4.4_A1_T1": "pass",
+ "built-ins/String/prototype/charAt/S15.5.4.4_A1_T4": "pass",
+ "built-ins/String/prototype/charAt/S15.5.4.4_A1_T7": "pass",
+ "built-ins/String/prototype/charAt/S15.5.4.4_A1_T9": "pass",
+ "built-ins/String/prototype/charAt/S15.5.4.4_A4_T1": "pass",
+ "built-ins/String/prototype/charAt/S15.5.4.4_A5": "pass",
+ "built-ins/String/prototype/charAt/S15.5.4.4_A7": {
+  "blocked": "rejected-by-profile: VN2007 `new` is supported only for built-in constructors and imported bindings (line 13)"
+ },
+ "built-ins/String/prototype/charAt/S9.4_A1": "pass",
+ "built-ins/String/prototype/charAt/pos-coerce-string": "pass",
+ "built-ins/String/prototype/indexOf/S15.5.4.7_A11": "pass",
+ "built-ins/String/prototype/indexOf/S15.5.4.7_A1_T2": "pass",
+ "built-ins/String/prototype/indexOf/S15.5.4.7_A1_T7": "pass",
+ "built-ins/String/prototype/indexOf/S15.5.4.7_A2_T2": "pass",
+ "built-ins/String/prototype/indexOf/S15.5.4.7_A3_T2": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 14)"
+ },
+ "built-ins/String/prototype/indexOf/S15.5.4.7_A4_T4": "pass",
+ "built-ins/String/prototype/indexOf/S15.5.4.7_A5_T3": "pass",
+ "built-ins/String/prototype/indexOf/S15.5.4.7_A6": "pass",
+ "built-ins/String/prototype/indexOf/position-tointeger-errors": "pass",
+ "built-ins/String/prototype/indexOf/searchstring-tostring-errors": "pass",
+ "built-ins/String/prototype/padStart/exception-fill-string-symbol": "pass",
+ "built-ins/String/prototype/padStart/exception-not-object-coercible": "pass",
+ "built-ins/String/prototype/padStart/exception-symbol": "pass",
+ "built-ins/String/prototype/padStart/fill-string-empty": "pass",
+ "built-ins/String/prototype/padStart/fill-string-non-strings": "pass",
+ "built-ins/String/prototype/padStart/fill-string-omitted": "pass",
+ "built-ins/String/prototype/padStart/max-length-not-greater-than-string": "pass",
+ "built-ins/String/prototype/padStart/normal-operation": "pass",
+ "built-ins/String/prototype/padStart/observable-operations": "pass",
+ "built-ins/String/prototype/slice/S15.5.4.13_A11": "pass",
+ "built-ins/String/prototype/slice/S15.5.4.13_A1_T11": "pass",
+ "built-ins/String/prototype/slice/S15.5.4.13_A1_T15": "pass",
+ "built-ins/String/prototype/slice/S15.5.4.13_A1_T5": {
+  "blocked": "rejected-by-profile: VN4016 global 'Function' is not available in the test profile (line 20)"
+ },
+ "built-ins/String/prototype/slice/S15.5.4.13_A1_T9": "pass",
+ "built-ins/String/prototype/slice/S15.5.4.13_A2_T3": "pass",
+ "built-ins/String/prototype/slice/S15.5.4.13_A2_T7": "pass",
+ "built-ins/String/prototype/slice/S15.5.4.13_A3_T1": "pass",
+ "built-ins/String/prototype/slice/S15.5.4.13_A6": "pass",
+ "built-ins/String/prototype/slice/S15.5.4.13_A9": "pass",
+ "language/expressions/addition/S11.6.1_A1": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 13)"
+ },
+ "language/expressions/addition/S11.6.1_A2.2_T1": "pass",
+ "language/expressions/addition/S11.6.1_A2.4_T1": "pass",
+ "language/expressions/addition/S11.6.1_A3.1_T1.2": "pass",
+ "language/expressions/addition/S11.6.1_A3.1_T2.3": "pass",
+ "language/expressions/addition/S11.6.1_A3.2_T1.2": "pass",
+ "language/expressions/addition/S11.6.1_A3.2_T2.4": "pass",
+ "language/expressions/addition/S11.6.1_A4_T4": "pass",
+ "language/expressions/addition/S11.6.1_A4_T8": "pass",
+ "language/expressions/addition/coerce-symbol-to-prim-return-obj": {
+  "blocked": "rejected-by-profile: VN2015 The arguments object is not supported (line 42)"
+ },
+ "language/expressions/comma/S11.14_A1": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 13)"
+ },
+ "language/expressions/comma/S11.14_A2.1_T1": "pass",
+ "language/expressions/comma/S11.14_A2.1_T2": {
+  "blocked": "rejected-by-profile: VN4016 global 'x' is not available in the test profile (line 12)"
+ },
+ "language/expressions/comma/S11.14_A2.1_T3": {
+  "blocked": "rejected-by-profile: VN4016 global 'y' is not available in the test profile (line 12)"
+ },
+ "language/expressions/comma/S11.14_A3": "pass",
+ "language/expressions/conditional/S11.12_A1": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 14)"
+ },
+ "language/expressions/conditional/S11.12_A2.1_T2": {
+  "blocked": "rejected-by-profile: VN4016 global 'x' is not available in the test profile (line 12)"
+ },
+ "language/expressions/conditional/S11.12_A2.1_T4": {
+  "blocked": "rejected-by-profile: VN4016 global 'z' is not available in the test profile (line 14)"
+ },
+ "language/expressions/conditional/S11.12_A2.1_T6": {
+  "blocked": "rejected-by-profile: VN4016 global 'y' is not available in the test profile (line 12)"
+ },
+ "language/expressions/conditional/S11.12_A3_T2": "pass",
+ "language/expressions/conditional/S11.12_A3_T4": "pass",
+ "language/expressions/conditional/S11.12_A4_T2": "pass",
+ "language/expressions/conditional/S11.12_A4_T4": "pass",
+ "language/expressions/conditional/in-branch-1": "pass",
+ "language/expressions/conditional/in-condition": "pass",
+ "language/expressions/does-not-equals/S11.9.2_A1": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 13)"
+ },
+ "language/expressions/does-not-equals/S11.9.2_A2.1_T2": {
+  "blocked": "rejected-by-profile: VN4016 global 'x' is not available in the test profile (line 12)"
+ },
+ "language/expressions/does-not-equals/S11.9.2_A2.4_T2": "pass",
+ "language/expressions/does-not-equals/S11.9.2_A3.2": "pass",
+ "language/expressions/does-not-equals/S11.9.2_A4.1_T2": "pass",
+ "language/expressions/does-not-equals/S11.9.2_A5.1": "pass",
+ "language/expressions/does-not-equals/S11.9.2_A6.1": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 21)"
+ },
+ "language/expressions/does-not-equals/S11.9.2_A7.1": "pass",
+ "language/expressions/does-not-equals/S11.9.2_A7.4": "pass",
+ "language/expressions/does-not-equals/S11.9.2_A7.7": "pass",
+ "language/expressions/equals/S11.9.1_A1": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 13)"
+ },
+ "language/expressions/equals/S11.9.1_A2.1_T3": {
+  "blocked": "rejected-by-profile: VN4016 global 'y' is not available in the test profile (line 12)"
+ },
+ "language/expressions/equals/S11.9.1_A3.1": "pass",
+ "language/expressions/equals/S11.9.1_A4.1_T2": "pass",
+ "language/expressions/equals/S11.9.1_A5.2": "pass",
+ "language/expressions/equals/S11.9.1_A6.2_T2": "pass",
+ "language/expressions/equals/S11.9.1_A7.3": "pass",
+ "language/expressions/equals/S11.9.1_A7.7": "pass",
+ "language/expressions/equals/coerce-symbol-to-prim-err": "pass",
+ "language/expressions/equals/get-symbol-to-prim-err": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 26)"
+ },
+ "language/expressions/logical-and/S11.11.1_A1": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 13)"
+ },
+ "language/expressions/logical-and/S11.11.1_A2.1_T1": "pass",
+ "language/expressions/logical-and/S11.11.1_A2.1_T3": {
+  "blocked": "rejected-by-profile: VN4016 global 'y' is not available in the test profile (line 14)"
+ },
+ "language/expressions/logical-and/S11.11.1_A2.1_T4": {
+  "blocked": "rejected-by-profile: VN4016 global 'x' is not available in the test profile (line 11)"
+ },
+ "language/expressions/logical-and/S11.11.1_A2.4_T2": "pass",
+ "language/expressions/logical-and/S11.11.1_A3_T2": "pass",
+ "language/expressions/logical-and/S11.11.1_A3_T3": "pass",
+ "language/expressions/logical-and/S11.11.1_A4_T1": "pass",
+ "language/expressions/logical-and/S11.11.1_A4_T2": "pass",
+ "language/expressions/logical-and/S11.11.1_A4_T4": "pass",
+ "language/expressions/logical-or/S11.11.2_A1": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 13)"
+ },
+ "language/expressions/logical-or/S11.11.2_A2.1_T1": "pass",
+ "language/expressions/logical-or/S11.11.2_A2.1_T3": {
+  "blocked": "rejected-by-profile: VN4016 global 'y' is not available in the test profile (line 14)"
+ },
+ "language/expressions/logical-or/S11.11.2_A2.1_T4": {
+  "blocked": "rejected-by-profile: VN4016 global 'x' is not available in the test profile (line 11)"
+ },
+ "language/expressions/logical-or/S11.11.2_A2.4_T2": "pass",
+ "language/expressions/logical-or/S11.11.2_A3_T2": "pass",
+ "language/expressions/logical-or/S11.11.2_A3_T3": "pass",
+ "language/expressions/logical-or/S11.11.2_A4_T1": "pass",
+ "language/expressions/logical-or/S11.11.2_A4_T2": "pass",
+ "language/expressions/logical-or/S11.11.2_A4_T4": "pass",
+ "language/expressions/strict-does-not-equals/S11.9.5_A1": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 13)"
+ },
+ "language/expressions/strict-does-not-equals/S11.9.5_A2.1_T2": {
+  "blocked": "rejected-by-profile: VN4016 global 'x' is not available in the test profile (line 12)"
+ },
+ "language/expressions/strict-does-not-equals/S11.9.5_A2.4_T1": "pass",
+ "language/expressions/strict-does-not-equals/S11.9.5_A2.4_T3": {
+  "blocked": "rejected-by-profile: VN4016 global 'x' is not available in the test profile (line 12)"
+ },
+ "language/expressions/strict-does-not-equals/S11.9.5_A4.1_T1": "pass",
+ "language/expressions/strict-does-not-equals/S11.9.5_A4.2": "pass",
+ "language/expressions/strict-does-not-equals/S11.9.5_A5": "pass",
+ "language/expressions/strict-does-not-equals/S11.9.5_A6.2": "pass",
+ "language/expressions/strict-does-not-equals/S11.9.5_A8_T1": "pass",
+ "language/expressions/strict-does-not-equals/S11.9.5_A8_T3": "pass",
+ "language/expressions/strict-equals/S11.9.4_A1": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 13)"
+ },
+ "language/expressions/strict-equals/S11.9.4_A2.1_T2": {
+  "blocked": "rejected-by-profile: VN4016 global 'x' is not available in the test profile (line 12)"
+ },
+ "language/expressions/strict-equals/S11.9.4_A2.4_T1": "pass",
+ "language/expressions/strict-equals/S11.9.4_A2.4_T3": {
+  "blocked": "rejected-by-profile: VN4016 global 'x' is not available in the test profile (line 12)"
+ },
+ "language/expressions/strict-equals/S11.9.4_A4.1_T1": "pass",
+ "language/expressions/strict-equals/S11.9.4_A4.2": "pass",
+ "language/expressions/strict-equals/S11.9.4_A5": "pass",
+ "language/expressions/strict-equals/S11.9.4_A6.2": "pass",
+ "language/expressions/strict-equals/S11.9.4_A8_T1": "pass",
+ "language/expressions/strict-equals/S11.9.4_A8_T3": "pass",
+ "language/expressions/typeof/boolean": "pass",
+ "language/expressions/typeof/built-in-exotic-objects-no-call": {
+  "blocked": "rejected-by-profile: VN4016 global 'Date' is not available in the test profile (line 59) (+1 more)"
+ },
+ "language/expressions/typeof/built-in-functions": "pass",
+ "language/expressions/typeof/get-value": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperties' is not supported (line 20)"
+ },
+ "language/expressions/typeof/get-value-ref-err": {
+  "blocked": "rejected-by-profile: VN4016 global 'x' is not available in the test profile (line 24)"
+ },
+ "language/expressions/typeof/null": {
+  "blocked": "rejected-by-profile: VN4016 global 'RegExp' is not available in the test profile (line 28)"
+ },
+ "language/expressions/typeof/number": "pass",
+ "language/expressions/typeof/string": {
+  "blocked": "rejected-by-profile: VN4016 global 'Date' is not available in the test profile (line 52)"
+ },
+ "language/expressions/typeof/syntax": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 14)"
+ },
+ "language/expressions/typeof/undefined": "pass",
+ "language/statements/const/block-local-closure-get-before-initialization": "pass",
+ "language/statements/const/dstr/ary-ptrn-elem-ary-empty-iter": "pass",
+ "language/statements/const/dstr/ary-ptrn-elem-id-init-throws": "pass",
+ "language/statements/const/dstr/ary-ptrn-elem-obj-prop-id": {
+  "blocked": "rejected-by-profile: VN4016 global 'u' is not available in the test profile (line 39) (+2 more)"
+ },
+ "language/statements/const/dstr/ary-ptrn-rest-init-id": "pass",
+ "language/statements/const/dstr/obj-ptrn-id-init-fn-name-arrow": "pass",
+ "language/statements/const/dstr/obj-ptrn-prop-ary-value-null": "pass",
+ "language/statements/const/dstr/obj-ptrn-prop-obj-value-null": "pass",
+ "language/statements/const/syntax/block-scope-syntax-const-declarations-without-initialiser": "pass",
+ "language/statements/const/syntax/with-initializer-if-expression-statement-else-statement": "pass",
+ "language/statements/for-of/Array.prototype.Symbol.iterator": "pass",
+ "language/statements/for-of/dstr/array-elem-put-let": "pass",
+ "language/statements/for-of/dstr/array-rest-after-element": "pass",
+ "language/statements/for-of/dstr/const-ary-ptrn-elem-id-init-fn-name-fn": "pass",
+ "language/statements/for-of/dstr/const-obj-ptrn-prop-id-init-skipped": {
+  "blocked": "rejected-by-profile: VN4016 global 's' is not available in the test profile (line 61) (+3 more)"
+ },
+ "language/statements/for-of/dstr/let-ary-ptrn-rest-not-final-ary": "pass",
+ "language/statements/for-of/dstr/obj-id-init-in": "pass",
+ "language/statements/for-of/dstr/obj-rest-number": "pass",
+ "language/statements/for-of/dstr/var-ary-ptrn-rest-not-final-id": "pass",
+ "language/statements/for-of/head-lhs-async-escaped": "pass",
+ "language/statements/for/12.6.3_2-3-a-ii-1": "pass",
+ "language/statements/for/S12.6.3_A12.1_T2": "pass",
+ "language/statements/for/decl-cls": "pass",
+ "language/statements/for/dstr/const-ary-ptrn-elem-obj-id": "pass",
+ "language/statements/for/dstr/const-obj-ptrn-list-err": "pass",
+ "language/statements/for/dstr/let-ary-ptrn-elem-id-init-fn-name-cover": "pass",
+ "language/statements/for/dstr/let-ary-ptrn-rest-obj-id": "pass",
+ "language/statements/for/dstr/var-ary-init-iter-get-err-array-prototype": {
+  "blocked": "rejected-by-profile: VN4016 global 'iterCount' is not available in the test profile (line 52)"
+ },
+ "language/statements/for/dstr/var-ary-ptrn-rest-ary-elem": "pass",
+ "language/statements/for/dstr/var-obj-ptrn-prop-ary": {
+  "blocked": "rejected-by-profile: VN4016 global 'w' is not available in the test profile (line 49)"
+ },
+ "language/statements/labeled/S12.12_A1_T1": "pass",
+ "language/statements/labeled/continue": "pass",
+ "language/statements/labeled/cptn-break": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 19)"
+ },
+ "language/statements/labeled/cptn-nrml": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 20)"
+ },
+ "language/statements/labeled/decl-cls": "pass",
+ "language/statements/labeled/decl-fun-strict": {
+  "blocked": "rejected-by-profile: VN2023 Function declaration in a statement position is not supported (line 17)"
+ },
+ "language/statements/labeled/decl-let": "pass",
+ "language/statements/labeled/value-await-non-module": {
+  "blocked": "rejected-by-profile: VN1000 Unexpected token (line 14)"
+ },
+ "language/statements/labeled/value-await-non-module-escaped": {
+  "blocked": "rejected-by-profile: VN1000 Unexpected reserved word 'await' (line 15)"
+ },
+ "language/statements/labeled/value-yield-strict-escaped": "pass",
+ "language/statements/let/block-local-closure-get-before-initialization": "pass",
+ "language/statements/let/dstr/ary-ptrn-elem-ary-elem-iter": "pass",
+ "language/statements/let/dstr/ary-ptrn-elem-id-init-throws": "pass",
+ "language/statements/let/dstr/ary-ptrn-elem-obj-val-null": "pass",
+ "language/statements/let/dstr/ary-ptrn-rest-not-final-ary": "pass",
+ "language/statements/let/dstr/obj-ptrn-id-init-fn-name-fn": "pass",
+ "language/statements/let/dstr/obj-ptrn-prop-id-get-value-err": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 27)"
+ },
+ "language/statements/let/function-local-closure-set-before-initialization": "pass",
+ "language/statements/let/syntax/let-iteration-variable-is-freshly-allocated-for-each-iteration-multi-let-binding": "pass",
+ "language/statements/let/syntax/with-initialisers-in-statement-positions-if-expression-statement-else-statement": "pass",
+ "language/statements/switch/S12.11_A1_T1": "pass",
+ "language/statements/switch/S12.11_A3_T2": "pass",
+ "language/statements/switch/cptn-a-fall-thru-nrml": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 53)"
+ },
+ "language/statements/switch/cptn-dflt-b-abrupt-empty": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 53)"
+ },
+ "language/statements/switch/cptn-dflt-final": {
+  "blocked": "rejected-by-profile: VN4016 global 'eval' is not available in the test profile (line 40)"
+ },
+ "language/statements/switch/scope-lex-async-generator": {
+  "blocked": "rejected-by-profile: VN2008 Generator and async generator functions are not supported (line 21) (+1 more)"
+ },
+ "language/statements/switch/scope-lex-open-case": "pass",
+ "language/statements/switch/syntax/redeclaration/class-name-redeclaration-attempt-with-var": "pass",
+ "language/statements/switch/syntax/redeclaration/function-name-redeclaration-attempt-with-const": "pass",
+ "language/statements/switch/syntax/redeclaration/let-name-redeclaration-attempt-with-let": "pass",
+ "language/statements/try/12.14-10": "pass",
+ "language/statements/try/S12.14_A11_T3": "pass",
+ "language/statements/try/S12.14_A16_T2": "pass",
+ "language/statements/try/S12.14_A2": "pass",
+ "language/statements/try/completion-values-fn-finally-abrupt": "pass",
+ "language/statements/try/dstr/ary-init-iter-no-close": "pass",
+ "language/statements/try/dstr/ary-ptrn-elem-id-init-unresolvable": {
+  "blocked": "rejected-by-profile: VN4016 global 'unresolvableReference' is not available in the test profile (line 38)"
+ },
+ "language/statements/try/dstr/ary-ptrn-rest-id-iter-val-err": {
+  "blocked": "rejected-by-profile: VN4017 'Object.defineProperty' is not supported (line 29)"
+ },
+ "language/statements/try/dstr/obj-ptrn-id-init-fn-name-fn": "pass",
+ "language/statements/try/dstr/obj-ptrn-prop-id": {
+  "blocked": "rejected-by-profile: VN4016 global 'x' is not available in the test profile (line 32)"
+ }
+}
