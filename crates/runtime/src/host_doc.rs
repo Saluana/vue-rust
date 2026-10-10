@@ -78,6 +78,9 @@ struct Shared {
     key: RefCell<Option<EventKey>>,
     serial: Cell<u64>,
     info: Cell<EventInfo>,
+    /// Nodes created so far (create_element, create_text, create_comment and the text that set_element_text creates);
+    /// the hydration tests check that adopting server markup creates none.
+    created: Cell<u64>,
 }
 
 /// The headless host: `Host` over `vn_dom::Document`, plus the test surface (dispatch, click, clock, snapshots).
@@ -160,6 +163,7 @@ impl DocHost {
                 key: RefCell::new(None),
                 serial: Cell::new(0),
                 info: Cell::new(EventInfo { serial: 0, kind: EventKind::Event }),
+                created: Cell::new(0),
             }),
         }
     }
@@ -167,6 +171,11 @@ impl DocHost {
     /// The document node (`HostNode(0)`).
     pub fn document_node(&self) -> HostNode {
         HostNode(0)
+    }
+
+    /// The number of nodes the host has created so far (see `Shared::created`).
+    pub fn created_nodes(&self) -> u64 {
+        self.shared.created.get()
     }
 
     /// Creates `<html><body></body></html>` once and returns the body (the mount container for `body()`).
@@ -355,16 +364,19 @@ impl Host for DocHost {
 
     fn create_element(&mut self, ns: HostNs, tag: &str, is: Option<&str>) -> HostResult<HostNode> {
         let id = self.shared.doc.borrow_mut().create_element(map_ns(ns), tag, is).map_err(map_err)?;
+        self.shared.created.set(self.shared.created.get() + 1);
         Ok(self.shared.nodes.borrow_mut().add(id))
     }
 
     fn create_text(&mut self, text: &str) -> HostNode {
         let id = self.shared.doc.borrow_mut().create_text(text);
+        self.shared.created.set(self.shared.created.get() + 1);
         self.shared.nodes.borrow_mut().add(id)
     }
 
     fn create_comment(&mut self, text: &str) -> HostNode {
         let id = self.shared.doc.borrow_mut().create_comment(text);
+        self.shared.created.set(self.shared.created.get() + 1);
         self.shared.nodes.borrow_mut().add(id)
     }
 
@@ -380,6 +392,15 @@ impl Host for DocHost {
         for child in children {
             if self.shared.nodes.borrow().handle(child).is_none() {
                 let _ = self.shared.doc.borrow_mut().release(child);
+            }
+        }
+        // The text node that textContent creates is a host creation too, and it gets a handle like every node the host
+        // hands out: `first_child`, `next_sibling` and `subtree_nodes` can only reach nodes that have one.
+        let fresh = self.shared.doc.borrow().child_nodes(id);
+        for child in fresh {
+            if self.shared.nodes.borrow().handle(child).is_none() {
+                self.shared.nodes.borrow_mut().add(child);
+                self.shared.created.set(self.shared.created.get() + 1);
             }
         }
         Ok(())
@@ -410,6 +431,30 @@ impl Host for DocHost {
         let id = self.id(node).ok()?;
         let s = self.shared.doc.borrow().next_sibling(id);
         self.handle_or_none(s)
+    }
+
+    fn first_child(&self, node: HostNode) -> HostResult<Option<HostNode>> {
+        let id = self.id(node)?;
+        let c = self.shared.doc.borrow().first_child(id);
+        Ok(self.handle_or_none(c))
+    }
+
+    fn node_type(&self, node: HostNode) -> HostResult<u8> {
+        let id = self.id(node)?;
+        let kind = self.shared.doc.borrow().kind(id);
+        match kind {
+            Some(NodeKind::Element) => Ok(1),
+            Some(NodeKind::Text) => Ok(3),
+            Some(NodeKind::Comment) => Ok(8),
+            Some(NodeKind::Document) => Ok(9),
+            None => Err(HostError::NotFound),
+        }
+    }
+
+    fn node_value(&self, node: HostNode) -> HostResult<String> {
+        let id = self.id(node)?;
+        let v = self.shared.doc.borrow().node_value(id);
+        v.ok_or_else(|| HostError::InvalidState("nodeValue".to_string()))
     }
 
     fn query_selector(&self, selector: &str) -> HostResult<Option<HostNode>> {

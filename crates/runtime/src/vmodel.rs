@@ -659,6 +659,15 @@ fn text_mounted_js(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     Ok(Value::Undefined)
 }
 
+/// `vModelText.getSSRProps({ value })`: the server-rendered input carries the model value as its `value` attribute
+/// (`initVModelForSSR` in runtime-dom 3.5.43, runtime-dom.cjs.js:1784).
+fn text_ssr_props_js(rt: &Rt, c: &Call<'_>) -> Res<Value> {
+    let value = rt.get_str(&c.arg(0), "value")?;
+    let out = rt.new_object();
+    rt.define_data(out, PropKey::lit("value"), value, vn_value::Flags::ALL)?;
+    Ok(Value::Object(out))
+}
+
 fn text_before_update_js(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     let (ctx, el, binding, vnode) = el_and_binding(rt, c)?;
     text_before_update_hook(&ctx, el, &binding, &vnode)?;
@@ -758,7 +767,11 @@ pub fn exports(rt: &Rt) -> Vec<(&'static str, Value)> {
     vec![
         (
             "vModelText",
-            directive(rt, &[("created", text_created_js), ("mounted", text_mounted_js), ("beforeUpdate", text_before_update_js)], false),
+            directive(
+                rt,
+                &[("created", text_created_js), ("mounted", text_mounted_js), ("beforeUpdate", text_before_update_js), ("getSSRProps", text_ssr_props_js)],
+                false,
+            ),
         ),
         (
             "vModelCheckbox",
