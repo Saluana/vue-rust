@@ -37,7 +37,8 @@ jobs:
       - uses: Swatinem/rust-cache@v2
       - run: npm ci --ignore-scripts
       # Suites that need Chrome use the runner's preinstalled Google Chrome and skip with a reason without it.
-      - run: npm test
+      # The spec reporter repeats every failing test at the end of the log.
+      - run: node --test --test-reporter=spec "tests/**/*.test.mjs"
       - run: npm run test:language
       - run: npm run test:vue
       - run: node tooling/harness/run-language.mjs --with-vue --ui
