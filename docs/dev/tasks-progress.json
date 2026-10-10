@@ -1,5 +1,5 @@
 {
- "asOf": "2026-10-09 (cleanup verified; component scenarios and Rust workspace green)",
+ "asOf": "2026-10-10 (sections 2–5 follow-up)",
  "tasks": {
   "2.1": {
    "status": "done",
@@ -7,10 +7,9 @@
    "evidence": "`node --test \"tests/fixtures/prototype/*.test.mjs\" \"tests/fixtures/prototype/counter/tests/*.test.mjs\" \"tests/fixtures/prototype/quick-quote/tests/*.test.mjs\"` (74 tests); `cargo test --locked --manifest-path generated/Cargo.toml`; artifacts `tests/fixtures/prototype/MANIFEST.json`, `docs/evidence/baseline/{claims-ledger.md,js-tests.txt,rust-claims.md,rust-*.txt}`."
   },
   "2.2": {
-   "status": "partial",
-   "summary": "Machine-readable manifest generated from design §8: 126 inventory rows, 446 named entries (incl. 52 native tags), all 171 runtime exports of vue@3.5.43 classified (`isShallow` confirmed exported, 40 compiler-internal helpers flagged), Options API excluded, experimental APIs labelled E, default-deny lookup; plus a 465-entry closed-world standard-library/globals manifest.",
-   "evidence": "`node --test \"tests/profile/*.test.mjs\"` (92 tests); `node tooling/manifest/build-manifest.mjs --check`; `node tooling/manifest/build-stdlib.mjs --check`; artifacts `compiler/profile/{manifest.json,stdlib.json}`, `docs/compatibility/`.",
-   "missing": "TypeScript 7 vs TypeScript 6 tooling distinction and the exact TS 6 / Vue language-tools pair (needs the `typescript` package, not installed)."
+   "status": "done",
+   "summary": "Machine-readable manifest generated from design §8: 126 inventory rows, 446 named entries (incl. 52 native tags), all 171 runtime exports of vue@3.5.43 classified (`isShallow` confirmed exported, 40 compiler-internal helpers flagged), Options API excluded, experimental APIs labelled E, default-deny lookup; plus a 465-entry closed-world standard-library/globals manifest. Tooling pair pinned and recorded: TypeScript 6.0.3 + vue-tsc 3.3.12 (@vue/language-core 3.3.12, @volar/typescript 2.4.28); TypeScript 7 is X for tooling because its package ships no JS compiler API (design §11 line 573, K07). A probe runs the pair programmatically on .vue files and reports versions read at run time.",
+   "evidence": "`node --test \"tests/profile/*.test.mjs\"` (111 tests, incl. `typescript-pair.test.mjs` with negative controls for wrong installed versions and range pins); `node tooling/manifest/build-manifest.mjs --check`; `node tooling/types/probe.mjs`; artifacts `compiler/profile/{manifest.json,stdlib.json}`, `compiler/types/pair.mjs`, `docs/compatibility/`, `docs/evidence/typescript-tooling.md`."
   },
   "2.3": {
    "status": "done",
