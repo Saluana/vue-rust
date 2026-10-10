@@ -23,6 +23,18 @@ test('build: a project with errors builds nothing and prints the diagnostics (ex
   assert.equal(fs.existsSync(out), false, 'no output directory is created');
 });
 
+test('build: a macro type read through a package is VN6017 at its source, and nothing is built (exit 1)', () => {
+  const dir = scratch('build-macro-package');
+  fs.mkdirSync(path.join(dir, 'src'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'src', 'App.vue'), "<script setup lang=\"ts\">\nimport type { Props } from 'some-lib'\ndefineProps<{ flag: Props }>()\n</script>\n<template><p>x</p></template>\n");
+  const out = freshPath('build-macro-package-out');
+  const r = capture(['build', dir, '--target', 'web', '--out', out]);
+  assert.equal(r.code, 1, r.stdout);
+  assert.match(r.stderr, /src\/App\.vue:2:27: error VN6017: type 'Props' comes from 'some-lib'/);
+  assert.match(r.stderr, /nothing was built/);
+  assert.equal(fs.existsSync(out), false, 'no output directory is created');
+});
+
 test('build: usage mistakes exit 2', () => {
   assert.equal(capture(['build']).code, 2);
   assert.equal(capture(['build', path.join(EXAMPLES, 'counter'), '--target', 'web']).code, 2, 'missing --out');

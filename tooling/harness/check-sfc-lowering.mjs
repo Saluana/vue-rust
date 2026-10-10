@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // SFC fixture lowering check (WP-C1c, item 4): every tests/sfc/fixtures/ok-*.vue is compiled as a project (compileProject,
-// the whole fixture directory as the file map, external src read from the fixture directory), then the generated Rust of
+// the .vue and .ts files of the fixture directory as the file map, external src read from the fixture directory), then the generated Rust of
 // all lowered fixtures is written as one crate (target/scenarios/sfc-check) and checked with `cargo check`.
 //   node tooling/harness/check-sfc-lowering.mjs [--fixtures tests/sfc/fixtures]
 // Output: the lowering count, the cargo check result, and the fixtures whose generated Rust does not check.
@@ -22,7 +22,9 @@ function writeIfChanged(file, text) {
 }
 
 const names = readdirSync(fixturesDir).filter((f) => f.startsWith('ok-') && f.endsWith('.vue')).sort();
-const files = Object.fromEntries(names.map((n) => [n, readFileSync(path.join(fixturesDir, n), 'utf8')]));
+// Every .vue and .ts file of the directory is in the file map, so a fixture can import a .ts file beside it.
+const modules = readdirSync(fixturesDir).filter((f) => f.endsWith('.vue') || f.endsWith('.ts')).sort();
+const files = Object.fromEntries(modules.map((n) => [n, readFileSync(path.join(fixturesDir, n), 'utf8')]));
 const lowered = [];
 const failed = [];
 let tsCount = 0;

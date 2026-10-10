@@ -244,6 +244,18 @@ const CASES = [
       { run: color('p'), expect: 'rgb(0, 128, 0)' },
     ],
   },
+  // Props from an imported type (task 5.7): the expected markup is hand-derived. Passed values render; an absent boolean
+  // is false; withDefaults supplies the title and size.
+  {
+    file: 'ok-imported-props.vue',
+    wrapper: "{ render() { return Vue.h(comp, { label: 'a', count: 2, enabled: true }) } }",
+    steps: [{ run: html, expect: '<p>a 2 on</p>' }],
+  },
+  {
+    file: 'ok-imported-alias.vue',
+    wrapper: H,
+    steps: [{ run: html, expect: '<h2>Untitled 2 closed</h2>' }],
+  },
 ];
 
 function compileCase(c) {

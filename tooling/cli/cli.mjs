@@ -8,8 +8,9 @@ import { UsageError } from './project.mjs';
 export const USAGE = `Usage: vue-native <command> [options]
 
 Commands:
-  check <entry.vue|dir> [--target web|native] [--root <dir>] [--json]
-      Compile the project and print its diagnostics. Exit 1 when there are errors.
+  check <entry.vue|dir> [--target web|native] [--root <dir>] [--json] [--no-types]
+      Compile the project, type check it (TypeScript 6.0.3 with vue-tsc 3.3.12) and print its diagnostics.
+      Exit 1 when there are errors. --no-types skips the type checker.
   build <entry.vue|dir> --target web --out <new-dir> [--root <dir>] [--name <name>]
       Compile, generate the Rust crate, build it for wasm32-unknown-unknown and package it.
       The output directory must not exist, unless vue-native wrote it before (then it is replaced).
@@ -26,6 +27,7 @@ Options: -h, --help   show this help
 const OPTIONS = {
   help: { type: 'boolean', short: 'h' },
   json: { type: 'boolean' },
+  'no-types': { type: 'boolean' },
   target: { type: 'string' },
   out: { type: 'string' },
   root: { type: 'string' },

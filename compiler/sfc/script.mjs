@@ -1,9 +1,12 @@
 // Script block policy and profile checks (WP-F1 steps 2, 3 and 5): lang and src rules, exports in <script setup>,
-// the Options API form of a normal <script>, imports from vue and node built-ins, reserved names, and the profile
-// checks of the user's own code (checkSource: parse, scope analysis, profile rules), mapped back to the .vue file.
+// the Options API form of a normal <script>, imports from vue and node built-ins, type-only imports that name no file
+// (VN6017), imports that a macro's type argument cannot be read through (macro-types.mjs, VN6017), reserved names, and
+// the profile checks of the user's own code (checkSource: parse, scope analysis, profile rules), mapped back to the
+// .vue file.
 import { checkSource } from '../frontend/check.mjs';
 import { checkStdlib } from '../analysis/stdlib-check.mjs';
 import { isNodeBuiltin, manifestEntry, vueSupported } from './context.mjs';
+import { checkMacroTypes } from './macro-types.mjs';
 
 const EXPORT_TYPES = new Set(['ExportNamedDeclaration', 'ExportDefaultDeclaration', 'ExportAllDeclaration']);
 
@@ -16,6 +19,20 @@ function propKey(prop) {
   if (prop.key.type === 'Identifier') return prop.key.name;
   if (prop.key.type === 'StringLiteral') return prop.key.value;
   return null;
+}
+
+// A type-only import of a relative module must name a file in the project (VN6017). Vue's type resolver does not fail
+// on such a module where a prop's type is only read: the prop is typed as unknown and no error is reported. Value
+// imports of missing files are reported by the project graph (VN9001).
+function checkTypeImport(ctx, node, base) {
+  const src = node.source.value;
+  if (!src.startsWith('./') && !src.startsWith('../')) return;
+  const typeOnly = (spec) => spec.importKind === 'type' || spec.importKind === 'typeof';
+  const erased = typeOnly(node) || (node.specifiers.length > 0 && node.specifiers.every(typeOnly));
+  if (!erased || ctx.resolveTypeImport(src) !== null) return;
+  ctx.report('VN6017', ctx.rel, base + node.source.start, base + node.source.end, {
+    message: `type import from '${src}' names no file in the project`,
+  });
 }
 
 function checkImport(ctx, node, base) {
@@ -206,9 +223,11 @@ export function checkScript(ctx, block, role, { reserveRender }) {
   for (const node of body) {
     if (node.type === 'ImportDeclaration') {
       checkImport(ctx, node, base);
+      checkTypeImport(ctx, node, base);
       out.sources.add(node.source.value);
     }
   }
+  if (role === 'setup') checkMacroTypes(ctx, body, base);
 
   const module = res.analysis.module;
   for (const id of module.bindingIds) {

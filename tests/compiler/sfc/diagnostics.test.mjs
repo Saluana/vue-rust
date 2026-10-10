@@ -39,6 +39,20 @@ const EXPECTED = [
   ['bad-parse-unclosed.vue', [['VN6001', '2:0-2:3']]],
   ['bad-expr-syntax.vue', [['VN1000', '5:8-5:8']]],
   ['bad-define-twice.vue', [['VN6012', '1:0-1:14']]],
+  // A type-only import of a file that is not in the project: the span is the import source (S19). Vue alone would type the
+  // prop as unknown without an error. The outside file exists beside the fixtures root and is refused all the same.
+  ['bad-import-type-missing.vue', [['VN6017', '2:29-2:49']]],
+  ['bad-import-type-outside.vue', [['VN6017', '2:29-2:44']]],
+  // A type that a macro reads must come from an import the compiler can read (macro-types.mjs). A package or absolute path
+  // is read by no one (the span is the source), a relative module that does not export the name fails at the imported
+  // name, a local declaration that the macro names is followed to its imports (a type alias, or the extends clause of an
+  // interface), `vue` is a package like any other, and a namespace import is never read (the span is the namespace name).
+  ['bad-import-type-package.vue', [['VN6017', '2:27-2:37']]],
+  ['bad-import-type-unexported.vue', [['VN6017', '2:14-2:21']]],
+  ['bad-import-type-local.vue', [['VN6017', '2:14-2:21']]],
+  ['bad-import-type-extends.vue', [['VN6017', '2:14-2:18']]],
+  ['bad-import-type-vue.vue', [['VN6017', '2:25-2:30']]],
+  ['bad-import-type-namespace.vue', [['VN6017', '2:17-2:22']]],
   ['bad-v-else.vue', [['VN6013', '2:2-2:17']]],
   ['bad-css-syntax.vue', [['VN6014', '2:0-2:1']]],
   ['bad-tag-mark.vue', [['VN6101', '2:3-2:7']]],

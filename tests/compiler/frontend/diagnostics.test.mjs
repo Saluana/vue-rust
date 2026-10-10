@@ -29,8 +29,8 @@ test('every registry entry has a title, an explanation and a hint', () => {
   }
 });
 
-test('codes follow the allocated ranges: VN1 parse, VN2 JS, VN3 TS, VN4 API/global, VN5 scope, VN9 internal', () => {
-  const allowed = new Set(['1', '2', '3', '4', '5', '9']);
+test('codes follow the allocated ranges: VN1 parse, VN2 JS, VN3 TS, VN4 API/global, VN5 scope, VN7 type checker, VN9 internal', () => {
+  const allowed = new Set(['1', '2', '3', '4', '5', '7', '9']);
   for (const code of Object.keys(CODES)) {
     assert.match(code, /^VN\d{4}$/);
     assert.ok(allowed.has(code.slice(2, 3)), `${code} is in an allocated range`);
@@ -38,7 +38,8 @@ test('codes follow the allocated ranges: VN1 parse, VN2 JS, VN3 TS, VN4 API/glob
 });
 
 test('the registry has no unused codes: every code is produced by a rule or by the frontend', () => {
-  const produced = new Set(['VN1000', 'VN4016', 'VN4017', 'VN5002', 'VN5003', 'VN5004', 'VN9001']);
+  // VN7001 is produced by the type checker (compiler/types/check.mjs), not by a profile rule or by the frontend.
+  const produced = new Set(['VN1000', 'VN4016', 'VN4017', 'VN5002', 'VN5003', 'VN5004', 'VN7001', 'VN9001']);
   for (const rule of PROFILE_RULES) produced.add(rule.code);
   assert.deepEqual([...produced].sort(), Object.keys(CODES).sort());
 });

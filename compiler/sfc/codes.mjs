@@ -89,6 +89,11 @@ export const SFC_CODES = Object.freeze({
     'A warning, not an error: the input compiles, but the official compiler or the profile check reports a form that is redundant or that Vue prints a warning for.',
     'Read the message and remove the redundant form if you can.',
   ),
+  VN6017: entry(
+    'Unresolved type import',
+    'A type that a macro reads (defineProps, defineModel, defineEmits) comes from an import the compiler cannot read, so the build rejects the import instead of emitting an untyped prop (S19). Rejected: a type-only import of a relative module that names no file in the project; a relative module that does not export the name as a type; a name from a package or an absolute path; a namespace import; a typeof of an imported value. Payload types of defineEmits are never read and are not checked. The span is the import source, the imported name, the namespace or the typeof operand.',
+    'Import the type by name from a .ts file inside the project root, or declare it in this file.',
+  ),
   VN6101: entry(
     'Unknown tag or component',
     'The tag is not a native tag of the profile (U31), not a component imported or declared in <script setup>, and not a supported built-in. Custom elements are excluded (U19, U32).',
