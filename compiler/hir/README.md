@@ -2,7 +2,8 @@
 
 Module: `{ hirVersion, kind:'Module', specifier, origin, lang, requests, slots, imports, exportsLocal,
 exportsIndirect, exportsStar, exportsNs, hoist, body, fns }`. `slots` are the module cells (index = order in `vn_declare`).
-Every node has `k` and `pos: [start, end]` (UTF-16 offsets).
+Expressions, targets, patterns and statements have `k` and `pos: [start, end]` (UTF-16 offsets); references, keys and
+for-in/of heads have `k` only.
 
 References `r` (where the value lives, seen from the current function): `L` Rust local, `C` owned cell (`id` may be
 the string `th<fn>` for `this`), `K` captured cell (`i` = index in the function's captures), `M` module cell, `I` import cell.
@@ -21,4 +22,9 @@ switch(lid,disc,scope,cases{t,body}) try(block,handler{scope,param,body},fin) re
 label(lid,body) empty`. A scope is `{decls:[{id,name,kind,st:'cell'|'local',tdz}], hoist:[{target,fn}]}`.
 
 Functions (`fns[id]`): `{id,name,nameFromKey,length,kind,arrow,s,e,caps,selfB,selfName,selfSt,thisCell,async,scope,params:
-[{t,d,rest}],body}`. `async` functions (WP-C1c) contain `await` nodes; `for await` is rejected.
+[{t,d,rest}],paramCopies:[{to,from,name}],body}`. `async` functions (WP-C1c) contain `await` nodes; `for await` is rejected.
+
+The catalogue is data in `schema.mjs` (`HIR_NODES`, `HIR_RECORDS`). `HIR_SCHEMA_HASH` is the sha256 of its canonical JSON.
+`tests/compiler/lower/hir-schema.test.mjs` walks the HIR of the lowering fixtures and fails on any node kind, field or record
+shape that the catalogue does not list, and on any catalogue entry no fixture produces. A change of shape must bump
+`HIR_VERSION` and add the new hash to that test's `COMMITTED` table.
