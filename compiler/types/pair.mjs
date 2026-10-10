@@ -26,13 +26,14 @@ function readJson(file) {
 
 // The package named `name` as Node resolves it from fromDir: the nearest node_modules/<name>/package.json above it.
 // Returns { dir, version } or null. Reading package.json directly avoids "exports" maps that hide it.
-export function resolvePackage(name, fromDir) {
+// With `top`, the walk stops at that directory: a checkout's own packages are not taken from a directory above it.
+export function resolvePackage(name, fromDir, top = null) {
   for (let dir = fromDir; ; dir = path.dirname(dir)) {
     const file = path.join(dir, 'node_modules', name, 'package.json');
     if (existsSync(file)) {
       return { dir: path.dirname(file), version: readJson(file).version ?? null };
     }
-    if (path.dirname(dir) === dir) return null;
+    if (path.dirname(dir) === dir || (top !== null && path.resolve(dir) === path.resolve(top))) return null;
   }
 }
 
@@ -40,13 +41,13 @@ export function resolvePackage(name, fromDir) {
 // which is the copy vue-tsc loads.
 export function installedVersions(root = FRAMEWORK_DEFAULT) {
   const version = (pkg) => pkg?.version ?? null;
-  const vueTsc = resolvePackage('vue-tsc', root);
+  const vueTsc = resolvePackage('vue-tsc', root, root);
   return {
-    typescript: version(resolvePackage('typescript', root)),
+    typescript: version(resolvePackage('typescript', root, root)),
     'vue-tsc': version(vueTsc),
     '@vue/language-core': version(vueTsc && resolvePackage('@vue/language-core', vueTsc.dir)),
     '@volar/typescript': version(vueTsc && resolvePackage('@volar/typescript', vueTsc.dir)),
-    vue: version(resolvePackage('vue', root)),
+    vue: version(resolvePackage('vue', root, root)),
   };
 }
 
