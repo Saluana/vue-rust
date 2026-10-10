@@ -21,6 +21,8 @@ pub(crate) struct Protos {
     pub(crate) computed: Option<ObjRef>,
     pub(crate) effect: Option<ObjRef>,
     pub(crate) scope: Option<ObjRef>,
+    /// The prototype of every dep (the internal Dep objects, which carry `__v_skip`).
+    pub(crate) dep: Option<ObjRef>,
 }
 
 /// Replaceable `toReactive` / `toReadonly` of @vue/reactivity. Identity until the reactive wrappers register theirs.
@@ -84,7 +86,7 @@ impl NativeObject for State {
         }
         t.mark(self.obj_to_string);
         let p = self.protos.get();
-        for o in [p.reference, p.custom, p.getter, p.prop, p.computed, p.effect, p.scope].into_iter().flatten() {
+        for o in [p.reference, p.custom, p.getter, p.prop, p.computed, p.effect, p.scope, p.dep].into_iter().flatten() {
             t.mark(o);
         }
         for cache in [&self.exports, &self.internal] {

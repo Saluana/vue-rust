@@ -23,6 +23,7 @@ pub(crate) fn install_protos(rt: &Rt) -> Protos {
         computed: Some(computed::install_proto(rt)),
         effect: Some(effect::install_proto(rt)),
         scope: Some(scope::install_proto(rt)),
+        dep: Some(crate::graph::install_dep_proto(rt)),
     }
 }
 

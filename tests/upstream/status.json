@@ -357,7 +357,7 @@
  "readonly :: readonly(reactive(array)) element access > toReversed preserves readonly and reactivity": "unsupported",
  "readonly :: readonly(reactive(array)) element access > toSorted preserves readonly and reactivity": "unsupported",
  "readonly :: readonly(reactive(array)) element access > toSpliced preserves readonly and reactivity": "unsupported",
- "readonly :: should be able to trigger with triggerRef": "fail",
+ "readonly :: should be able to trigger with triggerRef": "pass",
  "ref :: reactivity/ref > customRef": "pass",
  "ref :: reactivity/ref > isRef": "pass",
  "ref :: reactivity/ref > ref should preserve value shallow/readonly-ness": "pass",
