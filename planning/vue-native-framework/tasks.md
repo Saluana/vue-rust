@@ -3,7 +3,7 @@
 ## 1. Execution rules and dependencies
 
 <!-- impl-note -->
-> **Implementation progress (2026-10-10 (sections 2–5 follow-up)).** Annotations below were added during implementation. A box is ticked only when the task's acceptance criteria are met and a test command plus evidence artifact are linked; the workspace is not a version-control repository, so there is no commit to link (evidence = commands that pass in this checkout + artifact paths). Partly finished work is annotated, not ticked. Totals: 10 done, 25 partial, 7 blocked, 28 not started of 70 tasks. Source of truth for the annotations: `docs/dev/tasks-progress.json` (regenerate with `node tooling/status/update-tasks.mjs`); narrative status in `docs/dev/STATUS.md`.
+> **Implementation progress (2026-10-10 (sections 2–5 follow-up)).** Annotations below were added during implementation. A box is ticked only when the task's acceptance criteria are met and a test command plus evidence artifact are linked; the workspace is not a version-control repository, so there is no commit to link (evidence = commands that pass in this checkout + artifact paths). Partly finished work is annotated, not ticked. Totals: 12 done, 25 partial, 7 blocked, 26 not started of 70 tasks. Source of truth for the annotations: `docs/dev/tasks-progress.json` (regenerate with `node tooling/status/update-tasks.mjs`); narrative status in `docs/dev/STATUS.md`.
 <!-- /impl-note -->
 
 
@@ -80,9 +80,9 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **3.1 Prove AOT semantics with a small value-runtime experiment.**
   <!-- progress:3.1 -->
-  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — Instead of a throw-away experiment the real AOT path was built: JS/TS → HIR → Rust calling a managed `vn-value` runtime (UTF-16 strings, V8-exact number formatting, closures via heap cells, TDZ, exceptions, cycles, async frames); no interpreter or eval. Verified differentially against Node/V8.
-  - **Evidence:** `node tooling/harness/run-language.mjs` (79/79) and `--dir tests/language/lowering` (164/164); `cargo test -p vn-value`; corpora `tests/language/corpora`, `tests/language/builtins`.
-  - **Not yet done:** Cost comparison against an engine-backed alternative, release-artifact size/allocation report, selected Test262 cases.
+  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — The real AOT path (JS/TS → HIR → Rust over the managed `vn-value` runtime, no interpreter or eval) matches Node/V8 on 79 language and 166 lowering scenarios, natively and on wasm32. A selected Test262 subset (307 files from upstream 2e0a567, chosen by coded rules, BSD license vendored) gives 232 pass, 0 fail, 75 rejected by the profile, each listed. A release size and allocation report covers Counter and Quick Quote: headless native about 2.9–3.1 MB stripped, web app wasm about 1.4–1.5 MB raw (461–485 KB gzip), host wasm 46 KB; peak live heap 950 and 2,070 objects for the two interaction scripts.
+  - **Evidence:** `node tooling/harness/run-test262.mjs` (232/0/75; ledger `tests/language/test262/status.json`; control `--dir tests/language/test262/controls --no-ledger` fails as required); `node tooling/report/aot-size.mjs [--json]`; `node --test "tests/tooling/**/*.test.mjs"`; artifacts `docs/evidence/aot-size-report.md`, `docs/evidence/test262-subset.md`.
+  - **Not yet done:** Cost comparison against an engine-backed alternative (no engine-backed variant built; no sourced size figure for QuickJS/Boa in the repo).
   <!-- /progress -->
   - **Build / why / files:** `experiments/aot-values/`, `tests/language/`; emit compiled Rust for captured mutable aliases, branch evaluation, UTF-16 strings, coercion, errors and cyclic objects, not just arithmetic.
   - **Depends:** 2.2, 2.3. **Requirements:** R02, R10, R23.
@@ -91,11 +91,10 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
   - **Risk / decision:** custom prototype/coercion exclusions may make ordinary code unacceptable; explicitly decide whether the narrowed profile is useful.
   - **Estimate:** 2–4 pw; **L**; compiler + JavaScript semantics + Rust runtime specialists.
 
-- [ ] **3.2 Prove rooting, cycles and collection latency.**
+- [x] **3.2 Prove rooting, cycles and collection latency.**
   <!-- progress:3.2 -->
-  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — Non-moving generation-checked heap with iterative mark-sweep run only at safepoints; cycles, escaping closures, roots/providers, native/exotic tracing and a randomized reachability-model stress test pass; GC-stress runs (collect at every safepoint) leave all scenario outputs identical.
-  - **Evidence:** `cargo test -p vn-value` (kernel_gc.rs, 29 tests + stress); harness GC-stress mode (`run_scenario_with_gc_threshold`).
-  - **Not yet done:** Measured p99 collection pauses under graph churn, comparison with `gc-arena`, Miri/unsafe review (the crate forbids `unsafe`).
+  - **Status (2026-10-10 (sections 2–5 follow-up)): DONE** — Non-moving generation-checked heap with iterative mark-sweep at safepoints. A churn workload (lists, cycles, wide objects, Maps, closures, a stable live set, persistent roots) is checked after every collection against an independent reachability model, with steady heap size and two negative controls. Pause benchmark (one release run, 4 vCPU container): p99 6.8 ms at 10k live objects, 16.5 ms at 100k, 206 ms at 1M, so the collector MISSES the design §14 2 ms p99 slice budget at every size. A standalone gc-arena 0.7.0 experiment with the same shape also misses 2 ms at 1M and is not recommended (see 3.8). Miri/ASan: not applicable, both crates `#![forbid(unsafe_code)]`.
+  - **Evidence:** `cargo test -p vn-value --test gc_churn --test gc_exhaustion`; `cargo run --release -p vn-value --example gc_churn_bench`; `experiments/heap/gc-arena-churn/` (`cargo run --release`, own workspace); artifact `docs/evidence/gc-latency.md`.
   <!-- /progress -->
   - **Build / why / files:** `experiments/heap/`, `crates/value/` prototype; compare gc-arena integration with an alternative before committing heap/async ABI.
   - **Depends:** 3.1. **Requirements:** R02, R05, R22–R23.
@@ -104,11 +103,10 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
   - **Risk / decision:** collector borrow discipline may not fit callbacks; fail G1 rather than switching to leaking Rc graphs.
   - **Estimate:** 2–5 pw; **L**; tracing GC and Rust ownership/unsafe expert.
 
-- [ ] **3.3 Prove Vue scheduling and JS async interaction.**
+- [x] **3.3 Prove Vue scheduling and JS async interaction.**
   <!-- progress:3.3 -->
-  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — Exact Vue 3.5 scheduler, watchers, nextTick and effect graph run against the real vue@3.5.43 goldens: 102/102 V0 scenarios; 403 random promise programs match V8 job ordering.
-  - **Evidence:** `node tooling/harness/run-language.mjs --with-vue` (102/102); `cargo test -p vn-runtime -p vn-reactivity`; `crates/testkit/tests/promise_programs.rs`.
-  - **Not yet done:** Scope-owned service cancellation and stale-completion rejection (services layer not built).
+  - **Status (2026-10-10 (sections 2–5 follow-up)): DONE** — Exact Vue 3.5 scheduler, watchers, nextTick and effect graph match real vue@3.5.43 (115/115 V0 scenarios; 403 random promise programs match V8 job ordering). Scope-owned operations carry (owner slot, generation, operation id): stopping the owning scope asks the host to cancel and discards late completions without running user callbacks; an explicit cancel by a live owner rejects with a Cancelled ServiceError; ordinary promises keep JS behaviour; a recreated component never receives an old instance's delivery.
+  - **Evidence:** `node tooling/harness/run-language.mjs --with-vue` (115/115); `cargo test -p vn-runtime --test owned_operations` (12 tests incl. unmount-during-request, stale generation and both cancel/complete race orders; mutation runs recorded); oracle `tests/vue/owned-ops/record.mjs`; artifact `docs/evidence/scope-cancellation.md`.
   <!-- /progress -->
   - **Build / why / files:** `experiments/scheduler/`, `tests/vue/oracle/`; trace actual Vue 3.5.43 parent/child effects, watchers, promises and nextTick against candidate runtime.
   - **Depends:** 3.1, 3.2. **Requirements:** R04–R06.
@@ -119,7 +117,8 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **3.4 Compare native renderers on one semantic scene.**
   <!-- progress:3.4 -->
-  - **Status (2026-10-10 (sections 2–5 follow-up)): NOT STARTED** — Not done. A CSS parser/selector/cascade crate (`vn-css`) and a style crate (`vn-ui`, in progress) exist, but no renderer comparison (egui vs Blitz vs alternatives) was run.
+  - **Status (2026-10-10 (sections 2–5 follow-up)): NOT STARTED** — Not done. Needs a desktop display and a renderer spike (egui vs Blitz on one semantic scene); neither is available in the build container used for this round.
+  - **Not yet done:** Everything in the task: renderer comparison, layout/hit testing, focus, bidi text, AT actions, license costing.
   <!-- /progress -->
   - **Build / why / files:** `experiments/renderers/`, draft `crates/ui/`; adapt egui and pinned Blitz core (or justified retained candidate) to the same form/list/overlay/layout tree.
   - **Depends:** 2.2, 2.3. **Requirements:** R08–R09, R23, R25.
@@ -141,9 +140,9 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **3.6 Prove Rust/WASM DOM and SSR identity boundary.**
   <!-- progress:3.6 -->
-  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — Rust/WASM DOM boundary proven in headless Chrome: `WebHost` (44 imports, 38 KB wasm) + hand-written JS glue.
-  - **Evidence:** `node --test "tests/platform/web/*.test.mjs"` (290 pass, 0 fail, 105 skipped with reasons); `cargo test -p vn-renderer-dom`.
-  - **Not yet done:** SSR/hydration identity probe, three-engine browser run (only Chrome available), input-before-hydration test.
+  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — Rust/WASM DOM boundary proven in headless Chrome (`WebHost`, 45 imports). SSR/hydration probe on the headless DocHost: Rust SSR output is byte-identical to @vue/server-renderer 3.5.43 renderToString for 17 oracle cases (escaping, fragment and v-if anchors, keyed lists, attributes, v-model value); two interleaved realms keep separate state; createSSRApp hydration adopts the server nodes with no creations; a text input edited before hydration keeps the edit (Vue 3.5.43 behaviour); text/tag/extra/missing mismatches are repaired and logged; Teleport/Transition/KeepAlive/Suspense/async components throw.
+  - **Evidence:** `cargo test -p vn-runtime --test ssr_hydration` (21 tests); `node tests/ssr-oracle/probe.mjs`; `node --test "tests/platform/web/*.test.mjs"` (CI, Chrome); artifact `docs/evidence/ssr-hydration-probe.md`.
+  - **Not yet done:** Hydration in the browser (WebHost lacks first_child/node_type/node_value; needs an ABI decision), three-engine browser run, hydration payload schema-hash validation, and a decision on checkbox/radio/select edits before hydration (Vue resets them to the model; design §13 says edits are adopted).
   <!-- /progress -->
   - **Build / why / files:** `experiments/web-dom/`, draft `crates/renderer-{dom,ssr}/`; patch real DOM from Rust and serialize/hydrate a small keyed form from the same template IR.
   - **Depends:** 3.1, 3.4. **Requirements:** R07, R09, R18, R23.
@@ -154,7 +153,9 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **3.7 Prove the TS/editor/source-error and native reload path.**
   <!-- progress:3.7 -->
-  - **Status (2026-10-10 (sections 2–5 follow-up)): NOT STARTED** — Not done (requires installing `typescript`/Vue language tools; not yet approved).
+  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — Tooling pair pinned (TypeScript 6.0.3 + vue-tsc 3.3.12; TS 7 excluded). An uncaught throw, including one after an await, is reported with `.vue` file:line:col frames (emitter source sites for functions, throw statements and await resumption points; error.stack unchanged). `vue-native dev` (headless) rebuilds on change and restarts with a JSON-lines state snapshot of root script-setup refs; closures, host handles, Maps/Sets and computed refs are not serialized. Edit-to-ready over 10 edits (dev profile, types on): Counter p50 1.5 s, Quick Quote p50 2.2 s, within the design's 5 s build budget for these small apps.
+  - **Evidence:** `node --test tests/cli/dev.test.mjs tests/cli/source-frames.test.mjs tests/compiler/sourcemap.test.mjs`; `node tooling/harness/dev-latency.mjs`; artifacts `docs/evidence/tooling-reload-probe.md`, `docs/evidence/typescript-tooling.md`.
+  - **Not yet done:** Editor/LSP behaviour (virtual-file editor fixtures), frames for runtime-raised errors and synchronous call sites, web-target dev loop, the 100-SFC latency fixture and a release-profile comparison.
   <!-- /progress -->
   - **Build / why / files:** `experiments/tooling/`; test actual TypeScript 6 compatibility API + Vue virtual files, source mapping and a compiled restart with safe state snapshot.
   - **Depends:** 2.2, 3.1. **Requirements:** R03, R10–R11.
@@ -165,7 +166,9 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **3.8 Record the architecture go/no-go decision.**
   <!-- progress:3.8 -->
-  - **Status (2026-10-10 (sections 2–5 follow-up)): NOT STARTED** — The G1/G2 decision record has not been written yet (evidence is accumulating in docs/dev/STATUS.md).
+  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — Draft G1/G2 decision record written: G1 fails on collector latency only (semantics pass every oracle), G2 is not evaluable without 3.4 and 3.5. It recommends narrowing the G1 claim to a stated live-heap ceiling and making incremental collection the next runtime package, and keeping slice claims to web DOM + headless until hardware exists.
+  - **Evidence:** artifact `docs/decisions/architecture-gate.md`.
+  - **Not yet done:** Owner sign-off on the recommendations; 3.4 and 3.5 evidence; a named reference workload for the 2 ms budget.
   <!-- /progress -->
   - **Build / why / files:** `docs/decisions/architecture-gate.md`; consolidate measured results, profile usefulness, renderer/GC choice, staffing and revised costs before broad implementation.
   - **Depends:** 3.2–3.7. **Requirements:** R01, R22–R26.
