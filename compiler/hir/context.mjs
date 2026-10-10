@@ -48,8 +48,18 @@ export function makeContext(ast, analysis, { source, filename }) {
     synthBindings: [],
     fnRecords: [],
     fnStack: [],
+    locate: null,        // offset -> { file, line, column } | null (set by lowerToHir)
+    sites: [],           // source sites of the module (siteOf)
   };
   return cx;
+}
+
+// Index of a source site: a function entry ('fn'), a throw statement ('throw') or an await ('await') at an offset of the
+// compiled text. Its position is the author's when cx.locate knows it, else line 0 (no author source). See emit SITES.
+export function siteOf(cx, kind, name, offset) {
+  const at = cx.locate(offset);
+  cx.sites.push({ kind, name: name ?? '', file: at ? at.file : cx.filename, line: at ? at.line : 0, column: at ? at.column : 0 });
+  return cx.sites.length - 1;
 }
 
 export function unsupported(cx, node, what) {

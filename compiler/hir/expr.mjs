@@ -1,7 +1,7 @@
 // Expression lowering (WP-C1b): AST expressions to HIR expressions. Sugar is removed here: template literals become
 // parts, optional chains become one `chain` node, compound and logical assignment keep their operator, and identifiers
 // are resolved through the analysis reference. Destructuring is in pattern.mjs; function values in fn.mjs.
-import { hn, unsupported, internal, refOf, resolveBinding, resolveKey } from './context.mjs';
+import { hn, unsupported, internal, refOf, resolveBinding, resolveKey, siteOf } from './context.mjs';
 import { numberText, staticKeyName, unwrapTs, isAnonymousFunction, unitsOf } from './literals.mjs';
 import { lowerFunctionValue } from './fn.mjs';
 import { lowerAssignPattern } from './pattern.mjs';
@@ -281,7 +281,7 @@ export function lowerExpr(cx, n) {
     case 'ParenthesizedExpression':
       return lowerExpr(cx, n.expression);
     case 'AwaitExpression':
-      return hn('await', n, { e: lowerExpr(cx, n.argument) });
+      return hn('await', n, { e: lowerExpr(cx, n.argument), site: siteOf(cx, 'await', null, n.start) });
     case 'TaggedTemplateExpression':
       return unsupported(cx, n, 'tagged template');
     case 'ClassExpression':

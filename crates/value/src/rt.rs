@@ -87,6 +87,8 @@ pub(crate) struct RtState {
     pub(crate) providers: RefCell<Vec<Option<Rc<dyn RootProvider>>>>,
     pub(crate) jobs: RefCell<VecDeque<Job>>,
     pub(crate) job_errors: RefCell<Vec<Throw>>,
+    /// The last `throw_at` (source frames of an uncaught error, error.rs).
+    pub(crate) last_throw: RefCell<Option<error::ThrowRecord>>,
     pub(crate) depth: Cell<u32>,
     pub(crate) max_depth: Cell<u32>,
     pub(crate) heap_limit: Cell<Option<usize>>,
@@ -130,6 +132,7 @@ impl Rt {
             providers: RefCell::new(Vec::new()),
             jobs: RefCell::new(VecDeque::new()),
             job_errors: RefCell::new(Vec::new()),
+            last_throw: RefCell::new(None),
             depth: Cell::new(0),
             max_depth: Cell::new(DEFAULT_MAX_CALL_DEPTH),
             heap_limit: Cell::new(None),

@@ -51,7 +51,7 @@ export function diskReader(root) {
 }
 
 // Compiles the project on disk. Returns the compileProject result plus `sourceOf(file)` for diagnostic rendering.
-export function compileAt({ root, entry, target = 'web' }) {
+export function compileAt({ root, entry, target = 'web', devState = false }) {
   const read = diskReader(root);
   const texts = new Map();
   const result = compileProject({
@@ -63,6 +63,7 @@ export function compileAt({ root, entry, target = 'web' }) {
     },
     target,
     sfcRootDir: root,
+    devState,
   });
   const sourceOf = (file) => {
     if (texts.has(file)) return texts.get(file);

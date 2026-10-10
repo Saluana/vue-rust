@@ -1,39 +1,207 @@
-// The headless runner of a vue-native app (WP-APP1). `vue-native build --target headless` copies this file to the
-// generated crate's src/main.rs. It mounts the root component into a DocHost (the runtime's in-memory document), runs the
-// interaction script named on the command line and prints one JSON array with a result per step.
-// Script (JSON): {"steps": [{"op": "click", "selector": "#increment"},
-//                           {"op": "input", "selector": "#customer", "value": "Ada"},
-//                           {"op": "html", "selector": "#count"},
-//                           {"op": "snapshot", "name": "initial"}]}
-// `--stats` (WP 3.1, the release size and allocation report): the app is rooted and the heap is collected at each safepoint
-// (after each step), as the web host's vn_flush does, and one JSON line with the vn-value heap counters is printed to
-// stderr after the mount ("afterMount") and at the end ("end"). The results printed on stdout do not change.
-// Exit status: 0 ok; 1 the app threw or a step failed (message on stderr); 2 usage or script error.
+// The headless runner of a vue-native app (WP-APP1; source frames and the dev protocol in WP 3.7). `vue-native build
+// --target headless` copies this file and state.rs to the generated crate's src/. It mounts the root component into a
+// DocHost (the runtime's in-memory document) and either runs an interaction script (one-shot mode) or serves the dev
+// protocol (--serve, used by `vue-native dev`).
+//
+// One-shot: `app <script.json>` runs the script and prints one JSON array with a result per step.
+//   Script (JSON): {"steps": [{"op": "click", "selector": "#increment"},
+//                             {"op": "input", "selector": "#customer", "value": "Ada"},
+//                             {"op": "html", "selector": "#count"},
+//                             {"op": "snapshot", "name": "initial"}]}
+//   Exit status: 0 ok; 1 the app threw or a step failed (message and source frames on stderr); 2 usage or script error.
+//
+// --serve: JSON lines. Commands on stdin, events on stdout, one object per line:
+//   {"op":"start","restore":<snapshot>|null}  -> {"event":"mounted","html":...,"restored":[...],"skipped":[{"name","reason"}]}
+//                                             |  {"event":"error","message":...}
+//   {"op":"snapshot"}                         -> {"event":"snapshot","state":{...},"dropped":[...]}
+//   {"op":"steps","steps":[...]}              -> {"event":"steps","results":[...]}   (the one-shot step ops)
+//   {"op":"quit"}                             -> exit 0
+// Errors that reach Vue's error handling are reported as "error" events with their source frames (vn_value SourceFrame).
+//
+// `--stats` (one-shot only; WP 3.1, the release size and allocation report): the heap is collected at each safepoint (after
+// each step), as the web host's vn_flush does, and one JSON line with the vn-value heap counters is printed to stderr after
+// the mount ("afterMount") and at the end ("end"). The results printed on stdout do not change.
 #![allow(dead_code)]
 
 mod project;
+mod state;
 mod vn_async;
 mod vn_config;
 
+use std::cell::RefCell;
+use std::io::BufRead;
+use std::rc::Rc;
+
 use vn_dom::{EventInit, EventKind};
 use vn_runtime::dom_events::DomCtx;
+use vn_runtime::errors::{set_error_sink, ErrorSink};
 use vn_runtime::host::{Host, HostNode, HostNs, HostValue};
 use vn_runtime::host_doc::DocHost;
 use vn_runtime::renderer;
 use vn_testkit::json::Json;
 use vn_testkit::json_in::parse;
-use vn_value::{JsStr, Res, Rt, Throw, Value};
+use vn_value::{JsStr, Res, Rt, SiteKind, SourceFrame, Throw, Value};
 
 enum Failure {
     Script(String),
     App(String),
 }
 
+// An error that reached the realm's error sink (Vue's logError): its text and the source frames of its throw.
+struct Report {
+    text: String,
+    frames: Vec<SourceFrame>,
+}
+
+struct Sink(Rc<RefCell<Vec<Report>>>);
+
+impl ErrorSink for Sink {
+    fn report(&self, rt: &Rt, err: &Value) {
+        self.0.borrow_mut().push(Report { text: describe(rt, err), frames: rt.source_frames(err) });
+    }
+}
+
+// "Name: message" for an error object (as its stack's first line), else the value's text.
+fn describe(rt: &Rt, value: &Value) -> String {
+    if let Value::Object(_) = value {
+        let field = |key: &str| match rt.get_str(value, key) {
+            Ok(Value::String(s)) => Some(s.to_rust_string_lossy()),
+            _ => None,
+        };
+        if let (Some(name), Some(message)) = (field("name"), field("message")) {
+            return if message.is_empty() { name } else { format!("{name}: {message}") };
+        }
+    }
+    match rt.to_string(value) {
+        Ok(s) => s.to_rust_string_lossy(),
+        Err(_) => "an uncaught JavaScript exception".to_string(),
+    }
+}
+
+// One source frame as V8 writes one line of a stack, with the author's position. Generated code without a source map
+// is named as such (line 0 in the site table).
+fn frame_text(f: &SourceFrame) -> String {
+    let kind = if f.kind == SiteKind::Await { "async " } else { "" };
+    let name = if f.function.is_empty() { "<anonymous>" } else { f.function };
+    if f.line == 0 {
+        format!("at {kind}{name} (generated code)")
+    } else {
+        format!("at {kind}{name} ({}:{}:{})", f.file, f.line, f.column)
+    }
+}
+
+fn report_text(r: &Report) -> String {
+    let mut out = r.text.clone();
+    for f in &r.frames {
+        out.push_str("\n    ");
+        out.push_str(&frame_text(f));
+    }
+    out
+}
+
+// One mounted app: the realm, the document, the container and the root component's public instance.
+struct Session {
+    rt: Rt,
+    ctx: DomCtx,
+    host: DocHost,
+    container: HostNode,
+    reports: Rc<RefCell<Vec<Report>>>,
+    root: Value,
+}
+
+impl Session {
+    // Realm, document and container, before the app is created.
+    fn start() -> Result<Session, Failure> {
+        let rt = Rt::new();
+        let reports = Rc::new(RefCell::new(Vec::new()));
+        set_error_sink(&rt, Rc::new(Sink(reports.clone())));
+        let host = DocHost::new();
+        let ctx = DomCtx::new(&rt, &host);
+        renderer::install(&ctx);
+        let mut h = host.clone();
+        let body = h.install_body().map_err(|e| Failure::App(format!("no document body: {e:?}")))?;
+        let container = mount_point(&mut h, body)?;
+        Ok(Session { rt, ctx, host, container, reports, root: Value::Undefined })
+    }
+
+    // Creates the app from the entry module and mounts it into the container.
+    fn mount(&mut self) -> Result<(), Failure> {
+        let rt = self.rt.clone();
+        let exports = vn_runtime::exports::all(&rt);
+        project::natives::register(&rt);
+        for def in project::modules::defs() {
+            rt.register_module_def(def);
+        }
+        let module = js(&rt, rt.load_module(project::modules::entry()))?;
+        let root = match js(&rt, rt.module_export_cell(module, "default"))? {
+            Some(cell) => rt.cell_get(cell),
+            None => return Err(Failure::App("the entry module has no default export".to_string())),
+        };
+        let create_app = exports
+            .iter()
+            .find(|(name, _)| *name == "createApp")
+            .map(|(_, v)| v.clone())
+            .ok_or_else(|| Failure::App("the vue module has no createApp".to_string()))?;
+        let app = js(&rt, rt.call(&create_app, &Value::Undefined, &[root, Value::Undefined]))?;
+        // The web host roots the app (projectLibRs in tooling/cli/build.mjs); so does this runner, so a collection keeps it.
+        rt.root(&app);
+        let mount = js(&rt, rt.get_str(&app, "mount"))?;
+        self.root = js(&rt, rt.call(&mount, &app, &[Value::String(JsStr::from_str(vn_config::CONTAINER))]))?;
+        settle(&rt, &self.ctx);
+        self.check("mount")
+    }
+
+    // Fails with the first error that reached the error sink or a listener, with its source frames.
+    fn check(&self, at: &str) -> Result<(), Failure> {
+        let reports: Vec<Report> = std::mem::take(&mut *self.reports.borrow_mut());
+        if let Some(r) = reports.first() {
+            return Err(Failure::App(format!("{at}: {}", report_text(r))));
+        }
+        match self.ctx.take_errors().first() {
+            None => Ok(()),
+            Some(err) => Err(Failure::App(format!("{at}: {}", message_of(&self.rt, err)))),
+        }
+    }
+
+    fn run_steps(&mut self, steps: &[Json]) -> Result<Vec<Json>, Failure> {
+        self.run_steps_with(steps, |_, _, _, _| Ok(()))
+    }
+
+    // Runs the steps; `after` sees each checked step with the time from its dispatch to the drained queue.
+    fn run_steps_with(
+        &mut self,
+        steps: &[Json],
+        mut after: impl FnMut(&Rt, usize, &Json, std::time::Duration) -> Result<(), Failure>,
+    ) -> Result<Vec<Json>, Failure> {
+        let mut h = self.host.clone();
+        let mut results = Vec::new();
+        for (i, step) in steps.iter().enumerate() {
+            settle(&self.rt, &self.ctx);
+            let t0 = std::time::Instant::now();
+            results.push(run_step(&mut h, self.container, i, step)?);
+            settle(&self.rt, &self.ctx);
+            let elapsed = t0.elapsed();
+            self.check(&format!("step {i}"))?;
+            after(&self.rt, i, step, elapsed)?;
+        }
+        Ok(results)
+    }
+
+    fn html(&self) -> String {
+        let mut h = self.host.clone();
+        h.outer_html(self.container).unwrap_or_default()
+    }
+}
+
 fn main() {
     let args: Vec<String> = std::env::args().collect();
+    if args.get(1).map(String::as_str) == Some("--serve") {
+        serve();
+        return;
+    }
     let stats = args.iter().skip(1).any(|a| a == "--stats");
     let Some(path) = args.iter().skip(1).find(|a| !a.starts_with("--")) else {
-        eprintln!("usage: {} <script.json> [--stats]", args.first().map(String::as_str).unwrap_or("app"));
+        eprintln!("usage: {} <script.json> [--stats] | --serve", args.first().map(String::as_str).unwrap_or("app"));
         std::process::exit(2);
     };
     let script = match std::fs::read_to_string(path) {
@@ -62,51 +230,17 @@ fn run(script: &str, stats: bool) -> Result<String, Failure> {
         .field("steps")
         .and_then(Json::items)
         .ok_or_else(|| Failure::Script("expected {\"steps\": [...]}".to_string()))?;
-
-    let rt = Rt::new();
-    let exports = vn_runtime::exports::all(&rt);
-    let host = DocHost::new();
-    let ctx = DomCtx::new(&rt, &host);
-    renderer::install(&ctx);
-    let mut h = host.clone();
-    let body = h.install_body().map_err(|e| Failure::App(format!("no document body: {e:?}")))?;
-    let container = mount_point(&mut h, body)?;
-
-    project::natives::register(&rt);
-    for def in project::modules::defs() {
-        rt.register_module_def(def);
-    }
-    let module = js(&rt, rt.load_module(project::modules::entry()))?;
-    let root = match js(&rt, rt.module_export_cell(module, "default"))? {
-        Some(cell) => rt.cell_get(cell),
-        None => return Err(Failure::App("the entry module has no default export".to_string())),
-    };
-    let create_app = exports
-        .iter()
-        .find(|(name, _)| *name == "createApp")
-        .map(|(_, v)| v.clone())
-        .ok_or_else(|| Failure::App("the vue module has no createApp".to_string()))?;
-    let app = js(&rt, rt.call(&create_app, &Value::Undefined, &[root, Value::Undefined]))?;
-    // The web host roots the app (projectLibRs in tooling/cli/build.mjs); so does this runner, so a collection keeps it.
-    let _app_root = rt.root(&app);
-    let mount = js(&rt, rt.get_str(&app, "mount"))?;
-    js(&rt, rt.call(&mount, &app, &[Value::String(JsStr::from_str(vn_config::CONTAINER))]))?;
-    settle(&rt, &ctx);
-    check_errors(&rt, &ctx, "mount")?;
-    let after_mount = rt.heap_stats();
-
-    let mut results = Vec::new();
-    for (i, step) in steps.iter().enumerate() {
-        settle(&rt, &ctx);
-        results.push(run_step(&mut h, container, i, step)?);
-        settle(&rt, &ctx);
-        check_errors(&rt, &ctx, &format!("step {i}"))?;
+    let mut session = Session::start()?;
+    session.mount()?;
+    let after_mount = session.rt.heap_stats();
+    let results = session.run_steps_with(steps, |rt, _, _, _| {
         if stats {
             rt.collect();
         }
-    }
+        Ok(())
+    })?;
     if stats {
-        let line = Json::obj([("afterMount", heap_json(after_mount)), ("end", heap_json(rt.heap_stats()))]);
+        let line = Json::obj([("afterMount", heap_json(after_mount)), ("end", heap_json(session.rt.heap_stats()))]);
         eprintln!("{}", line.to_json());
     }
     Ok(Json::Arr(results).to_json())
@@ -123,6 +257,97 @@ fn heap_json(s: vn_value::HeapStats) -> Json {
         ("peak_live_objects", Json::int(s.peak_live_objects as u64)),
         ("peak_bytes_estimate", Json::int(s.peak_bytes_estimate as u64)),
     ])
+}
+
+// The dev protocol (see the header). A failed start keeps its session, so a snapshot can still be taken.
+fn serve() {
+    let mut session: Option<Session> = None;
+    for line in std::io::stdin().lock().lines() {
+        let Ok(line) = line else { break };
+        if line.trim().is_empty() {
+            continue;
+        }
+        let cmd = match parse(&line) {
+            Ok(cmd) => cmd,
+            Err(e) => {
+                emit(error_event(&Failure::Script(format!("command is not JSON: {e:?}"))));
+                continue;
+            }
+        };
+        match text_field(&cmd, "op").as_deref() {
+            Some("quit") => break,
+            Some("start") => {
+                if session.is_some() {
+                    emit(error_event(&Failure::Script("the app is already started".to_string())));
+                    continue;
+                }
+                let mut s = match Session::start() {
+                    Ok(s) => s,
+                    Err(f) => {
+                        emit(error_event(&f));
+                        continue;
+                    }
+                };
+                let restore = cmd.field("restore").filter(|j| **j != Json::Null).cloned();
+                let outcome = s.mount().and_then(|()| match &restore {
+                    Some(state) => restore_state(&s, state),
+                    None => Ok(state::Restore::default()),
+                });
+                match outcome {
+                    Ok(info) => emit(Json::obj([
+                        ("event", Json::text("mounted")),
+                        ("html", Json::text(&s.html())),
+                        ("restored", Json::Arr(info.restored.iter().map(|n| Json::text(n)).collect())),
+                        ("skipped", Json::Arr(info.skipped.iter().map(|(n, r)| Json::obj([("name", Json::text(n)), ("reason", Json::text(r))])).collect())),
+                    ])),
+                    Err(f) => emit(error_event(&f)),
+                }
+                session = Some(s);
+            }
+            Some("snapshot") => match &session {
+                None => emit(error_event(&Failure::Script("the app is not started".to_string()))),
+                Some(s) => match state::snapshot(&s.rt, &s.root) {
+                    Ok(snap) => emit(Json::obj([
+                        ("event", Json::text("snapshot")),
+                        ("state", snap.state),
+                        ("dropped", Json::Arr(snap.dropped.iter().map(|d| Json::text(d)).collect())),
+                    ])),
+                    Err(Throw(err)) => emit(error_event(&Failure::App(format!("snapshot: {}", describe(&s.rt, &err))))),
+                },
+            },
+            Some("steps") => match &mut session {
+                None => emit(error_event(&Failure::Script("the app is not started".to_string()))),
+                Some(s) => {
+                    let steps = cmd.field("steps").and_then(Json::items).unwrap_or(&[]).to_vec();
+                    match s.run_steps(&steps) {
+                        Ok(results) => emit(Json::obj([("event", Json::text("steps")), ("results", Json::Arr(results))])),
+                        Err(f) => emit(error_event(&f)),
+                    }
+                }
+            },
+            other => emit(error_event(&Failure::Script(format!("unknown op {other:?}")))),
+        }
+    }
+}
+
+// Restores a snapshot into the mounted app and settles it. The errors that the restore causes are the app's errors.
+fn restore_state(s: &Session, state: &Json) -> Result<state::Restore, Failure> {
+    let info = state::restore(&s.rt, &s.root, state).map_err(|Throw(err)| Failure::App(format!("restore: {}", describe(&s.rt, &err))))?;
+    settle(&s.rt, &s.ctx);
+    s.check("restore")?;
+    Ok(info)
+}
+
+fn emit(event: Json) {
+    println!("{}", event.to_json());
+}
+
+fn error_event(f: &Failure) -> Json {
+    let (kind, message) = match f {
+        Failure::Script(m) => ("script", m),
+        Failure::App(m) => ("app", m),
+    };
+    Json::obj([("event", Json::text("error")), ("kind", Json::text(kind)), ("message", Json::text(message))])
 }
 
 // The container the page would create: an element with the id of vn_config::CONTAINER, appended to the body.
@@ -197,14 +422,6 @@ fn settle(rt: &Rt, ctx: &DomCtx) {
     for _ in 0..4 {
         ctx.flush_next_tick();
         rt.run_jobs();
-    }
-}
-
-// A listener or a scheduled job that threw is an app error: nothing is swallowed.
-fn check_errors(rt: &Rt, ctx: &DomCtx, at: &str) -> Result<(), Failure> {
-    match ctx.take_errors().first() {
-        None => Ok(()),
-        Some(err) => Err(Failure::App(format!("{at}: {}", message_of(rt, err)))),
     }
 }
 

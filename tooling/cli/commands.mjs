@@ -16,28 +16,33 @@ const MIN_NODE_MAJOR = 20;
 // TypeScript 6.0.3 with vue-tsc 3.3.12) unless --no-types is given. Exit 0 when there are no errors (warnings are printed).
 // The type checker runs only on a project that compiled, as tsc skips its semantic checks after syntax errors: a module
 // that failed has no types, and its unresolved imports would only add noise.
-export function check(positionals, values, io) {
-  if (positionals.length !== 1) throw new UsageError('check takes one entry .vue file or project directory');
-  const target = values.target ?? 'web';
-  if (!TARGETS.includes(target)) throw new UsageError(`--target must be web or native, not "${target}"`);
-  const { root, entry } = resolveProject(positionals[0], { root: values.root });
+// The checks of `check` for one target: the compiler's diagnostics, then the type checker when it can run (types: false
+// skips it). vue-native dev runs the same checks before each rebuild.
+export function checkProject({ root, entry, target, types = true }) {
   const compiled = compileAt({ root, entry, target });
   let diagnostics = compiled.diagnostics;
   const typeCheck = { ran: false, typescript: null, vueTsc: null };
-  if (!values['no-types'] && compiled.ok) {
-    const types = typeCheckProject({
+  if (types && compiled.ok) {
+    const result = typeCheckProject({
       root,
       modules: compiled.modules.map((m) => m.id),
       entry: compiled.entryId,
       target,
       frameworkRoot: FRAMEWORK_ROOT,
     });
-    diagnostics = [...diagnostics, ...types.diagnostics];
-    Object.assign(typeCheck, { ran: true, typescript: types.versions.typescript, vueTsc: types.versions['vue-tsc'] });
+    diagnostics = [...diagnostics, ...result.diagnostics];
+    Object.assign(typeCheck, { ran: true, typescript: result.versions.typescript, vueTsc: result.versions['vue-tsc'] });
   }
   const errors = diagnostics.filter((d) => d.severity === 'error').length;
-  const warnings = diagnostics.length - errors;
-  const ok = errors === 0;
+  return { compiled, diagnostics, typeCheck, errors, warnings: diagnostics.length - errors, ok: errors === 0 };
+}
+
+export function check(positionals, values, io) {
+  if (positionals.length !== 1) throw new UsageError('check takes one entry .vue file or project directory');
+  const target = values.target ?? 'web';
+  if (!TARGETS.includes(target)) throw new UsageError(`--target must be web or native, not "${target}"`);
+  const { root, entry } = resolveProject(positionals[0], { root: values.root });
+  const { compiled, diagnostics, typeCheck, errors, warnings, ok } = checkProject({ root, entry, target, types: !values['no-types'] });
   if (values.json) {
     const report = {
       ok,

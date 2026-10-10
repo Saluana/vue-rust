@@ -1,7 +1,7 @@
 // Statement lowering (WP-C1b). A scope entry lists the bindings a block creates on entry (`decls`, with their storage)
 // and the function declarations it instantiates before any statement runs (`hoist`). Labels: every loop, switch and
 // labelled statement gets a module-unique `lid`; break/continue name the lid they leave, and the emitter decides how.
-import { hn, unsupported, scopeIdOf, declaredBinding, varScopeOf, resolveBinding } from './context.mjs';
+import { hn, unsupported, scopeIdOf, declaredBinding, varScopeOf, resolveBinding, siteOf } from './context.mjs';
 import { lowerNamed, lowerExpr, lowerTarget } from './expr.mjs';
 import { lowerDeclPattern, lowerAssignPattern } from './pattern.mjs';
 import { lowerFunctionValue } from './fn.mjs';
@@ -125,7 +125,7 @@ export function lowerStatement(cx, s, scopeId) {
     case 'ReturnStatement':
       return hn('ret', s, { e: s.argument ? lowerExpr(cx, s.argument) : null });
     case 'ThrowStatement':
-      return hn('throw', s, { e: lowerExpr(cx, s.argument) });
+      return hn('throw', s, { e: lowerExpr(cx, s.argument), site: siteOf(cx, 'throw', null, s.start) });
     case 'BreakStatement':
       return hn('break', s, { lid: resolveJump(cx, s, s.label, 'break') });
     case 'ContinueStatement':
