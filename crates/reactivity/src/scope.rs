@@ -314,6 +314,9 @@ fn g_active(rt: &Rt, c: &Call<'_>) -> Res<Value> {
 /// The EffectScope prototype: `run`, `stop`, `pause`, `resume`, `on`, `off` and the `active` accessor.
 pub(crate) fn install_proto(rt: &Rt) -> ObjRef {
     let p = rt.new_object();
+    // EffectScope carries `readonly __v_skip = true` (packages/reactivity/src/effectScope.ts), so reactive() and readonly()
+    // return a scope unchanged: `reactive({ scope }).scope` is the scope itself, and its methods get the scope as `this`.
+    hidden(rt, p, "__v_skip", Value::Bool(true));
     rt.define_native_method(p, "run", m_run, 1);
     rt.define_native_method(p, "stop", m_stop, 1);
     rt.define_native_method(p, "pause", m_pause, 0);

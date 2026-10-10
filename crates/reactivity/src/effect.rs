@@ -7,7 +7,7 @@ use vn_value::{Call, Flags, ObjRef, PropKey, Res, Rt, Tracer, Value};
 
 use crate::graph::{cleanup_deps, is_dirty, prepare_deps, remove_sub, trigger_effect};
 use crate::node::{alloc, node, try_node, Node, SubFields, ACTIVE, PAUSED, RUNNING, TRACKING};
-use crate::shared::{accessor, native, truthy};
+use crate::shared::{accessor, native, to_raw, truthy};
 use crate::state::state;
 
 pub(crate) struct Effect {
@@ -190,12 +190,14 @@ pub(crate) fn reset_tracking(rt: &Rt) {
     st.should_track.set(last.unwrap_or(true));
 }
 
-/// The effect behind a JS receiver, or a TypeError.
+/// The effect behind a JS receiver, or a TypeError. Vue does wrap effect objects (ReactiveEffect has no `__v_skip`), so a
+/// method read through `reactive({ e: runner.effect })` gets the proxy as `this`; `toRaw(this)` is the effect it wraps.
 fn effect_obj(rt: &Rt, v: &Value) -> Res<ObjRef> {
-    if let Value::Object(o) = v {
-        if let Some(n) = try_node(rt, *o) {
+    let raw = to_raw(rt, v)?;
+    if let Value::Object(o) = raw {
+        if let Some(n) = try_node(rt, o) {
             if n.is_effect() {
-                return Ok(*o);
+                return Ok(o);
             }
         }
     }

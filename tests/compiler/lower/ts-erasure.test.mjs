@@ -62,3 +62,30 @@ test('import type and export type are erased whole; a side-effect import is kept
   assert.ok(c.rust !== null, JSON.stringify(c.diagnostics.map((d) => d.message)));
   assert.deepEqual(c.requests, ['./effects.ts']);
 });
+
+test('a this parameter is erased: no parameter, no length, and the callee keeps its own arguments', () => {
+  // The callbacks of Set.prototype.forEach are called as (value, key, set) with thisArg as the receiver. A `this:` parameter
+  // is no argument, so the declared parameters must match the JavaScript function without it.
+  const ts = [
+    'export function pick(this: unknown, a: number, b?: number) { return a + (b ?? 0) }',
+    'export const fn = function (this: { k: number }, value: number) { return this.k + value }',
+    'export const obj = { m(this: { k: number }, x: number) { return this.k + x } }',
+    'export const len = pick.length + fn.length + obj.m.length',
+    '',
+  ].join('\n');
+  const js = [
+    'export function pick(a, b) { return a + (b ?? 0) }',
+    'export const fn = function (value) { return this.k + value }',
+    'export const obj = { m(x) { return this.k + x } }',
+    'export const len = pick.length + fn.length + obj.m.length',
+    '',
+  ].join('\n');
+  const a = compile(ts);
+  assert.ok(a.rust !== null, JSON.stringify(a.diagnostics.map((d) => d.message)));
+  const b = compile(js, 'js');
+  assert.ok(b.rust !== null);
+  const shape = (c) => c.hir.fns.map((f) => [f.name, f.length, f.params.length]);
+  assert.deepEqual(shape(a), shape(b));
+  assert.deepEqual(shape(a).map((s) => s[1]), [2, 1, 1]);
+  assert.equal(a.rust, b.rust);
+});

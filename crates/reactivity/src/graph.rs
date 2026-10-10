@@ -10,7 +10,7 @@ use vn_value::{ObjRef, Res, Rt, Throw, Tracer, Value};
 use crate::computed::refresh_computed;
 use crate::effect::effect_run;
 use crate::node::{alloc, mark_opt, node, Node, NodeRef, ACTIVE, ALLOW_RECURSE, DIRTY, NOTIFIED, PAUSED, RUNNING, TRACKING};
-use crate::shared::truthy;
+use crate::shared::{hidden, truthy};
 use crate::state::state;
 use crate::target::{Key, TargetMap};
 
@@ -57,11 +57,21 @@ impl Link {
     }
 }
 
+/// The prototype of every dep. Vue's Dep class carries `readonly __v_skip = true` (packages/reactivity/src/dep.ts), so
+/// reactive() and readonly() return a dep unchanged and `ref.dep` is never a proxy of one. One shared prototype holds the
+/// flag, so a dep costs no property of its own.
+pub(crate) fn install_dep_proto(rt: &Rt) -> ObjRef {
+    let p = rt.new_object_with_proto(None);
+    hidden(rt, p, "__v_skip", Value::Bool(true));
+    p
+}
+
 /// A new dep. `map` is `Some` for a property dep of a target (its depsMap and key), `computed` for a computed's own dep.
 pub(crate) fn new_dep(rt: &Rt, map: Option<(Rc<TargetMap>, Key)>, computed: Option<ObjRef>) -> ObjRef {
+    let proto = state(rt).protos.get().dep;
     alloc(
         rt,
-        None,
+        proto,
         Node::Dep(Dep {
             version: Cell::new(0),
             active_link: Cell::new(None),

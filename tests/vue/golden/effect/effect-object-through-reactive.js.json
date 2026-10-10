@@ -1,0 +1,1 @@
+{"scenario":"effect/effect-object-through-reactive","result":"ok","error":null,"entries":[{"label":"wrapped","values":[false]},{"label":"runs-live","values":[2]},{"label":"runs-paused","values":[2]},{"label":"runs-stopped","values":[2]}],"unhandledRejections":[]}

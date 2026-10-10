@@ -4,6 +4,7 @@
 // `this` cell of a non-arrow function that arrows read are decided here. An async function (WP-C1c) has `async: true`;
 // its await expressions are `await` nodes.
 import { hn, unsupported, internal, captureRefs, resolveBinding } from './context.mjs';
+import { isThisParameter } from '../analysis/scope.mjs';
 import { lowerDeclPattern } from './pattern.mjs';
 import { lowerExpr, lowerNamed } from './expr.mjs';
 import { lowerScopedBody, scopeEntry } from './stmt.mjs';
@@ -47,6 +48,8 @@ function lowerFunctionBody(cx, node, fid, info, opts) {
   let length = 0;
   let counting = true;
   for (const p of node.params) {
+    // A TypeScript `this` parameter is erased (see isThisParameter): it is no parameter and counts for no length.
+    if (isThisParameter(p)) continue;
     if (p.type === 'AssignmentPattern') {
       counting = false;
       const left = unwrapTs(p.left);
