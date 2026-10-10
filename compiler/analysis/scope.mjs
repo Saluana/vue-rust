@@ -27,6 +27,13 @@ function isNode(value) {
   return value !== null && typeof value === 'object' && typeof value.type === 'string';
 }
 
+// A TypeScript `this` parameter (`function f(this: T, ...)`) is an Identifier named `this`, which no JavaScript binding can
+// be. TypeScript erases it: it is no parameter, so it binds nothing, counts for no `length` and takes no argument. The
+// lowering (compiler/hir/fn.mjs) skips it for the same reason.
+export function isThisParameter(node) {
+  return node.type === 'Identifier' && node.name === 'this';
+}
+
 export function analyzeScopes(ast, { source, filename = '<input>' } = {}) {
   if (typeof source !== 'string') throw new TypeError('analyzeScopes: options.source must be the source string');
   if (!isNode(ast)) throw new TypeError('analyzeScopes: expected a Babel File or Program node');
@@ -329,6 +336,7 @@ export function analyzeScopes(ast, { source, filename = '<input>' } = {}) {
     fn.scopeId = fnScope.id;
     fnStack.push(fn);
     for (const p of node.params) {
+      if (isThisParameter(p)) continue;
       bindPattern(p, fnScope, { kind: 'param', cat: 'PARAM', initEnd: p.end, declStart: p.start, declEnd: p.end });
     }
     const parameterExpression = p => {

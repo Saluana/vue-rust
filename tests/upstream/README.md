@@ -63,7 +63,7 @@ Vue 3.5.43, this repo's compiler and the native `vue` module built from this bra
 ```
 spec                                    total  pass  fail  compile-error  unsupported
 collections/Map                            32    31     0              0            1
-collections/Set                            34    32     1              0            1
+collections/Set                            34    33     0              0            1
 collections/WeakMap                        11     0     0             11            0
 collections/WeakSet                         9     0     0              9            0
 collections/shallowReadonly                 8     0     0              3            5
@@ -78,7 +78,7 @@ ref                                        38    32     0              1        
 shallowReactive                            18    16     0              0            2
 shallowReadonly                            14     2     0              3            9
 watch                                      11     0     0              0           11
-TOTAL                                     440   284     3             60           93
+TOTAL                                     440   285     2             60           93
 ```
 
 The 93 unsupported are: 37 `unsupported-import`, 36 dev-only warning checks (`toHaveBeenWarned` and its forms) plus 2
@@ -88,9 +88,6 @@ weak collections (36), classes (7), Node globals `global` and `process` (6), sta
 
 ## Real failures
 
-- `collections/Set > thisArg` (`expected undefined to be {}`): compiler defect. A TypeScript `this:` parameter is lowered
-  as an ordinary first parameter (`compiler/hir/fn.mjs`, `lowerFunctionBody` walks `node.params` without skipping it), so
-  the callback's `set` argument is undefined. `thisArg` itself is forwarded correctly (checked with a scratch scenario).
 - `effectScope > should still trigger updates after stopping scope stored in reactive object` (`Illegal invocation:
   receiver is not a reactivity object`): port defect. `EffectScope.run` reached through the reactive proxy that stores the
   scope fails its receiver check (`crates/reactivity/src/scope.rs`, `this_scope`). Vue's scope is a plain object, so its

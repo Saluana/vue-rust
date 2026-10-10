@@ -64,7 +64,7 @@
  "collections/Set :: reactivity/collections > Set > should trigger Set.has only once for non-reactive keys": "pass",
  "collections/Set :: reactivity/collections > Set > should warn when set contains both raw and reactive versions of the same object": "unsupported",
  "collections/Set :: reactivity/collections > Set > should work with reactive entries in raw set": "pass",
- "collections/Set :: reactivity/collections > Set > thisArg": "fail",
+ "collections/Set :: reactivity/collections > Set > thisArg": "pass",
  "collections/WeakMap :: reactivity/collections > WeakMap > instanceof": "compile-error",
  "collections/WeakMap :: reactivity/collections > WeakMap > should not be trigger when the value and the old value both are NaN": "compile-error",
  "collections/WeakMap :: reactivity/collections > WeakMap > should not observe custom property mutations": "compile-error",
