@@ -13,7 +13,7 @@ git clone --depth 1 --branch v3.5.43 https://github.com/vuejs/core /path/to/vue-
 VUE_CORE_DIR=/path/to/vue-core npm run test:upstream
 ```
 
-The checkout is found by `--vue-core <dir>`, else `$VUE_CORE_DIR`, else `/home/claude/ref/vue-core`. Other options:
+The checkout is found by `--vue-core <dir>`, else `$VUE_CORE_DIR`, else `../vue-core` next to this checkout. Other options:
 
 - `--filter <text>`: only the specs whose name contains the text (for example `--filter reactive`).
 - `--verbose`: also list every compile-error and unsupported outcome with its reason.

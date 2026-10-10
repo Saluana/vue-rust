@@ -3,7 +3,7 @@
 // checkout, never copied into this repo) are compiled through this repo's compiler and run natively against the Rust `vue`
 // module, with the vitest shim tooling/harness/upstream-vitest.js. The specs' own expect() calls are the oracle.
 //   node tooling/harness/run-upstream.mjs [--vue-core <dir>] [--filter text] [--status <ledger.json>] [--write-status] [--verbose]
-// The checkout is --vue-core, else $VUE_CORE_DIR, else /home/claude/ref/vue-core (git clone --depth 1 --branch v3.5.43
+// The checkout is --vue-core, else $VUE_CORE_DIR, else ../vue-core next to this checkout (git clone --depth 1 --branch v3.5.43
 // https://github.com/vuejs/core). Outcomes per test: pass | fail | compile-error | unsupported. Exit 1 when a test the ledger
 // marks pass is not pass any more, or when the harness cannot build.
 //
@@ -24,7 +24,7 @@ import { emitModule } from '../../compiler/emit/index.mjs';
 import { writeCrate, buildCrate, runOne, ROOT, TARGET_DIR } from './build.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
-export const DEFAULT_VUE_CORE = '/home/claude/ref/vue-core';
+export const DEFAULT_VUE_CORE = fileURLToPath(new URL('../../../vue-core', import.meta.url));
 export const SPEC_DIR = 'packages/reactivity/__tests__';
 export const SHIM_FILE = path.join(here, 'upstream-vitest.js');
 const CRATE_DIR = path.join(ROOT, 'target', 'scenarios', 'upstream');
