@@ -394,6 +394,9 @@ export function emitExpr(em, n) {
       }
       return bindTmp(em, `Value::String(${s})`);
     }
+    case 'dimport':
+      // The promise of import(): the runtime loads and evaluates the target in host turns (Rt::dynamic_import, ABI.md §14).
+      return bindTmp(em, `Value::Object(rt.dynamic_import(${rstr(n.request)}))`);
     case 'await': {
       if (!em.async) throw new Error('await outside an async function');
       const v = emitExpr(em, n.e);

@@ -115,9 +115,13 @@ JavaScript `throw` is `Err(Throw(value))`, never a Rust panic. A panic means a f
 
 ## 10. Jobs and the watchdog
 
-- `enqueue_job(func, args)`: FIFO. `run_jobs() -> usize` drains the queue, including jobs queued while draining.
+- `enqueue_job(func, args)`: FIFO. `run_jobs() -> usize` drains the queue, including jobs queued while draining, and runs
+  the host turns of `enqueue_host_turn` one at a time whenever the job queue is empty, until both queues are empty.
   A throwing job is recorded; `take_uncaught_job_errors() -> Vec<Throw>` returns and clears them. `run_jobs`
   panics inside running code and never collects garbage; the host calls `maybe_collect()` afterwards.
+- `enqueue_host_turn(func, args)`: queues a host turn, the stand-in for a macrotask (for example a loader round trip).
+  A turn runs only when the job queue is empty, and the jobs it queues drain before the next turn. Queued turns are GC
+  roots. `quiescence` (the oracle's macrotask boundary) does not wait for turns.
 - `tick() -> Res<()>`: generated code calls it on function entry and loop back-edges. It throws RangeError
   "heap limit exceeded" while `HeapStats::bytes_estimate` is above `set_heap_limit(bytes)`, and RangeError
   "execution budget exceeded" after more than `set_execution_budget(n)` ticks. `run_jobs` resets the counter before
@@ -286,6 +290,7 @@ Calls (all `impl Rt`):
 - `module_export_cell(m, name) -> Res<Option<ObjRef>>`: follows re-exports and `export *`. `None` for a missing,
   circular or ambiguous name. Never throws.
 - `module_namespace(m) -> ObjRef`: created once per module.
+- `dynamic_import(spec) -> ObjRef`: `import(spec)` for a literal specifier. Returns the promise (see 'Dynamic import').
 
 Phases of `load_module(spec)`:
 0. Walks the requests without side effects. A missing request throws `Error` "Cannot find module 'x'" before any
@@ -340,6 +345,23 @@ already has a record.
   `Object.isSealed(Object.seal([1]))` is true. A non-extensible array is frozen or sealed when its elements and named
   properties meet the level. An extensible array is never frozen or sealed, even with a read-only `length`. `freeze`
   still makes `length` read-only, and `seal` leaves it writable (both as V8).
+
+Dynamic import (WP-C1c.5.5, `dynamic_import`):
+- Nothing runs during the call. The import is a chain of host turns (section 10). A turn runs when the job queue is
+  empty, so the promise jobs queued before the import all run first. The last turn calls `load_module(spec)` (which
+  links and evaluates what is not evaluated yet) and settles the promise with `module_namespace` of the target, or with
+  the error the load threw. A module that threw keeps its error: later imports reject with the same value.
+- Turns (`import_turns`, calibrated against Node v22.22.0 with loader hooks, the project oracle; the probes are in
+  docs/evidence/dynamic-import.md): one to resolve the specifier, then `load_turns`. That is 0 for a module that is
+  loaded already (linked, evaluating, evaluated or errored). Otherwise it is one to load the module, plus for each request
+  one to resolve it and that request's `load_turns`. A module counts once per import. Calibrated: a loaded target settles
+  in 1 turn, a leaf in 2, a module with one unloaded dependency in 4, a module whose request is loaded in 3.
+- Not calibrated: parallel requests (counted one after another); cycles among modules that are not loaded yet; link
+  errors of an unloaded target (settled at the last turn, unmeasured).
+- Plain Node (no loader hooks) does not make these turns: its loader completes a leaf inside the job queue, after the
+  seventh job of a chain. The language oracle runs without hooks, but no language case uses `import()`. The project
+  oracle runs with hooks, and this runtime follows it.
+- The compiler never passes a native module here: a native's exports are bound by static imports (VN9001 at compile time).
 
 ## 15. Builtins: iteration (WP-B0)
 

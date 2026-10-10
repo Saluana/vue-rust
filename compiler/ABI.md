@@ -64,13 +64,18 @@ run exits 1 when a pass-marked case fails, a blocked case passes (flip it), or a
   exists in crates/value, otherwise a stand-in (tooling/harness/build.mjs `asyncRuntimeRs`). Async modules import
   `crate::vn_async` (ASYNC_PRELUDE), so a product crate must provide that module.
 - Rejected: `for await` (VN2010), async generators (VN2008/VN2009), `await` in parameter defaults (VN1000, a parse error),
-  top-level await (VN2022). Dynamic `import()` is still unlowered (VN9001).
+  top-level await (VN2022). A literal `import()` lowers to `Rt::dynamic_import` (`dimport` in the HIR; crates/value/ABI.md
+  section 14). A computed specifier (VN2019) and import options (VN2031) are rejected.
 
 ### Projects (compiler/project/)
 - `compileProject({ entry, files | resolver, target, sfcRootDir })` -> `{ entryId, modules, natives, diagnostics, ok }`.
   A module is `{ id, file, lang ('js'|'ts'|'vue'), codeLang, kind, origin, rust (null on error), requests, styles, diagnostics }`.
 - Ids are project-root-relative and `/`-prefixed (`/src/app.js`); `..` escaping the root is refused. `requests` are the
   canonical ids of the module's imports and re-exports (native modules by name).
+- Dynamic `import('x')` with a literal specifier (a string or a no-substitution template) resolves like a static import.
+  The target joins the graph as a load: it is compiled, but it is not one of the module's `requests` (those are linked
+  before evaluation). A computed specifier is VN2019; import attributes or options are VN2031. The other errors are the
+  static ones below.
 - Specifiers: a relative path names a module by its exact path (no extension search, as in Node ESM); `vue` and
   `@vue-native/platform` are native (natives.mjs) and are recorded in `natives`, not compiled. Anything else is an error:
   package imports (closed world), missing modules, absolute specifiers, unknown file types. The vue policy of compileSfc

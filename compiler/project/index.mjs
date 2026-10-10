@@ -8,6 +8,8 @@
 //   - a native module (natives.mjs): recorded in `natives`, not compiled; the runtime registers it;
 //   - nothing else: a VN9001 error (package imports, missing modules, absolute specifiers, unknown file types), or a
 //     VN61xx/VN62xx error for vue subpaths, vue default/namespace imports, excluded vue exports and Node built-ins.
+// import('x') with a literal specifier resolves the same way; its target is compiled and included in the project even when
+// no static import reaches it, but it is not in `requests` (it is linked and evaluated when the import runs, WP-C1c).
 // .vue modules go through compileSfc; the generated code is then lowered like any module, and styles are returned.
 // Type-only imports and exports are erased (compileModule skips them too). Output is deterministic (sorted ids).
 import { checkSource } from '../frontend/check.mjs';
@@ -98,6 +100,30 @@ function sitesOf(program) {
       out.push({ node: s, spec: s.source.value, start: s.source.start, end: s.source.end, erased, kind: 'export' });
     }
   }
+  return out;
+}
+
+// import() sites (WP-C1c) at any depth: { spec, start, end } of each call whose callee is Import. The profile has already
+// limited the specifier to a literal (VN2019) and the call to one argument (VN2031), so `spec` is its value.
+function dynamicSitesOf(program) {
+  const out = [];
+  const visit = (node) => {
+    if (node === null || typeof node !== 'object') return;
+    if (Array.isArray(node)) {
+      for (const x of node) visit(x);
+      return;
+    }
+    if (typeof node.type !== 'string') return;
+    if ((node.type === 'CallExpression' || node.type === 'OptionalCallExpression') && node.callee.type === 'Import') {
+      const arg = node.arguments[0];
+      const spec = arg.type === 'StringLiteral' ? arg.value : arg.quasis[0].value.cooked;
+      out.push({ spec, start: arg.start, end: arg.end });
+    }
+    for (const key of Object.keys(node)) {
+      if (key !== 'loc' && key !== 'extra') visit(node[key]);
+    }
+  };
+  visit(program);
   return out;
 }
 
@@ -230,6 +256,50 @@ export function compileProject(options = {}) {
         continue;
       }
       own.push(spanDiag('VN9001', { file: rec.file, source: code, start: site.start, end: site.end, message: `package import '${spec}' is outside the closed world (only native modules and project files can be imported)` }));
+      failed = true;
+    }
+    // import() targets (WP-C1c) are project files, so they are compiled and registered like static imports but are not
+    // requests: they are evaluated only when the import runs. Native modules are refused here (their exports are bound
+    // by static imports), and the namespace of 'vue' is refused like a static namespace import (VN6202).
+    for (const site of dynamicSitesOf(parsed.ast.program)) {
+      const { spec } = site;
+      const at = { file: rec.file, source: code, start: site.start, end: site.end };
+      if (rec.origin === 'user' && spec === 'vue') {
+        own.push(spanDiag('VN6202', { ...at, message: "dynamic import from 'vue' is a namespace import, which is not supported" }));
+        failed = true;
+        continue;
+      }
+      if (isNativeSpecifier(spec)) {
+        own.push(spanDiag('VN9001', { ...at, message: `dynamic import of native module '${spec}' is not supported (native exports are bound by static imports)` }));
+        failed = true;
+        continue;
+      }
+      if (spec.startsWith('vue/')) {
+        own.push(spanDiag('VN6203', { ...at, message: `import from '${spec}' is not in the profile` }));
+        failed = true;
+        continue;
+      }
+      if (spec.startsWith('node:') || isNodeBuiltin(spec)) {
+        own.push(spanDiag('VN6204', { ...at, message: `Node built-in module '${spec}' is not in the profile` }));
+        failed = true;
+        continue;
+      }
+      if (spec.startsWith('./') || spec.startsWith('../') || spec === '.' || spec === '..') {
+        const resolved = toModuleId(`${dirOf(id)}/${spec}`);
+        if (resolved === null || read(resolved) === null) {
+          own.push(spanDiag('VN9001', { ...at, message: `module '${spec}' is not in the project` }));
+          failed = true;
+          continue;
+        }
+        map.set(spec, resolved);
+        rec.loads.push(resolved);
+        continue;
+      }
+      if (spec.startsWith('/')) {
+        own.push(spanDiag('VN9001', { ...at, message: `absolute module specifier '${spec}' is not supported` }));
+      } else {
+        own.push(spanDiag('VN9001', { ...at, message: `package import '${spec}' is outside the closed world (only native modules and project files can be imported)` }));
+      }
       failed = true;
     }
     rec.requests = [];

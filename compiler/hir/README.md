@@ -11,7 +11,9 @@ the string `th<fn>` for `this`), `K` captured cell (`i` = index in the function'
 Expressions: `undef null bool num(s: JS number text) str(u: UTF-16 units) var(r,name,tdz) gvar(name) thisval thiscell(r)
 fn(f, caps) await(e) arr(elems: expr|spread|hole) obj(props: init|get|set|spread) mem(o,key) call(f,args) new(f,args) chain(base,
 links: m|c with opt) un(op,e) typeof(e) void(e) del(o,key) delv(e) bin(op,l,r) log(op,l,r) cond(t,c,a) seq(es)
-asgn(op,t,v) asgnp(pat,v) logasgn(op,t,v) upd(prefix,inc,t) tmpl(parts)`.
+asgn(op,t,v) asgnp(pat,v) logasgn(op,t,v) upd(prefix,inc,t) tmpl(parts) dimport(request)`. `dimport` is `import()` with a
+literal specifier (a string or a no-substitution template); `request` is the target's id from the module resolver, the one
+static requests use. The target is not a request of the module: the project graph loads it.
 Targets: `tvar(r,name,tdz,ro)`, `tglobal(name)`, `tmem(o,key)`.
 Patterns: `pinit(r,name,tdz)` (declaration), targets as above, `pobj(props: {key,t,d}, rest)`, `parr(elems: {t,d}|null, rest)`.
 Keys: `{k:'s', s}` static or `{k:'c', e}` computed.

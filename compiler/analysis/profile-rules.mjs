@@ -280,6 +280,14 @@ const RULES = [
     hint: 'Use a string literal, for example import("./module.js").',
   },
   {
+    id: 'dynamic-import-options', code: 'VN2031', row: 'L17', langs: ALL_LANGS, kind: 'node',
+    nodeTypes: ['CallExpression', 'OptionalCallExpression'],
+    appliesTo: (node) => node.callee.type === 'Import' && node.arguments.length > 1,
+    span: (node) => [node.arguments[1].start, node.arguments[node.arguments.length - 1].end],
+    message: 'import() with import attributes or options is not supported',
+    hint: 'Pass only the module specifier, for example import("./module.js").',
+  },
+  {
     id: 'import-meta', code: 'VN2020', row: 'L16', langs: ALL_LANGS, kind: 'node', nodeTypes: ['MetaProperty'],
     appliesTo: (node) => isIdent(node.meta, 'import'),
     span: nodeSpan,

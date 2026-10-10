@@ -11,7 +11,9 @@ use std::cell::{Cell, RefCell};
 use std::collections::{HashMap, HashSet};
 use std::rc::Rc;
 
+use crate::builtins::promise::{new_promise, reject_promise, resolve_promise};
 use crate::error::ErrorKind;
+use crate::function::Call;
 use crate::jsstr::JsStr;
 use crate::native::{Exotic, Hook, NativeObject};
 use crate::object::{Flags, Prop};
@@ -168,6 +170,37 @@ impl Drop for LinkScope {
 fn assert_requested(rec: &Record, request: &str) {
     let listed = rec.def.is_some_and(|d| d.requests.iter().any(|r| *r == request));
     assert!(listed, "module '{}' uses '{request}' without listing it in requests (framework bug)", rec.spec);
+}
+
+/// The turns still to wait of a host turn of an import, from its argument `i`.
+fn number_arg(c: &Call<'_>, i: usize) -> f64 {
+    match c.arg(i) {
+        Value::Number(n) => n,
+        _ => panic!("import() turn without its turn count (framework bug)"),
+    }
+}
+
+/// One host turn of an import (see `Rt::dynamic_import`). Args are the promise, the specifier and the turns still to
+/// wait. A turn that is not the last queues the next one. The last loads and evaluates the module and settles the
+/// promise with its namespace, or with the error that loading threw.
+fn dynamic_turn(rt: &Rt, c: &Call<'_>) -> Res<Value> {
+    let Value::Object(promise) = c.arg(0) else {
+        panic!("import() turn without its promise (framework bug)")
+    };
+    let Value::String(spec) = c.arg(1) else {
+        panic!("import() turn without its specifier (framework bug)")
+    };
+    let remaining = number_arg(c, 2);
+    if remaining > 1.0 {
+        let args = vec![Value::Object(promise), Value::String(spec), Value::Number(remaining - 1.0)];
+        rt.enqueue_host_turn(Value::Object(c.callee), args);
+        return Ok(Value::Undefined);
+    }
+    match rt.load_module(&spec.to_rust_string_lossy()) {
+        Ok(m) => resolve_promise(rt, promise, Value::Object(rt.module_namespace(m))),
+        Err(Throw(e)) => reject_promise(rt, promise, e),
+    }
+    Ok(Value::Undefined)
 }
 
 impl Rt {
@@ -517,6 +550,71 @@ impl Rt {
         let root = self.record_by_spec(specifier);
         self.evaluate_graph(root)?;
         Ok(root)
+    }
+
+    /// `import(specifier)` with a literal specifier (ECMA-262 13.3.10.1, prelinked profile). Returns the promise.
+    ///
+    /// Nothing runs during the call. The import waits for host turns (`dynamic_turn`), one per round trip that Node's
+    /// loader makes with loader hooks (`import_turns`). A turn runs only when the job queue is empty, so the promise
+    /// jobs queued before the import all run before its evaluation. The last turn loads and evaluates the module and
+    /// settles the promise. A module that threw keeps its error, so a later import rejects with the same value.
+    pub fn dynamic_import(&self, specifier: &str) -> ObjRef {
+        let promise = new_promise(self);
+        let args = vec![
+            Value::Object(promise),
+            Value::str(specifier),
+            Value::Number(f64::from(self.import_turns(specifier))),
+        ];
+        let turn = self.import_turn_fn();
+        self.enqueue_host_turn(Value::Object(turn), args);
+        promise
+    }
+
+    /// The native function of the import turns, created on first use and registered as a builtin (a GC root).
+    fn import_turn_fn(&self) -> ObjRef {
+        if let Some(f) = self.builtin("module.import_turn") {
+            return f;
+        }
+        let f = self.new_native_function(dynamic_turn, "", 3, Vec::new());
+        self.register_builtin("module.import_turn", f);
+        f
+    }
+
+    /// Host turns of an import of `specifier`, called now: one to resolve it, and the turns of `load_turns`. Measured
+    /// on Node v22.22.0 with loader hooks, the project oracle (tests/language/projects/dyn-order and the probes in
+    /// docs/evidence/dynamic-import.md): imports started together settle in the order of their turns. Requests of a
+    /// module are counted one after another, which is not calibrated for parallel requests.
+    fn import_turns(&self, specifier: &str) -> u32 {
+        1 + self.load_turns(specifier, &mut Vec::new())
+    }
+
+    /// Turns to load `specifier`, none when it is loaded already: one to load its source, and for each of its requests
+    /// one to resolve it plus the turns to load it when it is not loaded. A module already counted on this import's
+    /// path is loaded once, so it adds nothing; its requests still cost a resolve each.
+    fn load_turns(&self, specifier: &str, counted: &mut Vec<String>) -> u32 {
+        if self.is_loaded(specifier) || counted.iter().any(|s| s == specifier) {
+            return 0;
+        }
+        counted.push(specifier.to_string());
+        let requests: &[&str] = self.def_of(specifier).map_or(&[], |d| d.requests);
+        let mut turns = 1;
+        for req in requests {
+            turns += 1 + self.load_turns(req, counted);
+        }
+        turns
+    }
+
+    /// Whether `specifier` has a record past `New`: linked, evaluating, evaluated or errored.
+    fn is_loaded(&self, specifier: &str) -> bool {
+        self.existing_record(specifier).is_some_and(|m| self.module_status(m) != ModuleStatus::New)
+    }
+
+    /// The definition of `specifier`: the one its record holds, else the registered one.
+    fn def_of(&self, specifier: &str) -> Option<&'static ModuleDef> {
+        match self.existing_record(specifier) {
+            Some(m) => self.record(m).def,
+            None => self.registry().defs.borrow().get(specifier).copied(),
+        }
     }
 
     /// Declares the cells of a module-level scope: every binding (exported or not) in index order. Called
