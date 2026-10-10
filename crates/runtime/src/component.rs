@@ -285,7 +285,7 @@ impl Renderer {
     }
 
     /// `mountComponent(initialVNode, ...)`.
-    fn mount_component(
+    pub(crate) fn mount_component(
         &self,
         initial: ObjRef,
         container: HostNode,
@@ -294,6 +294,13 @@ impl Renderer {
         ns: HostNs,
         optimized: bool,
     ) -> Res<()> {
+        let inst = self.create_instance_for(initial, parent, optimized)?;
+        self.setup_render_effect(inst, initial, container, anchor, ns, optimized)
+    }
+
+    /// The part of `mountComponent` before its render effect: the instance, its options and `setupComponent`. Server
+    /// rendering (ssr.rs) runs this part alone, as `renderComponentVNode` does (`setupComponent(instance, true)`).
+    pub(crate) fn create_instance_for(&self, initial: ObjRef, parent: Option<ObjRef>, optimized: bool) -> Res<ObjRef> {
         let rt = self.rt();
         let app_ctx = empty_app_context(rt)?;
         let inst = create_component_instance(rt, &Value::Object(initial), parent, &app_ctx)?;
@@ -306,7 +313,7 @@ impl Renderer {
         *rec.emits_options.borrow_mut() = eo;
         *rec.emit.borrow_mut() = emit_fn(rt, inst);
         self.setup_component(inst, optimized)?;
-        self.setup_render_effect(inst, initial, container, anchor, ns, optimized)
+        Ok(inst)
     }
 
     /// `setupComponent(instance, false, optimized)`.
@@ -500,7 +507,13 @@ impl Renderer {
                 Some(c) => c,
                 None => return Err(rt.throw_type_error("renderer: mount container missing (framework bug)")),
             };
-            self.patch(None, sub, container, re.anchor.get(), Some(inst), re.ns, &Value::Null, false)?;
+            match el_of(rt, initial) {
+                // `if (el && hydrateNode)`: the initial vnode adopted an existing node, so its subtree adopts the markup
+                Some(el) if self.hydrating.get() => {
+                    self.hydrate_node(el, sub, Some(inst), &Value::Null, re.ns, false)?;
+                }
+                _ => self.patch(None, sub, container, re.anchor.get(), Some(inst), re.ns, &Value::Null, false)?,
+            }
             set_el(rt, initial, el_of(rt, sub));
             let m = hook_list(rt, inst, LifeHook::M);
             if !m.is_empty() {
@@ -574,7 +587,7 @@ impl Renderer {
     }
 
     /// `updateHOCHostEl(instance, el)`: the root elements of the parents that render this component.
-    fn update_hoc_host_el(&self, inst: ObjRef, el: Option<HostNode>) -> Res<()> {
+    pub(crate) fn update_hoc_host_el(&self, inst: ObjRef, el: Option<HostNode>) -> Res<()> {
         let rt = self.rt();
         let mut vnode = as_obj(rt, &instance_of(rt, inst).vnode.borrow().clone(), "instance vnode")?;
         let mut parent = parent_of_instance(rt, inst);

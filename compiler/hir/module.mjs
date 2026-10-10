@@ -177,6 +177,7 @@ export function lowerModuleAst(cx, { specifier, origin, lang }) {
     specifier,
     origin,
     lang,
+    sites: cx.sites,
     requests,
     slots,
     imports,

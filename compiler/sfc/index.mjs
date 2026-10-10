@@ -1,7 +1,7 @@
 // .vue single-file component frontend (WP-F1). compileSfc wraps the official @vue/compiler-sfc 3.5.43 with the
 // language-profile checks, native template validation, style extraction and .vue-mapped diagnostics:
 //
-//   compileSfc(source, { filename, id?, target: 'native'|'web'|'test', rootDir?, trustedHtml? })
+//   compileSfc(source, { filename, id?, target: 'native'|'web'|'test', rootDir?, trustedHtml?, devState? })
 //     -> { code, map, styles, bindings, diagnostics, dependencies, scopeId, lang, sources }
 //
 // Pipeline: parse blocks (official) -> block policy -> script profile checks -> template validation on the untouched
@@ -13,6 +13,8 @@
 // Output shape (code, lang):
 //   <script setup>: compileScript output with the template inlined in setup(), named __sfc (genDefaultAs), then
 //     `__sfc.__scopeId = "data-v-<id>";` when a scoped style exists, then `export default __sfc;`.
+//   devState (vue-native dev): <script setup> as compileSetupDev writes it: the setup function returns its bindings,
+//     and the template is the render function _sfc_render that reads them as $setup (see compileSetupDev).
 //   no <script setup>: the template compiled as a module (`export function render(_ctx, _cache)`), the normal <script>
 //     with its default export rewritten to `const __sfc = {...}` (or `{}`), `__sfc.render = render;`, the scope id
 //     when scoped, and `export default __sfc;`. map is null for this form (no combined map is built).
@@ -99,7 +101,7 @@ function sortDiagnostics(diags) {
 }
 
 // Final result. On any error diagnostic the outputs are withdrawn; diagnostics and dependencies are kept.
-function finish(ctx, { code = null, map = null, styles = [], bindings = {}, lang = 'js' } = {}) {
+function finish(ctx, { code = null, map = null, mapOffset = null, styles = [], bindings = {}, lang = 'js' } = {}) {
   const diagnostics = sortDiagnostics(ctx.diags);
   const failed = diagnostics.some((d) => d.severity === 'error');
   const sources = {};
@@ -109,6 +111,7 @@ function finish(ctx, { code = null, map = null, styles = [], bindings = {}, lang
   return {
     code: failed ? null : code,
     map: failed ? null : map,
+    mapOffset: failed ? null : mapOffset,
     styles: failed ? [] : styles,
     bindings: failed ? {} : bindings,
     diagnostics,
@@ -186,10 +189,125 @@ function compileSetup(ctx, descriptor, { anyScoped }) {
     const real = ctx.realDependency(dep);
     if (real) ctx.addDependency(real);
   }
-  const parts = [headerFor(ctx), out.content];
+  const header = headerFor(ctx);
+  const parts = [header, out.content];
   if (anyScoped) parts.push(`__sfc.__scopeId = ${JSON.stringify(ctx.scopeId)};`);
   parts.push('export default __sfc;');
-  return { code: parts.join('\n') + '\n', map: out.map ?? null, bindings: out.bindings ?? {}, lang: null };
+  // The map of compileScript describes out.content, which starts on the line after the header (column 0).
+  return {
+    code: parts.join('\n') + '\n',
+    map: out.map ?? null,
+    mapOffset: header.length + 1,
+    bindings: out.bindings ?? {},
+    lang: null,
+  };
+}
+
+// Splits a compiled template module into the names it imports from 'vue' (import specifiers) and its render function,
+// renamed _sfc_render so that it cannot clash with a user import. Null when the module has another form.
+function splitTemplateModule(code) {
+  const parsed = parseModule(code, { lang: 'js' });
+  if (!parsed.ast) return null;
+  const imports = [];
+  let rest = '';
+  let at = 0;
+  for (const node of parsed.ast.program.body) {
+    if (node.type !== 'ImportDeclaration') continue;
+    if (node.source.value !== 'vue') return null;
+    rest += code.slice(at, node.start);
+    at = node.end;
+    for (const spec of node.specifiers) {
+      if (spec.type !== 'ImportSpecifier') return null;
+      const name = spec.imported.type === 'Identifier' ? spec.imported.name : spec.imported.value;
+      imports.push(name === spec.local.name ? name : `${name} as ${spec.local.name}`);
+    }
+  }
+  rest += code.slice(at);
+  const decl = 'export function render(';
+  if (rest.split(decl).length !== 2) return null;
+  return { imports: [...new Set(imports)], render: rest.replace(decl, 'function _sfc_render(') };
+}
+
+// <script setup> in dev form (options.devState, used by `vue-native dev`). compileScript runs without inlineTemplate, as
+// Vue's own development build does, so the setup function returns its bindings (__returned__) and the runtime can read the
+// refs and reactive objects of a running component for the state snapshot. The template is compiled apart with the
+// script's binding metadata and reads the bindings as $setup. Two differences from the official output, both forced by
+// the profile: the render function is named _sfc_render, and the __isScriptSetup marker is an assignment, because
+// Object.defineProperty is excluded (row L04). The runtime reads the marker for its truthiness only (has_setup_binding).
+// The script keeps its own lines, so its source map still applies (mapOffset is the script's first offset).
+function compileSetupDev(ctx, descriptor, { anyScoped, templateFile }) {
+  let out;
+  try {
+    out = compileScript(descriptor, {
+      id: ctx.shortId,
+      isProd: true,
+      sourceMap: true,
+      inlineTemplate: false,
+      genDefaultAs: '__sfc',
+      fs: ctx.scriptFs(),
+    });
+  } catch (err) {
+    reportCompilerException(ctx, err, descriptor.scriptSetup, ctx.rel);
+    return null;
+  }
+  for (const dep of out.deps ?? []) {
+    const real = ctx.realDependency(dep);
+    if (real) ctx.addDependency(real);
+  }
+  const marker = "Object.defineProperty(__returned__, '__isScriptSetup', { enumerable: false, value: true })";
+  if (out.content.split(marker).length !== 2) {
+    ctx.report('VN9001', ctx.rel, 0, 0, { message: 'internal: the compiled <script setup> lacks the __isScriptSetup marker in its expected form' });
+    return null;
+  }
+  const script = out.content.replace(marker, '__returned__.__isScriptSetup = true');
+
+  let helpers = null;
+  let render = null;
+  const tpl = descriptor.template;
+  if (tpl) {
+    let t;
+    try {
+      t = compileTemplate({
+        source: tpl.content,
+        filename: templateFile,
+        id: ctx.shortId,
+        isProd: true,
+        transformAssetUrls: false,
+        compilerOptions: { ...TEMPLATE_COMPILE, bindingMetadata: out.bindings },
+      });
+    } catch (err) {
+      reportCompilerException(ctx, err, tpl, templateFile);
+      return null;
+    }
+    // Offsets of this compile are relative to the template text (as in compileNormal).
+    const base = templateFile === ctx.rel ? tpl.loc.start.offset : 0;
+    const span = templateFile === ctx.rel ? ctx.blockSpan(tpl) : [0, 0];
+    reportTemplateErrors(ctx, t.errors, templateFile, base, span);
+    for (const tip of t.tips) {
+      ctx.report('VN6016', templateFile, ...span, { message: firstLine(tip), severity: 'warning' });
+    }
+    if (t.errors.length) return null;
+    const split = splitTemplateModule(t.code);
+    if (split === null) {
+      ctx.report('VN9001', ctx.rel, 0, 0, { message: 'internal: the compiled template module has an unexpected form' });
+      return null;
+    }
+    helpers = split.imports.length > 0 ? `import { ${split.imports.join(', ')} } from 'vue';` : null;
+    render = split.render;
+  }
+  // The helper import comes before the script, so the script starts after the head: mapOffset is that offset.
+  const head = [headerFor(ctx), ...(helpers === null ? [] : [helpers])];
+  const parts = [...head, script];
+  if (render !== null) parts.push(render, '__sfc.render = _sfc_render;');
+  if (anyScoped) parts.push(`__sfc.__scopeId = ${JSON.stringify(ctx.scopeId)};`);
+  parts.push('export default __sfc;');
+  return {
+    code: parts.join('\n') + '\n',
+    map: out.map ?? null,
+    mapOffset: head.join('\n').length + 1,
+    bindings: out.bindings ?? {},
+    lang: null,
+  };
 }
 
 // Components without <script setup>: the template is compiled as a module that exports render; a normal <script>
@@ -279,6 +397,10 @@ function checkGenerated(ctx, code, lang, allowedSources) {
 
 export function compileSfc(source, options = {}) {
   const layout = resolveOptions(source, options);
+  if (options.devState !== undefined && typeof options.devState !== 'boolean') {
+    throw new TypeError('compileSfc: options.devState must be a boolean');
+  }
+  const devState = options.devState === true;
   const ctx = new SfcContext(layout);
   // compiler-sfc caches parse results by source text, and compileScript rewrites the cached template AST in place.
   // A second compile of the same text would then see the rewritten AST, so the cache is cleared for every compile.
@@ -373,7 +495,9 @@ export function compileSfc(source, options = {}) {
 
   const anyScoped = styles.some((s) => s.scoped);
   const built = setup
-    ? compileSetup(ctx, descriptor, { anyScoped })
+    ? devState
+      ? compileSetupDev(ctx, descriptor, { anyScoped, templateFile })
+      : compileSetup(ctx, descriptor, { anyScoped })
     : compileNormal(ctx, descriptor, { anyScoped, templateFile: templateFile });
   if (!built) return finish(ctx, { styles });
 
@@ -384,6 +508,7 @@ export function compileSfc(source, options = {}) {
   return finish(ctx, {
     code: built.code,
     map: built.map,
+    mapOffset: built.mapOffset,
     styles,
     bindings: built.bindings,
     lang: outLang,

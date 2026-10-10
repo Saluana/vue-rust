@@ -418,6 +418,26 @@ fn heap_stats_count_allocations_frees_and_collections() {
 }
 
 #[test]
+fn heap_stats_peaks_rise_on_allocation_and_survive_a_collection() {
+    let rt = Rt::new();
+    rt.collect();
+    let base = rt.heap_stats();
+    assert!(base.peak_live_objects >= base.live_objects, "a peak is never below the live count");
+    let objs: Vec<ObjRef> = (0..7).map(|_| rt.new_object()).collect();
+    let high = rt.heap_stats();
+    assert_eq!(high.live_objects, base.live_objects + 7);
+    assert_eq!(high.peak_live_objects, high.live_objects, "allocation reaches a new peak at each object");
+    assert!(high.bytes_estimate > base.bytes_estimate, "allocation grows the byte estimate");
+    assert_eq!(high.peak_bytes_estimate, high.bytes_estimate, "with no collection between, the peak is the current estimate");
+    drop(objs);
+    rt.collect();
+    let after = rt.heap_stats();
+    assert_eq!(after.live_objects, base.live_objects, "the collection frees the seven objects");
+    assert_eq!(after.peak_live_objects, high.peak_live_objects, "the live-object peak survives a collection");
+    assert_eq!(after.peak_bytes_estimate, high.peak_bytes_estimate, "the byte peak survives a collection");
+}
+
+#[test]
 fn the_byte_estimate_grows_with_contents_and_returns_to_baseline() {
     let rt = Rt::new();
     rt.collect();

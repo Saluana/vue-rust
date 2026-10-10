@@ -17,6 +17,7 @@ import { createAnyDiagnostic } from '../sfc/codes.mjs';
 import { vueSupported, isNodeBuiltin } from '../sfc/context.mjs';
 import { createDiagnostic, createLineMap } from '../diagnostics/diagnostic.mjs';
 import { isNativeSpecifier } from './natives.mjs';
+import { identityLocator, sourceMapLocator } from '../sourcemap.mjs';
 
 const LANG_OF_EXT = new Map([['.js', 'js'], ['.mjs', 'js'], ['.ts', 'ts'], ['.mts', 'ts'], ['.vue', 'vue']]);
 
@@ -122,9 +123,11 @@ function vueImportDiagnostics(site, { file, source, target }, diags) {
   }
 }
 
-// Compiles the project. See the header for the contract; files map ids to source text.
+// Compiles the project. See the header for the contract; files map ids to source text. devState: the dev form of
+// <script setup> (compileSfc options.devState, vue-native dev).
 export function compileProject(options = {}) {
-  const { entry, files, resolver, target = 'native', sfcRootDir } = options;
+  const { entry, files, resolver, target = 'native', sfcRootDir, devState = false } = options;
+  if (typeof devState !== 'boolean') throw new TypeError('compileProject: options.devState must be a boolean');
   if (typeof entry !== 'string' || entry === '') throw new TypeError('compileProject: options.entry is required');
   if (!['native', 'web', 'test'].includes(target)) throw new TypeError(`compileProject: target must be "native", "web" or "test", got ${String(target)}`);
   const read = makeReader(files, resolver);
@@ -162,10 +165,14 @@ export function compileProject(options = {}) {
     }
     let code = text;
     let codeLang = lang;
+    // Positions of the compiled text, as the author's file reports them (compiler/sourcemap.mjs).
+    let locate = identityLocator(text, rec.file);
     if (lang === 'vue') {
       rec.kind = 'vue';
       rec.origin = 'compiler';
-      const sfc = compileSfc(text, sfcRootDir === undefined ? { filename: rec.file, target } : { filename: rec.file, target, rootDir: sfcRootDir });
+      const sfcOptions = { filename: rec.file, target, devState };
+      if (sfcRootDir !== undefined) sfcOptions.rootDir = sfcRootDir;
+      const sfc = compileSfc(text, sfcOptions);
       own.push(...sfc.diagnostics);
       if (sfc.code === null) {
         rec.diagnostics = own;
@@ -175,6 +182,7 @@ export function compileProject(options = {}) {
       code = sfc.code;
       codeLang = sfc.lang;
       rec.styles = sfc.styles;
+      locate = sfc.map === null ? () => null : sourceMapLocator({ code, map: sfc.map, file: rec.file, mapOffset: sfc.mapOffset });
     }
     rec.codeLang = codeLang;
     const parsed = checkSource(code, { filename: rec.file, lang: codeLang, target, stdlib: true });
@@ -237,6 +245,7 @@ export function compileProject(options = {}) {
       origin: rec.origin,
       target,
       resolve: (s) => (map.has(s) ? map.get(s) : s),
+      locate,
     });
     own.push(...c.diagnostics);
     rec.rust = c.rust;

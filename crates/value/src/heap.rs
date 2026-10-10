@@ -18,7 +18,8 @@ pub(crate) struct Slot {
     pub(crate) bytes: usize,
 }
 
-/// Counters reported by `Rt::heap_stats`.
+/// Counters reported by `Rt::heap_stats`. The peaks are high-water marks since the realm was created: they rise on
+/// allocation and property growth, and a collection does not lower them.
 #[derive(Clone, Copy, Debug, Default, PartialEq, Eq)]
 pub struct HeapStats {
     pub live_objects: usize,
@@ -26,6 +27,8 @@ pub struct HeapStats {
     pub collections: u64,
     pub freed_total: u64,
     pub bytes_estimate: usize,
+    pub peak_live_objects: usize,
+    pub peak_bytes_estimate: usize,
 }
 
 #[derive(Default)]
@@ -37,6 +40,8 @@ pub(crate) struct Heap {
     pub(crate) freed_total: u64,
     pub(crate) collections: u64,
     pub(crate) bytes: usize,
+    pub(crate) peak_live: usize,
+    pub(crate) peak_bytes: usize,
     pub(crate) allocs_since_gc: usize,
 }
 
@@ -60,6 +65,8 @@ impl Heap {
         self.live += 1;
         self.allocated_total += 1;
         self.allocs_since_gc += 1;
+        self.peak_live = self.peak_live.max(self.live);
+        self.peak_bytes = self.peak_bytes.max(self.bytes);
         ObjRef { slot, r#gen: ver }
     }
 
@@ -99,6 +106,7 @@ impl Heap {
     pub(crate) fn add_bytes(&mut self, r: ObjRef, n: usize) {
         self.slot_mut(r).bytes += n;
         self.bytes += n;
+        self.peak_bytes = self.peak_bytes.max(self.bytes);
     }
 
     /// Removes `n` estimated bytes from a live object (a property or elements were removed).
@@ -140,6 +148,8 @@ impl Heap {
             collections: self.collections,
             freed_total: self.freed_total,
             bytes_estimate: self.bytes,
+            peak_live_objects: self.peak_live,
+            peak_bytes_estimate: self.peak_bytes,
         }
     }
 }

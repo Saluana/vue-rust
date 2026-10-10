@@ -6,7 +6,7 @@ use crate::function::Call;
 use crate::jsstr::JsStr;
 use crate::object::{Flags, Obj, ObjectKind, Prop};
 use crate::rt::{Intrinsic, Rt};
-use crate::value::{ObjRef, PropKey, Res, Throw, Value};
+use crate::value::{same_value, ObjRef, PropKey, Res, Throw, Value};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ErrorKind {
@@ -213,4 +213,95 @@ fn error_to_string(rt: &Rt, c: &Call<'_>) -> Res<Value> {
         name.concat(&JsStr::from_str(": ")).concat(&msg)
     };
     Ok(Value::String(out))
+}
+
+// ----- source frames (the separate report of an uncaught error; error.stack is not changed) -----
+
+/// What a `SourceSite` locates: a function (its entry), a `throw` statement, or an `await` (the point an async function
+/// resumed from). Generated modules carry one table of these (`SITES`, compiler/emit).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum SiteKind {
+    Function,
+    Throw,
+    Await,
+}
+
+/// A place in the author's source, recorded by the compiler. `file` is project-relative; `line` is 1-based and `column`
+/// is 0-based in UTF-16 units, as in `vue-native check`. A line of 0 means the position has no author source (it lies in
+/// generated code that has no source map). `name` is the function's name for a `Function` site ('' when anonymous).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct SourceSite {
+    pub kind: SiteKind,
+    pub name: &'static str,
+    pub file: &'static str,
+    pub line: u32,
+    pub column: u32,
+}
+
+/// The "no site" index of `Rt::throw_at` (a throw outside any async function has no await site).
+pub const NO_SITE: u32 = u32::MAX;
+
+/// One frame of an uncaught error's source report. `Throw` is the statement that threw; `Await` is the await that the
+/// throwing async function had resumed from last (it is listed after the throw, as V8 lists `async` callers).
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub struct SourceFrame {
+    pub kind: SiteKind,
+    pub function: &'static str,
+    pub file: &'static str,
+    pub line: u32,
+    pub column: u32,
+}
+
+/// The value of the last `throw_at`. An object is identified by its handle (generation-checked, so a freed object never
+/// matches a later one); a primitive is kept by value. Nothing here keeps an object alive.
+#[derive(Clone)]
+pub(crate) enum Thrown {
+    Object(ObjRef),
+    Primitive(Value),
+}
+
+pub(crate) struct ThrowRecord {
+    sites: &'static [SourceSite],
+    thrown: Thrown,
+    throw: u32,
+    function: u32,
+    await_site: u32,
+}
+
+impl Rt {
+    /// `throw` at a generated `throw` statement: records where the value was thrown and returns the `Err` to propagate.
+    /// `throw` and `function` index `sites`; `await_site` is the last await of the throwing async function, or NO_SITE.
+    /// The record replaces the previous one. It changes no value that JavaScript can observe.
+    pub fn throw_at(&self, sites: &'static [SourceSite], throw: u32, function: u32, await_site: u32, value: Value) -> Throw {
+        let thrown = match &value {
+            Value::Object(o) => Thrown::Object(*o),
+            other => Thrown::Primitive(other.clone()),
+        };
+        *self.0.last_throw.borrow_mut() = Some(ThrowRecord { sites, thrown, throw, function, await_site });
+        Throw(value)
+    }
+
+    /// The source frames of `err` when it is the value of the last `throw_at`: the throw, then the await the throwing
+    /// function had resumed from (if any). Empty when `err` was not thrown at a generated throw statement, for example a
+    /// TypeError raised by the runtime, or when a later throw replaced the record.
+    pub fn source_frames(&self, err: &Value) -> Vec<SourceFrame> {
+        let record = self.0.last_throw.borrow();
+        let Some(r) = record.as_ref() else { return Vec::new() };
+        let same = match (&r.thrown, err) {
+            (Thrown::Object(o), Value::Object(e)) => o == e,
+            (Thrown::Primitive(v), e) => !matches!(e, Value::Object(_)) && same_value(v, e),
+            _ => false,
+        };
+        if !same {
+            return Vec::new();
+        }
+        let function = r.sites.get(r.function as usize).map_or("", |s| s.name);
+        let mut frames = Vec::new();
+        for (index, kind) in [(r.throw, SiteKind::Throw), (r.await_site, SiteKind::Await)] {
+            if let Some(s) = r.sites.get(index as usize) {
+                frames.push(SourceFrame { kind, function, file: s.file, line: s.line, column: s.column });
+            }
+        }
+        frames
+    }
 }

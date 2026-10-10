@@ -397,6 +397,8 @@ export function emitExpr(em, n) {
     case 'await': {
       if (!em.async) throw new Error('await outside an async function');
       const v = emitExpr(em, n.e);
+      // The await site is stored in the frame before the suspension: a throw later in this function names it (source frames).
+      em.line(`frame_set(rt, fr, ${em.slotFor('await-site')}, Value::Number(${n.site}.0));`);
       const r = em.tmp();
       em.def(r, `await_value(rt, ${owned(v)}).await?`);
       return r;

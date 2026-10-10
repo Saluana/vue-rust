@@ -3,7 +3,7 @@
 // inference, `length` (parameters before the first default or rest), named-expression self bindings and the
 // `this` cell of a non-arrow function that arrows read are decided here. An async function (WP-C1c) has `async: true`;
 // its await expressions are `await` nodes.
-import { hn, unsupported, internal, captureRefs, resolveBinding } from './context.mjs';
+import { hn, unsupported, internal, captureRefs, resolveBinding, siteOf } from './context.mjs';
 import { isThisParameter } from '../analysis/scope.mjs';
 import { lowerDeclPattern } from './pattern.mjs';
 import { lowerExpr, lowerNamed } from './expr.mjs';
@@ -120,6 +120,7 @@ function lowerFunctionBody(cx, node, fid, info, opts) {
     selfSt: selfB === null ? null : cx.tables.storageOf(selfB),
     thisCell: !isArrow && cx.tables.thisOwned(fid),
     async: !!node.async,
+    site: siteOf(cx, 'fn', name, node.start),
     scope,
     params,
     paramCopies,

@@ -21,7 +21,7 @@ pub mod roots;
 pub mod rt;
 pub mod value;
 
-pub use error::ErrorKind;
+pub use error::{ErrorKind, SiteKind, SourceFrame, SourceSite, NO_SITE};
 pub use function::{Call, CodeFn, FnInfo, FnKind, FunctionData};
 pub use heap::HeapStats;
 pub use jsstr::JsStr;

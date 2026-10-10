@@ -2,7 +2,8 @@
 //! mount and unmount of elements, text, comments and fragments; children (block, unkeyed and keyed in keyed.rs); props
 //! through `dom_props::patch_prop`; component dispatch (component.rs); refs (refs.rs); directive hooks (directives.rs);
 //! the render entry point with its flush. Behaviour per @vue/runtime-core 3.5.43 (production build).
-//! Deviations: Suspense, Static (hoisted) nodes and hydration are unsupported. Advanced components
+//! Hydration (adopting server markup) is in hydrate.rs; server rendering to a string is in ssr.rs.
+//! Deviations: Suspense and Static (hoisted) nodes are unsupported. Advanced components
 //! integrate through teleport.rs, transition.rs and keep_alive.rs; see their documented limitations.
 
 use std::cell::{Cell, RefCell};
@@ -48,6 +49,11 @@ pub struct RendererData {
     pub(crate) flushing: Cell<bool>,
     /// `pendingSetRefMap`: the deferred set of each raw ref object, with its job.
     pub(crate) pending_refs: RefCell<crate::refs::PendingRefs>,
+    /// True while `hydrate` adopts server markup. A component whose initial vnode adopted a node while this is set hydrates
+    /// its subtree (runtime-core's render effect calls `hydrateNode` only in hydration mode).
+    pub(crate) hydrating: Cell<bool>,
+    /// One line per hydration mismatch that was recovered (see hydrate.rs); read through `hydration_mismatches`.
+    pub(crate) mismatches: RefCell<Vec<String>>,
 }
 
 impl NativeObject for RendererData {
@@ -116,6 +122,8 @@ pub fn install(ctx: &DomCtx) -> ObjRef {
         roots: RefCell::new(HashMap::new()),
         flushing: Cell::new(false),
         pending_refs: RefCell::new(crate::refs::PendingRefs(Vec::new())),
+        hydrating: Cell::new(false),
+        mismatches: RefCell::new(Vec::new()),
     };
     let o = rt.new_native_object(None, Rc::new(r));
     rt.register_builtin(RENDERER, o);
@@ -136,6 +144,16 @@ pub(crate) fn renderer(rt: &Rt) -> Res<RendererRef> {
 /// `render(vnode, container)` of runtime-dom for a host container. `None` unmounts.
 pub fn render_into(rt: &Rt, vnode: Option<ObjRef>, container: HostNode) -> Res<()> {
     renderer(rt)?.render(vnode, container)
+}
+
+/// `hydrate(vnode, container)` of `createSSRApp(...).mount(container)`: adopts the markup already in `container`.
+pub fn hydrate_into(rt: &Rt, vnode: ObjRef, container: HostNode) -> Res<()> {
+    renderer(rt)?.hydrate(vnode, container)
+}
+
+/// The mismatches recovered by hydration in this realm, oldest first (text, element, fragment and child-count cases).
+pub fn hydration_mismatches(rt: &Rt) -> Res<Vec<String>> {
+    Ok(renderer(rt)?.mismatches.borrow().clone())
 }
 
 // ----- vnode field helpers -----

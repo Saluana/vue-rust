@@ -125,7 +125,7 @@ export function emitStmt(em, s) {
     }
     case 'throw': {
       const v = emitExpr(em, s.e);
-      em.line(`return Err(Throw(${owned(v)}));`);
+      em.line(`return Err(${throwAt(em, s.site, owned(v))});`);
       return;
     }
     case 'break':
@@ -146,6 +146,15 @@ export function emitStmt(em, s) {
     default:
       throw new Error(`emitStmt: unknown statement ${s.k}`);
   }
+}
+
+// The Err of a `throw` statement: the value, with the source sites that locate it (vn_value::SourceSite, the module's SITES
+// table). Site is the statement's index; the function's entry site names it, and in an async function the await the
+// function had resumed from is read from its frame (vn_await_site, prelude).
+function throwAt(em, site, value) {
+  const fnSite = em.rec ? String(em.rec.site) : 'NO_SITE';
+  const awaitSite = em.async ? `vn_await_site(&frame_get(rt, fr, ${em.slotFor('await-site')}))` : 'NO_SITE';
+  return `rt.throw_at(SITES, ${site}, ${fnSite}, ${awaitSite}, ${value})`;
 }
 
 // Loop frame: the body is a labelled block so that `continue` (break 'c<lid>) reaches the update.

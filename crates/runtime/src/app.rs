@@ -63,6 +63,8 @@ pub(crate) struct AppState {
     pub(crate) container: std::cell::Cell<Option<crate::host::HostNode>>,
     pub(crate) installed: std::cell::RefCell<Vec<Value>>,
     pub(crate) cleanup: std::cell::RefCell<Vec<Value>>,
+    /// `createSSRApp`: `mount` adopts the markup already in the container and does not clear it.
+    pub(crate) hydrate: bool,
 }
 
 impl vn_value::NativeObject for AppState {
@@ -90,6 +92,11 @@ fn app_of(rt: &Rt, c: &Call<'_>) -> Value {
 
 /// `createApp(rootComponent, rootProps)`.
 pub(crate) fn create_app(rt: &Rt, root: Value, props: Value) -> Res<Value> {
+    create_app_with(rt, root, props, false)
+}
+
+/// `createApp` (`hydrate` false) or `createSSRApp` (`hydrate` true): the same app object; only `mount` differs.
+fn create_app_with(rt: &Rt, root: Value, props: Value, hydrate: bool) -> Res<Value> {
     let root = if rt.is_callable(&root) {
         root
     } else {
@@ -113,6 +120,7 @@ pub(crate) fn create_app(rt: &Rt, root: Value, props: Value) -> Res<Value> {
         container: std::cell::Cell::new(None),
         installed: std::cell::RefCell::new(Vec::new()),
         cleanup: std::cell::RefCell::new(Vec::new()),
+        hydrate,
     };
     let payload = rt.new_native_object(None, std::rc::Rc::new(state));
     let app = rt.new_object();
@@ -179,7 +187,8 @@ fn app_mount(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     let is_element = {
         host.is_element(node)
     };
-    if is_element {
+    // runtime-dom's mount clears the container; createSSRApp's mount keeps the server markup for hydration.
+    if is_element && !state.hydrate {
         let mut h = r.ctx.host();
         h.set_element_text(node, "").map_err(|e| crate::dom_events::host_error(rt, e))?;
     }
@@ -189,7 +198,11 @@ fn app_mount(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     let vnode = rt.call(&crate::renderer::builtin_fn(rt, "vn-runtime.createVNode"), &Value::Undefined, &[state.root.clone(), state.root_props.clone()])?;
     let Value::Object(vn) = vnode else { return Err(rt.throw_type_error("createVNode returned no vnode (framework bug)")) };
     crate::vnode::fields(rt, vn, |f| f.app_context = Value::Object(state.context));
-    crate::renderer::render_into(rt, Some(vn), node)?;
+    if state.hydrate {
+        crate::renderer::hydrate_into(rt, vn, node)?;
+    } else {
+        crate::renderer::render_into(rt, Some(vn), node)?;
+    }
     state.mounted.set(true);
     state.container.set(Some(node));
     let inst = match crate::renderer::component_of(rt, vn) {
@@ -301,6 +314,11 @@ fn create_app_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     create_app(rt, arg(c, 0), arg(c, 1))
 }
 
+/// `createSSRApp(rootComponent, rootProps)` export.
+fn create_ssr_app_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
+    create_app_with(rt, arg(c, 0), arg(c, 1), true)
+}
+
 /// `render(vnode, container)` export (runtime-dom's render, for a host container).
 fn render_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     let vnode = match arg(c, 0) {
@@ -318,6 +336,7 @@ fn render_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
 pub(crate) fn exports(rt: &Rt) -> Vec<(&'static str, Value)> {
     vec![
         ("createApp", Value::Object(rt.new_native_function(create_app_export, "createApp", 2, Vec::new()))),
+        ("createSSRApp", Value::Object(rt.new_native_function(create_ssr_app_export, "createSSRApp", 2, Vec::new()))),
         ("render", Value::Object(rt.new_native_function(render_export, "render", 3, Vec::new()))),
     ]
 }

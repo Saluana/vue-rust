@@ -131,6 +131,12 @@ pub trait Host {
     fn remove(&mut self, child: HostNode) -> HostResult<()>;
     fn parent_node(&self, node: HostNode) -> Option<HostNode>;
     fn next_sibling(&self, node: HostNode) -> Option<HostNode>;
+    /// `node.firstChild` (hydration walks markup that already exists). Hosts that do not implement it report `Unsupported`.
+    fn first_child(&self, _node: HostNode) -> HostResult<Option<HostNode>> { Err(HostError::Unsupported("firstChild".to_string())) }
+    /// `node.nodeType` (1 element, 3 text, 8 comment, 9 document). Hosts that do not implement it report `Unsupported`.
+    fn node_type(&self, _node: HostNode) -> HostResult<u8> { Err(HostError::Unsupported("nodeType".to_string())) }
+    /// `node.nodeValue` of a text or comment node (`data`). Hosts that do not implement it report `Unsupported`.
+    fn node_value(&self, _node: HostNode) -> HostResult<String> { Err(HostError::Unsupported("nodeValue".to_string())) }
     /// `document.querySelector` for Teleport targets (simple selectors; `Unsupported` otherwise).
     fn query_selector(&self, selector: &str) -> HostResult<Option<HostNode>>;
     /// The node the app is mounted into when given a container id/selector by hosts that own one (see `app`); optional helper.
@@ -236,6 +242,9 @@ impl Host for SharedRef {
     fn remove(&mut self, child: HostNode) -> HostResult<()> { self.0.borrow_mut().remove(child) }
     fn parent_node(&self, node: HostNode) -> Option<HostNode> { self.0.borrow().parent_node(node) }
     fn next_sibling(&self, node: HostNode) -> Option<HostNode> { self.0.borrow().next_sibling(node) }
+    fn first_child(&self, node: HostNode) -> HostResult<Option<HostNode>> { self.0.borrow().first_child(node) }
+    fn node_type(&self, node: HostNode) -> HostResult<u8> { self.0.borrow().node_type(node) }
+    fn node_value(&self, node: HostNode) -> HostResult<String> { self.0.borrow().node_value(node) }
     fn query_selector(&self, selector: &str) -> HostResult<Option<HostNode>> { self.0.borrow().query_selector(selector) }
     fn body(&self) -> Option<HostNode> { self.0.borrow().body() }
     fn release(&mut self, node: HostNode) { self.0.borrow_mut().release(node) }

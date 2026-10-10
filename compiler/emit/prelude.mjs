@@ -287,6 +287,14 @@ fn vn_idx_of(v: &Value) -> usize {
     }
 }
 
+/// The await site that a frame records (NO_SITE until the function's first await; see emit expr 'await').
+fn vn_await_site(v: &Value) -> u32 {
+    match v {
+        Value::Number(n) => *n as u32,
+        _ => NO_SITE,
+    }
+}
+
 /// A new accumulator (an empty array).
 fn vn_acc_new(rt: &Rt) -> Value {
     Value::Object(rt.new_array(Vec::new()))
