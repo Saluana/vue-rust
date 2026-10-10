@@ -13,6 +13,8 @@ Historical handoff from 2026-10-09 08:12 PDT. Work was subsequently reviewed, co
 Reference: `docs/dev/trace-format.md` (differential-test trace format), `docs/dev/ui-scenario-host.md`, `docs/dev/builtin-corpus.md`, `crates/value/ABI.md` (runtime ABI), `hosts/web/ABI.md` (browser host ABI). `docs/dev/archive/` holds an old working log: history only, safe to ignore.
 
 ## 2. Current state
+Updated 2026-10-10 after the sections 2–5 follow-up: Rust workspace 1407 pass; Vue 115/115; UI 174/174; projects 14/14; `tasks.md` 16 done, 21 partial, 7 blocked, 26 not started. See `docs/dev/STATUS.md` for the full scoreboard and `docs/decisions/` for the G1/G2 and G3 drafts. The table below is the 2026-10-09 state.
+
 | Check | Result |
 |---|---|
 | Rust workspace (`cargo test --workspace --no-fail-fast`) | 1323 pass, 0 fail. Both former `vn-ui` cascade failures are fixed, with unchanged Chrome expectations. |
@@ -37,7 +39,7 @@ Not done: TransitionGroup/in-out mode/async retry and broader advanced-component
 - **How results are judged**: expected values come from independent oracles (Node/V8 for language semantics; the real `vue@3.5.43`, in Node and in headless Chrome, for Vue behaviour), never from the code under test. Per-scenario ratchet ledgers: `tests/language/status.json`, `tests/vue/status.json`, `tests/ui/status.json`. Re-run what you change, add a negative control (a wrong expectation that must fail), and never weaken a test to get green.
 - **Disk** is nearly full and shared with the user's other jobs (never touch `/tmp/or3-*`). Give each task its own `CARGO_TARGET_DIR`, never share one between same-named crates, and delete it when the task is done. Section 4 allocates private directories and removes only those directories after verification.
 - **Git**: the project has a `.git` (created 2026-10-09 06:50; origin `https://github.com/Saluana/vue-rust.git`; branch `main`; review checkpoint `05987fa`). The user requested committing and pushing the verified resume and cleanup milestones; consult `git log` for the latest checkpoint. Do not commit, push, `git init` or change git config unless the user asks.
-- **Ask the user first** before installing new npm packages beyond the pinned set (for example `typescript`, `vue-tsc`), Docker images, the Android NDK/JDK, Playwright browsers, or `rustup target add` for iOS/Android/Windows/Linux. Already approved: the project-local Rust toolchain, `npm ci`, `vue@3.5.43`, and crates.io fetches that builds need.
+- **Ask the user first** before installing new npm packages beyond the pinned set (for example `postcss-modules`), Docker images, the Android NDK/JDK, Playwright browsers, or `rustup target add` for iOS/Android/Windows/Linux. Already approved: the project-local Rust toolchain, `npm ci`, `vue@3.5.43`, `typescript@6.0.3` and `vue-tsc@3.3.12` (approved 2026-10-10), and crates.io fetches that builds need.
 - **Cannot be tested on this machine**: real devices, Windows/Linux hardware, Safari/Firefox, screen readers (VoiceOver/NVDA/TalkBack), notarization and store signing, and screenshots of native windows (`screencapture` fails: no Screen Recording permission; `osascript`/System Events hangs on a permission prompt, so do not use it). Verify native behaviour with headless tests. Record these as unverified; never mark them done.
 - **Traps already hit**:
   - (a) Cargo trusts file mtimes. After copying files with old mtimes it can serve stale artifacts and make real code look missing. If results look impossible: `touch $(find crates -name '*.rs')` or `cargo clean -p <crate>`.
