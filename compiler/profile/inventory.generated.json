@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "planning/vue-native-framework/design.md",
-  "sourceSha256": "ca41e7a5542b1962d4ad8ff4c8cdb4786879e78cdf8bab776b93a1e0c6f85c51",
+  "sourceSha256": "e623694d18a80bbaef8980c9eae6b0dadf567f458a79513e342c7ecce224ab02",
   "rowCount": 126,
   "rows": [
     {
@@ -1127,9 +1127,9 @@
       ],
       "primary": "P",
       "prototype": null,
-      "contract": "SFC setup primary; allow statically analyzable `defineComponent({setup, name, inheritAttrs})` paired with an SFC template",
-      "tests": "T06 props/context/expose; reject data/methods/this-based Options API; function-form render-returning components excluded",
-      "rawRow": "| V29 setup context and composition setup | P restricted; — | SFC setup primary; allow statically analyzable `defineComponent({setup, name, inheritAttrs})` paired with an SFC template | T06 props/context/expose; reject data/methods/this-based Options API; function-form render-returning components excluded |",
+      "contract": "SFC setup primary; allow statically analyzable `defineComponent({setup, name, inheritAttrs})` paired with an SFC template; a render function returned from setup is supported (A10, decision 14)",
+      "tests": "T06 props/context/expose; reject data/methods/this-based Options API; render function returned from setup (A10) in the T06 UI cases",
+      "rawRow": "| V29 setup context and composition setup | P restricted; — | SFC setup primary; allow statically analyzable `defineComponent({setup, name, inheritAttrs})` paired with an SFC template; a render function returned from setup is supported (A10, decision 14) | T06 props/context/expose; reject data/methods/this-based Options API; render function returned from setup (A10) in the T06 UI cases |",
       "sectionTitle": "Reactivity, scheduling, helpers and lifecycle (R04–R06)"
     },
     {
@@ -1763,15 +1763,15 @@
       "id": "A10",
       "section": "8.5",
       "title": "defineComponent",
-      "statusText": "P setup-only descriptor with template linkage",
+      "statusText": "P setup-only descriptor",
       "statuses": [
         "P"
       ],
       "primary": "P",
       "prototype": null,
-      "contract": "P setup-only descriptor with template linkage; function-form render return X",
-      "tests": "T03 recognize Composition API setup; reject Options fields",
-      "rawRow": "| A10 defineComponent | P setup-only descriptor with template linkage; function-form render return X | T03 recognize Composition API setup; reject Options fields |",
+      "contract": "P setup-only descriptor; template names come from `<script setup>` only, so setup state is not visible to a template beside a normal script (VN4016); a render function returned from setup is P, and so is the function form defineComponent(setup) (decision 14); Options fields stay X",
+      "tests": "T03 recognize Composition API setup; reject Options fields; T06 render function returned from setup: props, slots, reactive re-render, render errors",
+      "rawRow": "| A10 defineComponent | P setup-only descriptor; template names come from `<script setup>` only, so setup state is not visible to a template beside a normal script (VN4016); a render function returned from setup is P, and so is the function form defineComponent(setup) (decision 14); Options fields stay X | T03 recognize Composition API setup; reject Options fields; T06 render function returned from setup: props, slots, reactive re-render, render errors |",
       "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
     },
     {
@@ -1885,16 +1885,16 @@
       "id": "A18",
       "section": "8.5",
       "title": "Options API and instance `$` APIs",
-      "statusText": "X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`, A for getCurrentInstance (opaque handle, decision 12)",
+      "statusText": "X, including state/options/lifecycle/composition sections, the Options `render` option (a render function is returned from setup instead, A10) and `$watch/$forceUpdate/$parent/$root/$el`, A for getCurrentInstance (opaque handle, decision 12)",
       "statuses": [
         "X",
         "A"
       ],
       "primary": "X",
       "prototype": null,
-      "contract": "X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`, A for getCurrentInstance (opaque handle, decision 12)",
+      "contract": "X, including state/options/lifecycle/composition sections, the Options `render` option (a render function is returned from setup instead, A10) and `$watch/$forceUpdate/$parent/$root/$el`, A for getCurrentInstance (opaque handle, decision 12)",
       "tests": "T03 per-export/property diagnostics; template/component refs expose only declared interface; getCurrentInstance: T12 identity and null-outside-setup cases",
-      "rawRow": "| A18 Options API and instance `$` APIs | X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`, A for getCurrentInstance (opaque handle, decision 12) | T03 per-export/property diagnostics; template/component refs expose only declared interface; getCurrentInstance: T12 identity and null-outside-setup cases |",
+      "rawRow": "| A18 Options API and instance `$` APIs | X, including state/options/lifecycle/composition sections, the Options `render` option (a render function is returned from setup instead, A10) and `$watch/$forceUpdate/$parent/$root/$el`, A for getCurrentInstance (opaque handle, decision 12) | T03 per-export/property diagnostics; template/component refs expose only declared interface; getCurrentInstance: T12 identity and null-outside-setup cases |",
       "sectionTitle": "Application and advanced API inventory (R01, R06, R12, R18)"
     },
     {

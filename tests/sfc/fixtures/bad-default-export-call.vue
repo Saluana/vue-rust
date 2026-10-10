@@ -1,5 +1,6 @@
 <script>
 import { defineComponent } from 'vue'
-export default defineComponent({ name: 'X' })
+const options = { name: 'X' }
+export default defineComponent(options)
 </script>
 <template><p>x</p></template>

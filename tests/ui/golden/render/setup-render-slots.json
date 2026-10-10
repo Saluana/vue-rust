@@ -1,0 +1,1 @@
+{"scenario":"render/setup-render-slots","result":"ok","error":null,"entries":[{"label":"html","values":["<div id=\"wrap\"><p class=\"msg\">hello <span>slot</span></p><i class=\"footer\"><b>foot</b></i><p class=\"msg\">bare </p><i class=\"footer\"></i></div>"]},{"label":"children","values":[2,"slot","foot"]}],"unhandledRejections":[]}

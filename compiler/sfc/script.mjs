@@ -65,34 +65,75 @@ function checkImport(ctx, node, base) {
   }
 }
 
-// Options API in a normal <script>: the default export may be an object literal whose only entries are
-// name (string) and inheritAttrs (boolean). Anything else is reported at the entry (S02, A18).
+// Default export of a normal <script> (S02, A10, A18). Accepted: an object literal whose entries are name (a string
+// literal) and inheritAttrs (a boolean literal); defineComponent of such an object literal, which may also have setup
+// (A10); or defineComponent of one function literal, the function form, which is the setup function. A setup entry is
+// a method, a function literal or a name, and it is not async or a generator (async setup needs Suspense, S14). Any
+// other entry is reported at the entry: an Options API option (A18), or an entry that cannot be read statically. Any
+// other default export is reported at the whole export statement.
+const isFunctionNode = (n) => n.type === 'ArrowFunctionExpression' || n.type === 'FunctionExpression';
+const isPlainFunction = (n) => isFunctionNode(n) && !n.async && !n.generator;
+
+// True when callee is a local name that this block imports from 'vue' under the imported name `name`.
+function isVueImport(body, callee, name) {
+  if (callee.type !== 'Identifier') return false;
+  return body.some((node) => node.type === 'ImportDeclaration' && node.source.value === 'vue' && node.importKind !== 'type' &&
+    node.specifiers.some((spec) => spec.type === 'ImportSpecifier' && spec.importKind !== 'type' &&
+      spec.local.name === callee.name && (spec.imported.type === 'Identifier' ? spec.imported.name : spec.imported.value) === name));
+}
+
+// A setup entry of defineComponent's object: a method, a plain function literal or a name (its value is not known here).
+function isSetupEntry(prop) {
+  if (prop.type === 'ObjectMethod') return prop.kind === 'method' && !prop.async && !prop.generator;
+  if (prop.type !== 'ObjectProperty' || prop.computed) return false;
+  return prop.value.type === 'Identifier' || isPlainFunction(prop.value);
+}
+
 function checkDefaultExport(ctx, body, base) {
   const exp = body.find((n) => n.type === 'ExportDefaultDeclaration');
   if (!exp) return;
   const span = [base + exp.start, base + exp.end];
-  const decl = exp.declaration;
+  let decl = exp.declaration;
+  let wrapped = false;
+  if (decl.type === 'CallExpression') {
+    const [arg] = decl.arguments;
+    if (!isVueImport(body, decl.callee, 'defineComponent') || decl.arguments.length !== 1 || !arg ||
+        !(arg.type === 'ObjectExpression' || isPlainFunction(arg))) {
+      ctx.report('VN6007', ctx.rel, ...span, {
+        message: 'the default export must be an object literal, or defineComponent of an object literal or of one setup function; Options API is excluded',
+      });
+      return;
+    }
+    if (arg.type !== 'ObjectExpression') return; // the function form: the function is the setup function (A10)
+    decl = arg;
+    wrapped = true;
+  }
   if (decl.type !== 'ObjectExpression') {
     ctx.report('VN6007', ctx.rel, ...span, {
       message: 'the default export must be an object literal with name or inheritAttrs; Options API is excluded',
     });
     return;
   }
+  const allowed = wrapped ? 'name, inheritAttrs and setup' : 'name and inheritAttrs';
   for (const prop of decl.properties) {
     const key = propKey(prop);
-    const ok = prop.type === 'ObjectProperty' && !prop.computed && (
+    const ok = (key === 'setup' && wrapped) ? isSetupEntry(prop) : (prop.type === 'ObjectProperty' && !prop.computed && (
       (key === 'name' && prop.value.type === 'StringLiteral') ||
       (key === 'inheritAttrs' && prop.value.type === 'BooleanLiteral')
-    );
+    ));
     if (ok) continue;
     const opt = key === null ? null : manifestEntry('option', key);
     let message;
-    if (opt) message = `Options API option '${key}' is not supported`;
+    let hint = opt?.note ?? undefined;
+    if (key === 'setup' && wrapped) {
+      message = 'setup must be a function or a name bound to one, and not async or a generator (async setup needs Suspense, S14)';
+      hint = 'Write setup as a synchronous function that returns the state object or a render function.';
+    } else if (opt) message = `Options API option '${key}' is not supported`;
     else if (key === 'name') message = "'name' must be a string literal";
     else if (key === 'inheritAttrs') message = "'inheritAttrs' must be a boolean literal";
-    else if (key === null) message = 'this default export entry is not supported; only name and inheritAttrs are allowed';
-    else message = `default export property '${key}' is not supported; only name and inheritAttrs are allowed`;
-    ctx.report('VN6007', ctx.rel, base + prop.start, base + prop.end, { message, hint: opt?.note ?? undefined });
+    else if (key === null) message = `this default export entry is not supported; only ${allowed} are allowed`;
+    else message = `default export property '${key}' is not supported; only ${allowed} are allowed`;
+    ctx.report('VN6007', ctx.rel, base + prop.start, base + prop.end, { message, hint });
   }
 }
 

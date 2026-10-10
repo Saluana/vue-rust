@@ -836,6 +836,13 @@
       "note": "Options API mixins are rejected (S02)."
     },
     {
+      "name": "render",
+      "kind": "option",
+      "row": "A18",
+      "status": "X",
+      "note": "Options API render option is rejected (A18). Return a render function from setup instead (A10, decision 14)."
+    },
+    {
       "name": "template src",
       "kind": "sfc",
       "row": "S03",

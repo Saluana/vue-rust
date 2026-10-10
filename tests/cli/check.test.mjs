@@ -142,3 +142,27 @@ test('check: promoted vue names import cleanly on both targets; ReactiveEffect a
     }
   }
 });
+
+test('check: a render function returned from setup passes in a .vue default export, a .js and a .ts module alike (A10); the Options render option is rejected (VN6007)', () => {
+  const setupRender = "import { defineComponent, h } from 'vue'\nexport default defineComponent({ setup() { return () => h('p', 'hi') } })\n";
+  for (const target of ['web', 'native']) {
+    const root = scratch(`check-render-fn-${target}`);
+    fs.mkdirSync(path.join(root, 'src'));
+    fs.writeFileSync(path.join(root, 'src', 'Child.vue'), `<script>\n${setupRender}</script>\n`);
+    fs.writeFileSync(path.join(root, 'src', 'child.js'), setupRender);
+    fs.writeFileSync(path.join(root, 'src', 'child.ts'), setupRender);
+    const app = path.join(root, 'src', 'App.vue');
+    fs.writeFileSync(app, "<script setup>\nimport Child from './Child.vue'\nimport JsChild from './child.js'\nimport TsChild from './child.ts'\n</script>\n<template><Child /><JsChild /><TsChild /></template>\n");
+    const ok = capture(['check', root, '--target', target, '--json']);
+    assert.equal(ok.code, 0, `${target}: ${ok.stderr}`);
+    assert.deepEqual(JSON.parse(ok.stdout).diagnostics, [], target);
+    // A template-less .vue with the Options render option in its default export is still rejected.
+    fs.writeFileSync(path.join(root, 'src', 'Child.vue'), "<script>\nimport { defineComponent, h } from 'vue'\nexport default defineComponent({ render() { return h('p', 'hi') } })\n</script>\n");
+    const rejected = capture(['check', root, '--target', target, '--json']);
+    assert.equal(rejected.code, 1, target);
+    const diag = JSON.parse(rejected.stdout).diagnostics.find((d) => d.code === 'VN6007');
+    assert.ok(diag, `${target}: a VN6007 diagnostic`);
+    assert.equal(diag.file, 'src/Child.vue');
+    assert.match(diag.message, /'render'/);
+  }
+});

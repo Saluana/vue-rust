@@ -23,6 +23,9 @@ test('lookup returns { status, row, note, compilerInternal } for named entries a
   assert.deepEqual(lookup('builtin', 'eval'), { status: 'X', row: 'L20', note: null, compilerInternal: false });
   assert.deepEqual(lookup('app', 'app.mount'), { status: 'P', row: 'A01', note: null, compilerInternal: false });
   assert.deepEqual(lookup('instance', '$watch'), { status: 'X', row: 'A18', note: null, compilerInternal: false });
+  assert.deepEqual(lookup('option', 'render'), {
+    status: 'X', row: 'A18', note: 'Options API render option is rejected (A18). Return a render function from setup instead (A10, decision 14).', compilerInternal: false,
+  });
   assert.equal(lookup('vue', 'definitelyNotAnExport'), null);
   assert.equal(lookup('no-such-kind', 'ref'), null);
   assert.equal(lookup('vue', 42), null);

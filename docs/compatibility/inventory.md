@@ -82,7 +82,7 @@ Status letters: P faithful, A adaptation, W web-only, X excluded (must error), E
 | V26 | 8.3 | useModel | P | P | — | 1 | T06 getter/setter/modifier tuple behavior |
 | V27 | 8.3 | useTemplateRef | A native, P DOM | A, P | — | 1 | T06 null before/after mount, list refs, focus action and exposed instance |
 | V28 | 8.3 | useId | P | P | — | 1 | T06 uniqueness; T18 server/client consistency and concurrent requests |
-| V29 | 8.3 | setup context and composition setup | P restricted | P | — | 1 | T06 props/context/expose; reject data/methods/this-based Options API; function-form render-returning components excluded |
+| V29 | 8.3 | setup context and composition setup | P restricted | P | — | 1 | T06 props/context/expose; reject data/methods/this-based Options API; render function returned from setup (A10) in the T06 UI cases |
 | U01 | 8.4 | interpolation / v-text | P | P | C interpolation only | 2 | T07 arrays/objects/null formatting and hostile strings; no Rust Display substitution |
 | U02 | 8.4 | expressions | P profile | P | C small operators | 1 | T07 optional chain/side-effect order; reject unsupported globals/statement locations |
 | U03 | 8.4 | static/dynamic bindings | P | P | C button disabled only | 3 | T07 boolean/absent attrs and dynamic argument changes; regress ignored dynamic click bug |
@@ -124,7 +124,7 @@ Status letters: P faithful, A adaptation, W web-only, X excluded (must error), E
 | A07 | 8.5 | config.performance / idPrefix | A profiler events / P stable ID prefix | A, P | — | 2 | T23 trace labels; T18 SSR root uniqueness |
 | A08 | 8.5 | config.compilerOptions | A compile-time config only | A | — | 3 | T10 whitespace/custom-tag options in build cache; no runtime template compiler |
 | A09 | 8.5 | globalProperties / optionMergeStrategies / app.mixin | X | X | — | 3 | T03/T12 explicit migration diagnostic |
-| A10 | 8.5 | defineComponent | P setup-only descriptor with template linkage | P | — | 1 | T03 recognize Composition API setup; reject Options fields |
+| A10 | 8.5 | defineComponent | P setup-only descriptor | P | — | 1 | T03 recognize Composition API setup; reject Options fields; T06 render function returned from setup: props, slots, reactive re-render, render errors |
 | A11 | 8.5 | h / cloneVNode / isVNode / resolveComponent / resolveDirective / withDirectives / withModifiers | X for resolveComponent, resolveDirective, withDirectives and withModifiers, A for h, cloneVNode and isVNode (adapted native VNodes, decision 11) | X, A | — | 52 | T12 per-export rejection for the X members; native VNode cases for the A members; compiler may use internal equivalents without advertising API support |
 | A12 | 8.5 | defineCustomElement / useHost / useShadowRoot / $host | X native/shared, E web custom-element extension | X, E | — | 6 | T12 exact exclusion and web shadow-boundary investigation |
 | A13 | 8.5 | createRenderer / createHydrationRenderer | X public Vue JS host API | X | — | 6 | T12 explain incompatible extension ABI; backend implementers use versioned Rust contracts |
@@ -132,7 +132,7 @@ Status letters: P faithful, A adaptation, W web-only, X excluded (must error), E
 | A15 | 8.5 | renderToString / stream variants | A own Rust SSR interface | A | — | 3 | T18 encoded HTML/status/backpressure/abort; Vue renderToNodeStream/pipeToNodeWritable etc not exported as native APIs |
 | A16 | 8.5 | data-allow-mismatch | W qualified narrow hydration policy | W | — | 1 | T18 allowed text mismatch doesn't suppress unrelated identity/security faults |
 | A17 | 8.5 | compile-time Vue flags | A profile controls | A | — | 9 | T10 release excludes debug listeners; flag changes invalidate builds |
-| A18 | 8.5 | Options API and instance `$` APIs | X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el`, A for getCurrentInstance (opaque handle, decision 12) | X, A | — | 23 | T03 per-export/property diagnostics; template/component refs expose only declared interface; getCurrentInstance: T12 identity and null-outside-setup cases |
+| A18 | 8.5 | Options API and instance `$` APIs | X, including state/options/lifecycle/composition sections, the Options `render` option (a render function is returned from setup instead, A10) and `$watch/$forceUpdate/$parent/$root/$el`, A for getCurrentInstance (opaque handle, decision 12) | X, A | — | 24 | T03 per-export/property diagnostics; template/component refs expose only declared interface; getCurrentInstance: T12 identity and null-outside-setup cases |
 | A19 | 8.5 | experimental/removed APIs | E for current Suspense/Vapor investigations, X for removed reactivity transform `$ref` | E, X | — | 2 | T01 stability label plus compile error outside experimental profile; no “latest docs” auto-enablement |
 
 ## Summary
@@ -142,7 +142,7 @@ Status letters: P faithful, A adaptation, W web-only, X excluded (must error), E
 | P | 88 | 238 | 66 |
 | A | 18 | 79 | 9 |
 | W | 5 | 8 | 4 |
-| X | 12 | 117 | 90 |
+| X | 12 | 118 | 90 |
 | E | 3 | 8 | 2 |
 
 ## Rows without a named entry

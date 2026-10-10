@@ -337,8 +337,23 @@ fn empty_obj_id(rt: &Rt) -> ObjRef {
     }
 }
 
-fn define_component_export(_rt: &Rt, c: &Call<'_>) -> Res<Value> {
-    Ok(arg(c, 0))
+/// `defineComponent(options, extraOptions)` (runtime-core 3.5.43): an object is returned as it is. A function is the
+/// setup function, and the component is `Object.assign({ name: setup.name }, extraOptions, { setup })`.
+fn define_component_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
+    let options = arg(c, 0);
+    if !rt.is_callable(&options) {
+        return Ok(options);
+    }
+    let out = rt.new_object();
+    let name = rt.get_str(&options, "name")?;
+    rt.define_data(out, PropKey::lit("name"), name, Flags::ALL)?;
+    let extra = arg(c, 1);
+    for key in crate::dom_props::enumerable_keys(rt, &extra)? {
+        let v = rt.get_str(&extra, &key)?;
+        rt.define_data(out, PropKey::from_str(&key), v, Flags::ALL)?;
+    }
+    rt.define_data(out, PropKey::lit("setup"), options, Flags::ALL)?;
+    Ok(Value::Object(out))
 }
 
 /// `h(type, propsOrChildren, children)`.
@@ -390,7 +405,7 @@ pub(crate) fn exports(rt: &Rt) -> Vec<(&'static str, Value)> {
         ("useSlots", func(rt, "useSlots", 0, use_slots_export)),
         ("useAttrs", func(rt, "useAttrs", 0, use_attrs_export)),
         ("useTemplateRef", func(rt, "useTemplateRef", 1, use_template_ref_export)),
-        ("defineComponent", func(rt, "defineComponent", 1, define_component_export)),
+        ("defineComponent", func(rt, "defineComponent", 2, define_component_export)),
         ("h", func(rt, "h", 3, h_export)),
         ("defineProps", func(rt, "defineProps", 0, null_macro)),
         ("defineEmits", func(rt, "defineEmits", 0, null_macro)),

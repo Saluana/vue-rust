@@ -19,7 +19,13 @@ const EXPECTED = [
   ['bad-script-tsx.vue', [['VN6006', '1:0-1:19']]],
   ['bad-options-data.vue', [['VN6007', '3:2-5:3']]],
   ['bad-options-methods.vue', [['VN6007', '3:2-3:22']]],
-  ['bad-default-export-call.vue', [['VN6007', '3:0-3:45']]],
+  // defineComponent({ name }) is accepted since A10 (decision 14), so this fixture passes an argument that cannot be read statically.
+  ['bad-default-export-call.vue', [['VN6007', '4:0-4:39']]],
+  ['bad-define-component-render.vue', [['VN6007', '5:2-7:3']]], // the Options render option stays X (A18)
+  ['bad-define-component-async.vue', [['VN6007', '5:2-7:3']]], // async setup needs Suspense, which is experimental (S14)
+  ['bad-define-component-extra.vue', [['VN6007', '4:0-4:74']]], // the function form takes one argument in an SFC default export
+  // A template beside a normal <script> reads only <script setup> names, so setup state is not visible to it (decision 14).
+  ['bad-define-component-template-state.vue', [['VN4016', '10:16-10:17']]],
   ['bad-name-not-string.vue', [['VN6007', '3:2-3:9']]],
   ['bad-setup-export.vue', [['VN6009', '2:0-2:18']]],
   ['bad-dup-template.vue', [['VN6002', '2:0-2:29']]],
