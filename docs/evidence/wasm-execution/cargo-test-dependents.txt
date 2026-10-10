@@ -1,0 +1,267 @@
+$ cargo test -p vn-runtime -p vn-uikit --no-fail-fast
+   Compiling vn-uikit v0.0.1 (/home/claude/wt/w42-wasm/crates/uikit)
+   Compiling vn-runtime v0.0.1 (/home/claude/wt/w42-wasm/crates/runtime)
+    Finished `test` profile [unoptimized] target(s) in 4.81s
+     Running unittests src/lib.rs (/home/claude/targets/w42-wasm/debug/deps/vn_runtime-48b952e6cc331e0c)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/realm_cleanup.rs (/home/claude/targets/w42-wasm/debug/deps/realm_cleanup-b11e2d01e22436ba)
+
+running 5 tests
+test dom_realm_drops_with_its_owners ... ok
+test detached_ref_remains_usable_until_its_owner_drops_it ... ok
+test unmount_releases_listener_resources ... ok
+test app_provides_symbol_keys_without_string_conversion ... ok
+test replacing_array_children_with_text_releases_their_resources ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/rta_helpers_replay.rs (/home/claude/targets/w42-wasm/debug/deps/rta_helpers_replay-2acd76d5be3ee2c9)
+
+running 9 tests
+test helpers_display_replays_clean ... ok
+test helpers_class_replays_clean ... ok
+test helpers_names_replays_clean ... ok
+test helpers_style_replays_clean ... ok
+test helpers_merge_replays_clean ... ok
+test negative_control_detects_a_wrong_target ... ok
+test helpers_list_replays_clean ... ok
+test helper_corpora_total_at_least_700_cases ... ok
+test negative_control_per_family_detects_a_doctored_result ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.92s
+
+     Running tests/rta_helpers_unit.rs (/home/claude/targets/w42-wasm/debug/deps/rta_helpers_unit-003fb67e5a4fef9f)
+
+running 3 tests
+test symbols_display_as_their_description ... ok
+test nullish_and_strings_are_returned_as_described ... ok
+test custom_to_string_is_used_through_string ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/rta_vnode_replay.rs (/home/claude/targets/w42-wasm/debug/deps/rta_vnode_replay-080eb4f387c61dcd)
+
+running 3 tests
+test flags_match_vue_shared ... ok
+test vnode_scenarios_replay_clean ... ok
+test negative_control_detects_a_doctored_expectation ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.42s
+
+     Running tests/rta_vnode_unit.rs (/home/claude/targets/w42-wasm/debug/deps/rta_vnode_unit-1e5f5431c9f96ecd)
+
+running 16 tests
+test blocks_track_dynamic_children ... ok
+test clone_merges_extra_props_and_drops_memo ... ok
+test close_without_open_block_is_not_an_error ... ok
+test flag_values_match_vue_shared ... ok
+test create_vnode_normalizes_class_and_style ... ok
+test element_shape_counts_text_children ... ok
+test disabled_tracking_gives_null_dynamic_children ... ok
+test is_same_vnode_type_compares_type_and_key ... ok
+test is_vnode_and_text_helpers ... ok
+test register_vue_module_exports_the_names_of_vue ... ok
+test merge_props_joins_handlers_and_classes ... ok
+test normalize_vnode_kinds_and_identity ... ok
+test fragment_and_component_shapes ... ok
+test static_vnodes_are_unsupported ... ok
+test vnodes_reachable_only_through_dynamic_children_survive_collection ... ok
+test vnodes_reachable_only_through_children_survive_collection ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/rtb_errors_lifecycle.rs (/home/claude/targets/w42-wasm/debug/deps/rtb_errors_lifecycle-05d10847dc649d23)
+
+running 13 tests
+test a_deactivated_target_skips_its_activated_hook ... ok
+test a_rejected_promise_result_goes_to_the_error_handler_with_the_watch_type ... ok
+test call_with_error_handling_turns_a_throw_into_undefined_and_reports_it ... ok
+test a_throwing_lifecycle_hook_is_routed_to_the_handler_and_the_instance_is_restored ... ok
+test error_captured_hooks_run_from_the_parent_up_and_a_false_result_stops_the_walk ... ok
+test inject_hook_prepends_and_runs_each_hook_with_its_instance_as_the_current_one ... ok
+test error_captured_hooks_without_false_all_run_parent_first ... ok
+test log_error_reports_to_the_sink_and_rethrows_only_when_configured ... ok
+test on_error_captured_defaults_to_the_current_instance_and_is_a_no_op_outside_one ... ok
+test keep_alive_activation_hooks_are_prepended_on_the_keep_alive_root_and_removed_on_unmount ... ok
+test the_wrapper_is_cached_on_the_hook_so_one_function_registers_once_per_target_pair ... ok
+test on_mounted_forwards_its_arguments_and_registers_on_the_explicit_target ... ok
+test the_app_error_handler_gets_the_error_proxy_and_info_when_no_hook_captures ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/rtb_inject.rs (/home/claude/targets/w42-wasm/debug/deps/rtb_inject-ad41166f3f72b18e)
+
+running 4 tests
+test inject_defaults_factories_and_the_context_check ... ok
+test the_root_reads_app_level_provides_and_a_running_app_provides_without_an_instance ... ok
+test use_id_counts_down_the_tree_and_uses_the_prefix ... ok
+test inject_finds_the_nearest_provider_and_provide_is_scoped_to_its_instance ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/rtb_scheduler.rs (/home/claude/targets/w42-wasm/debug/deps/rtb_scheduler-febf35be080f580b)
+
+running 10 tests
+test a_disposed_job_is_skipped_by_the_flush ... ok
+test a_job_queued_by_a_post_callback_runs_in_a_following_round_of_the_same_flush ... ok
+test a_post_callback_with_id_minus_one_queued_while_draining_runs_next ... ok
+test next_tick_returns_the_same_promise_when_idle_and_runs_callbacks_after_the_flush ... ok
+test jobs_queued_during_a_flush_run_in_the_same_flush_after_the_running_one ... ok
+test a_queued_job_is_not_queued_twice ... ok
+test a_job_that_keeps_requeuing_itself_fails_the_flush_at_the_recursion_limit ... ok
+test pre_jobs_come_first_within_an_id_and_ids_sort_the_queue ... ok
+test post_callbacks_run_after_the_jobs_and_are_deduplicated ... ok
+test queued_jobs_survive_a_collection_before_the_flush ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/rtb_watch.rs (/home/claude/targets/w42-wasm/debug/deps/rtb_watch-b118265ccb387948)
+
+running 11 tests
+test a_null_options_argument_is_a_type_error ... ok
+test a_callback_error_goes_to_the_error_handler_with_the_watch_callback_type ... ok
+test a_sync_watcher_runs_inside_the_write ... ok
+test a_stopped_watcher_and_its_job_are_released_by_the_collector ... ok
+test immediate_and_once_run_the_callback_once_at_creation ... ok
+test a_queued_watch_job_survives_a_collection_before_the_flush ... ok
+test a_pre_watcher_runs_in_the_flush_with_the_new_and_old_values ... ok
+test post_watchers_run_after_the_pre_jobs_of_the_same_flush ... ok
+test stopping_a_watcher_drops_its_queued_delivery ... ok
+test stopping_the_instance_scope_stops_its_watchers ... ok
+test watch_effect_runs_once_at_creation_and_again_on_change ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/rtc_app.rs (/home/claude/targets/w42-wasm/debug/deps/rtc_app-0cab01062cd26199)
+
+running 2 tests
+test negative_control_detects_a_corrupted_app_expectation ... ok
+test app_scenarios_match_vue_in_chrome ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/rtc_components.rs (/home/claude/targets/w42-wasm/debug/deps/rtc_components-83f36c9c8cc3603d)
+
+running 3 tests
+test negative_control_detects_a_corrupted_component_expectation ... ok
+test component_scenarios_match_vue_in_chrome ... ok
+test mount_unmount_1000_components_returns_to_the_live_object_baseline ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.55s
+
+     Running tests/rtc_renderer.rs (/home/claude/targets/w42-wasm/debug/deps/rtc_renderer-c80d55ed519d9903)
+
+running 3 tests
+test renders_through_a_dyn_host ... ok
+test negative_control_detects_a_wrong_expectation ... ok
+test renderer_scenarios_match_vue_in_chrome ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.18s
+
+     Running tests/rtd_corpus.rs (/home/claude/targets/w42-wasm/debug/deps/rtd_corpus-494ef52834189ea8)
+
+running 3 tests
+test negative_control_doctored_dom_recording_is_reported ... ok
+test negative_control_changed_listener_behaviour_is_reported ... ok
+test dom_corpora_replay_identically_through_the_host_trait ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/rtd_events.rs (/home/claude/targets/w42-wasm/debug/deps/rtd_events-2a997538ddf3ff36)
+
+running 7 tests
+test handlers_and_invokers_survive_collections_and_keep_running ... ok
+test released_nodes_take_their_side_table_entries_and_listeners ... ok
+test event_object_fields_follow_the_event_kind ... ok
+test replacing_a_handler_keeps_one_listener_and_runs_the_new_one ... ok
+test with_keys_matches_hyphenated_names_and_aliases ... ok
+test with_keys_of_nothing_is_a_type_error ... ok
+test with_modifiers_wrapper_is_cached_per_function_and_modifier_list ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/rtd_host.rs (/home/claude/targets/w42-wasm/debug/deps/rtd_host-982e7677450d7a53)
+
+running 9 tests
+test blur_listener_reads_and_writes_the_live_tree_during_remove ... ok
+test each_dispatch_gets_a_new_serial_and_event_kind_is_visible ... ok
+test listener_outcome_stops_propagation_and_prevents_default ... ok
+test clock_is_settable_and_serves_time_stamps ... ok
+test passive_listener_cannot_prevent_default ... ok
+test released_nodes_are_stale_and_detached_subtrees_only_are_released ... ok
+test snapshot_and_query_selector_follow_the_tree ... ok
+test property_round_trip_through_the_dom_model ... ok
+test unsupported_selector_is_an_error_not_a_panic ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/rtd_props.rs (/home/claude/targets/w42-wasm/debug/deps/rtd_props-24fb40fcab0815aa)
+
+running 6 tests
+test innerhtml_assignment_is_a_type_error_on_the_native_host ... ok
+test negative_control_doctored_snapshot_is_reported_at_its_step ... ok
+test negative_control_mutated_transition_is_reported ... ok
+test negative_control_unknown_op_is_not_silently_accepted ... ok
+test negative_control_recorded_handler_log_is_checked ... ok
+test patchprop_corpus_replays_identically_to_chrome ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.06s
+
+     Running tests/rtd_vmodel.rs (/home/claude/targets/w42-wasm/debug/deps/rtd_vmodel-221ea8bd320f6cca)
+
+running 3 tests
+test negative_control_doctored_model_assignment_is_reported ... ok
+test negative_control_expected_throw_must_be_reproduced ... ok
+test directive_corpus_replays_identically_to_chrome ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.71s
+
+     Running unittests src/lib.rs (/home/claude/targets/w42-wasm/debug/deps/vn_uikit-54db5612517c74c8)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/dom_ops.rs (/home/claude/targets/w42-wasm/debug/deps/dom_ops-644e1df92bc7736a)
+
+running 12 tests
+test check_toggles_through_activation_and_refuses_disabled_and_radio_cases ... ok
+test child_lists_follow_moves_and_removals ... ok
+test container_reuses_an_id_but_each_mount_gets_a_new_element ... ok
+test click_bubbles_and_uses_the_mouse_defaults ... ok
+test input_sets_the_value_and_dispatches_a_bubbling_input_event ... ok
+test find_returns_matches_in_document_order_below_the_scope_only ... ok
+test nth_child_counts_element_siblings_only ... ok
+test class_matches_whole_tokens_and_attributes_match_exactly ... ok
+test snapshot_has_contract_shape_and_keeps_text_nodes_apart ... ok
+test select_takes_an_array_for_a_multiple_select_and_a_string_otherwise ... ok
+test snapshot_props_pairs_come_in_contract_order ... ok
+test snapshot_props_are_the_dirty_value_checked_selected_and_disabled_in_that_order ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/selector.rs (/home/claude/targets/w42-wasm/debug/deps/selector-a900f5021cd99461)
+
+running 2 tests
+test rejects_everything_outside_the_grammar_with_the_oracle_message ... ok
+test accepts_the_grammar_and_builds_the_parts ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests vn_runtime
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests vn_uikit
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+exit=0

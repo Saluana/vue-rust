@@ -1,0 +1,3 @@
+$ node cmp-native-wasm.mjs vn-scenarios (scratch check: default corpus)
+binary vn-scenarios: scenarios 79; same names and order as --list: true; byte-identical documents: 79; different: 0 []; largest document 1115 bytes
+exit=0

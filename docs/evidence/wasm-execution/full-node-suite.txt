@@ -1,0 +1,1070 @@
+$ node --test --test-reporter=spec "tests/**/*.test.mjs"
+✔ build: refuses a directory vue-native did not write, before compiling (exit 1) (5.678702ms)
+✔ build: a project with errors builds nothing and prints the diagnostics (exit 1) (177.714178ms)
+✔ build: usage mistakes exit 2 (16.187259ms)
+✔ build --target web: a .vue project produces an app, styles and module metadata (exit 0) (11368.864028ms)
+✔ build: rejects cleanup paths outside the output directory without deleting anything (14.725783ms)
+✔ check: the Counter example compiles with no diagnostics (exit 0) (186.431831ms)
+✔ check: Quick Quote compiles all four modules of its graph (exit 0) (488.904985ms)
+✔ check --json: the clean Quick Quote report lists its modules and the vue native (316.870195ms)
+✔ check: an unsupported package import fails with a coded, located diagnostic (exit 1) (4.533955ms)
+✔ check --json: the failing report carries the diagnostic code, file and span (3.953371ms)
+✔ check: negative control, a Counter copy with an injected package import is rejected (exit 1) (16.792084ms)
+✔ check: usage mistakes exit 2 with a message (0.997482ms)
+✔ check: the native target compiles the Counter too (31.348475ms)
+✔ help: prints the usage and exits 0 (0.888618ms)
+✔ check: a .vue file names the entry, its directory is the root unless --root says otherwise (255.996916ms)
+✔ check: unsupported globals are rejected in scripts, templates and imported modules (93.96657ms)
+✔ check: promoted vue names import cleanly on both targets; ReactiveEffect and createRenderer are rejected (VN6201) (52.651308ms)
+✔ check: a render function returned from setup passes in a .vue default export, a .js and a .ts module alike (A10); the Options render option is rejected (VN6007) (82.087226ms)
+✔ create: the counter template matches its example and compiles as a new project (240.021324ms)
+✔ create: the quick-quote template matches its example and compiles as a new project (633.290379ms)
+✔ create: the default template is counter, and a non-empty directory is refused (exit 2) (7.879267ms)
+✔ create: an unknown template is a usage error (exit 2) (9.011967ms)
+✔ doctor: reports the required toolchain pieces and exits 0 in this checkout (497.789272ms)
+✔ doctor: negative control, a checkout without the framework crates is reported missing (exit 1) (1626.61567ms)
+▶ headless: Counter (examples/counter)
+  ✔ the initial DOM shows count 0, double 0, reset disabled and no threshold message (13.807381ms)
+  ✔ clicks add one each; doubled follows; reset is enabled after the first click (13.966439ms)
+  ✔ the threshold message appears above five clicks and reset clears everything (15.292928ms)
+  ✔ negative control: a selector that matches nothing fails the run (exit 1) (11.459228ms)
+✔ headless: Counter (examples/counter) (47079.044994ms)
+▶ headless: script and usage errors
+  ✔ an unknown op is a script error (exit 2) (13.126614ms)
+  ✔ a script that is not JSON is a script error (exit 2) (25.118865ms)
+  ✔ running without a script is a usage error (exit 2) (11.378804ms)
+  ✔ a selector outside the supported subset is a script error (exit 2) (9.395604ms)
+  ✔ the supported selector forms match: class, tag, attribute, id compound and comma list (8.893894ms)
+  ✔ build: a headless app can be built again into its own directory (87288.074514ms)
+  ✔ build: --target headless writes the binary and a tool-owned manifest (30682.8459ms)
+✔ headless: script and usage errors (169882.998863ms)
+▶ headless: Quick Quote (examples/quick-quote)
+  ✔ the initial quote shows two lines, a total of $29.99 and the ready status (43.439455ms)
+✔ headless: Quick Quote (examples/quick-quote) (36604.373142ms)
+▶ headless: Quick Quote interaction sequence (examples/quick-quote, defineModel)
+  ✔ the whole interaction sequence matches the demo specification (20.27285ms)
+✔ headless: Quick Quote interaction sequence (examples/quick-quote, defineModel) (36504.561837ms)
+▶ headless: Quick Quote interaction sequence (tests/cli/fixtures/quick-quote-no-model)
+  ✔ the whole interaction sequence matches the demo specification (25.564426ms)
+✔ headless: Quick Quote interaction sequence (tests/cli/fixtures/quick-quote-no-model) (36974.165118ms)
+✔ checkWebWasm: rejects an empty module, which lacks the ABI exports (negative control) (1.690441ms)
+✔ checkWebWasm: rejects bytes that are not a wasm module (0.338437ms)
+✔ buildWebApp: a rerun into a tool-owned directory replaces its files and keeps it owned (48717.302286ms)
+✔ buildWebApp: rejects an invalid app name or container before building anything (10.908822ms)
+✔ the registry and every entry are frozen (1.60369ms)
+✔ every registry entry has a title, an explanation and a hint (0.634615ms)
+✔ codes follow the allocated ranges: VN1 parse, VN2 JS, VN3 TS, VN4 API/global, VN5 scope, VN9 internal (0.503236ms)
+✔ the registry has no unused codes: every code is produced by a rule or by the frontend (1.880815ms)
+✔ isKnownCode and codeInfo (0.532393ms)
+✔ Diagnostic rejects unknown codes, bad severities and empty messages (0.319332ms)
+✔ a Diagnostic keeps the documented fields and serializes to JSON without loss (1.285119ms)
+✔ formatDiagnostic renders file:line:column, the source line, carets, and the hint (exact text) (0.73272ms)
+✔ formatDiagnostic keeps tabs in the caret line so the underline stays aligned (0.651207ms)
+✔ formatDiagnostic counts CJK characters as two cells (3.004219ms)
+✔ formatDiagnostic counts an emoji (surrogate pair) as two cells and a combining mark as zero (0.382796ms)
+✔ a zero-length span still gets one caret (0.197472ms)
+✔ warnings are labelled as warnings and underline a single-line span (0.208165ms)
+✔ a multi-line span underlines from its start to the end of the first line (0.288514ms)
+✔ color is off by default and adds ANSI sequences only when requested (0.288699ms)
+✔ formatDiagnostics joins several diagnostics with a blank line and omits an empty hint (0.22208ms)
+✔ a valid module returns the Babel File node and no diagnostics (15.328699ms)
+✔ syntax error: "let x = ;" reports VN1000 on the offending semicolon (hand-computed 1:8-1:9) (4.5656ms)
+✔ unterminated string: span runs from the quote to the end of its line (1:10-1:14) (1.88845ms)
+✔ error at end of input gives a zero-length span at the end (1:14-1:14) (3.665205ms)
+✔ a TypeScript annotation in a .js module is a syntax error at the colon (1:5-1:6) (0.973479ms)
+✔ the same annotation is accepted in ts mode and erased by the type-only rules (5.288155ms)
+✔ an angle-bracket type assertion is accepted in ts mode and parsed as an erased type assertion (3.493125ms)
+✔ an angle-bracket assertion in tsx mode is rejected with a hint to use "as" (1.806506ms)
+✔ JSX in js is a VN1000 parse error whose message says JSX is not supported (span on the <) (1.141847ms)
+✔ JSX in ts is a VN1000 parse error whose message says JSX is not supported (span on the slash) (1.328032ms)
+✔ a non-JSX syntax error in ts keeps its own message (0.729932ms)
+✔ lang values are js, ts, jsx and tsx; anything else throws (0.917068ms)
+✔ sloppy-only "with" is reported as VN2001 by the parse mapping, not as a generic error (0.709338ms)
+✔ duplicate declaration from the parser is reported as VN5001 with the identifier name (0.397272ms)
+✔ top-level await, import.meta and JSX parse (their rejection is the checker's job) (2.675962ms)
+✔ lang must be js or ts (programmer error throws) (0.183251ms)
+✔ bad user input never throws: every malformed source yields a diagnostic (7.43125ms)
+✔ checkSource returns no AST, no analysis and only the parse diagnostics for a syntax error (0.91265ms)
+✔ LF: line and column of each offset in ab\ncd (hand-computed) (3.036638ms)
+✔ CRLF counts as one terminator; the LF maps to the end of the line content (0.438777ms)
+✔ lone CR is a line terminator (0.2634ms)
+✔ U+2028 and U+2029 are line terminators as in ECMAScript (0.191816ms)
+✔ astral characters take two UTF-16 columns (0.359626ms)
+✔ combining marks take one column each (no grapheme merging) (0.281745ms)
+✔ a BOM is an ordinary code unit at offset 0 and counts as a column (matches Babel loc) (0.232752ms)
+✔ empty source has one line (0.187588ms)
+✔ offsetAt inverts posAt and validates line and column ranges (2.797493ms)
+✔ posAt rejects offsets outside the source (0.555981ms)
+✔ createLineMap rejects non-string input (programmer error) (0.359921ms)
+✔ round trip posAt -> offsetAt holds for every offset of a mixed corpus without CRLF (0.201914ms)
+✔ Babel oracle: identifier positions agree with @babel/parser loc for mixed terminators (8.342001ms)
+✔ Diagnostic rejects spans that are not Pos objects (programmer error) (0.531765ms)
+✔ Diagnostic rejects an end before its start (0.1677ms)
+✔ createDiagnostic falls back to the registry title and hint when none are given (0.212061ms)
+✔ a diagnostic after an astral character reports UTF-16 columns (the emoji takes two units) (1.705552ms)
+✔ a diagnostic on a line after a CRLF is reported on the right line and column (0.977637ms)
+✔ import { ref } from vue is accepted and a named import can be called (13.849401ms)
+✔ Map, Set, Promise, Error and TypeError constructors are accepted (11.025251ms)
+✔ Symbol(...) is accepted as a call (Symbol is not constructible, so new Symbol is rejected) (1.748098ms)
+✔ typed IO constructors Uint8Array and ArrayBuffer are accepted (1.674191ms)
+✔ a new of an imported binding is accepted (0.955777ms)
+✔ object literals with accessors, methods and spread are accepted (2.464114ms)
+✔ computed __proto__ keys and __proto (not __proto__) are accepted (1.082576ms)
+✔ shorthand __proto__ creates an own property and is accepted (0.576466ms)
+✔ async functions, await in functions, and optional chaining are accepted (1.989685ms)
+✔ arrow functions with default and rest parameters are accepted (1.555486ms)
+✔ typeof of an undeclared name is accepted and not reported by the profile checker (0.532865ms)
+✔ let/const shadowing a denied global name is accepted (the name is a local binding) (0.524448ms)
+✔ a local function named require is accepted (it is not CommonJS) (0.642588ms)
+✔ Object.create(null), Object.freeze and plain Object calls are accepted (0.649389ms)
+✔ var declared in a block is accepted (var is function-scoped, not block-scoped) (0.544109ms)
+✔ labels, switch, do-while and block-level function declarations are accepted (2.078765ms)
+✔ named function expressions and array holes are accepted (0.829889ms)
+✔ untagged template literals and string methods are accepted (0.961963ms)
+✔ dynamic import with a literal specifier is accepted (0.569674ms)
+✔ exports of local names, default function export and re-export clauses are accepted (1.306397ms)
+✔ document is accepted for the web target but rejected for native (see the reject fixture) (2.887703ms)
+✔ TypeScript type syntax is accepted and erased: annotations, interfaces, aliases, generics, as, satisfies, ! (9.471013ms)
+✔ TypeScript type-only imports, exports and declare statements are accepted (2.571389ms)
+✔ TypeScript overload signatures and declare class are accepted (2.088866ms)
+✔ an angle-bracket type assertion in ts is accepted and erased: only the expression is analysed (1.067066ms)
+✔ the reject fixture set is not empty (2.779332ms)
+✔ fixture accessor-js.js reports exactly its @expect diagnostics (16.227291ms)
+✔ fixture annex-b-function.js reports exactly its @expect diagnostics (2.395526ms)
+✔ fixture arguments-binding.js reports exactly its @expect diagnostics (1.528799ms)
+✔ fixture arguments.js reports exactly its @expect diagnostics (3.585306ms)
+✔ fixture bigint-literal.js reports exactly its @expect diagnostics (1.160711ms)
+✔ fixture class-extends.js reports exactly its @expect diagnostics (1.344913ms)
+✔ fixture class.js reports exactly its @expect diagnostics (0.9167ms)
+✔ fixture constructor-codegen.js reports exactly its @expect diagnostics (2.635167ms)
+✔ fixture debugger.js reports exactly its @expect diagnostics (1.865907ms)
+✔ fixture decorators-js.js reports exactly its @expect diagnostics (2.089144ms)
+✔ fixture delete-identifier.js reports exactly its @expect diagnostics (0.908707ms)
+✔ fixture duplicate-declaration.js reports exactly its @expect diagnostics (1.190989ms)
+✔ fixture dynamic-import.js reports exactly its @expect diagnostics (1.265241ms)
+✔ fixture eval-assignment.js reports exactly its @expect diagnostics (1.467519ms)
+✔ fixture for-await.js reports exactly its @expect diagnostics (2.089436ms)
+✔ fixture generator.js reports exactly its @expect diagnostics (0.904352ms)
+✔ fixture global-bigint.js reports exactly its @expect diagnostics (0.832134ms)
+✔ fixture global-commonjs.js reports exactly its @expect diagnostics (0.543084ms)
+✔ fixture global-dom.js reports exactly its @expect diagnostics (0.653511ms)
+✔ fixture global-eval.js reports exactly its @expect diagnostics (1.214957ms)
+✔ fixture global-function.js reports exactly its @expect diagnostics (0.576336ms)
+✔ fixture global-node.js reports exactly its @expect diagnostics (2.90453ms)
+✔ fixture global-proxy.js reports exactly its @expect diagnostics (0.606036ms)
+✔ fixture global-reflect.js reports exactly its @expect diagnostics (0.973154ms)
+✔ fixture global-regexp.js reports exactly its @expect diagnostics (0.431969ms)
+✔ fixture global-this.js reports exactly its @expect diagnostics (0.473795ms)
+✔ fixture global-typed-arrays.js reports exactly its @expect diagnostics (0.453968ms)
+✔ fixture global-weak.js reports exactly its @expect diagnostics (0.468358ms)
+✔ fixture import-meta.js reports exactly its @expect diagnostics (0.891894ms)
+✔ fixture jsx-js.jsx reports exactly its @expect diagnostics (2.352821ms)
+✔ fixture legacy-octal-escape.js reports exactly its @expect diagnostics (0.959711ms)
+✔ fixture legacy-octal.js reports exactly its @expect diagnostics (0.575043ms)
+✔ fixture new-target.js reports exactly its @expect diagnostics (0.916206ms)
+✔ fixture new-unknown.js reports exactly its @expect diagnostics (0.765161ms)
+✔ fixture object-metaprogramming.js reports exactly its @expect diagnostics (33.525358ms)
+✔ fixture private-name.js reports exactly its @expect diagnostics (2.007802ms)
+✔ fixture proto-access.js reports exactly its @expect diagnostics (1.157049ms)
+✔ fixture proto-literal.js reports exactly its @expect diagnostics (1.367975ms)
+✔ fixture regexp-literal.js reports exactly its @expect diagnostics (1.130941ms)
+✔ fixture static-block.js reports exactly its @expect diagnostics (0.933202ms)
+✔ fixture super.js reports exactly its @expect diagnostics (1.06807ms)
+✔ fixture symbol-dispose.js reports exactly its @expect diagnostics (0.988907ms)
+✔ fixture tagged-template.js reports exactly its @expect diagnostics (2.216327ms)
+✔ fixture top-level-await.js reports exactly its @expect diagnostics (1.153525ms)
+✔ fixture ts-accessor.ts reports exactly its @expect diagnostics (8.105874ms)
+✔ fixture ts-decorator.ts reports exactly its @expect diagnostics (1.46455ms)
+✔ fixture ts-enum.ts reports exactly its @expect diagnostics (1.053193ms)
+✔ fixture ts-export-equals.ts reports exactly its @expect diagnostics (2.720426ms)
+✔ fixture ts-import-equals.ts reports exactly its @expect diagnostics (0.98691ms)
+✔ fixture ts-jsx.tsx reports exactly its @expect diagnostics (2.227053ms)
+✔ fixture ts-namespace.ts reports exactly its @expect diagnostics (2.793983ms)
+✔ fixture ts-param-property.ts reports exactly its @expect diagnostics (2.754132ms)
+✔ fixture ts-using.ts reports exactly its @expect diagnostics (1.258652ms)
+✔ fixture with.js reports exactly its @expect diagnostics (0.639594ms)
+✔ fixture yield.js reports exactly its @expect diagnostics (0.933328ms)
+✔ a const enum is rejected by the same rule as enum (VN3001 over the "const enum E" head) (0.721014ms)
+✔ negative control: a shifted column in the expectation is detected (0.722163ms)
+✔ negative control: a wrong code in the expectation is detected (0.69009ms)
+✔ negative control: a missing expectation leaves the reported diagnostic unexpected (0.41054ms)
+✔ negative control: a fixture without any @expect header is rejected by the harness (0.316947ms)
+✔ JSX in tsx is rejected with VN3009 at the element span and the template hint (0.593647ms)
+✔ the rule table and each rule are frozen (1.480153ms)
+✔ every rule has a unique id and a registered code, and each code belongs to exactly one rule (0.461617ms)
+✔ every rule names a manifest row (L01-L21 or S01-S25) and a message and hint (0.48547ms)
+✔ languages and targets are declared from the allowed sets (0.461996ms)
+✔ node rules list node types, reference rules list nothing extra, parse rules list reasons (0.233952ms)
+✔ each parser reason code maps to exactly one rule (0.398547ms)
+✔ every rule has a reject fixture named <rule id>.js or .ts (2.532664ms)
+✔ every reject fixture belongs to a rule of the table (0.379806ms)
+✔ each reject fixture has the extension of its rule language mode (2.186951ms)
+✔ ruleById returns the table entry and rejects unknown ids (0.90202ms)
+✔ module scope is the root and has id 0 with no parent (8.857904ms)
+✔ var hoisting: a read before "var v" resolves to the var and is not a TDZ read (2.563402ms)
+✔ function declarations are hoisted: a call before the declaration resolves without TDZ (1.692262ms)
+✔ a textual read before "let x" needs a TDZ check (1.183656ms)
+✔ a read after "let y" does not need a TDZ check (0.938529ms)
+✔ self-initialization "let z = z + 1" needs a TDZ check (0.790341ms)
+✔ a closure created before the initializer and called after still needs a TDZ check (conservative) (3.674067ms)
+✔ a closure created after the initializer does not need a TDZ check (1.417453ms)
+✔ a hoisted function that reads a later let needs a TDZ check (1.220908ms)
+✔ captured and mutated: a closure that writes a let marks it captured and mutated (1.200951ms)
+✔ a let that is only updated locally is mutated but not captured (1.096809ms)
+✔ per-iteration copy: a C-style for-let captured by a closure needs a fresh cell per iteration (0.615375ms)
+✔ per-iteration copy: a for-of const captured by a closure gets a fresh binding per iteration, not mutated (0.603876ms)
+✔ per-iteration copy is not requested for a const C-style head (0.526753ms)
+✔ shadowing: the inner let resolves its own references and the outer one resolves outside (0.503443ms)
+✔ catch parameter is a catch binding and its reference resolves to it (0.562849ms)
+✔ destructuring introduces one const binding per identifier, and defaults are reads (2.681877ms)
+✔ an import binding is live, immutable and always marked for a TDZ check (cyclic graphs) (1.271938ms)
+✔ typeof of an undeclared name creates a global reference with no diagnostic (0.414932ms)
+✔ assignment to a const is a VN5002 warning at the assigned name (0.855098ms)
+✔ assignment to an imported binding is a VN5003 warning (0.404245ms)
+✔ assignment to a named function expression name is a VN5004 warning (0.636549ms)
+✔ a reference to a named function expression name resolves inside the function without a diagnostic (0.466585ms)
+✔ duplicate lexical declaration is a VN5001 error at the second name (0.607751ms)
+✔ a var hoisted out of a block conflicts with a let of the same name in that block (0.588612ms)
+✔ a let that repeats a parameter name is a VN5001 error (0.751359ms)
+✔ a var may redeclare a parameter (no conflict) (0.511353ms)
+✔ arrow functions use the enclosing function as their lexical this; module-level this is the module (0.521586ms)
+✔ module-level this is absent when no code uses it (0.218122ms)
+✔ implicit arguments: a non-arrow function that reads arguments gets an implicit binding (0.991484ms)
+✔ arguments at module level is an unresolved global (0.413286ms)
+✔ a switch-case let is marked for a TDZ check even when read in the same case group (0.864561ms)
+✔ exports: local names, renamed exports and exported declarations are recorded on the binding (1.520196ms)
+✔ a parameter default that reads a later parameter needs a TDZ check; reading an earlier one does not (0.547462ms)
+✔ for-of head bindings are in TDZ while the iterable is evaluated (0.714514ms)
+✔ destructuring assignment and compound assignment mark their targets as mutated (1.274905ms)
+✔ a parameter that is reassigned is mutated and not captured (0.357165ms)
+✔ a captured variable two function levels deep is captured (0.400787ms)
+✔ block-level function declarations are block scoped in strict code (0.263689ms)
+✔ a function expression name does not leak to the enclosing scope (0.271339ms)
+✔ a class declaration is bound like let (classes are rejected by the profile, not by scope analysis) (1.082267ms)
+✔ TypeScript enum and type-only declarations are handled without crashing or extra references (7.724369ms)
+✔ the result is JSON-serializable without cycles and round-trips exactly (4.487133ms)
+✔ describeScopes lists scopes, bindings, references and globals (0.905257ms)
+✔ globalsUsed is sorted and unique (0.328519ms)
+✔ precondition: the manifest statuses these cases rely on are the expected ones (7.181647ms)
+✔ supported globals and members pass: Math.PI, Object.keys, Array.isArray, Map (30.942204ms)
+✔ an excluded global (console) is VN4016 at its first use, with the manifest hint (1.830662ms)
+✔ each name is reported once, at its first unresolved use (1.34826ms)
+✔ an excluded constructor used as a value (Proxy) is VN4016 (0.994463ms)
+✔ an experimental global (RegExp, status E) is VN4016 and reports the manifest hint (0.885315ms)
+✔ globalThis (X) is VN4016 (0.743468ms)
+✔ an unknown name that is not in the manifest is VN4016 with the generic hint (0.719541ms)
+✔ new of an excluded constructor (Date, status E) is VN4016 only: the VN2007 finding on the same span is superseded (1.265945ms)
+✔ new of a typed array outside the profile (Int8Array) is VN4016 at the callee (1.27667ms)
+✔ new of a supported but non-constructible global (Symbol) keeps VN2007, since no global is missing (0.869351ms)
+✔ a global used only as a typeof operand is exempt; a plain use of the same name is still reported (1.3686ms)
+✔ a plain use of window is VN4016 (0.33549ms)
+✔ document on the web target is still VN4016 (no browser DOM in the manifest) (0.352807ms)
+✔ test-only host globals: trace passes on the test target and is VN4016 on native with its target hint (0.975723ms)
+✔ testHost passes on the test target and is VN4016 on the web target (0.79307ms)
+✔ a shadowed global (a const named console) is ignored (1.634465ms)
+✔ arguments at module level keeps VN2015; the generic unknown-global finding on the same span is dropped (0.452959ms)
+✔ new Proxy(...) reports only VN4016 on the constructor name (VN2007 is superseded on the same span) (0.487552ms)
+✔ Object.defineProperty on a declared object is VN4017 with the manifest hint (0.471666ms)
+✔ Object.setPrototypeOf is VN4017 (the legacy VN4008 is not reported on top) (0.560679ms)
+✔ Array.prototype.copyWithin is VN4017 for the whole member path (0.865618ms)
+✔ Symbol.dispose is VN4017 (the legacy VN4015 is not reported on top) (0.354998ms)
+✔ Reflect.get is not listed, so an excluded root (Reflect) is the only finding (0.419846ms)
+✔ an unlisted member of a supported root is not judged by this check (0.310234ms)
+✔ a computed member is ignored (0.41474ms)
+✔ an optional member chain is judged like a plain one (0.57021ms)
+✔ a member on this is ignored (14.286806ms)
+✔ a shadowed object (const Object = {...}) makes Object.keys and Object.defineProperty user members (2.609011ms)
+✔ a parameter that shadows Math makes Math.random a user member (1.193295ms)
+✔ Math.random follows its manifest status: VN4017 when excluded, no finding when supported (0.493426ms)
+✔ Date.now follows its manifest status on top of the excluded Date root (VN4016 on Date always) (0.483023ms)
+✔ ts: a member of a declared object is VN4017; type annotations and type arguments are not references (10.798285ms)
+✔ ts: an angle-bracket assertion is erased and its expression is still checked (3.562965ms)
+✔ without the stdlib option, the legacy codes are reported and console is not judged (1.44089ms)
+✔ target test is accepted and a supported global passes on it (1.587854ms)
+✔ standalone compilation enforces the stdlib manifest before producing Rust (3.097313ms)
+✔ the corpus runs in V8 and contains real TDZ faults and safe reads (1.221633ms)
+✔ soundness: every snippet that faults at run time in V8 is flagged by needsTdzCheck (no false negatives) (130.286176ms)
+ℹ V8 snippets: 59, real TDZ faults: 19, false negatives: 0
+✔ false positives are bounded: the analysis flags some safe snippets but not all of them (16.102652ms)
+ℹ safe snippets: 40, conservative false positives: 10, cleared: 30
+✔ negative control: an analysis that never flags TDZ is detected as unsound (39.123396ms)
+✔ negative control: flagging only textually-earlier reads misses closure faults, and the harness reports them (56.057167ms)
+✔ var bindings are never flagged for a TDZ check, and V8 never faults on them (6.640383ms)
+✔ a snippet whose x is only read after initialization is never a fault and not an unsound case (1.150372ms)
+✔ an async module imports the async runtime and emits async bodies with heap frames (38.869933ms)
+✔ no Value temporary or binding is a Rust local in an async body (GC safety by construction) (4.416219ms)
+✔ a sync module has no async runtime import and no frames (sync output is unchanged) (1.792575ms)
+✔ async syntax outside the profile is rejected with a code: await in parameters, for await, async generators (4.909766ms)
+✔ negative control: the same module without await compiles without frames (1.581942ms)
+✔ name mangling keeps ASCII identifiers and escapes other characters (1.50989ms)
+✔ literal pool numbers constants in first-use order and reuses equal strings (0.412775ms)
+✔ compilation is deterministic and independent of the working directory (27.753735ms)
+✔ unsupported constructs stop with VN9001 and a span; no Rust is produced (3.245407ms)
+✔ profile rejections are reported with their registered codes (3.105467ms)
+✔ TypeScript annotations are erased and compile like the JavaScript (10.184027ms)
+✔ HIR resolves identifiers and marks captured bindings as cells (7.592038ms)
+✔ negative control: a doctored golden is reported as a difference (301.523599ms)
+✔ annotations, as, satisfies, non-null, generic calls, optional parameters lower to the JavaScript meaning (48.89491ms)
+✔ enums are rejected (VN3001), not erased (2.169473ms)
+✔ a type-only import is elided: no request, no binding (3.143564ms)
+✔ negative control: a value use keeps the import and its request (2.056491ms)
+✔ import type and export type are erased whole; a side-effect import is kept (1.793219ms)
+✔ a this parameter is erased: no parameter, no length, and the callee keeps its own arguments (9.197074ms)
+✔ module ids are project-root-relative and /-prefixed; escapes are refused (2.612184ms)
+✔ a two-module graph with a cycle compiles; requests use canonical ids; natives are not compiled (36.017057ms)
+✔ output is deterministic across runs (16.308414ms)
+✔ the vue import policy: default and namespace imports, subpaths, excluded exports (4.113173ms)
+✔ closed world: packages, Node built-ins, missing modules, absolute and unknown file types are rejected (4.425573ms)
+✔ negative control: the same graph with a valid import compiles, with a broken one it does not (4.304137ms)
+✔ type-only imports and exports are erased, so their targets need not exist (TypeScript) (11.806941ms)
+✔ a .vue module compiles through compileSfc and its generated code is lowered like a module (79.390361ms)
+✔ the module table lists the compiled modules in order (3.539716ms)
+▶ accepting fixtures
+  ✔ there are at least 25 accepting fixtures (2.797338ms)
+  ✔ ok-binding-named-like-global.vue compiles without errors to a module the frontend parses (49.237457ms)
+  ✔ ok-binding-named-like-global.vue: generated imports from vue are allowed for generated code (13.802285ms)
+  ✔ ok-builtins.vue compiles without errors to a module the frontend parses (29.964676ms)
+  ✔ ok-builtins.vue: generated imports from vue are allowed for generated code (19.267567ms)
+  ✔ ok-computed.vue compiles without errors to a module the frontend parses (15.350995ms)
+  ✔ ok-computed.vue: generated imports from vue are allowed for generated code (10.350713ms)
+  ✔ ok-counter.vue compiles without errors to a module the frontend parses (14.991321ms)
+  ✔ ok-counter.vue: generated imports from vue are allowed for generated code (23.45995ms)
+  ✔ ok-custom-directive.vue compiles without errors to a module the frontend parses (8.455328ms)
+  ✔ ok-custom-directive.vue: generated imports from vue are allowed for generated code (14.745176ms)
+  ✔ ok-define-component-fn.vue compiles without errors to a module the frontend parses (4.492765ms)
+  ✔ ok-define-component-fn.vue: generated imports from vue are allowed for generated code (2.476917ms)
+  ✔ ok-define-component-setup.vue compiles without errors to a module the frontend parses (3.049044ms)
+  ✔ ok-define-component-setup.vue: generated imports from vue are allowed for generated code (1.504555ms)
+  ✔ ok-define-model.vue compiles without errors to a module the frontend parses (8.255977ms)
+  ✔ ok-define-model.vue: generated imports from vue are allowed for generated code (6.569356ms)
+  ✔ ok-destructured-props.vue compiles without errors to a module the frontend parses (12.508623ms)
+  ✔ ok-destructured-props.vue: generated imports from vue are allowed for generated code (27.388045ms)
+  ✔ ok-directives-misc.vue compiles without errors to a module the frontend parses (10.436231ms)
+  ✔ ok-directives-misc.vue: generated imports from vue are allowed for generated code (19.279697ms)
+  ✔ ok-dynamic-component.vue compiles without errors to a module the frontend parses (21.211645ms)
+  ✔ ok-dynamic-component.vue: generated imports from vue are allowed for generated code (29.474799ms)
+  ✔ ok-dynamic-event.vue compiles without errors to a module the frontend parses (11.407952ms)
+  ✔ ok-dynamic-event.vue: generated imports from vue are allowed for generated code (6.727216ms)
+  ✔ ok-event-modifiers.vue compiles without errors to a module the frontend parses (18.367601ms)
+  ✔ ok-event-modifiers.vue: generated imports from vue are allowed for generated code (25.001769ms)
+  ✔ ok-expose-ref.vue compiles without errors to a module the frontend parses (8.600446ms)
+  ✔ ok-expose-ref.vue: generated imports from vue are allowed for generated code (18.228105ms)
+  ✔ ok-input-range.vue compiles without errors to a module the frontend parses (9.691588ms)
+  ✔ ok-input-range.vue: generated imports from vue are allowed for generated code (13.549977ms)
+  ✔ ok-interpolation-escape.vue compiles without errors to a module the frontend parses (3.045807ms)
+  ✔ ok-interpolation-escape.vue: generated imports from vue are allowed for generated code (1.99999ms)
+  ✔ ok-normal-plus-setup.vue compiles without errors to a module the frontend parses (5.381509ms)
+  ✔ ok-normal-plus-setup.vue: generated imports from vue are allowed for generated code (11.276117ms)
+  ✔ ok-normal-template.vue compiles without errors to a module the frontend parses (2.538588ms)
+  ✔ ok-normal-template.vue: generated imports from vue are allowed for generated code (1.618134ms)
+  ✔ ok-props-emits.vue compiles without errors to a module the frontend parses (19.54864ms)
+  ✔ ok-props-emits.vue: generated imports from vue are allowed for generated code (10.629132ms)
+  ✔ ok-provide-inject.vue compiles without errors to a module the frontend parses (6.676269ms)
+  ✔ ok-provide-inject.vue: generated imports from vue are allowed for generated code (12.728901ms)
+  ✔ ok-scoped-slots.vue compiles without errors to a module the frontend parses (10.635632ms)
+  ✔ ok-scoped-slots.vue: generated imports from vue are allowed for generated code (7.199468ms)
+  ✔ ok-scoped-style.vue compiles without errors to a module the frontend parses (14.504617ms)
+  ✔ ok-scoped-style.vue: generated imports from vue are allowed for generated code (4.427748ms)
+  ✔ ok-slot-directive.vue compiles without errors to a module the frontend parses (14.195423ms)
+  ✔ ok-slot-directive.vue: generated imports from vue are allowed for generated code (12.175222ms)
+  ✔ ok-slots.vue compiles without errors to a module the frontend parses (1.934463ms)
+  ✔ ok-slots.vue: generated imports from vue are allowed for generated code (1.368987ms)
+  ✔ ok-src-template.vue compiles without errors to a module the frontend parses (1.581769ms)
+  ✔ ok-src-template.vue: generated imports from vue are allowed for generated code (1.014804ms)
+  ✔ ok-style-src.vue compiles without errors to a module the frontend parses (2.321889ms)
+  ✔ ok-style-src.vue: generated imports from vue are allowed for generated code (2.038855ms)
+  ✔ ok-template-only.vue compiles without errors to a module the frontend parses (2.786866ms)
+  ✔ ok-template-only.vue: generated imports from vue are allowed for generated code (1.050977ms)
+  ✔ ok-ts-generic.vue compiles without errors to a module the frontend parses (18.724563ms)
+  ✔ ok-ts-generic.vue: generated imports from vue are allowed for generated code (11.283304ms)
+  ✔ ok-ts-template.vue compiles without errors to a module the frontend parses (9.943866ms)
+  ✔ ok-ts-template.vue: generated imports from vue are allowed for generated code (6.587136ms)
+  ✔ ok-v-bind-css.vue compiles without errors to a module the frontend parses (8.994382ms)
+  ✔ ok-v-bind-css.vue: generated imports from vue are allowed for generated code (9.666388ms)
+  ✔ ok-v-for-key.vue compiles without errors to a module the frontend parses (20.883437ms)
+  ✔ ok-v-for-key.vue: generated imports from vue are allowed for generated code (19.479742ms)
+  ✔ ok-v-if-else.vue compiles without errors to a module the frontend parses (15.716466ms)
+  ✔ ok-v-if-else.vue: generated imports from vue are allowed for generated code (8.568647ms)
+  ✔ ok-v-model-checkbox.vue compiles without errors to a module the frontend parses (20.276404ms)
+  ✔ ok-v-model-checkbox.vue: generated imports from vue are allowed for generated code (12.549957ms)
+  ✔ ok-v-model-select.vue compiles without errors to a module the frontend parses (5.920041ms)
+  ✔ ok-v-model-select.vue: generated imports from vue are allowed for generated code (5.17442ms)
+  ✔ ok-v-model-text.vue compiles without errors to a module the frontend parses (4.706015ms)
+  ✔ ok-v-model-text.vue: generated imports from vue are allowed for generated code (5.320822ms)
+  ✔ ok-v-show.vue compiles without errors to a module the frontend parses (4.865361ms)
+  ✔ ok-v-show.vue: generated imports from vue are allowed for generated code (6.715293ms)
+  ✔ ok-vue-import.vue compiles without errors to a module the frontend parses (3.329223ms)
+  ✔ ok-vue-import.vue: generated imports from vue are allowed for generated code (3.30651ms)
+  ✔ ok-watch-lifecycle.vue compiles without errors to a module the frontend parses (6.089026ms)
+  ✔ ok-watch-lifecycle.vue: generated imports from vue are allowed for generated code (18.010346ms)
+  ✔ ok-with-defaults.vue compiles without errors to a module the frontend parses (27.981384ms)
+  ✔ ok-with-defaults.vue: generated imports from vue are allowed for generated code (7.75365ms)
+  ✔ a setup component exposes its bindings and the official __name (4.054208ms)
+  ✔ TypeScript setup components are emitted as TypeScript (5.367396ms)
+  ✔ a scoped style sets __scopeId and records the scope (5.304892ms)
+  ✔ v-bind() in CSS is collected per style block (5.294703ms)
+  ✔ a style block without scoped records no scope id and no vars (2.233771ms)
+  ✔ a template src and a style src are recorded as dependencies (8.026068ms)
+  ✔ a setup component with a template exports the component as default and has no style import (2.851738ms)
+  ✔ a setup component source map names the file by its project-relative name (8.033905ms)
+✔ accepting fixtures (923.774294ms)
+▶ negative controls
+  ✔ a span that is off by one column is not accepted (18.229451ms)
+  ✔ a span that is off by one line is not accepted (1.210191ms)
+  ✔ a fixture broken on purpose gets a different code (2.541708ms)
+  ✔ a clean fixture with one unsupported global gets exactly that diagnostic (27.393592ms)
+  ✔ removing the unsupported import from a rejecting fixture makes it accept (8.188191ms)
+✔ negative controls (59.308508ms)
+✔ slot aliases do not expose parameters of nested default functions to the template (22.607681ms)
+[1m[33m[@vue/compiler-sfc][0m[33m `defineProps` is a compiler macro and no longer needs to be imported.[0m
+
+[1m[33m[@vue/compiler-sfc][0m[33m `v-model` cannot update a `const` reactive binding `form`. The compiler has transformed it to `let` to make the update work.[0m
+
+[1m[33m[@vue/compiler-sfc][0m[33m `defineProps` is a compiler macro and no longer needs to be imported.[0m
+
+[1m[33m[@vue/compiler-sfc][0m[33m `v-model` cannot update a `const` reactive binding `form`. The compiler has transformed it to `let` to make the update work.[0m
+
+[1m[33m[@vue/compiler-sfc][0m[33m `defineProps` is a compiler macro and no longer needs to be imported.[0m
+
+[1m[33m[@vue/compiler-sfc][0m[33m `v-model` cannot update a `const` reactive binding `form`. The compiler has transformed it to `let` to make the update work.[0m
+
+▶ determinism
+  ✔ compiling each fixture twice in one process gives identical results (1268.278733ms)
+  ✔ a different working directory and a relative rootDir give byte-identical output (2709.420861ms)
+  ✔ no output mentions an absolute path of this machine (142.643394ms)
+✔ determinism (4121.798114ms)
+[1m[33m[@vue/compiler-sfc][0m[33m `v-model` cannot update a `const` reactive binding `form`. The compiler has transformed it to `let` to make the update work.[0m
+
+[1m[33m[@vue/compiler-sfc][0m[33m `defineProps` is a compiler macro and no longer needs to be imported.[0m
+
+▶ diagnostics fixtures
+  ✔ the table covers every rejecting fixture and every fixture file is listed (9.011784ms)
+  ✔ bad-custom-block.vue: exact code and span (10.665214ms)
+  ✔ bad-style-scss.vue: exact code and span (1.911265ms)
+  ✔ bad-template-pug.vue: exact code and span (0.944397ms)
+  ✔ bad-script-src.vue: exact code and span (1.346607ms)
+  ✔ bad-script-tsx.vue: exact code and span (1.144498ms)
+  ✔ bad-options-data.vue: exact code and span (11.600068ms)
+  ✔ bad-options-methods.vue: exact code and span (1.739948ms)
+  ✔ bad-default-export-call.vue: exact code and span (4.715402ms)
+  ✔ bad-define-component-render.vue: exact code and span (3.264469ms)
+  ✔ bad-define-component-async.vue: exact code and span (4.281985ms)
+  ✔ bad-define-component-extra.vue: exact code and span (2.645651ms)
+  ✔ bad-define-component-template-state.vue: exact code and span (13.003035ms)
+  ✔ bad-name-not-string.vue: exact code and span (1.966901ms)
+  ✔ bad-setup-export.vue: exact code and span (3.128521ms)
+  ✔ bad-dup-template.vue: exact code and span (0.706504ms)
+  ✔ bad-dup-setup.vue: exact code and span (0.802418ms)
+  ✔ bad-template-src-outside.vue: exact code and span (0.987591ms)
+  ✔ bad-style-src-missing.vue: exact code and span (1.095698ms)
+  ✔ bad-style-module.vue: exact code and span (0.791492ms)
+  ✔ bad-only-style.vue: exact code and span (2.279988ms)
+  ✔ bad-reserved-sfc.vue: exact code and span (1.771106ms)
+  ✔ bad-reserved-render.vue: exact code and span (1.978819ms)
+  ✔ bad-parse-unclosed.vue: exact code and span (0.836869ms)
+  ✔ bad-expr-syntax.vue: exact code and span (6.970453ms)
+  ✔ bad-define-twice.vue: exact code and span (7.726328ms)
+  ✔ bad-v-else.vue: exact code and span (11.029016ms)
+  ✔ bad-css-syntax.vue: exact code and span (8.54745ms)
+  ✔ bad-tag-mark.vue: exact code and span (1.128218ms)
+  ✔ bad-tag-component.vue: exact code and span (0.680021ms)
+  ✔ bad-custom-element.vue: exact code and span (0.579877ms)
+  ✔ bad-tag-table.vue: exact code and span (0.554949ms)
+  ✔ bad-tag-video.vue: exact code and span (0.517184ms)
+  ✔ bad-tag-suspense.vue: exact code and span (0.553702ms)
+  ✔ bad-tag-base-transition.vue: exact code and span (0.734803ms)
+  ✔ bad-v-html.vue: exact code and span (1.285155ms)
+  ✔ bad-passive.vue: exact code and span (1.912104ms)
+  ✔ bad-input-file.vue: exact code and span (0.840062ms)
+  ✔ bad-input-date.vue: exact code and span (0.476155ms)
+  ✔ bad-input-number.vue: exact code and span (0.545052ms)
+  ✔ bad-input-dynamic.vue: exact code and span (1.257845ms)
+  ✔ bad-directive-unbound.vue: exact code and span (0.578285ms)
+  ✔ bad-modifier-camel.vue: exact code and span (1.16722ms)
+  ✔ bad-modifier-unknown.vue: exact code and span (1.255625ms)
+  ✔ bad-attr-contenteditable.vue: exact code and span (0.681119ms)
+  ✔ bad-instance-el.vue: exact code and span (1.17355ms)
+  ✔ bad-vue-import-create-renderer.vue: exact code and span (1.017251ms)
+  ✔ bad-vue-default-import.vue: exact code and span (4.649953ms)
+  ✔ bad-vue-namespace.vue: exact code and span (1.283909ms)
+  ✔ bad-vue-subpath.vue: exact code and span (1.191604ms)
+  ✔ bad-node-builtin.vue: exact code and span (0.877097ms)
+  ✔ bad-proxy-astral.vue: exact code and span (1.396845ms)
+  ✔ bad-eval-setup.vue: exact code and span (0.946714ms)
+  ✔ bad-require.vue: exact code and span (2.308558ms)
+  ✔ bad-window-native.vue: exact code and span (0.791093ms)
+  ✔ bad-class.vue: exact code and span (1.743316ms)
+  ✔ bad-with.vue: exact code and span (1.171185ms)
+  ✔ bad-generator.vue: exact code and span (1.437162ms)
+  ✔ bad-await-toplevel.vue: exact code and span (1.310874ms)
+  ✔ bad-regexp.vue: exact code and span (1.124039ms)
+  ✔ bad-proto-access.vue: exact code and span (1.827247ms)
+  ✔ bad-jsx-setup.vue: exact code and span (12.936869ms)
+  ✔ bad-ts-enum.vue: exact code and span (1.603774ms)
+  ✔ bad-ts-namespace.vue: exact code and span (1.282718ms)
+  ✔ bad-ts-using.vue: exact code and span (13.940445ms)
+  ✔ bad-let-dup.vue: exact code and span (1.377504ms)
+  ✔ bad-const-assign.vue: exact code and span (16.637079ms)
+  ✔ bad-v-model-reactive-const.vue: exact code and span (4.169583ms)
+  ✔ bad-empty-dynamic-arg.vue: exact code and span (1.317484ms)
+  ✔ bad-empty-interpolation.vue: exact code and span (0.412904ms)
+  ✔ bad-macro-import.vue: exact code and span (7.730746ms)
+  ✔ a warning does not stop compilation (5.014741ms)
+  ✔ every error registered in SFC_CODES is produced by a fixture row (0.62604ms)
+  ✔ registry entries have a title, an explanation and a hint (1.714912ms)
+  ✔ serializeDiagnostics prints the caret under the offending span (1.553533ms)
+  ✔ astral characters count as two UTF-16 units before the span (1.386394ms)
+✔ diagnostics fixtures (232.917518ms)
+▶ options
+  ✔ filename is required and must be a string (2.034342ms)
+  ✔ target must be native, web or test (0.332967ms)
+  ✔ id must be letters, digits, underscore or dash (0.639357ms)
+  ✔ trustedHtml is only allowed for the web target (0.331085ms)
+  ✔ a missing rootDir is an error, not a silent default (0.50482ms)
+  ✔ the source must be a string (0.278017ms)
+  ✔ explicit id is used for the scope id and the style attribute (54.558426ms)
+✔ options (60.548382ms)
+▶ targets
+  ✔ v-html is rejected on native, and accepted on web only with trustedHtml (17.826512ms)
+  ✔ web-only attributes and modifiers are accepted on web and rejected on native (12.332299ms)
+  ✔ the .passive modifier is rejected on both targets (2.965098ms)
+✔ targets (33.666216ms)
+▶ paths and files
+  ✔ a template or style src is read through the project root and its realpath (6.747344ms)
+  ✔ a style src that does not exist is VN6008 at the style tag (0.99326ms)
+✔ paths and files (7.974176ms)
+▶ registry
+  ✔ unknown SFC codes are rejected by the lookup and by the diagnostic builder (0.397571ms)
+  ✔ every SFC code has a title and is in the VN6 range (0.399961ms)
+✔ registry (1.014117ms)
+[compiler/sfc] SKIPPED oracle.test.mjs: Google Chrome not found; install it or set CHROME_PATH
+▶ real-Vue execution oracle (headless Chrome, vue@3.5.43)
+  ﹣ ok-counter.vue renders and reacts as Vue does (1.249616ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-props-emits.vue renders and reacts as Vue does (0.256465ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-define-model.vue renders and reacts as Vue does (0.146336ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-slots.vue renders and reacts as Vue does (0.172292ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-scoped-slots.vue renders and reacts as Vue does (0.208265ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-v-for-key.vue renders and reacts as Vue does (0.192681ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-v-if-else.vue renders and reacts as Vue does (0.227811ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-v-model-text.vue renders and reacts as Vue does (0.303589ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-v-model-checkbox.vue renders and reacts as Vue does (0.416687ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-v-model-select.vue renders and reacts as Vue does (0.301746ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-with-defaults.vue renders and reacts as Vue does (0.091174ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-ts-generic.vue renders and reacts as Vue does (0.075266ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-destructured-props.vue renders and reacts as Vue does (0.08677ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-expose-ref.vue renders and reacts as Vue does (0.068914ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-provide-inject.vue renders and reacts as Vue does (0.064359ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-watch-lifecycle.vue renders and reacts as Vue does (0.067197ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-scoped-style.vue renders and reacts as Vue does (0.07251ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-template-only.vue renders and reacts as Vue does (0.064671ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-normal-plus-setup.vue renders and reacts as Vue does (0.084312ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-v-bind-css.vue renders and reacts as Vue does (0.071942ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-normal-template.vue renders and reacts as Vue does (0.064215ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-interpolation-escape.vue renders and reacts as Vue does (0.076131ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-computed.vue renders and reacts as Vue does (0.066284ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-v-show.vue renders and reacts as Vue does (0.232782ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-event-modifiers.vue renders and reacts as Vue does (0.08314ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-dynamic-component.vue renders and reacts as Vue does (0.06026ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-custom-directive.vue renders and reacts as Vue does (0.056119ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-ts-template.vue renders and reacts as Vue does (0.112187ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-binding-named-like-global.vue renders and reacts as Vue does (0.05921ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-src-template.vue renders and reacts as Vue does (0.051211ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ ok-style-src.vue renders and reacts as Vue does (0.050136ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ negative control: a mutated compiled counter is detected (0.049397ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ every Chrome process started by the oracle is closed (0.049761ms) # Google Chrome not found; install it or set CHROME_PATH
+✔ real-Vue execution oracle (headless Chrome, vue@3.5.43) (11.812724ms)
+﹣ selector corpus is deterministic and matches the committed file (1.075036ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ media corpus is deterministic and matches the committed file (0.180207ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ cascade and serialisation corpora are deterministic and match the committed files (0.168347ms) # Google Chrome not found; install it or set CHROME_PATH
+✔ real Composition API SFC emits native state, computed, events, conditional and input (26.4409ms)
+✔ template auto unwrap and script .value (1.886947ms)
+✔ inline update (1.599574ms)
+✔ boolean conditional (1.022255ms)
+✔ forward computed dependency (1.687437ms)
+✔ rejects Options API instead of silently changing behavior (0.821191ms)
+✔ rejects CSS instead of silently changing behavior (0.763318ms)
+✔ rejects unsupported directive instead of silently changing behavior (1.223897ms)
+✔ rejects unsupported element instead of silently changing behavior (1.117886ms)
+✔ rejects unsupported import instead of silently changing behavior (0.871461ms)
+✔ rejects unknown template binding instead of silently changing behavior (0.822854ms)
+✔ rejects non literal ref instead of silently changing behavior (3.052251ms)
+✔ rejects computed mutation instead of silently changing behavior (0.91037ms)
+✔ rejects type mismatch instead of silently changing behavior (0.74617ms)
+✔ rejects cycles instead of silently changing behavior (0.720035ms)
+✔ rejects async handler instead of silently changing behavior (0.790516ms)
+✔ rejects unknown attribute instead of silently changing behavior (0.430284ms)
+✔ rejects event on unsupported node instead of silently changing behavior (0.549675ms)
+✔ rejects number input instead of silently changing behavior (0.440117ms)
+✔ rejects JavaScript loose coercion instead of silently changing behavior (0.61466ms)
+✔ rejects arbitrary JS instead of silently changing behavior (0.421587ms)
+✔ rejects nonboolean v-if instead of silently changing behavior (0.496409ms)
+✔ rejects modifiers instead of silently changing behavior (0.935527ms)
+✔ string escaping preserves Rust source boundaries (0.89716ms)
+✔ unimplemented type annotations are rejected (1.486878ms)
+✔ real Composition API SFC emits native state, computed, events, conditional and input (29.080659ms)
+✔ template auto unwrap and script .value (2.458682ms)
+✔ inline update (1.860463ms)
+✔ boolean conditional (1.25559ms)
+✔ forward computed dependency (1.855482ms)
+✔ rejects Options API instead of silently changing behavior (1.052421ms)
+✔ rejects CSS instead of silently changing behavior (0.899907ms)
+✔ rejects unsupported directive instead of silently changing behavior (1.386806ms)
+✔ rejects unsupported element instead of silently changing behavior (1.16291ms)
+✔ rejects unsupported import instead of silently changing behavior (1.00495ms)
+✔ rejects unknown template binding instead of silently changing behavior (1.059247ms)
+✔ rejects non literal ref instead of silently changing behavior (3.558726ms)
+✔ rejects computed mutation instead of silently changing behavior (1.082277ms)
+✔ rejects type mismatch instead of silently changing behavior (0.759185ms)
+✔ rejects cycles instead of silently changing behavior (0.880986ms)
+✔ rejects async handler instead of silently changing behavior (0.814377ms)
+✔ rejects unknown attribute instead of silently changing behavior (0.521285ms)
+✔ rejects event on unsupported node instead of silently changing behavior (0.813737ms)
+✔ rejects number input instead of silently changing behavior (0.668672ms)
+✔ rejects JavaScript loose coercion instead of silently changing behavior (0.690044ms)
+✔ rejects arbitrary JS instead of silently changing behavior (0.536193ms)
+✔ rejects nonboolean v-if instead of silently changing behavior (0.584758ms)
+✔ rejects modifiers instead of silently changing behavior (1.025574ms)
+✔ string escaping preserves Rust source boundaries (1.284553ms)
+✔ unimplemented type annotations are rejected (1.672544ms)
+✔ quote app compiles numeric inputs and decimal output (7.141399ms)
+✔ numeric bounds are validated (0.873277ms)
+✔ decimal precision is bounded (0.711138ms)
+✔ KNOWN BUG (prototype): @[click] dynamic event argument is accepted and compiled as a fixed click handler (counter compiler) (37.853429ms)
+✔ KNOWN BUG (prototype): @[click] dynamic event argument is accepted and compiled as a fixed click handler (quick-quote compiler) (7.164027ms)
+✔ KNOWN BUG (prototype): interpolated numbers use Rust Display, which diverges from JS String(n) for some values (210.43935ms)
+ℹ Rust format!("{}") outputs: ["1000000000000000000000","0.0000001","-0","0.30000000000000004","123456789012345680000","NaN","inf","0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000005"]
+ℹ JS String(x) oracle:        ["1e+21","1e-7","0","0.30000000000000004","123456789012345680000","NaN","Infinity","5e-324"]
+✔ KNOWN BUG (prototype): Quick Quote toFixed emits Rust format!("{:.N}"), which rounds ties to even: (0.5).toFixed(0) and (2.5).toFixed(0) diverge from JS (185.902919ms)
+ℹ Rust outputs of the emitted expressions: ["0","2","1.00"]
+ℹ JS (0.5).toFixed(0), (2.5).toFixed(0), (1.005).toFixed(2): ["1","3","1.00"]
+✔ KNOWN BUG (prototype): computed values are uncached Rust getters that recompute on every read (counter compiler) (2.244758ms)
+✔ KNOWN BUG (prototype): computed values are uncached Rust getters that recompute on every read (quick-quote compiler) (1.067601ms)
+✔ MANIFEST pins every preserved fixture file: sha256, size and origin all match (13.170263ms)
+✔ MANIFEST lists files sorted by path, without duplicates (0.552205ms)
+✔ workspace compiler hash in MANIFEST equals the claimed value and the copied counter compiler (0.373919ms)
+✔ zip compiler hash in MANIFEST equals the copied quick-quote compiler (0.380982ms)
+﹣ Quick Quote archive matches its recorded SHA-256 and size (0.253619ms) # source archive not present at /Users/brendon/Downloads/quick-quote-source.zip
+﹣ quick-quote fixture files are byte-identical to their archive entries (0.10974ms) # source archive not present at /Users/brendon/Downloads/quick-quote-source.zip
+✔ negative control: the checker reports nothing for an untouched temporary tree (3.888202ms)
+✔ negative control: a one-byte change is detected (sha256 mismatch, size unchanged) (2.934062ms)
+✔ negative control: an appended byte is detected (size and sha256 mismatch) (7.645079ms)
+✔ negative control: an extra file under a fixture directory is detected (3.457418ms)
+✔ negative control: a missing manifest file is detected (2.883734ms)
+✔ negative control: a symlink inside a fixture directory is detected (3.870802ms)
+✔ negative control: a manifest path that escapes the fixture is rejected (2.962274ms)
+✔ negative control: harness files at the prototype root are exempt from the extra-file check (2.896552ms)
+✔ negative control: a harness-named file inside a fixture directory is not exempt (2.945827ms)
+✔ callback presets: names and declared arity match the case format (3.152221ms)
+✔ callback presets: hand-written return values (1.472006ms)
+✔ callback presets: hand-written log entries (primitives as themselves; objects as their index or -1) (0.574215ms)
+✔ callback presets: cmpThrow throws on its second call; throwAt2 throws at index 2, after logging (0.98286ms)
+✔ targets: the standard-library manifest decides, with its hint (hand-written expectations) (3.595669ms)
+✔ callback targets: the only cbs-capable targets, with hand-written arity (0.815695ms)
+✔ defineSuite rejects targets and case shapes outside the format (2.20953ms)
+✔ compileSuite rejects a static case that gives a this value (0.799704ms)
+✔ compileSuite carries integrity (trace-format v1.1): a frozen input replays (4.600211ms)
+✔ compileSuite replays sealed and non-extensible inputs (integrity "sealed", "nonextensible") (2.090031ms)
+✔ compileSuite rejects what the format cannot carry: accessors, and hidden state that a call observes (1.375453ms)
+✔ spot check: Array.prototype.slice keeps holes in pre, ret and state (trace-format encoding) (0.820268ms)
+✔ spot check: Object.assign(o, o) shares ids within one pass (ref after the first expansion) (0.644085ms)
+✔ spot check: a cycle in the pre encoding is a ref to the object itself, and replays (0.695969ms)
+✔ spot check: a throwing call records ret as null and the error name only (0.726407ms)
+✔ spot check: Math.PI is a get case (nothing is called, pre is empty) (0.412276ms)
+✔ spot check: callbacks are substituted by name, encoded as fn, and their calls logged (1.719523ms)
+✔ describeCase summarizes a written case on one line (0.38805ms)
+✔ renderSuite is deterministic for the same compiled suite (0.527086ms)
+✔ seed suites: at least 600 cases in total; ids unique per suite; only TypeError and RangeError throws (12.199002ms)
+✔ seed suites: the target list is the WP-O2 list (every target present, no others) (9.042514ms)
+✔ seed suites: approx marks the libm-dependent functions and nothing exact (8.250375ms)
+✔ seed suites: the first math cases match hand-derived values (7.9938ms)
+✔ seed suites: the number cases match hand-derived values (3.172815ms)
+✔ seed suites: the object cases match hand-derived values (1.182391ms)
+✔ seed suites: every suite regenerates byte-identically (in process) (138.123054ms)
+✔ seed suites: the generator is deterministic across processes (two child runs, identical bytes) (468.383011ms)
+✔ seed suites: each case replays from its pre encoding in a fresh child process (329.826865ms)
+✔ negative control: a mutated expectation in a written suite is reported at its case and path (68.466503ms)
+✔ negative control: a written target outside the manifest gate is reported, not replayed (89.251699ms)
+✔ negative control: a written target absent from the manifest is reported, not replayed (75.885676ms)
+✔ negative control: the CLI exits 1 on a mismatch (92.439813ms)
+✔ undefined encodes as {"$":"undef"} (3.070329ms)
+✔ null and booleans encode as JSON literals (0.287613ms)
+✔ finite numbers encode as JSON numbers printed like String(n) (0.189557ms)
+✔ negative zero encodes as {"$":"num","v":"-0"}; positive zero stays a number (0.333972ms)
+✔ NaN and infinities encode as {"$":"num"} markers (0.20073ms)
+✔ strings are JSON strings; lone surrogates are escaped in lowercase like JSON.stringify (0.176167ms)
+✔ symbols get per-run ordinals and their description, or null when there is none (0.451743ms)
+✔ functions encode as {"$":"fn",name,length} and get no object id (0.260777ms)
+✔ plain objects: ids from 1, proto marker, own enumerable props in integer-then-insertion order (0.761827ms)
+✔ null-prototype objects report proto "null" (0.468214ms)
+✔ arrays: elems with holes, len, and non-index own keys in props (0.349028ms)
+✔ Map encodes entries in insertion order and Set encodes values (0.231693ms)
+✔ Error encodes name and message only; the stack is never traced (0.26933ms)
+✔ Promise encodes as an opaque object with no props (0.163108ms)
+✔ accessor properties are markers and getters are never invoked (0.349718ms)
+✔ aliases inside one trace call: first occurrence expanded, later ones are refs with the same id (0.31173ms)
+✔ cycles are visible as refs to the ancestor id (0.221944ms)
+✔ ordinals are global across trace calls; a later call expands the object again with its current state (0.339823ms)
+✔ Date, RegExp, typed arrays, WeakMap, WeakSet and BigInt are untraceable: trace throws TypeError (0.766581ms)
+✔ symbol-keyed properties are not traced (0.141517ms)
+✔ encodeAll is one encoding call: a shared object is expanded once, then referenced (0.154066ms)
+✔ compareDocs: equal documents with different object key order compare equal (0.404624ms)
+✔ compareDocs: array order is significant and the first differing path is reported (0.167086ms)
+✔ compareDocs: numbers are exact, so -0 differs from 0 and an encoded -0 differs from a number (0.162624ms)
+✔ compareDocs: array length and missing keys are reported at their own paths (0.225708ms)
+✔ module code runs before run(): the job queue drains first (async/init-before-run) (87.772911ms)
+✔ a module that throws at evaluation is result "throw" with the thrown value; run() is never called (61.795223ms)
+✔ a scenario-created Error thrown at module level is encoded with its name and message (66.957377ms)
+✔ a rejected run() is result "throw"; entries traced before the rejection are kept (61.289051ms)
+✔ a run() rejecting with a plain object keeps the object as the error value (65.397629ms)
+✔ a non-async run() that throws synchronously is also result "throw" (99.420947ms)
+✔ fake timers fire by (due time, creation order), and the clock reads each due time (73.24474ms)
+✔ the job queue drains after each timer callback, before the next timer fires (64.281788ms)
+✔ a zero-delay timer created in a callback runs in the same advance, after timers already due (62.700698ms)
+✔ unhandled rejections are captured without crashing, in rejection order (62.666183ms)
+✔ a rejection handled before the final drain is not reported (77.822803ms)
+✔ await and then interleave in queue order (promises/await-vs-then-interleave) (90.756483ms)
+✔ then reactions run in registration order and chained steps after their predecessor (promises/then-chain-order) (82.576499ms)
+✔ each scenario runs in a fresh child: ordinals restart at 1 and repeated runs are identical (208.36873ms)
+✔ every case is deterministic: two child runs produce byte-identical output (10627.638748ms)
+✔ the document scenario name is the case path without .js, or the basename outside the cases root (0.862848ms)
+✔ a run() that never settles fails loudly: exit 3 and no partial document (78.667611ms)
+✔ golden check: every seed scenario matches its golden structurally and byte for byte (2874.273784ms)
+✔ negative control: a doctored golden is reported at the first differing path (64.136304ms)
+✔ negative control: a byte-level change and a missing golden are both reported (68.919613ms)
+✔ golden files sit at golden/<case path>.json, e.g. golden/lexical/tdz-reference-error.js.json (0.370636ms)
+✔ the corpus has 3 module-level throws and 3 run() throws or rejections (from the goldens) (24.628163ms)
+✔ every case has the two header tags, and the covered requirement IDs are the expected set (23.486748ms)
+✔ lint detects a class declaration (negative control for the lint itself) (4.982382ms)
+✔ lint rejects each forbidden construct with its code (13.343932ms)
+✔ lint: engine error messages are not traced from catch; name, instanceof and scenario-made messages are allowed (3.038983ms)
+✔ lint: every seed case is clean (182.703324ms)
+✔ lint: a source without header tags is rejected (0.447514ms)
+✔ integrity: frozen, sealed and non-extensible plain objects carry the marker (0.347607ms)
+✔ integrity: an empty object after preventExtensions is "frozen" (Object.isFrozen is true) (0.157321ms)
+✔ integrity: an extensible object has no integrity field (0.14936ms)
+✔ integrity: the field sits right after proto, before props (0.16263ms)
+✔ integrity: arrays follow the same rule (0.280986ms)
+✔ integrity: Map, Set, Error and Promise get the marker too (0.344088ms)
+✔ integrity: a frozen object nested in an extensible one carries the marker only on the nested object (0.186519ms)
+✔ integrity follows the current state, and never applies to functions or ref forms (0.293579ms)
+✔ objects/frozen-assignment: the frozen root is marked "frozen"; the unfrozen inner object is not (75.28089ms)
+✔ objects/integrity-freeze-seal: frozen and sealed markers, a shallow freeze, and a frozen array (74.692098ms)
+✔ objects/integrity-prevent-extensions: nonextensible and empty-frozen markers; nested frozen only where frozen (79.412231ms)
+✔ lint accepts builtins the manifest supports for test, including Object.is (1.15229ms)
+✔ lint allows methods the case defines and host timer methods, and rejects an unknown method (0.856925ms)
+✔ lint rejects builtins the manifest does not support for test (negative controls) (0.731771ms)
+✔ a target that rustc does not know is a skip reason, not a pass (96.971882ms)
+✔ the subset runs on wasm32 and every document equals its golden (741.482738ms)
+✔ the subset under GC stress (a collection at every safepoint) equals the goldens (270.141261ms)
+✔ negative controls: a mutated golden and a deliberate panic are reported as failures (873.24934ms)
+✔ deep recursion to the call-depth limit runs on wasm32 and matches the Node oracle (633.224743ms)
+[platform/web] SKIPPED: Google Chrome not found; install it or set CHROME_PATH
+﹣ ABI tables and build outputs (0.553018ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ loading mismatched or invalid modules (0.096942ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ raw exports (0.071793ms) # Google Chrome not found; install it or set CHROME_PATH
+[platform/web] SKIPPED: Google Chrome not found; install it or set CHROME_PATH
+﹣ attributes (0.56972ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ properties (0.118261ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ compiled advanced components: real browser CSS timers, cache state, teleport events and resource disposal (0.898433ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ host-only web app: built output is complete and the wasm is a web app (0.902541ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ host-only web app: starts in Chrome and mounts through the browser host (0.203016ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ host-only web app: a failing start is reported, not silent (negative control) (0.208596ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ compiled Counter: browser click, computed, conditional, disabled and reset (0.857278ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ compiled Quick Quote: input/models, validation, keyed rows, watcher and unmount/recreate (0.184426ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ compiled app: missing mount container rejects startup loudly (negative control) (0.117406ms) # Google Chrome not found; install it or set CHROME_PATH
+[platform/web] SKIPPED: Google Chrome not found; install it or set CHROME_PATH
+﹣ events: delivery and options (0.632614ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ events: data fidelity (0.11399ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ events: focus order and re-entrancy (0.086905ms) # Google Chrome not found; install it or set CHROME_PATH
+[platform/web] SKIPPED: Google Chrome not found; install it or set CHROME_PATH
+﹣ Chrome-recorded DOM corpora replayed through the web host (0.562515ms) # Google Chrome not found; install it or set CHROME_PATH
+[platform/web] SKIPPED: Google Chrome not found; install it or set CHROME_PATH
+﹣ strings (0.609933ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ handles and memory (0.1062ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ panics and lifecycle (0.077528ms) # Google Chrome not found; install it or set CHROME_PATH
+[platform/web] SKIPPED: Google Chrome not found; install it or set CHROME_PATH
+﹣ style (0.596363ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ classList (0.098602ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ focus and selectors (0.070408ms) # Google Chrome not found; install it or set CHROME_PATH
+[platform/web] SKIPPED: Google Chrome not found; install it or set CHROME_PATH
+﹣ tree operations (0.617745ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ harness guards (0.105454ms) # Google Chrome not found; install it or set CHROME_PATH
+✔ regenerating every artifact twice yields byte-identical output (630.38081ms)
+✔ the committed generated files are up to date with their sources (215.620215ms)
+✔ build-manifest --check passes on the committed tree (456.75166ms)
+✔ manifest.json carries 126 rows, every expansion entry and all 171 vue exports (3.025085ms)
+✔ native tags: the supported set is the coordinator list, and every excluded tag says what to use instead (4.892119ms)
+✔ negative control: an expansion status the row does not carry fails the build (215.802368ms)
+✔ negative control: a vue expansion that is not an export fails the build (175.640654ms)
+✔ negative control: a vue expansion that disagrees with the export classification fails the build (192.452406ms)
+✔ negative control: an app method that a real app instance lacks fails the build (176.895713ms)
+✔ the official compiler helper tables name 57 distinct helpers, all of them vue exports (209.207709ms)
+✔ every compiler helper-table name that is a vue export is flagged compilerInternal or excluded with a reason (16.551453ms)
+✔ the compilerInternal set is exactly the 39 emitted X helpers, each with status X and a table entry (8.642848ms)
+✔ compilerInternal helpers: user origin refuses them, compiler origin accepts them, on both targets (9.739918ms)
+✔ helpers the official compiler does not emit stay unsupported for both origins (0.505143ms)
+✔ mergeProps is emitted by the compiler and is public: supported for user code and for generated code (0.410074ms)
+✔ the official compiler emits the expected helpers for the samples (observed, not assumed) (166.828418ms)
+✔ generated code imports only names it may use: every emitted vue name is supported for the compiler origin on both targets (37.300131ms)
+✔ negative control: a helper-table name that is neither flagged nor excluded fails the audit (333.453694ms)
+✔ negative control: an exclusion without a reason fails the audit (198.958577ms)
+✔ negative control: an exclusion that is not a compiler helper fails the audit (184.596721ms)
+✔ the manifest loads with schemaVersion 1, vue 3.5.43, default deny and the 126 design rows (14.139941ms)
+✔ lookup returns { status, row, note, compilerInternal } for named entries and null for unknown names (10.654581ms)
+✔ prototype property names do not resolve to inherited values (0.326117ms)
+✔ P and A names are supported on both targets (0.339927ms)
+✔ W names are supported only on the web target (0.188004ms)
+✔ X, E and unknown names are never supported for user code (0.186813ms)
+✔ an unknown target or origin is an error, not a guess (0.713912ms)
+✔ lookup returns a copy, so callers cannot change later answers (4.429871ms)
+✔ origin user (default): compilerInternal helpers are not supported on either target (0.689312ms)
+✔ origin compiler: compilerInternal helpers are supported on both targets (0.559585ms)
+✔ origin compiler does not grant names the official compiler never emits (0.274257ms)
+✔ the promoted render helpers, instance accessor and effect API are A or P: supported for user code on both targets (2.02206ms)
+✔ the names kept X in the same families stay unsupported: ReactiveEffect, resolveDirective, withDirectives (0.205958ms)
+✔ origin does not change public entries: P stays supported for both origins, E stays unsupported (0.163457ms)
+✔ CSS contract entries are supported (design 9.2: useCssVars and useCssModule) (0.098448ms)
+✔ native tags: supported tags are A, unlisted and custom-element names are unsupported (0.119454ms)
+✔ native tags: excluded tags are X with a use-instead note (0.243696ms)
+✔ special template tags stay under their own rows and are not native tags (0.127088ms)
+✔ design.md section 8 has exactly the 126 expected row IDs (7.745618ms)
+✔ every row has a non-empty status set of valid letters with primary = first letter (2.361043ms)
+✔ derived status sets match rows checked by hand against the design text (2.887607ms)
+✔ committed profile/inventory.generated.json equals a fresh extraction (3.093624ms)
+✔ negative control: the extractor rejects a design copy with one row removed (2.474398ms)
+✔ negative control: the extractor rejects a changed table header (0.948632ms)
+✔ negative control: the CLI fails on a temp copy with one row removed and writes no output (86.498377ms)
+✔ buildStdlib is deterministic: two builds give identical text for both generated files (37.236251ms)
+✔ the committed stdlib.json and stdlib.md match a fresh build (8.020822ms)
+✔ build-stdlib --check passes on the committed tree (100.419748ms)
+✔ the generated JSON has the documented shape, every kind and target, and entries with the documented keys (9.490055ms)
+✔ the generated stdlib.md has the counts table, the decisions and one table per kind (8.31089ms)
+✔ negative control: an X entry without a hint fails the build (5.312808ms)
+✔ negative control: a P entry that cites a row without P fails the build (3.156484ms)
+✔ negative control: the same path under two kinds fails the build (9.198506ms)
+✔ negative control: a VN code on a P entry fails the build (3.561859ms)
+✔ negative control: a path that does not fit its kind fails the build (3.626197ms)
+✔ negative control: an entry that cites an unknown design row fails the build (2.78841ms)
+✔ negative control: a W entry that also lists native fails the build (A14 is a W design row) (6.76429ms)
+✔ negative control: an unknown key, kind or target fails the build (10.25949ms)
+✔ negative control: a changed source produces different generated text, so --check would report it stale (7.372317ms)
+✔ every supported method, static, constant and symbol named by a B-spec is a P entry, present exactly once (6.725707ms)
+✔ negative control: removing a B-spec entry, demoting it, or duplicating it is reported as missing (2.06341ms)
+✔ every O2 corpus target (tooling/oracle/builtin-corpus.mjs TARGETS) is a P entry, exactly once, on native and web (4.662833ms)
+✔ negative control: a target the manifest excludes (Math.f16round, Object.defineProperty) is not a P entry (0.447996ms)
+✔ every X, E and W entry has a hint, and every VN code is registered by C1a (0.413535ms)
+✔ every entry cites a design row, and a P, A or W entry only cites a row that carries its status (0.579363ms)
+✔ no path appears under two kinds, and every target list is non-empty and in canonical order (1.428574ms)
+✔ W entries are web-only, and the only test-only entries are the two host globals (0.31977ms)
+✔ C1a global rules agree with the manifest: the same VN code, and not supported on the rule targets (0.866764ms)
+✔ C1a metaprogramming and dispose rules map to VN4008 and VN4015, and the __proto__ access rule to VN2017 (0.543162ms)
+✔ decisions the WP asked for are recorded with the statuses listed below (1.733624ms)
+✔ lookupStdlib returns the entry for its kind, and null for another kind, unknown names and prototype names (6.537933ms)
+✔ lookupStdlib(static, Object.defineProperty) is X on row L04 with the C1a VN4008 code and a hint (0.566448ms)
+✔ results are copies: changing a returned entry does not change later answers (0.433538ms)
+✔ P entries are supported on native, web and test, including constants, byte types and iterator intrinsics (0.393125ms)
+✔ X, E and unknown paths are not supported on any target (0.310081ms)
+✔ A entries are supported on native, web and test: host random and clock providers, and the UTF-8 codec (0.547097ms)
+✔ test-only host globals are supported on the test target and nowhere else (0.187214ms)
+✔ effectiveStatus: W is supported only on web, and an entry is X on a target it does not list (0.249569ms)
+✔ an unknown target or kind is an error, not a guess (1.104867ms)
+✔ resolveGlobal gives the target status and diagnostic hint for free identifiers, and null for unknown names (0.845509ms)
+✔ resolveGlobal rejects member paths and non-identifiers instead of guessing (0.304053ms)
+✔ listSupported lists P, A and W entries, filtered by kind and sorted by kind order then path (0.863893ms)
+✔ memberPath turns Babel identifier chains into dotted paths (6.090464ms)
+✔ memberPath returns null for computed, optional, this, call, literal and new chains, and for non-nodes (3.809601ms)
+✔ compiler/profile/index.mjs re-exports the lookups and keeps its original exports (8.33661ms)
+✔ the only names in the vue import namespace that require("vue") lacks are the two interop keys (137.01326ms)
+✔ the production CJS build exports the same names as the development build (118.05838ms)
+✔ every runtime export of vue 3.5.43 is classified into exactly one design row (4.457595ms)
+✔ lookup("vue", "definitelyNotAnExport") is null and is not supported on either target (8.987416ms)
+✔ isShallow is exported by the pinned package and classified P under V09 (0.526187ms)
+✔ the compile-time macros declared in vue type declarations are the seven SFC macros (0.297596ms)
+✔ no documented design name is missing from vue 3.5.43 (no docs drift found) (0.24941ms)
+✔ negative control: an export the map omits is reported unclassified, not accepted (208.305067ms)
+✔ negative control: a map entry that is not a real export fails the audit (128.226088ms)
+✔ negative control: an explicit status the row does not carry fails the audit (132.976978ms)
+
+*** WP-G0C: LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+▶ npm postinstall-style Node script
+  ✔ positive control: unsandboxed, every attack succeeds (the sentinel and the listener are real) (128.512011ms)
+  ﹣ sandboxed: secret read, outside write and localhost connect are blocked; workspace I/O still works (0.397083ms) # LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+  ﹣ negative control: a deliberately weakened profile is caught by the containment checks (0.144191ms) # LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+✔ npm postinstall-style Node script (130.444658ms)
+▶ Cargo build.rs-style Rust program (project rustc, no cargo)
+  ✔ positive control: unsandboxed, every attack succeeds (the sentinel and the listener are real) (257.595715ms)
+  ﹣ sandboxed: secret read, outside write and localhost connect are blocked; workspace I/O still works (0.286864ms) # LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+  ﹣ negative control: a deliberately weakened profile is caught by the containment checks (0.101336ms) # LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+✔ Cargo build.rs-style Rust program (project rustc, no cargo) (258.308371ms)
+▶ escape attempts through the workspace
+  ✔ positive control: unsandboxed, the symlink and the hard link both reach the sentinel (58.604777ms)
+  ﹣ sandboxed: a symlink or hard link inside the workspace cannot be read through (0.372666ms) # LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+✔ escape attempts through the workspace (59.453399ms)
+
+*** WP-G0C: LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+▶ profile generation
+  ✔ deny-default, no network, and writes limited to workspace and scratch (10.460327ms)
+  ﹣ SBPL escaping: quotes and backslashes are escaped and sandbox-exec loads the profile (0.159508ms) # LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+  ✔ control characters in paths are rejected, so a path cannot inject profile rules (4.803235ms)
+  ✔ refuses workspaces that are /, the home or temp directory, a parent of them, or contain system trees (0.911174ms)
+  ✔ refuses a workspace that overlaps a credential directory (0.374057ms)
+  ✔ relative commands resolve against the working directory; unknown commands are refused (3.669689ms)
+✔ profile generation (21.767369ms)
+▶ refusals never run the command
+  ✔ runUntrusted rejects with exit 97 when sandbox-exec is missing, and the command does not run (3.971539ms)
+  ✔ CLI exits 97 for a missing sandbox-exec and for a binary not named sandbox-exec (177.570832ms)
+  ✔ CLI usage errors exit 2 (104.525562ms)
+  ﹣ self-test refuses a no-op sandbox-exec (exit 98) and the command does not run (0.519451ms) # LOUD SKIP: sandbox-exec exists only on macOS (platform linux).
+✔ refusals never run the command (287.209738ms)
+▶ sandboxed execution (requires sandbox-exec)
+  ﹣ self-test passes on this machine (0.295836ms) # LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+  ﹣ the child inherits no caller environment; HOME and TMPDIR point into the workspace (0.064004ms) # LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+  ﹣ --read trees are readable but not writable; without them the same path is denied (0.05712ms) # LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+  ﹣ a caller-named TZ reaches the child (Intl reports UTC otherwise, because /etc/localtime is denied) (0.073691ms) # LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+  ﹣ timeouts kill the sandboxed child (0.055139ms) # LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+  ﹣ timeouts kill the whole process group, not only the direct child (0.052029ms) # LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+  ﹣ a process that leaves the group cannot hang the runner; output is cut off after a grace period (0.050084ms) # LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+  ﹣ CLI: SIGTERM to the runner kills the command group and the runner then exits by that signal (0.050284ms) # LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+  ﹣ CLI forwards the child status and output even when stdout is a file outside the workspace (0.053576ms) # LOUD SKIP: /usr/bin/sandbox-exec unavailable (platform is linux, not darwin). Sandboxed isolation is NOT verified by this run.
+✔ sandboxed execution (requires sandbox-exec) (1.073335ms)
+[tooling/chrome] SKIPPED cdp.test.mjs: Google Chrome not found; install it or set CHROME_PATH
+▶ CdpSession
+  ﹣ send resolves with the result; protocol errors reject naming the method (0.636375ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ waitForEvent resolves on a matching event and rejects after its timeout (0.197455ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ on() receives events until unsubscribed (0.10305ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ sending after close() rejects (0.093059ms) # Google Chrome not found; install it or set CHROME_PATH
+✔ CdpSession (2.881189ms)
+[tooling/chrome] SKIPPED evaluate.test.mjs: Google Chrome not found; install it or set CHROME_PATH
+▶ page.evaluate
+  ﹣ numbers, strings, booleans and null round-trip (0.861795ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ plain objects and arrays round-trip (0.190455ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ undefined is kept at top level and inside containers (0.10594ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ NaN, Infinity, -Infinity, -0 and BigInt come back as strings (documented convention) (0.188286ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ arguments reach the page as real values: undefined, NaN, -0, BigInt, nested data (0.12177ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ async functions and promises are awaited (0.168018ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ expression strings run in the page; extra arguments with a string are rejected (0.275577ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ page exceptions reject with the original name and message (0.18163ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ negative controls: values that cannot be sent back are rejected, not approximated (0.389499ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ console calls are captured in order with their CDP type (0.276667ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ uncaught page exceptions are captured (0.074531ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ goto accepts a local file path (0.060194ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ viewport() sets size and DPR; screenshot writes a PNG of that size (0.054676ms) # Google Chrome not found; install it or set CHROME_PATH
+✔ page.evaluate (5.003447ms)
+▶ timeouts and cleanup
+  ﹣ a hanging evaluate rejects after its timeout and Chrome still closes (0.283533ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ a busy-looping page times out and Chrome is still killed (0.08789ms) # Google Chrome not found; install it or set CHROME_PATH
+✔ timeouts and cleanup (0.520198ms)
+[tooling/chrome] SKIPPED launch.test.mjs: Google Chrome not found; install it or set CHROME_PATH
+▶ launchChrome and close
+  ﹣ launch exposes the DevTools endpoint; close is idempotent and leaves nothing behind (1.091231ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ close kills the browser and every helper process it started (0.148586ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ withPage closes Chrome when the callback throws (0.094593ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ SIGTERM to the process that owns Chrome kills Chrome and removes its profile dir (0.099361ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ process.exit without close() still kills Chrome and removes its profile dir (0.08927ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ managed flags and non-string args are rejected before Chrome starts (0.244811ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ a CHROME_PATH that is not executable is an error, not a silent fallback (0.140505ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ a binary that never prints DevTools is killed and its profile dir removed (0.196195ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ a binary that exits before DevTools is reported with its status and output (0.224251ms) # Google Chrome not found; install it or set CHROME_PATH
+✔ launchChrome and close (4.120148ms)
+[tooling/chrome] SKIPPED oracle-css.test.mjs: Google Chrome not found; install it or set CHROME_PATH
+▶ measureBoxes
+  ﹣ fixed-size flex row with gap matches the hand-computed boxes (0.885242ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ padded box: border box is content plus padding, offset by the margin (0.140936ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ absolutely positioned child is offset from the padding box of a bordered relative parent (0.097443ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ negative control: a 12px gap is detected as different from the 10px expectation (0.270389ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ empty or non-string selectors are rejected before a browser starts (0.154298ms) # Google Chrome not found; install it or set CHROME_PATH
+✔ measureBoxes (3.153291ms)
+▶ computeStyles
+  ﹣ em, rem, percent, var() with fallback, and inheritance resolve to the hand-computed values (0.165744ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ percentage width and height resolve against the containing block (0.177082ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ custom properties are readable (0.307951ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ negative controls: unknown and camelCase property names are errors (0.228108ms) # Google Chrome not found; install it or set CHROME_PATH
+✔ computeStyles (1.379581ms)
+▶ matchSelectors
+  ﹣ type selector (0.268958ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ compound class selector (0.067996ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ id selector (0.05569ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ attribute selector (0.050636ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ descendant combinator (0.058185ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ child combinator with nth-child (0.062422ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ no match gives an empty array (0.057465ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ negative control: an invalid selector is a SyntaxError, not an empty result (0.062481ms) # Google Chrome not found; install it or set CHROME_PATH
+✔ matchSelectors (0.974277ms)
+[tooling/chrome] SKIPPED serve.test.mjs: Google Chrome not found; install it or set CHROME_PATH
+▶ serveDirectory
+  ﹣ serves the expected Content-Type for html, module, wasm, png and an unknown extension (0.877155ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ the directory URL serves index.html (0.189589ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ an ES module referenced by a page executes (0.103264ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ WebAssembly.instantiateStreaming succeeds on the served .wasm (0.096057ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ negative control: the same bytes under an octet-stream MIME are refused by instantiateStreaming (0.193746ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ paths that escape the root get 403 and the secret is not served; missing files get 404 (0.220906ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ only GET and HEAD are served (0.286954ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ extra headers are opt-in (cross-origin isolation) (0.204912ms) # Google Chrome not found; install it or set CHROME_PATH
+  ﹣ close() stops the server (0.424964ms) # Google Chrome not found; install it or set CHROME_PATH
+✔ serveDirectory (5.675614ms)
+✔ clock: timers fire by due time, then in creation order; the job queue drains before the first and after each callback (3.52384ms)
+✔ clock: advance leaves later timers pending; clearTimeout cancels; the clock stops at the target (0.431035ms)
+✔ clock: negative, NaN and missing delays count as 0; a non-function callback throws; arguments reach the callback (0.928609ms)
+✔ clock: requestAnimationFrame callbacks run on FRAME_MS frames and receive the clock time (0.462499ms)
+✔ clock: an error thrown by a timer callback propagates out of advance (0.419347ms)
+✔ selector: the documented grammar is accepted and everything else is rejected with a TypeError (0.88271ms)
+﹣ snapshot: every rule of the canonical element snapshot, against hand-written expectations (0.124463ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ snapshot: a DOM mutated after the snapshot is not part of it (a negative control on the expectations above) (0.106946ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ testHost: mount, html, find, findAll, attr, text, exists and unmount (0.314172ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ testHost: events bubble or not as in browsers; input, change, check, select and keydown dispatch the right events (0.776233ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ testHost: misuse throws a TypeError at the call, and a radio already unchecked is left alone (0.228547ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ testHost: a click right after mount at a positive time is handled (the event timestamp guard of the runtime applies only inside one dispatch) (0.093982ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ testHost: timers, Date.now and performance.now read the fake clock; globals are replaced (0.066577ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ testHost: a throwing module and a throwing run become result "throw"; the error is traced by name and message (0.05752ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ testHost: an unhandled rejection is reported once the run ends; a handled one is not (0.059543ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ harness: a run export that is not a function, and an uncaught error in the page, make the run fail (0.082977ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ isolation: a global written by one run is not visible to the next run (each run has its own realm) (0.072148ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ determinism: the same scenario run twice gives the same canonical line (5.037146ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ encoder: the page and Node produce identical traces for 31 value graphs (cycles, aliases, holes, frozen, Map, Set, Error, Promise) (0.098067ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ negative control: a golden with one changed value is reported as a mismatch (0.054047ms) # Google Chrome not found; install it or set CHROME_PATH
+✔ shim: the vue module re-exports exactly the 171 vue exports of the manifest (1.049591ms)
+✔ compile: a component with a construct outside the profile is rejected before Chrome starts (86.235146ms)
+✔ lint: every case passes the lint (header, imports, testHost members, language rules, compilation) (1622.078536ms)
+✔ lint: a scenario that breaks the rules is reported (negative control) (1.075695ms)
+﹣ goldens: every case matches its committed golden, and no golden is orphaned (0.36515ms) # Google Chrome not found; install it or set CHROME_PATH
+﹣ goldens: regenerating every case gives the committed bytes exactly (0.123477ms) # Google Chrome not found; install it or set CHROME_PATH
+✔ matchers pass on equal values and fail with the reason the report shows (2.490199ms)
+✔ dev-only warning matchers are unsupported, not failures (0.359514ms)
+✔ vi.fn records its calls, forwards the receiver and returns the implementation value (0.587173ms)
+✔ importPlan keeps the names a Vue package exports and marks the rest missing (11.430236ms)
+✔ static marks: a read of a name the port lacks, a Vue internal, a profile-excluded method or a debugger hook (11.53244ms)
+✔ static marks: a describe or the top level that reads a missing name marks every test under it (1.645524ms)
+✔ a test the compiler rejects is refused by name, and the rest of its describe still runs (26.84306ms)
+✔ compileText compiles through the same checks as compileModule, including the stdlib manifest (6.118364ms)
+✔ rewriteSpec leaves the Vue imports of a spec as the native module and refuses the reads it cannot satisfy (1.198337ms)
+✔ ratchet fails only when a test the ledger marks pass is not pass now, and only for the selected specs (2.237332ms)
+✔ interpretRun maps the trace to per-test outcomes, including a panic and a module that throws (0.566239ms)
+✔ negative control: a deliberately failing expect is reported as fail, and the tests after it still run (0.802687ms)
+✔ the ledger holds only the four outcome names (1.063016ms)
+﹣ the checkout holds the reactivity specs, and the ledger has an entry for every one of them (0.080076ms) # no vue-core checkout with packages/reactivity/__tests__: set VUE_CORE_DIR or clone https://github.com/vuejs/core at v3.5.43
+﹣ every spec of the checkout is prepared without an exception (0.087625ms) # no vue-core checkout with packages/reactivity/__tests__: set VUE_CORE_DIR or clone https://github.com/vuejs/core at v3.5.43
+✔ scenarios run the production build: the vue bindings a scenario imports are the production runtime (NODE_ENV=production) (823.190857ms)
+✔ runVueScenarioLine sets NODE_ENV for its child only: the parent environment is restored (296.551726ms)
+✔ scenario names are the path under tests/vue/cases without .js; files outside that root are refused (0.943472ms)
+✔ lint: every case is clean (Vue header, imports from the allowlist, no Vue internals, language rules) (419.460023ms)
+✔ lint negative controls: each forbidden construct is reported with its code (3.511313ms)
+✔ lint: calls to the Vue instance and handle methods pass by name (run, stop, pause, resume) (2.732929ms)
+✔ negative control: a method name that neither a builtin nor a Vue handle declares is still flagged (1.930444ms)
+✔ the Vue member-call names are declared by Vue's public typings and are not stdlib method names (8.064136ms)
+✔ lint: the header rules accept Vue tags and reject language IDs, unknown tiers and missing tags (0.630683ms)
+✔ the import allowlist holds P-status V01..V17 exports only (no X export, no component or DOM API) (1.777611ms)
+✔ goldens match a fresh oracle run for every scenario (structurally and byte for byte), with no orphans (12058.31618ms)
+✔ every case is deterministic: two child runs produce byte-identical output (60014.209503ms)
+✔ negative control: a doctored golden is reported at the first differing path; byte and missing-golden cases too (279.446124ms)
+✔ negative control: checkVueGoldens reports a doctored golden file and an orphan golden file (20684.239505ms)
+✔ scenario list audit: every V01..V17 row of the inventory is covered by at least two scenarios (60.656539ms)
+✔ negative control: the coverage audit reports each row with fewer than two covering scenarios (0.417604ms)
+ℹ tests 948
+ℹ suites 45
+ℹ pass 815
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 133
+ℹ todo 0
+ℹ duration_ms 331199.392865
+exit=0

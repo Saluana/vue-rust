@@ -1,0 +1,6 @@
+$ node /tmp/claude-0/-home-claude/b11561b8-6f41-5be1-82b5-76250e84b5c7/scratchpad/trap-control.mjs (scratch: runWasmScenarios with one panic control and two corpus scenarios)
+scenario numbers/remainder-bitwise: outcome=pass reason=-
+scenario strings/methods-basics: outcome=pass reason=-
+control control/panic: outcome=FAIL reason=trap: RuntimeError: unreachable
+unexpected failures: 0
+exit=0

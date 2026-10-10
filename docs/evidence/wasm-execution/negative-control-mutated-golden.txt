@@ -1,0 +1,5 @@
+$ node tooling/harness/run-language-wasm.mjs --filter to-fixed-ties --golden /tmp/claude-0/-home-claude/b11561b8-6f41-5be1-82b5-76250e84b5c7/scratchpad/mutated-golden
+wasm32-unknown-unknown /home/claude/targets/w42-wasm/wasm32-unknown-unknown/debug/vn_scenarios_wasm.wasm: 1663586 bytes raw, 408975 bytes gzip (level 9), exports vn_out_ptr vn_run_scenario vn_run_scenario_gc vn_scenario_count vn_scenario_name, imports 0
+FAIL          numbers/to-fixed-ties  -- first difference at $.entries[0].values[0]: "1.00" vs "mutated"
+scenarios 1: pass 0, FAIL 1, blocked 0, compile-error 0; 1 unexpected
+exit=1
