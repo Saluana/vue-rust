@@ -23,6 +23,8 @@ const COMMITTED = Object.freeze({
   1: '7e6bf7b654d1153cb813afa35fe94e26053d7b3393bb009e6f272c496e8a0e68',
   // 2: await/throw nodes and functions carry a source site, modules list them (task 3.7).
   2: '9d7cbb3f1dcbb6b36009a7756e82810a92a883867938d00b2fac20e86f0a1c70',
+  // 3: dimport, a literal import() (task 5.5).
+  3: '75101c3354be17ffad8639026fce43d46de29320ab4817d29d87138c8f99588a',
 });
 
 // Modules the lowering fixtures do not cover. Each is checked with checkSource and lowered like a fixture (target test).
@@ -36,6 +38,7 @@ const SAMPLES = {
     'export const kept = def + ns.x',
     '',
   ].join('\n'),
+  'sample/dynamic-import': ['export const lazy = () => import(\'./lazy.js\')', ''].join('\n'),
   'sample/statement-forms': [
     'let t = {}; let u;',
     'function g() { return 1 }',
@@ -66,7 +69,7 @@ const LOWERED = modules().map(([name, source]) => ({ name, hir: lowerSource(name
 
 describe('HIR schema hash', () => {
   test('HIR_SCHEMA_HASH recomputed from the catalogue matches the hash committed for HIR_VERSION', () => {
-    assert.equal(HIR_VERSION, 2, 'a new hirVersion needs its own committed hash (see the header)');
+    assert.equal(HIR_VERSION, 3, 'a new hirVersion needs its own committed hash (see the header)');
     assert.equal(hirSchemaHash(), HIR_SCHEMA_HASH);
     assert.equal(HIR_SCHEMA_HASH, COMMITTED[HIR_VERSION]);
   });

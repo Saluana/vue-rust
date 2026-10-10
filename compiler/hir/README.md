@@ -1,4 +1,4 @@
-# HIR node catalogue (hirVersion 2)
+# HIR node catalogue (hirVersion 3)
 
 Module: `{ hirVersion, kind:'Module', specifier, origin, lang, requests, slots, imports, exportsLocal,
 exportsIndirect, exportsStar, exportsNs, hoist, body, fns }`. `slots` are the module cells (index = order in `vn_declare`).
@@ -33,3 +33,5 @@ shape that the catalogue does not list, and on any catalogue entry no fixture pr
 
 hirVersion 2 (task 3.7): `await` and `throw` nodes and function records carry `site`, an index into the module's `sites`
 table (`{kind,name,file,line,column}`, the source positions of uncaught-throw frames).
+
+hirVersion 3 (task 5.5): `dimport` (`{request}`) is a literal `import()`.
