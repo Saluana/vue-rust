@@ -1,4 +1,4 @@
-# HIR node catalogue (hirVersion 1)
+# HIR node catalogue (hirVersion 2)
 
 Module: `{ hirVersion, kind:'Module', specifier, origin, lang, requests, slots, imports, exportsLocal,
 exportsIndirect, exportsStar, exportsNs, hoist, body, fns }`. `slots` are the module cells (index = order in `vn_declare`).
@@ -28,3 +28,6 @@ The catalogue is data in `schema.mjs` (`HIR_NODES`, `HIR_RECORDS`). `HIR_SCHEMA_
 `tests/compiler/lower/hir-schema.test.mjs` walks the HIR of the lowering fixtures and fails on any node kind, field or record
 shape that the catalogue does not list, and on any catalogue entry no fixture produces. A change of shape must bump
 `HIR_VERSION` and add the new hash to that test's `COMMITTED` table.
+
+hirVersion 2 (task 3.7): `await` and `throw` nodes and function records carry `site`, an index into the module's `sites`
+table (`{kind,name,file,line,column}`, the source positions of uncaught-throw frames).

@@ -94,7 +94,7 @@ and produce no module.
   exercises it.
 - Records are matched by their key set, not by position.
 - The hash is not written into emitted Rust. That was optional, and it would change every generated module.
-- `compiler/hir/module.mjs` writes `hirVersion: 1` as a literal, not `HIR_VERSION`. The test checks that they agree.
+- `compiler/hir/module.mjs` now writes `hirVersion: HIR_VERSION`; hirVersion 2 (source sites, task 3.7) superseded the hash above.
 - `hirVersion` is not part of the hash. A shape change fails the hash test until the new hash is added to `COMMITTED`
   under a bumped `HIR_VERSION`.
 - The UI scenario `events/dynamic-event-name` (`@[props.evt]`) is one of the 363 files above, so its compiled output is

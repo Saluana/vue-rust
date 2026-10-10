@@ -21,6 +21,8 @@ const LOWERING = path.join(repo, 'tests/language/lowering');
 
 const COMMITTED = Object.freeze({
   1: '7e6bf7b654d1153cb813afa35fe94e26053d7b3393bb009e6f272c496e8a0e68',
+  // 2: await/throw nodes and functions carry a source site, modules list them (task 3.7).
+  2: '9d7cbb3f1dcbb6b36009a7756e82810a92a883867938d00b2fac20e86f0a1c70',
 });
 
 // Modules the lowering fixtures do not cover. Each is checked with checkSource and lowered like a fixture (target test).
@@ -64,7 +66,7 @@ const LOWERED = modules().map(([name, source]) => ({ name, hir: lowerSource(name
 
 describe('HIR schema hash', () => {
   test('HIR_SCHEMA_HASH recomputed from the catalogue matches the hash committed for HIR_VERSION', () => {
-    assert.equal(HIR_VERSION, 1, 'a new hirVersion needs its own committed hash (see the header)');
+    assert.equal(HIR_VERSION, 2, 'a new hirVersion needs its own committed hash (see the header)');
     assert.equal(hirSchemaHash(), HIR_SCHEMA_HASH);
     assert.equal(HIR_SCHEMA_HASH, COMMITTED[HIR_VERSION]);
   });
@@ -72,7 +74,7 @@ describe('HIR schema hash', () => {
   test('the hash is over the canonical JSON: key order in the source does not change it', () => {
     const reordered = { records: HIR_RECORDS, nodes: HIR_NODES };
     assert.equal(canonicalJson(reordered), canonicalJson({ nodes: HIR_NODES, records: HIR_RECORDS }));
-    assert.equal(hirSchemaHash(reordered), COMMITTED[1]);
+    assert.equal(hirSchemaHash(reordered), COMMITTED[HIR_VERSION]);
   });
 
   test('negative control: a mutated catalogue changes the hash', () => {
@@ -86,7 +88,7 @@ describe('HIR schema hash', () => {
       'a node kind dropped': { nodes: Object.fromEntries(Object.entries(HIR_NODES).filter(([k]) => k !== 'hole')), records: HIR_RECORDS },
     };
     for (const [label, mutated] of Object.entries(cases)) {
-      assert.notEqual(hirSchemaHash(mutated), COMMITTED[1], `${label} must change the hash`);
+      assert.notEqual(hirSchemaHash(mutated), COMMITTED[HIR_VERSION], `${label} must change the hash`);
     }
   });
 });

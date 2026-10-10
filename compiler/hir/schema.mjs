@@ -1,4 +1,4 @@
-// HIR schema catalogue (WP-C1b, task 4.1): the node kinds and record shapes of hirVersion 1 as data, with a content hash.
+// HIR schema catalogue (WP-C1b, task 4.1): the node kinds and record shapes of the current hirVersion as data, with a content hash.
 // HIR_SCHEMA_HASH is the sha256 (node:crypto) of the canonical JSON of { nodes, records }. It does not include
 // HIR_VERSION: a change of shape changes the hash, and tests/compiler/lower/hir-schema.test.mjs fails unless the hash
 // committed for the current hirVersion is updated, which means bumping hirVersion for a shape change.
@@ -22,7 +22,7 @@ export const HIR_NODES = Object.freeze({
   thisval: [['pos']],
   thiscell: [['pos', 'r']],
   fn: [['pos', 'f', 'caps']],
-  await: [['pos', 'e']],
+  await: [['pos', 'e', 'site']],
   arr: [['pos', 'elems']],
   hole: [['pos']],
   obj: [['pos', 'props']],
@@ -73,7 +73,7 @@ export const HIR_NODES = Object.freeze({
   switch: [['pos', 'lid', 'disc', 'scope', 'cases']],
   try: [['pos', 'block', 'handler', 'fin']],
   ret: [['pos', 'e']],
-  throw: [['pos', 'e']],
+  throw: [['pos', 'e', 'site']],
   break: [['pos', 'lid']],
   continue: [['pos', 'lid']],
   label: [['pos', 'lid', 'body']],
@@ -88,14 +88,15 @@ export const HIR_NODES = Object.freeze({
 
 export const HIR_RECORDS = Object.freeze({
   Module: [['body', 'exportsIndirect', 'exportsLocal', 'exportsNs', 'exportsStar', 'fns', 'hirVersion', 'hoist',
-    'imports', 'kind', 'lang', 'origin', 'requests', 'slots', 'specifier']],
+    'imports', 'kind', 'lang', 'origin', 'requests', 'sites', 'slots', 'specifier']],
   Slot: [['id', 'init', 'kind', 'name', 'tdz'], ['id', 'init', 'kind', 'name', 'request']],
   Import: [['id', 'imported', 'name', 'request']],
   ExportLocal: [['id', 'name']],
   ExportIndirect: [['imported', 'name', 'request']],
   ExportNs: [['name', 'request']],
   Fn: [['arrow', 'async', 'body', 'caps', 'e', 'id', 'kind', 'length', 'name', 'nameFromKey', 'paramCopies', 'params',
-    's', 'scope', 'selfB', 'selfName', 'selfSt', 'thisCell']],
+    's', 'scope', 'selfB', 'selfName', 'selfSt', 'site', 'thisCell']],
+  Site: [['column', 'file', 'kind', 'line', 'name']], // source sites (task 3.7)
   Scope: [['decls', 'hoist'], ['decls', 'hoist', 'perIter']],
   Decl: [['id', 'kind', 'name', 'st', 'tdz']],
   Hoist: [['fn', 'id', 'target']],

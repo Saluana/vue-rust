@@ -2,7 +2,7 @@
 // (`slots`); the emitter creates one cell per slot in `declare`. Imports and re-exports refer to other modules by their
 // canonical request ids (cx.resolve). Top-level statements form the `body` (evaluate phase); function declarations are
 // the `hoist` list (bind phase). `export default <expr>` writes a hidden binding `*default*`.
-import { hn, unsupported, declaredBinding } from './context.mjs';
+import { hn, unsupported, declaredBinding, HIR_VERSION } from './context.mjs';
 import { scopeEntry, lowerStatement, functionDeclOf } from './stmt.mjs';
 import { lowerExpr, lowerNamed } from './expr.mjs';
 import { lowerFunctionValue } from './fn.mjs';
@@ -172,7 +172,7 @@ export function lowerModuleAst(cx, { specifier, origin, lang }) {
 
   const hoist = [...entry.hoist, ...hoistDefault];
   return {
-    hirVersion: 1,
+    hirVersion: HIR_VERSION,
     kind: 'Module',
     specifier,
     origin,
