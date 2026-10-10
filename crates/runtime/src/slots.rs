@@ -168,7 +168,7 @@ pub(crate) fn init_slots(rt: &Rt, inst: ObjRef, children: &Value, optimized: boo
         if ty.to_boolean() {
             assign_slots(rt, slots, children, optimized)?;
             if optimized {
-                rt.define_data(slots, PropKey::from_str("_"), ty, Flags::new(true, false, true))?;
+                rt.define_data(slots, PropKey::lit("_"), ty, Flags::new(true, false, true))?;
             }
         } else {
             normalize_object_slots(rt, children, slots)?;
@@ -204,7 +204,7 @@ pub(crate) fn update_slots(rt: &Rt, inst: ObjRef, children: &Value, optimized: b
     } else if children.to_boolean() {
         normalize_vnode_slots(rt, inst, children)?;
         let t = rt.new_object();
-        rt.define_data(t, PropKey::from_str("default"), Value::Number(1.0), Flags::ALL)?;
+        rt.define_data(t, PropKey::lit("default"), Value::Number(1.0), Flags::ALL)?;
         target = Value::Object(t);
     }
     if need_deletion_check {

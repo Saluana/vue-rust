@@ -118,8 +118,9 @@ function isFile(file) {
   }
 }
 
-// Loopback server for one run. Routes: the page, the vue global, the shim, scenario.js, <rel>.vue (compiled) and
-// /__oracle/<path>.mjs (tooling/oracle only).
+// Loopback server for one run. Routes: the page, the vue global, the shim, scenario.js, <rel>.vue (compiled),
+// <rel>.js and <rel>.ts (served as written from the case directory: the browser runs plain JavaScript, and a .ts module
+// with type syntax fails to load, since the reference has no type stripping) and /__oracle/<path>.mjs (tooling/oracle only).
 function startServer(dir, compiled) {
   const server = http.createServer((req, res) => {
     if (req.method !== 'GET' && req.method !== 'HEAD') {
@@ -148,6 +149,9 @@ function startServer(dir, compiled) {
       }
     } else if (p.endsWith('.vue') && compiled.has(p.slice(1))) {
       return send(JS, compiled.get(p.slice(1)));
+    } else if (/\.(js|ts)$/.test(p)) {
+      const file = path.resolve(dir, `.${p}`);
+      if (file.startsWith(dir + path.sep) && isFile(file)) return send(JS, readFileSync(file));
     }
     res.writeHead(404).end();
   });

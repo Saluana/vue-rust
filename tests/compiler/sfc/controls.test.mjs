@@ -40,8 +40,8 @@ describe('negative controls', () => {
   });
 
   test('removing the unsupported import from a rejecting fixture makes it accept', () => {
-    const fixed = read('bad-vue-import-h.vue').replace("import { h } from 'vue'\n", '');
-    const r = compileSfc(fixed, { filename: 'bad-vue-import-h.vue', rootDir: FIXTURES });
+    const fixed = read('bad-vue-import-create-renderer.vue').replace("import { createRenderer } from 'vue'\n", '');
+    const r = compileSfc(fixed, { filename: 'bad-vue-import-create-renderer.vue', rootDir: FIXTURES });
     assert.deepEqual(r.diagnostics, [], 'the fix removes the only diagnostic');
     assert.equal(typeof r.code, 'string');
   });

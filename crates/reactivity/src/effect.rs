@@ -202,8 +202,20 @@ fn effect_obj(rt: &Rt, v: &Value) -> Res<ObjRef> {
     Err(rt.throw_type_error("not a reactive effect"))
 }
 
+/// `effect(fn, options)` of @vue/reactivity 3.5.43 (production build): the function runs once before the runner is
+/// returned. Only `scheduler` and `onStop` are read from `options`; `lazy` is ignored, as in Vue.
 fn js_effect(rt: &Rt, c: &Call<'_>) -> Res<Value> {
-    let mut f = c.arg(0);
+    create_runner(rt, c.arg(0), &c.arg(1), true)
+}
+
+/// The same effect and runner without the first run. The runtime's component render effect is created this way and
+/// run by its caller (runtime-core's setupRenderEffect), so the caller can set up the instance first.
+fn js_effect_without_run(rt: &Rt, c: &Call<'_>) -> Res<Value> {
+    create_runner(rt, c.arg(0), &c.arg(1), false)
+}
+
+fn create_runner(rt: &Rt, fn_arg: Value, options: &Value, run_now: bool) -> Res<Value> {
+    let mut f = fn_arg;
     // `if (fn.effect instanceof ReactiveEffect) fn = fn.effect.fn`: a runner's effect is reused for its function.
     let inner = rt.get_str(&f, "effect")?;
     if let Value::Object(io) = inner {
@@ -214,18 +226,14 @@ fn js_effect(rt: &Rt, c: &Call<'_>) -> Res<Value> {
         }
     }
     let e = new_effect(rt, f);
-    let options = c.arg(1);
-    let mut lazy = false;
-    if truthy(&options) {
-        let sched = rt.get_str(&options, "scheduler")?;
-        let on_stop = rt.get_str(&options, "onStop")?;
-        lazy = rt.get_str(&options, "lazy")?.to_boolean();
+    if truthy(options) {
+        let sched = rt.get_str(options, "scheduler")?;
+        let on_stop = rt.get_str(options, "onStop")?;
         let en = node(rt, e);
         *en.effect().scheduler.borrow_mut() = sched;
         *en.effect().on_stop.borrow_mut() = on_stop;
     }
-    // `lazy: true` creates the effect without its first run (runtime-core's ReactiveEffect: the caller runs it).
-    if !lazy {
+    if run_now {
         if let Err(err) = effect_run(rt, e) {
             return match effect_stop(rt, e) {
                 Err(e2) => Err(e2),
@@ -234,7 +242,7 @@ fn js_effect(rt: &Rt, c: &Call<'_>) -> Res<Value> {
         }
     }
     let runner = native(rt, "bound run", 0, runner_code, vec![Value::Object(e)]);
-    rt.define_data(runner, PropKey::from_str("effect"), Value::Object(e), Flags::ALL)?;
+    rt.define_data(runner, PropKey::lit("effect"), Value::Object(e), Flags::ALL)?;
     Ok(Value::Object(runner))
 }
 
@@ -270,10 +278,19 @@ fn js_reset_tracking(rt: &Rt, _c: &Call<'_>) -> Res<Value> {
     Ok(Value::Undefined)
 }
 
-pub(crate) fn exported(rt: &Rt) -> Vec<(&'static str, Value)> {
+/// The public exports of this module (`effect` and `stop`, @vue/reactivity 3.5.43).
+pub(crate) fn exported_public(rt: &Rt) -> Vec<(&'static str, Value)> {
     vec![
         ("effect", Value::Object(rt.new_native_function(js_effect, "effect", 2, Vec::new()))),
         ("stop", Value::Object(rt.new_native_function(js_stop, "stop", 1, Vec::new()))),
+    ]
+}
+
+/// The internal helpers of this module: `effectWithoutRun` (the runtime's render effect), `onEffectCleanup` and the
+/// tracking stack.
+pub(crate) fn exported_internal(rt: &Rt) -> Vec<(&'static str, Value)> {
+    vec![
+        ("effectWithoutRun", Value::Object(rt.new_native_function(js_effect_without_run, "effectWithoutRun", 2, Vec::new()))),
         ("onEffectCleanup", Value::Object(rt.new_native_function(js_on_effect_cleanup, "onEffectCleanup", 1, Vec::new()))),
         ("pauseTracking", Value::Object(rt.new_native_function(js_pause_tracking, "pauseTracking", 0, Vec::new()))),
         ("enableTracking", Value::Object(rt.new_native_function(js_enable_tracking, "enableTracking", 0, Vec::new()))),

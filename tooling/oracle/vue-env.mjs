@@ -67,8 +67,9 @@ export function isVueMemberCall(name) {
 const UNMATCHED_METHOD = /^\.([A-Za-z_$][\w$]*)\(\) is not a supported builtin method/;
 
 // The names a scenario may import from 'vue': runtime exports that the export map classifies to a V01..V17 row
-// with status P. Exports classified X (effect, stop, ReactiveEffect, proxyRefs, getCurrentWatcher, queuePostFlushCb,
-// TrackOpTypes, TriggerOpTypes) and every component or DOM API are excluded.
+// with status P. effect, stop (V12), proxyRefs (V07) and getCurrentWatcher (V16) are P and allowed. Exports classified X
+// (ReactiveEffect, queuePostFlushCb, TrackOpTypes, TriggerOpTypes), exports outside V01..V17 (h, mergeProps,
+// getCurrentInstance) and every component or DOM API are excluded.
 export function vueImportAllowlist() {
   const map = JSON.parse(readFileSync(exportMapFile, 'utf8'));
   const primary = new Map(JSON.parse(readFileSync(inventoryFile, 'utf8')).rows.map((r) => [r.id, r.primary]));

@@ -35,7 +35,7 @@ runs it twice: once to record `pre`, once to execute). `writeSuite(path, suite)`
 
 ## Format additions (WP-O2, approved)
 - `"get": 1` — the target is a data property such as `Math.PI`; nothing is called, `pre` is `[]`, `post.ret` is the value read.
-- `"approx": 1` — transcendental results may differ from the platform libm in the last ulp: the Rust replay compares numbers within 1 ulp for these cases only.
+- `"approx": 1` — transcendental results may differ from V8 in the last ulp (V8 and the Rust code compute some of them with different algorithms): the Rust replay compares numbers within 1 ulp for these cases only.
 - `cbs` is aligned with `pre` (same positions; `null` where the argument is a plain value).
 - Callback log rule: every preset appends `[presetName, ...loggedArgs]` to the shared `log` array **before** it returns or throws. A primitive argument is logged as itself; an object,
   array or function argument is logged as the index that the calling method passed (second callback argument for map-like methods, third for reduce) or `-1` when none is passed (sort).

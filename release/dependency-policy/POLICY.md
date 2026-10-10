@@ -13,8 +13,8 @@ build-script and proc-macro crates), fonts, images and other assets, test corpor
 
 1. npm: `package-lock.json` is committed. Install with `npm ci --ignore-scripts`. Every lock entry must carry an
    `integrity` value. Current state: 23 of 23 entries do.
-2. Cargo: every buildable crate commits its `Cargo.lock` and builds with `--locked`. Current state: the prototype
-   `generated/Cargo.lock` pins 364 registry crates with checksums.
+2. Cargo: every buildable crate commits its `Cargo.lock` and builds with `--locked`. Current state: the prototype's
+   lockfile (removed from the root; preserved at `tests/fixtures/prototype/counter/generated/Cargo.lock`) pins 364 registry crates with checksums.
 3. Toolchain: `rust-toolchain.toml` pins Rust 1.99.0. A release must record the compiler version and checksums of
    the toolchain it used. Not yet recorded.
 4. A checksum or integrity mismatch is a hard failure. Do not regenerate a lock to clear a mismatch without a

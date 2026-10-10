@@ -734,7 +734,7 @@ impl Renderer {
                     patch_prop_with_owner(&self.ctx, el, &k, &Value::Null, &v, ns, parent)?;
                 }
             }
-            if rt.has_property(props_obj(rt, &props)?, &PropKey::from_str("value"))? {
+            if rt.has_property(props_obj(rt, &props)?, &PropKey::lit("value"))? {
                 let v = rt.get_str(&props, "value")?;
                 patch_prop_with_owner(&self.ctx, el, "value", &Value::Null, &v, ns, parent)?;
             }
@@ -993,7 +993,7 @@ impl Renderer {
                     patch_prop_with_owner(&self.ctx, el, &k, &prev, &next, ns, parent)?;
                 }
             }
-            if rt.has_property(props_obj(rt, new_props)?, &PropKey::from_str("value"))? {
+            if rt.has_property(props_obj(rt, new_props)?, &PropKey::lit("value"))? {
                 let prev = rt.get_str(old_props, "value")?;
                 let next = rt.get_str(new_props, "value")?;
                 patch_prop_with_owner(&self.ctx, el, "value", &prev, &next, ns, parent)?;

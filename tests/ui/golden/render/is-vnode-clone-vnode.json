@@ -1,0 +1,1 @@
+{"scenario":"render/is-vnode-clone-vnode","result":"ok","error":null,"entries":[{"label":"is-vnode","values":[true,false,false,false,true]},{"label":"clone","values":[false,"span","k1","b","x y","t","hi"]},{"label":"original-untouched","values":["a","x",{"$":"undef"}]},{"label":"no-extra-props","values":[false,true,"a","k1"]}],"unhandledRejections":[]}

@@ -118,7 +118,7 @@ fn render_slot_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
         let slots_flag = rt.get_str(&slots, "_")?;
         let patch = if valid.to_boolean() && matches!(slots_flag, Value::Number(n) if n == 1.0) { PatchFlags::STABLE_FRAGMENT } else { -2 };
         let key_obj = rt.new_object();
-        rt.define_data(key_obj, PropKey::from_str("key"), Value::String(JsStr::from_str(&key)), Flags::ALL)?;
+        rt.define_data(key_obj, PropKey::lit("key"), Value::String(JsStr::from_str(&key)), Flags::ALL)?;
         let create = crate::renderer::builtin_fn(rt, "vn-runtime.createBlock");
         let fragment = crate::renderer::sym(rt, "v-fgt");
         rt.call(&create, &Value::Undefined, &[fragment, Value::Object(key_obj), children, Value::Number(patch as f64)])
@@ -251,8 +251,8 @@ fn with_directives_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
         }
         if rt.is_callable(&dir) {
             let d = rt.new_object();
-            rt.define_data(d, PropKey::from_str("mounted"), dir.clone(), Flags::ALL)?;
-            rt.define_data(d, PropKey::from_str("updated"), dir.clone(), Flags::ALL)?;
+            rt.define_data(d, PropKey::lit("mounted"), dir.clone(), Flags::ALL)?;
+            rt.define_data(d, PropKey::lit("updated"), dir.clone(), Flags::ALL)?;
             dir = Value::Object(d);
         }
         if rt.get_str(&dir, "deep")?.to_boolean() {
@@ -260,12 +260,12 @@ fn with_directives_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
             rt.call(&traverse, &Value::Undefined, std::slice::from_ref(&value))?;
         }
         let binding = rt.new_object();
-        rt.define_data(binding, PropKey::from_str("dir"), dir, Flags::ALL)?;
-        rt.define_data(binding, PropKey::from_str("instance"), instance.clone(), Flags::ALL)?;
-        rt.define_data(binding, PropKey::from_str("value"), value, Flags::ALL)?;
-        rt.define_data(binding, PropKey::from_str("oldValue"), Value::Undefined, Flags::ALL)?;
-        rt.define_data(binding, PropKey::from_str("arg"), arg_v, Flags::ALL)?;
-        rt.define_data(binding, PropKey::from_str("modifiers"), modifiers, Flags::ALL)?;
+        rt.define_data(binding, PropKey::lit("dir"), dir, Flags::ALL)?;
+        rt.define_data(binding, PropKey::lit("instance"), instance.clone(), Flags::ALL)?;
+        rt.define_data(binding, PropKey::lit("value"), value, Flags::ALL)?;
+        rt.define_data(binding, PropKey::lit("oldValue"), Value::Undefined, Flags::ALL)?;
+        rt.define_data(binding, PropKey::lit("arg"), arg_v, Flags::ALL)?;
+        rt.define_data(binding, PropKey::lit("modifiers"), modifiers, Flags::ALL)?;
         let len = length_of(rt, &Value::Object(bindings))? as u32;
         rt.set_v_strict(&Value::Object(bindings), &PropKey::Index(len), Value::Object(binding))?;
     }
@@ -337,8 +337,23 @@ fn empty_obj_id(rt: &Rt) -> ObjRef {
     }
 }
 
-fn define_component_export(_rt: &Rt, c: &Call<'_>) -> Res<Value> {
-    Ok(arg(c, 0))
+/// `defineComponent(options, extraOptions)` (runtime-core 3.5.43): an object is returned as it is. A function is the
+/// setup function, and the component is `Object.assign({ name: setup.name }, extraOptions, { setup })`.
+fn define_component_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
+    let options = arg(c, 0);
+    if !rt.is_callable(&options) {
+        return Ok(options);
+    }
+    let out = rt.new_object();
+    let name = rt.get_str(&options, "name")?;
+    rt.define_data(out, PropKey::lit("name"), name, Flags::ALL)?;
+    let extra = arg(c, 1);
+    for key in crate::dom_props::enumerable_keys(rt, &extra)? {
+        let v = rt.get_str(&extra, &key)?;
+        rt.define_data(out, PropKey::from_str(&key), v, Flags::ALL)?;
+    }
+    rt.define_data(out, PropKey::lit("setup"), options, Flags::ALL)?;
+    Ok(Value::Object(out))
 }
 
 /// `h(type, propsOrChildren, children)`.
@@ -350,8 +365,8 @@ fn h_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     if n == 2 {
         let p = arg(c, 1);
         if plain_object(&p) {
-            let is_vnode = crate::vnode::as_vnode(rt, &p).is_some();
-            if is_vnode {
+            // runtime-core's isVNode: a VNode, or any object whose __v_isVNode is true.
+            if crate::vnode::is_vnode_value(rt, &p)? {
                 let kids = Value::Object(rt.new_array(vec![p]));
                 return rt.call(&create, &Value::Undefined, &[ty, Value::Null, kids]);
             }
@@ -361,7 +376,7 @@ fn h_export(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     }
     let children = if n > 3 {
         Value::Object(rt.new_array(c.args[2..].to_vec()))
-    } else if n == 3 && crate::vnode::as_vnode(rt, &arg(c, 2)).is_some() {
+    } else if n == 3 && crate::vnode::is_vnode_value(rt, &arg(c, 2))? {
         Value::Object(rt.new_array(vec![arg(c, 2)]))
     } else {
         arg(c, 2)
@@ -390,7 +405,7 @@ pub(crate) fn exports(rt: &Rt) -> Vec<(&'static str, Value)> {
         ("useSlots", func(rt, "useSlots", 0, use_slots_export)),
         ("useAttrs", func(rt, "useAttrs", 0, use_attrs_export)),
         ("useTemplateRef", func(rt, "useTemplateRef", 1, use_template_ref_export)),
-        ("defineComponent", func(rt, "defineComponent", 1, define_component_export)),
+        ("defineComponent", func(rt, "defineComponent", 2, define_component_export)),
         ("h", func(rt, "h", 3, h_export)),
         ("defineProps", func(rt, "defineProps", 0, null_macro)),
         ("defineEmits", func(rt, "defineEmits", 0, null_macro)),

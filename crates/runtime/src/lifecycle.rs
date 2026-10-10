@@ -44,7 +44,7 @@ fn weh_of(rt: &Rt, hook: &Value, target: ObjRef, kind: LifeHook) -> Res<Value> {
         0,
         vec![hook.clone(), Value::Object(target), ErrType::Hook(kind).to_value()],
     ));
-    rt.set_v_strict(hook, &PropKey::from_str("__weh"), w.clone())?;
+    rt.set_v_strict(hook, &PropKey::lit("__weh"), w.clone())?;
     Ok(w)
 }
 
@@ -177,7 +177,7 @@ fn register_keep_alive_hook(rt: &Rt, hook: &Value, kind: LifeHook, target: Optio
             0,
             vec![hook.clone(), target.map(Value::Object).unwrap_or(Value::Undefined)],
         ));
-        rt.set_v_strict(hook, &PropKey::from_str("__wdc"), w.clone())?;
+        rt.set_v_strict(hook, &PropKey::lit("__wdc"), w.clone())?;
         w
     };
     inject_hook(rt, kind, &wrapped, target, false)?;

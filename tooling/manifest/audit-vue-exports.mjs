@@ -18,6 +18,7 @@ const fail = (message) => {
 };
 const rel = (file) => path.relative(ROOT, file).split(path.sep).join('/');
 const sameList = (a, b) => a.length === b.length && a.every((value, i) => value === b[i]);
+const NODE_VERSION_DEPENDENT_INTEROP = ['module.exports'];
 const escapeRe = (text) => text.replace(/[$^.*+?()[\]{}|\\]/g, '\\$&');
 
 // JSDoc block immediately followed by an exported function declaration.
@@ -146,7 +147,10 @@ export async function auditVueExports({ rows, exportMap }) {
   );
   const interopDetected = importKeys.filter((key) => !cjsKeys.includes(key)).sort(cmp);
   const interopDeclared = Object.keys(exportMap.interopArtifacts).sort(cmp);
-  if (!sameList(interopDetected, interopDeclared)) {
+  // Node adds the `module.exports` namespace key only from v23 on, so an older Node may not detect it; every other
+  // declared key must be detected, and every detected key must be declared.
+  const interopRequired = interopDeclared.filter((key) => !NODE_VERSION_DEPENDENT_INTEROP.includes(key));
+  if (interopDetected.some((key) => !interopDeclared.includes(key)) || interopRequired.some((key) => !interopDetected.includes(key))) {
     fail(`CJS interop keys differ: detected [${interopDetected}], declared [${interopDeclared}]`);
   }
   const runtime = importKeys.filter((key) => !interopDeclared.includes(key)).sort(cmp);
@@ -378,8 +382,8 @@ export function renderAuditReport(audit) {
     item.compilerInternal ? 'yes' : 'no',
     item.reason ?? '',
   ]));
-  const notEmitted = audit.exports.filter((entry) => entry.row === 'A11' && !entry.compilerInternal).map((entry) => entry.name);
-  line(`A11 members that the official compiler does not emit, so they stay X for both origins: ${notEmitted.join(', ')}.`);
+  const notEmitted = audit.exports.filter((entry) => entry.row === 'A11' && !entry.compilerInternal).map((entry) => `${entry.name} (${entry.status})`);
+  line(`A11 members that the official compiler does not emit, with their recorded status: ${notEmitted.join(', ')}.`);
   line();
   line('## Needs coordinator decision');
   line();

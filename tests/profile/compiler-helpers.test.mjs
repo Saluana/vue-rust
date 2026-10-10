@@ -34,11 +34,12 @@ function helperTableNames() {
   return names;
 }
 
-// Hand-written: the 40 emitted, X-status helpers that are compilerInternal (generated code may import them).
+// Hand-written: the 39 emitted, X-status helpers that are compilerInternal (generated code may import them).
+// mergeProps is emitted too, but it is public (U13, P) and listed in compilerHelperExclusions instead.
 const EXPECTED_FLAGGED = [
   'Fragment', 'camelize', 'createBlock', 'createCommentVNode', 'createElementBlock', 'createElementVNode',
   'createPropsRestProxy', 'createSlots', 'createStaticVNode', 'createTextVNode', 'createVNode', 'guardReactiveProps',
-  'isMemoSame', 'mergeDefaults', 'mergeModels', 'mergeProps', 'normalizeClass', 'normalizeProps', 'normalizeStyle',
+  'isMemoSame', 'mergeDefaults', 'mergeModels', 'normalizeClass', 'normalizeProps', 'normalizeStyle',
   'openBlock', 'renderList', 'renderSlot', 'resolveComponent', 'resolveDirective', 'resolveDynamicComponent',
   'setBlockTracking', 'toDisplayString', 'toHandlerKey', 'toHandlers', 'vModelCheckbox', 'vModelDynamic', 'vModelRadio',
   'vModelSelect', 'vModelText', 'vShow', 'withCtx', 'withDirectives', 'withKeys', 'withMemo', 'withModifiers',
@@ -66,7 +67,7 @@ test('every compiler helper-table name that is a vue export is flagged compilerI
   assert.equal(checked, 57);
 });
 
-test('the compilerInternal set is exactly the 40 emitted X helpers, each with status X and a table entry', () => {
+test('the compilerInternal set is exactly the 39 emitted X helpers, each with status X and a table entry', () => {
   const flagged = vueExports.exports.filter((entry) => entry.compilerInternal).map((entry) => entry.name).sort();
   assert.deepEqual(flagged, [...EXPECTED_FLAGGED].sort());
   const tables = helperTableNames();
@@ -87,12 +88,24 @@ test('compilerInternal helpers: user origin refuses them, compiler origin accept
 });
 
 test('helpers the official compiler does not emit stay unsupported for both origins', () => {
-  const notEmitted = ['h', 'isVNode', 'cloneVNode', 'assertNumber', 'transformVNodeArgs', 'withScopeId', 'Comment', 'Static', 'Text', 'capitalize', 'pushScopeId', 'popScopeId', 'resolveFilter'];
+  // h, isVNode and cloneVNode are not in this list: they are adapted public APIs (A11), supported for user code.
+  const notEmitted = ['assertNumber', 'transformVNodeArgs', 'withScopeId', 'Comment', 'Static', 'Text', 'capitalize', 'pushScopeId', 'popScopeId', 'resolveFilter'];
   for (const name of notEmitted) {
     for (const target of ['native', 'web']) {
       assert.equal(isSupported('vue', name, target, { origin: 'compiler' }), false, `${name} ${target}`);
       assert.equal(isSupported('vue', name, target), false, `${name} ${target}`);
     }
+  }
+});
+
+test('mergeProps is emitted by the compiler and is public: supported for user code and for generated code', () => {
+  assert.equal(byName.get('mergeProps').compilerInternal, false);
+  assert.equal(byName.get('mergeProps').status, 'P');
+  assert.equal(byName.get('mergeProps').row, 'U13');
+  assert.ok(parseExportMap(exportMapText).compilerHelperExclusions.mergeProps, 'mergeProps has an exclusion reason');
+  for (const target of ['native', 'web']) {
+    assert.equal(isSupported('vue', 'mergeProps', target), true, target);
+    assert.equal(isSupported('vue', 'mergeProps', target, { origin: 'compiler' }), true, target);
   }
 });
 

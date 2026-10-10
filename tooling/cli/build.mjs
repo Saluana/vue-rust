@@ -76,7 +76,10 @@ export function defaultName(root) {
 }
 
 // The Cargo manifest of a generated crate. Path dependencies name the framework crates of this checkout. The empty
-// [workspace] table keeps the generated crate out of the framework workspace.
+// [workspace] table keeps the generated crate out of the framework workspace. The release profile is tuned for size: an
+// app is one wasm download. On examples/counter (wasm32, release) opt-level "z" with LTO and one codegen unit gave the
+// smallest module of the variants measured (opt-level "s" and 3, codegen-units 16, LTO off, and no panic setting were
+// all larger). panic = "abort": the web host's panic hook reports the message and the module then traps; nothing unwinds.
 export function cargoToml({ pkg, lib }) {
   const dep = (crate) => `{ path = ${JSON.stringify(path.join(FRAMEWORK_ROOT, 'crates', crate))} }`;
   return [
@@ -87,6 +90,8 @@ export function cargoToml({ pkg, lib }) {
     `vn-value = ${dep('value')}`,
     `vn-runtime = ${dep('runtime')}`,
     `vn-renderer-dom = ${dep('renderer-dom')}`,
+    '',
+    '[profile.release]', 'opt-level = "z"', 'lto = true', 'codegen-units = 1', 'panic = "abort"',
     '', '[workspace]', '',
   ].join('\n');
 }
@@ -182,6 +187,7 @@ export function configRs(container) {
 }
 
 // The Cargo manifest of a headless app: a native binary (src/main.rs) that runs an interaction script in a DocHost.
+// Its release profile keeps opt-level 3 and takes LTO and one codegen unit only.
 export function cargoTomlHeadless({ pkg }) {
   const dep = (crate) => `{ path = ${JSON.stringify(path.join(FRAMEWORK_ROOT, 'crates', crate))} }`;
   return [
@@ -193,6 +199,8 @@ export function cargoTomlHeadless({ pkg }) {
     `vn-runtime = ${dep('runtime')}`,
     `vn-dom = ${dep('dom')}`,
     `vn-testkit = ${dep('testkit')}`,
+    '',
+    '[profile.release]', 'lto = true', 'codegen-units = 1',
     '', '[workspace]', '',
   ].join('\n');
 }

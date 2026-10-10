@@ -38,7 +38,7 @@ pub(crate) fn build(rt: &Rt, readonly: bool, shallow: bool) -> ObjRef {
         rt.define_data(obj, key, Value::Object(f), Flags::ALL).expect("collection instrumentation (framework bug)");
     }
     let getter = native(rt, "get size", 0, size_dispatch, vec![Value::Bool(readonly)]);
-    rt.define_accessor(obj, PropKey::from_str("size"), Some(getter), None, Flags::ALL)
+    rt.define_accessor(obj, PropKey::lit("size"), Some(getter), None, Flags::ALL)
         .expect("collection instrumentation (framework bug)");
     obj
 }
@@ -313,9 +313,9 @@ fn coll_iterable(rt: &Rt, this: &Value, which: Which, args: &[Value], readonly: 
     let is_pair = which == Which::Entries || (which == Which::Iterator && target_is_map);
     let is_key_only = which == Which::Keys && target_is_map;
     let method = match which {
-        Which::Keys => PropKey::from_str("keys"),
-        Which::Values => PropKey::from_str("values"),
-        Which::Entries => PropKey::from_str("entries"),
+        Which::Keys => PropKey::lit("keys"),
+        Which::Values => PropKey::lit("values"),
+        Which::Entries => PropKey::lit("entries"),
         Which::Iterator => PropKey::Sym(rt.well_known(WellKnown::Iterator)),
     };
     let f = rt.get_v(&target, &method)?;
@@ -335,7 +335,7 @@ fn coll_iterable(rt: &Rt, this: &Value, which: Which, args: &[Value], readonly: 
         Value::Bool(shallow),
     ];
     let next = native(rt, "next", 0, iterator_next, data);
-    rt.define_data(it, PropKey::from_str("next"), Value::Object(next), Flags::ALL)?;
+    rt.define_data(it, PropKey::lit("next"), Value::Object(next), Flags::ALL)?;
     Ok(Value::Object(it))
 }
 
@@ -360,8 +360,8 @@ fn iterator_next(rt: &Rt, c: &Call<'_>) -> Res<Value> {
         wrap(rt, w, &value)?
     };
     let o = rt.new_object();
-    rt.define_data(o, PropKey::from_str("value"), out, Flags::ALL)?;
-    rt.define_data(o, PropKey::from_str("done"), done, Flags::ALL)?;
+    rt.define_data(o, PropKey::lit("value"), out, Flags::ALL)?;
+    rt.define_data(o, PropKey::lit("done"), done, Flags::ALL)?;
     Ok(Value::Object(o))
 }
 

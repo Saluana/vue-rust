@@ -1,0 +1,1 @@
+{"scenario":"effect/scheduler-replaces-rerun","result":"ok","error":null,"entries":[{"label":"after-create","values":[1,0]},{"label":"after-two-writes","values":[1,2]},{"label":"runner-value","values":[2]},{"label":"after-runner-call","values":[2,2]}],"unhandledRejections":[]}

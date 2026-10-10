@@ -3,7 +3,7 @@
 [workspace]
 resolver = "3"
 members = ["crates/*"]
-exclude = ["generated", "tests/fixtures", "examples", "build", "target", "toolchain", "node_modules", "experiments"]
+exclude = ["tests/fixtures", "examples", "build", "target", "toolchain", "node_modules", "experiments"]
 
 [workspace.package]
 edition = "2024"

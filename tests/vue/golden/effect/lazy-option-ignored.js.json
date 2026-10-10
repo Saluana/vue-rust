@@ -1,0 +1,1 @@
+{"scenario":"effect/lazy-option-ignored","result":"ok","error":null,"entries":[{"label":"after-lazy-create","values":[1,"function"]},{"label":"after-write","values":[2]}],"unhandledRejections":[]}

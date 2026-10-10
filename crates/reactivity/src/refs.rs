@@ -319,7 +319,7 @@ fn s_prop_value(rt: &Rt, c: &Call<'_>) -> Res<Value> {
         if is_ref(rt, &raw_ref)? {
             let nested = rt.get_v(&object, &key)?;
             if is_ref(rt, &nested)? {
-                rt.set_v_strict(&nested, &PropKey::from_str("value"), new_v)?;
+                rt.set_v_strict(&nested, &PropKey::lit("value"), new_v)?;
                 return Ok(Value::Undefined);
             }
         }
@@ -467,7 +467,7 @@ impl Exotic for ProxyRefs {
     }
 
     fn get(&self, rt: &Rt, _obj: ObjRef, key: &PropKey, receiver: &Value) -> Res<Hook<Value>> {
-        if *key == PropKey::from_str("__v_raw") {
+        if *key == PropKey::lit("__v_raw") {
             return Ok(Hook::Handled(Value::Object(self.target)));
         }
         let v = rt.get(self.target, key, receiver)?;
@@ -477,7 +477,7 @@ impl Exotic for ProxyRefs {
     fn set(&self, rt: &Rt, obj: ObjRef, key: &PropKey, v: &Value, receiver: &Value) -> Res<Hook<bool>> {
         let old = rt.get(self.target, key, &Value::Object(self.target))?;
         if is_ref(rt, &old)? && !is_ref(rt, v)? {
-            rt.set_v_strict(&old, &PropKey::from_str("value"), v.clone())?;
+            rt.set_v_strict(&old, &PropKey::lit("value"), v.clone())?;
             return Ok(Hook::Handled(true));
         }
         // A write through the proxy lands on the target (the proxy has no defineProperty trap of its own).
@@ -533,7 +533,7 @@ fn js_proxy_refs(rt: &Rt, c: &Call<'_>) -> Res<Value> {
 }
 
 /// The public exports this module owns (`ref`, `shallowRef`, `triggerRef`, `customRef`, `toRef`, `toRefs`, `toValue`,
-/// `unref`, `isRef`).
+/// `unref`, `isRef`, `proxyRefs`).
 pub(crate) fn exported(rt: &Rt) -> Vec<(&'static str, Value)> {
     vec![
         ("ref", Value::Object(native(rt, "ref", 1, js_ref, Vec::new()))),
@@ -545,10 +545,6 @@ pub(crate) fn exported(rt: &Rt) -> Vec<(&'static str, Value)> {
         ("toValue", Value::Object(native(rt, "toValue", 1, js_to_value, Vec::new()))),
         ("unref", Value::Object(native(rt, "unref", 1, js_unref, Vec::new()))),
         ("isRef", Value::Object(native(rt, "isRef", 1, js_is_ref, Vec::new()))),
+        ("proxyRefs", Value::Object(native(rt, "proxyRefs", 1, js_proxy_refs, Vec::new()))),
     ]
-}
-
-/// The internal `proxyRefs` (the manifest marks it X for user code; tests and the runtime use it).
-pub(crate) fn internal(rt: &Rt) -> (&'static str, Value) {
-    ("proxyRefs", Value::Object(native(rt, "proxyRefs", 1, js_proxy_refs, Vec::new())))
 }

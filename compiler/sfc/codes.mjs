@@ -41,7 +41,7 @@ export const SFC_CODES = Object.freeze({
   ),
   VN6007: entry(
     'Options API',
-    'Options API component definitions are excluded. The default export of a normal <script> may only contain name and inheritAttrs (S02, A18).',
+    'Options API component definitions are excluded. The default export of a normal <script> is an object literal with name or inheritAttrs, or defineComponent of an object literal (which may also have setup, A10) or of one setup function. Other entries, such as render or data, are Options API (S02, A18).',
     'Use <script setup> with defineProps, defineEmits, ref and computed instead.',
   ),
   VN6008: entry(

@@ -1,0 +1,1 @@
+{"scenario":"effect/runs-once-and-reruns","result":"ok","error":null,"entries":[{"label":"after-create","values":[1,"function"]},{"label":"after-write","values":[2]},{"label":"runner-value","values":[20]},{"label":"after-runner-call","values":[3]}],"unhandledRejections":[]}

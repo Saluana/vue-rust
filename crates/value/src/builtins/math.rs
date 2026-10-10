@@ -1,8 +1,11 @@
 //! Builtin family: Math (ECMA-262 21.3). Math.random and Math.f16round are absent: the platform service provides
-//! randomness, and f16round is not in this runtime. Transcendental functions use the platform libm, while V8 uses its
-//! own ieee754 port, so a few results may differ in the last ulp (the O2 corpus marks them approx). Math.hypot
-//! follows V8's MathHypot, which is bit-exact.
+//! randomness, and f16round is not in this runtime. The transcendental functions come from `crate::fdlibm`, a pure
+//! Rust port of fdlibm that returns the same bits on every platform. V8 computes some of them with other algorithms, so
+//! a few results may differ from V8 in the last ulp (the O2 corpus marks them approx). Math.exp and Math.pow
+//! (`number::js_pow`) still use the platform `exp` and `powf`: fdlibm's exp(1) is one ulp above Math.E, and V8's own
+//! pow is not bit-identical across platforms either. Math.hypot follows V8's MathHypot, which is bit-exact.
 
+use crate::fdlibm;
 use crate::function::{Call, CodeFn};
 use crate::number;
 use crate::object::{Flags, Prop};
@@ -104,32 +107,33 @@ macro_rules! unary {
 
 unary! {
     "abs" => abs = f64::abs;
-    "acos" => acos = f64::acos;
-    "acosh" => acosh = f64::acosh;
-    "asin" => asin = f64::asin;
-    "asinh" => asinh = f64::asinh;
-    "atan" => atan = f64::atan;
-    "atanh" => atanh = f64::atanh;
-    "cbrt" => cbrt = f64::cbrt;
+    "acos" => acos = fdlibm::acos;
+    "acosh" => acosh = fdlibm::acosh;
+    "asin" => asin = fdlibm::asin;
+    "asinh" => asinh = fdlibm::asinh;
+    "atan" => atan = fdlibm::atan;
+    "atanh" => atanh = fdlibm::atanh;
+    "cbrt" => cbrt = fdlibm::cbrt;
     "ceil" => ceil = f64::ceil;
     "clz32" => clz32 = |x| f64::from(number::to_uint32(x).leading_zeros());
-    "cos" => cos = f64::cos;
-    "cosh" => cosh = f64::cosh;
+    "cos" => cos = fdlibm::cos;
+    "cosh" => cosh = fdlibm::cosh;
+    // Platform exp: fdlibm exp(1) is one ulp above Math.E, where V8 returns Math.E.
     "exp" => exp = f64::exp;
-    "expm1" => expm1 = f64::exp_m1;
+    "expm1" => expm1 = fdlibm::expm1;
     "floor" => floor = f64::floor;
     "fround" => fround = |x| f64::from(x as f32);
-    "log" => log = f64::ln;
-    "log10" => log10 = f64::log10;
-    "log1p" => log1p = f64::ln_1p;
-    "log2" => log2 = f64::log2;
+    "log" => log = fdlibm::log;
+    "log10" => log10 = fdlibm::log10;
+    "log1p" => log1p = fdlibm::log1p;
+    "log2" => log2 = fdlibm::log2;
     "round" => round = number::js_round;
     "sign" => sign = sign_of;
-    "sin" => sin = f64::sin;
-    "sinh" => sinh = f64::sinh;
+    "sin" => sin = fdlibm::sin;
+    "sinh" => sinh = fdlibm::sinh;
     "sqrt" => sqrt = f64::sqrt;
-    "tan" => tan = f64::tan;
-    "tanh" => tanh = f64::tanh;
+    "tan" => tan = fdlibm::tan;
+    "tanh" => tanh = fdlibm::tanh;
     "trunc" => trunc = f64::trunc;
 }
 
@@ -137,7 +141,7 @@ unary! {
 fn atan2(rt: &Rt, c: &Call<'_>) -> Res<Value> {
     let y = rt.to_number(&c.arg(0))?;
     let x = rt.to_number(&c.arg(1))?;
-    Ok(Value::Number(y.atan2(x)))
+    Ok(Value::Number(fdlibm::atan2(y, x)))
 }
 
 /// Math.pow: the `**` operator's Number::exponentiate.

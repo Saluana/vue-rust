@@ -60,16 +60,16 @@ Status letters: P faithful, A adaptation, W web-only, X excluded (must error), E
 | V04 | 8.3 | readonly | P | P | — | 1 | T04 writes through readonly, original mutation visibility |
 | V05 | 8.3 | shallowReactive / shallowReadonly | P | P | — | 2 | T04 nested ref/object untouched |
 | V06 | 8.3 | computed | P | P | C uncached pure getter | 1 | T04 read twice once, branch changes, equal results, writable round trip |
-| V07 | 8.3 | isRef / unref | P | P | — | 3 | T04 plain/ref/computed values |
+| V07 | 8.3 | isRef / unref / proxyRefs | P | P | — | 3 | T04 plain/ref/computed values; proxyRefs unwrap, write-through and nested refs |
 | V08 | 8.3 | toRef / toRefs / toValue | P | P | — | 3 | T04 bidirectional property alias; missing property; getter evaluation |
 | V09 | 8.3 | isProxy / isReactive / isReadonly / isShallow | P subject to pinned-export audit | P | — | 4 | T04 nested readonly/reactive wrappers and raw values |
 | V10 | 8.3 | toRaw / markRaw | P | P | — | 2 | T04 raw alias writes don't spuriously notify; identity hazards preserved/documented |
 | V11 | 8.3 | customRef | P | P | — | 1 | T04 debounced ref with explicit timer service; disposal and repeated reads |
-| V12 | 8.3 | effectScope / getCurrentScope / onScopeDispose | P | P | — | 7 | T04 detached scope survives parent; explicit stop cleans subscriptions |
+| V12 | 8.3 | effectScope / getCurrentScope / onScopeDispose / effect / stop | P | P | — | 7 | T04 detached scope survives parent; explicit stop cleans subscriptions; effect runner stop and untracked runs |
 | V13 | 8.3 | watchEffect / watchPostEffect / watchSyncEffect | P | P | — | 3 | T05 dependency after await not tracked; sync vs post ordering |
 | V14 | 8.3 | watch | P | P | — | 1 | T05 nested traversal cycles, deep same-object identity, source arrays |
 | V15 | 8.3 | watch handles | P | P | — | 3 | T05 writes while paused coalesce as reference; stop prevents queued delivery |
-| V16 | 8.3 | onWatcherCleanup / callback onCleanup | P | P | — | 3 | T05 cleanup before rerun/stop; invalid post-await registration |
+| V16 | 8.3 | onWatcherCleanup / callback onCleanup / getCurrentWatcher | P | P | — | 3 | T05 cleanup before rerun/stop; invalid post-await registration; getCurrentWatcher scopes |
 | V17 | 8.3 | scheduler / nextTick | P | P | — | 2 | T05 nested jobs, parent/child pre/post, writes within nextTick; host commit≠paint |
 | V18 | 8.3 | mount/update hooks | P | P | — | 4 | T06 child/parent order; SSR excludes client mount hooks |
 | V19 | 8.3 | unmount hooks | P | P | — | 2 | T06 refs/jobs/services around removal |
@@ -82,7 +82,7 @@ Status letters: P faithful, A adaptation, W web-only, X excluded (must error), E
 | V26 | 8.3 | useModel | P | P | — | 1 | T06 getter/setter/modifier tuple behavior |
 | V27 | 8.3 | useTemplateRef | A native, P DOM | A, P | — | 1 | T06 null before/after mount, list refs, focus action and exposed instance |
 | V28 | 8.3 | useId | P | P | — | 1 | T06 uniqueness; T18 server/client consistency and concurrent requests |
-| V29 | 8.3 | setup context and composition setup | P restricted | P | — | 1 | T06 props/context/expose; reject data/methods/this-based Options API; function-form render-returning components excluded |
+| V29 | 8.3 | setup context and composition setup | P restricted | P | — | 1 | T06 props/context/expose; reject data/methods/this-based Options API; render function returned from setup (A10) in the T06 UI cases |
 | U01 | 8.4 | interpolation / v-text | P | P | C interpolation only | 2 | T07 arrays/objects/null formatting and hostile strings; no Rust Display substitution |
 | U02 | 8.4 | expressions | P profile | P | C small operators | 1 | T07 optional chain/side-effect order; reject unsupported globals/statement locations |
 | U03 | 8.4 | static/dynamic bindings | P | P | C button disabled only | 3 | T07 boolean/absent attrs and dynamic argument changes; regress ignored dynamic click bug |
@@ -95,7 +95,7 @@ Status letters: P faithful, A adaptation, W web-only, X excluded (must error), E
 | U10 | 8.4 | file/range/date input variants | A explicit controls | A | — | 4 | T07 cancellation and model type; unsupported HTML type errors, no generic catch-all input |
 | U11 | 8.4 | component props/emits/model | P | P | — | 0 | T06 Boolean/default order, declared emits vs fallthrough, parent mutation |
 | U12 | 8.4 | slots / v-slot / slot element | P | P | — | 3 | T06 parent state in reused slot, missing slot, conditional fallback |
-| U13 | 8.4 | attrs/class/style fallthrough | P | P | — | 1 | T06 warning and merge precedence; stable attrs contract |
+| U13 | 8.4 | attrs/class/style fallthrough, mergeProps | P | P | — | 2 | T06 warning and merge precedence; T12 mergeProps precedence cases; stable attrs contract |
 | U14 | 8.4 | v-if / v-else-if / v-else | P | P | C bool v-if only | 3 | T07 truthiness, branch state reset and sibling validation |
 | U15 | 8.4 | v-show | P | P | — | 1 | T07 focus evacuation, restored visibility; no unmount hooks |
 | U16 | 8.4 | v-for | P profile | P | — | 1 | T07 index/key/value order, array holes, destructuring, precedence with v-if |
@@ -124,25 +124,25 @@ Status letters: P faithful, A adaptation, W web-only, X excluded (must error), E
 | A07 | 8.5 | config.performance / idPrefix | A profiler events / P stable ID prefix | A, P | — | 2 | T23 trace labels; T18 SSR root uniqueness |
 | A08 | 8.5 | config.compilerOptions | A compile-time config only | A | — | 3 | T10 whitespace/custom-tag options in build cache; no runtime template compiler |
 | A09 | 8.5 | globalProperties / optionMergeStrategies / app.mixin | X | X | — | 3 | T03/T12 explicit migration diagnostic |
-| A10 | 8.5 | defineComponent | P setup-only descriptor with template linkage | P | — | 1 | T03 recognize Composition API setup; reject Options fields |
-| A11 | 8.5 | h / mergeProps / cloneVNode / isVNode / resolveComponent / resolveDirective / withDirectives / withModifiers | X public render-function API first production profile | X | — | 53 | T12 per-export rejection; compiler may use internal equivalents without advertising API support |
+| A10 | 8.5 | defineComponent | P setup-only descriptor | P | — | 1 | T03 recognize Composition API setup; reject Options fields; T06 render function returned from setup: props, slots, reactive re-render, render errors |
+| A11 | 8.5 | h / cloneVNode / isVNode / resolveComponent / resolveDirective / withDirectives / withModifiers | X for resolveComponent, resolveDirective, withDirectives and withModifiers, A for h, cloneVNode and isVNode (adapted native VNodes, decision 11) | X, A | — | 52 | T12 per-export rejection for the X members; native VNode cases for the A members; compiler may use internal equivalents without advertising API support |
 | A12 | 8.5 | defineCustomElement / useHost / useShadowRoot / $host | X native/shared, E web custom-element extension | X, E | — | 6 | T12 exact exclusion and web shadow-boundary investigation |
 | A13 | 8.5 | createRenderer / createHydrationRenderer | X public Vue JS host API | X | — | 6 | T12 explain incompatible extension ABI; backend implementers use versioned Rust contracts |
 | A14 | 8.5 | createSSRApp / useSSRContext / onServerPrefetch | W Rust SSR adapter matching supported component semantics | W | — | 9 | T18 request-local injections, server-only branches and hook failures |
 | A15 | 8.5 | renderToString / stream variants | A own Rust SSR interface | A | — | 3 | T18 encoded HTML/status/backpressure/abort; Vue renderToNodeStream/pipeToNodeWritable etc not exported as native APIs |
 | A16 | 8.5 | data-allow-mismatch | W qualified narrow hydration policy | W | — | 1 | T18 allowed text mismatch doesn't suppress unrelated identity/security faults |
 | A17 | 8.5 | compile-time Vue flags | A profile controls | A | — | 9 | T10 release excludes debug listeners; flag changes invalidate builds |
-| A18 | 8.5 | Options API and instance `$` APIs | X, including state/options/lifecycle/composition sections and `$watch/$forceUpdate/$parent/$root/$el` | X | — | 23 | T03 per-export/property diagnostics; template/component refs expose only declared interface |
+| A18 | 8.5 | Options API and instance `$` APIs | X, including state/options/lifecycle/composition sections, the Options `render` option (a render function is returned from setup instead, A10) and `$watch/$forceUpdate/$parent/$root/$el`, A for getCurrentInstance (opaque handle, decision 12) | X, A | — | 24 | T03 per-export/property diagnostics; template/component refs expose only declared interface; getCurrentInstance: T12 identity and null-outside-setup cases |
 | A19 | 8.5 | experimental/removed APIs | E for current Suspense/Vapor investigations, X for removed reactivity transform `$ref` | E, X | — | 2 | T01 stability label plus compile error outside experimental profile; no “latest docs” auto-enablement |
 
 ## Summary
 
 | Status | Rows by primary status | Named entries | Vue exports |
 |---|---|---|---|
-| P | 88 | 233 | 61 |
-| A | 18 | 75 | 5 |
+| P | 88 | 238 | 66 |
+| A | 18 | 79 | 9 |
 | W | 5 | 8 | 4 |
-| X | 12 | 122 | 99 |
+| X | 12 | 118 | 90 |
 | E | 3 | 8 | 2 |
 
 ## Rows without a named entry

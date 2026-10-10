@@ -836,6 +836,13 @@
       "note": "Options API mixins are rejected (S02)."
     },
     {
+      "name": "render",
+      "kind": "option",
+      "row": "A18",
+      "status": "X",
+      "note": "Options API render option is rejected (A18). Return a render function from setup instead (A10, decision 14)."
+    },
+    {
       "name": "template src",
       "kind": "sfc",
       "row": "S03",
@@ -1380,6 +1387,18 @@
       "status": "P"
     },
     {
+      "name": "effect",
+      "kind": "vue",
+      "row": "V12",
+      "status": "P"
+    },
+    {
+      "name": "stop",
+      "kind": "vue",
+      "row": "V12",
+      "status": "P"
+    },
+    {
       "name": "getCurrentScope",
       "kind": "vue",
       "row": "V12",
@@ -1446,6 +1465,18 @@
       "name": "onWatcherCleanup",
       "kind": "vue",
       "row": "V16",
+      "status": "P"
+    },
+    {
+      "name": "getCurrentWatcher",
+      "kind": "vue",
+      "row": "V16",
+      "status": "P"
+    },
+    {
+      "name": "proxyRefs",
+      "kind": "vue",
+      "row": "V07",
       "status": "P"
     },
     {
@@ -2164,25 +2195,25 @@
       "name": "h",
       "kind": "vue",
       "row": "A11",
-      "status": "X"
+      "status": "A"
     },
     {
       "name": "mergeProps",
       "kind": "vue",
-      "row": "A11",
-      "status": "X"
+      "row": "U13",
+      "status": "P"
     },
     {
       "name": "cloneVNode",
       "kind": "vue",
       "row": "A11",
-      "status": "X"
+      "status": "A"
     },
     {
       "name": "isVNode",
       "kind": "vue",
       "row": "A11",
-      "status": "X"
+      "status": "A"
     },
     {
       "name": "resolveComponent",
@@ -2308,7 +2339,7 @@
       "name": "getCurrentInstance",
       "kind": "vue",
       "row": "A18",
-      "status": "X"
+      "status": "A"
     },
     {
       "name": "$watch",

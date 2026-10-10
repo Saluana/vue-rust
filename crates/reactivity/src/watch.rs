@@ -632,9 +632,9 @@ pub fn watch_base(rt: &Rt, source: Value, cb: Option<Value>, opts: WatchOptions)
     }
     let pause = native(rt, "bound pause", 0, pause_code, vec![Value::Object(effect)]);
     let resume = native(rt, "bound resume", 0, resume_code, vec![Value::Object(effect)]);
-    rt.define_data(handle, PropKey::from_str("pause"), Value::Object(pause), vn_value::Flags::ALL)?;
-    rt.define_data(handle, PropKey::from_str("resume"), Value::Object(resume), vn_value::Flags::ALL)?;
-    rt.define_data(handle, PropKey::from_str("stop"), Value::Object(handle), vn_value::Flags::ALL)?;
+    rt.define_data(handle, PropKey::lit("pause"), Value::Object(pause), vn_value::Flags::ALL)?;
+    rt.define_data(handle, PropKey::lit("resume"), Value::Object(resume), vn_value::Flags::ALL)?;
+    rt.define_data(handle, PropKey::lit("stop"), Value::Object(handle), vn_value::Flags::ALL)?;
     Ok(WatchHandle { handle: Value::Object(handle) })
 }
 
@@ -684,15 +684,18 @@ fn js_get_current_watcher(rt: &Rt, _c: &Call<'_>) -> Res<Value> {
     Ok(state(rt).active_watcher.get().map(Value::Object).unwrap_or(Value::Undefined))
 }
 
-/// Exports: `onWatcherCleanup` (public, V16) and `watch`, `traverse`, `getCurrentWatcher` (internal).
+/// Public exports: `onWatcherCleanup` (V16) and `getCurrentWatcher` (V16, @vue/reactivity 3.5.43).
 pub(crate) fn exported_public(rt: &Rt) -> Vec<(&'static str, Value)> {
-    vec![("onWatcherCleanup", Value::Object(native(rt, "onWatcherCleanup", 1, js_on_watcher_cleanup, Vec::new())))]
+    vec![
+        ("onWatcherCleanup", Value::Object(native(rt, "onWatcherCleanup", 1, js_on_watcher_cleanup, Vec::new()))),
+        ("getCurrentWatcher", Value::Object(native(rt, "getCurrentWatcher", 0, js_get_current_watcher, Vec::new()))),
+    ]
 }
 
+/// Internal helpers: `watch` and `traverse` (the reactivity-level watch that the runtime uses).
 pub(crate) fn exported_internal(rt: &Rt) -> Vec<(&'static str, Value)> {
     vec![
         ("watch", Value::Object(native(rt, "watch", 2, js_watch, Vec::new()))),
         ("traverse", Value::Object(native(rt, "traverse", 1, js_traverse, Vec::new()))),
-        ("getCurrentWatcher", Value::Object(native(rt, "getCurrentWatcher", 0, js_get_current_watcher, Vec::new()))),
     ]
 }

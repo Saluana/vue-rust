@@ -1,0 +1,1 @@
+{"scenario":"render/setup-render-template-ignored","result":"ok","error":null,"entries":[{"label":"html","values":["<p id=\"from-setup\">from setup</p>"]},{"label":"templates","values":[0,1]}],"unhandledRejections":[]}

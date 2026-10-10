@@ -181,7 +181,7 @@ fn vn_set_name(rt: &Rt, f: &Value, k: &PropKey, prefix: &str) -> Res<()> {
     };
     if let Value::Object(o) = f {
         let name = JsStr::from_str(&format!("{prefix}{base}"));
-        rt.define_own(*o, &PropKey::from_str("name"), Prop::Data { value: Value::String(name), flags: Flags::CONFIG })?;
+        rt.define_own(*o, &PropKey::lit("name"), Prop::Data { value: Value::String(name), flags: Flags::CONFIG })?;
     }
     Ok(())
 }
@@ -293,7 +293,7 @@ fn vn_acc_new(rt: &Rt) -> Value {
 }
 
 fn vn_acc_len(rt: &Rt, acc: &Value) -> Res<u32> {
-    match rt.get_v(acc, &PropKey::from_str("length"))? {
+    match rt.get_v(acc, &PropKey::lit("length"))? {
         Value::Number(n) => Ok(n as u32),
         _ => Ok(0),
     }
@@ -303,7 +303,7 @@ fn vn_acc_len(rt: &Rt, acc: &Value) -> Res<u32> {
 fn vn_acc_push(rt: &Rt, acc: &Value, v: Value) -> Res<()> {
     let n = vn_acc_len(rt, acc)?;
     if let Value::Hole = v {
-        rt.set_v_strict(acc, &PropKey::from_str("length"), Value::Number((n + 1) as f64))?;
+        rt.set_v_strict(acc, &PropKey::lit("length"), Value::Number((n + 1) as f64))?;
         return Ok(());
     }
     rt.create_data_property(vn_obj(acc), PropKey::Index(n), v)?;

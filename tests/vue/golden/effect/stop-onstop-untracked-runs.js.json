@@ -1,0 +1,1 @@
+{"scenario":"effect/stop-onstop-untracked-runs","result":"ok","error":null,"entries":[{"label":"after-stop","values":[1,1]},{"label":"after-write-while-stopped","values":[1,1]},{"label":"untracked-runner-value","values":[5,2]},{"label":"after-write-after-untracked-run","values":[2,1]}],"unhandledRejections":[]}

@@ -5,7 +5,7 @@ import { PRELUDE, ASYNC_PRELUDE } from './prelude.mjs';
 import { emitExpr } from './expr.mjs';
 import { emitStatements, emitHoist } from './stmt.mjs';
 import { declareScope, bindPattern, initVar, readVar } from './vars.mjs';
-import { localName, rstr, fnName } from './names.mjs';
+import { localName, rstr, fnName, owned } from './names.mjs';
 
 // Runs body() with a fresh line buffer and returns the function text `header { ... }`.
 function withBody(em, header, body) {
@@ -52,7 +52,7 @@ function emitFunction(em, rec) {
         em.line(`if matches!(${av}, Value::Undefined) {`);
         em.depth += 1;
         const d = emitExpr(em, p.d);
-        em.line(`${av} = ${d}.clone();`);
+        em.line(`${av} = ${owned(d)};`);
         em.depth -= 1;
         em.line('}');
       }
@@ -100,7 +100,7 @@ function emitAsyncFunction(em, rec) {
           em.line(`if matches!(${av}, Value::Undefined) {`);
           em.depth += 1;
           const d = emitExpr(em, p.d);
-          em.set(av, `${d}.clone()`);
+          em.set(av, owned(d));
           em.depth -= 1;
           em.line('}');
           bindPattern(em, p.t, av);

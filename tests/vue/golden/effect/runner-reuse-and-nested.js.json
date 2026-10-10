@@ -1,0 +1,1 @@
+{"scenario":"effect/runner-reuse-and-nested","result":"ok","error":null,"entries":[{"label":"distinct","values":[false,false]},{"label":"after-create","values":[2]},{"label":"after-write-first-stopped","values":[3]},{"label":"nested-created","values":[1,1]},{"label":"nested-first-write","values":[2,3]}],"unhandledRejections":[]}

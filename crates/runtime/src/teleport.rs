@@ -133,7 +133,7 @@ impl Renderer {
 
 pub(crate) fn exports(rt: &Rt) -> Vec<(&'static str, Value)> {
     let o = rt.new_object();
-    rt.define_data(o, PropKey::from_str("__isTeleport"), Value::Bool(true), Flags::ALL).expect("fresh Teleport");
-    rt.define_data(o, PropKey::from_str("name"), Value::String(JsStr::from_str("Teleport")), Flags::ALL).expect("fresh Teleport");
+    rt.define_data(o, PropKey::lit("__isTeleport"), Value::Bool(true), Flags::ALL).expect("fresh Teleport");
+    rt.define_data(o, PropKey::lit("name"), Value::String(JsStr::from_str("Teleport")), Flags::ALL).expect("fresh Teleport");
     vec![("Teleport", Value::Object(o))]
 }

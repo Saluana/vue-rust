@@ -316,10 +316,11 @@ pub(crate) fn is_proxy(rt: &Rt, v: &Value) -> Res<bool> {
     if !v.to_boolean() {
         return Ok(false);
     }
-    Ok(rt.get_v(v, &PropKey::from_str("__v_raw"))?.to_boolean())
+    Ok(rt.get_v(v, &PropKey::lit("__v_raw"))?.to_boolean())
 }
 
-/// isVNode(value): a VNode object, or an object whose `__v_isVNode` is `true` (the latter is not representable here).
+/// isVNode(value): a native VNode, or an object whose `__v_isVNode` is `true` (runtime-core's rule; a native VNode does not
+/// expose `__v_isVNode` as a property).
 pub(crate) fn is_vnode_value(rt: &Rt, v: &Value) -> Res<bool> {
     if as_vnode(rt, v).is_some() {
         return Ok(true);
@@ -327,7 +328,7 @@ pub(crate) fn is_vnode_value(rt: &Rt, v: &Value) -> Res<bool> {
     if !v.to_boolean() {
         return Ok(false);
     }
-    Ok(matches!(rt.get_v(v, &PropKey::from_str("__v_isVNode"))?, Value::Bool(true)))
+    Ok(matches!(rt.get_v(v, &PropKey::lit("__v_isVNode"))?, Value::Bool(true)))
 }
 
 /// Object.assign({}, src): the own enumerable keys (strings and symbols) copied with [[Set]].
@@ -413,10 +414,10 @@ fn normalize_ref(rt: &Rt, props: &Value) -> Res<Value> {
     }
     if matches!(r, Value::String(_)) || normalize::is_ref(rt, &r)? || rt.is_callable(&r) {
         let o = rt.new_object();
-        rt.define_data(o, PropKey::from_str("i"), current_rendering_value(rt), Flags::ALL)?;
-        rt.define_data(o, PropKey::from_str("r"), r, Flags::ALL)?;
-        rt.define_data(o, PropKey::from_str("k"), rk, Flags::ALL)?;
-        rt.define_data(o, PropKey::from_str("f"), Value::Bool(rf.to_boolean()), Flags::ALL)?;
+        rt.define_data(o, PropKey::lit("i"), current_rendering_value(rt), Flags::ALL)?;
+        rt.define_data(o, PropKey::lit("r"), r, Flags::ALL)?;
+        rt.define_data(o, PropKey::lit("k"), rk, Flags::ALL)?;
+        rt.define_data(o, PropKey::lit("f"), Value::Bool(rf.to_boolean()), Flags::ALL)?;
         return Ok(Value::Object(o));
     }
     Ok(r)
@@ -435,13 +436,13 @@ pub fn merge_props(rt: &Rt, args: &[Value]) -> Res<ObjRef> {
                 if !strict_eq(&rc, &tc) {
                     let arr = Value::Object(rt.new_array(vec![rc, tc]));
                     let n = normalize_class(rt, &arr)?;
-                    rt.set_v(&rv, &PropKey::from_str("class"), Value::String(n))?;
+                    rt.set_v(&rv, &PropKey::lit("class"), Value::String(n))?;
                 }
             } else if name.units() == JsStr::from_str("style").units() {
                 let (rs, ts) = (rt.get_str(&rv, "style")?, rt.get_str(to_merge, "style")?);
                 let arr = Value::Object(rt.new_array(vec![rs, ts]));
                 let n = normalize_style(rt, &arr)?;
-                rt.set_v(&rv, &PropKey::from_str("style"), n)?;
+                rt.set_v(&rv, &PropKey::lit("style"), n)?;
             } else if normalize::is_on(&name) {
                 let existing = rt.get_v(&rv, &key)?;
                 let incoming = rt.get_v(to_merge, &key)?;
@@ -498,12 +499,12 @@ fn normalize_children(rt: &Rt, st: &State, vnode: ObjRef, children: Value) -> Re
     } else if rt.is_callable(&children) {
         if elem_or_teleport(rt)? {
             let holder = rt.new_object();
-            rt.define_data(holder, PropKey::from_str("default"), children, Flags::ALL)?;
+            rt.define_data(holder, PropKey::lit("default"), children, Flags::ALL)?;
             return normalize_children(rt, st, vnode, Value::Object(holder));
         }
         let holder = rt.new_object();
-        rt.define_data(holder, PropKey::from_str("default"), children, Flags::ALL)?;
-        rt.define_data(holder, PropKey::from_str("_ctx"), current_rendering_value(rt), Flags::ALL)?;
+        rt.define_data(holder, PropKey::lit("default"), children, Flags::ALL)?;
+        rt.define_data(holder, PropKey::lit("_ctx"), current_rendering_value(rt), Flags::ALL)?;
         children = Value::Object(holder);
         ty = 32.0;
     } else {
@@ -559,7 +560,7 @@ pub(crate) fn create_base_vnode(
     if need_full {
         normalize_children(rt, st, vnode, children.clone())?;
         if rt.bit_and(&shape, &Value::Number(f64::from(ShapeFlags::SUSPENSE)))?.to_boolean() {
-            let norm = rt.get_v(&ty, &PropKey::from_str("normalize"))?;
+            let norm = rt.get_v(&ty, &PropKey::lit("normalize"))?;
             rt.call(&norm, &ty, &[Value::Object(vnode)])?;
         }
     } else if children.to_boolean() {
@@ -645,9 +646,9 @@ pub(crate) fn create_vnode(
     }
     let kind = if matches!(ty, Value::String(_)) {
         ShapeFlags::ELEMENT
-    } else if rt.get_v(&ty, &PropKey::from_str("__isSuspense"))?.to_boolean() {
+    } else if rt.get_v(&ty, &PropKey::lit("__isSuspense"))?.to_boolean() {
         ShapeFlags::SUSPENSE
-    } else if rt.get_v(&ty, &PropKey::from_str("__isTeleport"))?.to_boolean() {
+    } else if rt.get_v(&ty, &PropKey::lit("__isTeleport"))?.to_boolean() {
         ShapeFlags::TELEPORT
     } else if is_obj(rt, &ty) {
         ShapeFlags::STATEFUL_COMPONENT
@@ -804,7 +805,7 @@ pub(crate) fn setup_block(rt: &Rt, st: &State, vnode: ObjRef) -> ObjRef {
 pub(crate) fn memo_of(rt: &Rt, v: &Value) -> Res<Value> {
     match as_vnode(rt, v) {
         Some(o) => Ok(fields(rt, o, |f| f.memo.clone())),
-        None => rt.get_v(v, &PropKey::from_str("memo")),
+        None => rt.get_v(v, &PropKey::lit("memo")),
     }
 }
 

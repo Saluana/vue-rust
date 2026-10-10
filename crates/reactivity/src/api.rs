@@ -26,8 +26,9 @@ pub(crate) fn install_protos(rt: &Rt) -> Protos {
     }
 }
 
-/// The `vue` exports this crate owns for user code: the names the manifest marks P/A (ref, shallowRef, triggerRef,
-/// customRef, toRef, toRefs, toValue, unref, isRef, computed, effectScope, getCurrentScope, onScopeDispose, EffectScope).
+/// The `vue` exports this crate owns for user code: the names the manifest marks P (ref, shallowRef, triggerRef,
+/// customRef, toRef, toRefs, toValue, unref, isRef, proxyRefs, computed, effectScope, getCurrentScope, onScopeDispose,
+/// EffectScope, onWatcherCleanup, getCurrentWatcher, effect, stop, and the reactive family).
 /// Created once per realm and cached, so the functions keep their identity and stay reachable.
 pub fn exports(rt: &Rt) -> Vec<(&'static str, Value)> {
     let cached = state(rt).exports.borrow().clone();
@@ -39,20 +40,22 @@ pub fn exports(rt: &Rt) -> Vec<(&'static str, Value)> {
     list.push(computed::exported(rt));
     list.extend(scope::exported(rt, proto));
     list.extend(watch::exported_public(rt));
+    list.extend(effect::exported_public(rt));
     list.extend(crate::reactive::exported(rt));
     *state(rt).exports.borrow_mut() = Some(list.clone());
     list
 }
 
-/// Internal helpers (not user exports): effect, stop, onEffectCleanup, the tracking stack, proxyRefs, track, trigger
-/// and the iterate keys. The test glue exposes them under `__internal`.
+/// Every name of `exports` (the same function objects) plus the internal helpers: effectWithoutRun, onEffectCleanup, the
+/// tracking stack, watch, traverse, track, trigger and the iterate keys. The test glue exposes the whole list under
+/// `__internal`; the runtime looks up helpers by name.
 pub fn internal_exports(rt: &Rt) -> Vec<(&'static str, Value)> {
     let cached = state(rt).internal.borrow().clone();
     if let Some(list) = cached {
         return list;
     }
-    let mut list = effect::exported(rt);
-    list.push(refs::internal(rt));
+    let mut list = exports(rt);
+    list.extend(effect::exported_internal(rt));
     list.extend(crate::reactive::internal(rt));
     list.extend(watch::exported_internal(rt));
     list.push(("track", Value::Object(native(rt, "track", 3, js_track, Vec::new()))));

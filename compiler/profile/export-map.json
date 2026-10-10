@@ -39,7 +39,7 @@
     "ReactiveEffect": {
       "row": "V12",
       "status": "X",
-      "note": "Low-level effect class; watchEffect (V13) is the promised surface."
+      "note": "Low-level effect class: excluded. Its constructor and prototype are not exposed; effect (V12) and watchEffect (V13) are the promised surface."
     },
     "Static": "A11",
     "Suspense": "U25",
@@ -71,7 +71,11 @@
     },
     "camelize": "A11",
     "capitalize": "A11",
-    "cloneVNode": "A11",
+    "cloneVNode": {
+      "row": "A11",
+      "status": "A",
+      "note": "Adapted: runtime-core cloneVNode over native VNodes (extraProps merged with the mergeProps rules; mergeRef and cloneTransition honoured). A non-VNode argument is a TypeError, where Vue reads the fields of any object. Readable fields as in h."
+    },
     "compatUtils": {
       "row": "A17",
       "status": "X",
@@ -114,16 +118,18 @@
     },
     "effect": {
       "row": "V12",
-      "status": "X",
-      "note": "Low-level effect primitive; watchEffect (V13) is the promised surface."
+      "note": "Public (P): effect(fn, options) of @vue/reactivity 3.5.43, production build. fn runs once before effect returns. options.scheduler and options.onStop are read; lazy is ignored, so effect(fn, { lazy: true }) also runs fn. A runner passed in is replaced by its function. Other option keys are not copied onto the runner's effect (Vue copies them with Object.assign)."
     },
     "effectScope": "V12",
-    "getCurrentInstance": "A18",
+    "getCurrentInstance": {
+      "row": "A18",
+      "status": "A",
+      "note": "Adapted: returns an opaque handle of the current component instance, or null outside setup and render. The handle has a null prototype and no readable properties (proxy, props, attrs, slots, emit, uid, type, vnode, appContext and subTree are not reachable), so every property read is undefined. Supported: identity (one handle per instance) and null checks. Use defineProps, defineEmits, useAttrs and useSlots for those values."
+    },
     "getCurrentScope": "V12",
     "getCurrentWatcher": {
       "row": "V16",
-      "status": "X",
-      "note": "Returns the active watcher; not in the promised surface."
+      "note": "Public (P): returns the watcher whose callback or watchEffect getter is running, otherwise undefined. The source function of watch(source, cb) is not wrapped, so it sees undefined."
     },
     "getTransitionRawChildren": {
       "row": "U23",
@@ -131,7 +137,11 @@
       "note": "Internal transition helper."
     },
     "guardReactiveProps": "A11",
-    "h": "A11",
+    "h": {
+      "row": "A11",
+      "status": "A",
+      "note": "Adapted: runtime-core h argument rules (plain-object props, one VNode child, variadic children) over native VNodes. Readable VNode properties: type, props, key, ref, children, shapeFlag, patchFlag, dynamicChildren, dynamicProps, appContext, ce, scopeId, slotScopeIds, dirs, transition, component, memo, cacheIndex, ctx, placeholder. Not readable: el, anchor, suspense, target, targetAnchor, targetStart, staticCount, ssContent, ssFallback, __v_isVNode."
+    },
     "handleError": {
       "row": "A06",
       "status": "X",
@@ -185,11 +195,18 @@
       "note": "Build-profile introspection; not promised."
     },
     "isShallow": "V09",
-    "isVNode": "A11",
+    "isVNode": {
+      "row": "A11",
+      "status": "A",
+      "note": "Adapted: true for a native VNode and for an object whose __v_isVNode property is true, as in runtime-core. The __v_isVNode property of a VNode is not readable (see h)."
+    },
     "markRaw": "V10",
     "mergeDefaults": "A11",
     "mergeModels": "A11",
-    "mergeProps": "A11",
+    "mergeProps": {
+      "row": "U13",
+      "note": "Public (P): runtime-core mergeProps (class and style normalized, listeners merged into arrays, later keys win). The compiler also emits it for merged bindings; see compilerHelperExclusions."
+    },
     "nextTick": "V17",
     "nodeOps": "A13",
     "normalizeClass": "A11",
@@ -215,8 +232,7 @@
     "provide": "V24",
     "proxyRefs": {
       "row": "V07",
-      "status": "X",
-      "note": "Internal template-unwrapping proxy; isRef/unref (V07) are the promised surface."
+      "note": "Public (P): proxyRefs(objectWithRefs) of @vue/reactivity 3.5.43. Reactive objects are returned unchanged. Other objects get a proxy: reads unwrap top-level ref values, writes to a ref key set its value, and nested refs are not unwrapped."
     },
     "pushScopeId": "A11",
     "queuePostFlushCb": {
@@ -270,8 +286,7 @@
     },
     "stop": {
       "row": "V12",
-      "status": "X",
-      "note": "Raw effect stop; watch handles (V15) are the promised surface."
+      "note": "Public (P): stop(runner) stops runner.effect. Its dependencies are dropped and onStop runs once; later calls of the runner run fn untracked. Stopping a stopped effect does nothing."
     },
     "toDisplayString": "A11",
     "toHandlerKey": "A11",
@@ -444,6 +459,7 @@
     "popScopeId": "Helper-map entry with no emission site in @vue/compiler-core 3.5.43 (only the map and the export reference it).",
     "unref": "Public reactivity helper (V07, P): supported for user code. The compiler also emits it for setup refs, so no internal flag.",
     "isRef": "Public reactivity helper (V07, P): supported for user code. The compiler also emits it, so no internal flag.",
+    "mergeProps": "Public API (U13, P): supported for user code. Emitted for merged bindings in compiled templates, so no internal flag.",
     "defineComponent": "Public API (A10, P): supported for user code. Emitted as the default export of script setup, so no internal flag.",
     "useModel": "Public API (V26, P): supported for user code. Emitted by defineModel, so no internal flag.",
     "useSlots": "Public API (V25, P): supported for user code. Emitted when script setup calls defineSlots(), so no internal flag.",

@@ -254,7 +254,7 @@ fn scope_ctor(rt: &Rt, c: &Call<'_>) -> Res<Value> {
 
 pub(crate) fn exported(rt: &Rt, proto: ObjRef) -> Vec<(&'static str, Value)> {
     let ctor = rt.new_native_constructor(scope_ctor_call, scope_ctor, "EffectScope", 0, Vec::new());
-    rt.define_data(ctor, PropKey::from_str("prototype"), Value::Object(proto), Flags::NONE)
+    rt.define_data(ctor, PropKey::lit("prototype"), Value::Object(proto), Flags::NONE)
         .expect("EffectScope.prototype (framework bug)");
     hidden(rt, proto, "constructor", Value::Object(ctor));
     vec![

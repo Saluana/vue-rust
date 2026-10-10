@@ -120,7 +120,7 @@ fn mark_raw(rt: &Rt, v: &Value) -> Res<Value> {
         }
         _ => return Ok(v.clone()),
     };
-    let key = PropKey::from_str("__v_skip");
+    let key = PropKey::lit("__v_skip");
     if !rt.has_own_property(o, &key)? && rt.is_extensible(o)? {
         rt.define_data(o, key, Value::Bool(true), Flags::new(false, false, true))?;
     }

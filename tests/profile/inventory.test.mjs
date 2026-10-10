@@ -39,6 +39,10 @@ test('derived status sets match rows checked by hand against the design text', (
     L04: ['P'], L05: ['X'], L19: ['A'], S04: ['X', 'E'], S14: ['E'], S25: ['P', 'X'],
     U04: ['W'], U05: ['A', 'P'], U26: ['A', 'W'], U29: ['X', 'W'], U32: ['W', 'X'],
     V09: ['P'], V23: ['W'], V27: ['A', 'P'], A07: ['A', 'P'], A12: ['X', 'E'], A19: ['E', 'X'],
+    // decisions 11 and 12: the render helpers h, cloneVNode and isVNode, and getCurrentInstance, are adapted (A)
+    A11: ['X', 'A'], A18: ['X', 'A'],
+    // decision 14: a render function returned from setup is supported; the Options fields in A10 and the render option stay X
+    A10: ['P'],
   };
   for (const [id, statuses] of Object.entries(expected)) assert.deepEqual(byId.get(id).statuses, statuses, id);
   assert.equal(byId.get('L04').statusText, 'P subset');

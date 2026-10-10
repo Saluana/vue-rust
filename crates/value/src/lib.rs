@@ -8,6 +8,7 @@
 pub mod builtins;
 pub mod coerce;
 pub mod error;
+pub(crate) mod fdlibm;
 pub mod function;
 mod heap;
 pub mod jsstr;

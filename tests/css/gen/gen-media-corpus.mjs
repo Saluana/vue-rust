@@ -238,23 +238,28 @@ const OBSERVE = (queries) => ({
   }),
 });
 
+// The desktop environments describe a machine with a mouse. Without this flag headless Chrome reports the host's
+// input devices, so (hover: hover) and (pointer: fine) differed between a Mac and a Linux CI runner with no pointing
+// device. Blink's values: pointer 4 = fine, hover 2 = hover. Touch emulation still overrides them for touch environments.
+const HOST_POINTER = '--blink-settings=primaryPointerType=4,availablePointerTypes=4,primaryHoverType=2,availableHoverTypes=2';
+
 export async function generate(outDir) {
   const queries = CATEGORIES.flatMap(([category, list]) => list.map((q) => ({ q, category })));
   const results = queries.map(() => []);
   const observed = [];
-  await withPage({ viewport: { width: 800, height: 600, dpr: 1 } }, async (page) => {
-    await page.setContent('<!doctype html><html><head></head><body></body></html>');
-    for (const env of ENVS) {
+  // One browser per environment: turning touch emulation off again restores the host's real input devices, which
+  // would undo HOST_POINTER for the desktop environments that follow a touch one.
+  for (const env of ENVS) {
+    await withPage({ viewport: { width: 800, height: 600, dpr: 1 }, args: [HOST_POINTER] }, async (page) => {
+      await page.setContent('<!doctype html><html><head></head><body></body></html>');
       await page.viewport(env.width, env.height, env.dpr);
       await page.send('Emulation.setEmulatedMedia', { features: APPLY_FEATURES(env) });
       if (env.touch) await page.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 1 });
-      else await page.send('Emulation.setTouchEmulationEnabled', { enabled: false });
       const obs = await page.evaluate(OBSERVE, queries.map((x) => x.q));
       observed.push({ env: env.name, innerWidth: obs.innerWidth, innerHeight: obs.innerHeight, devicePixelRatio: obs.devicePixelRatio });
       obs.results.forEach((r, i) => results[i].push(r));
-    }
-    await page.send('Emulation.setTouchEmulationEnabled', { enabled: false });
-  });
+    });
+  }
   const bad = results.flat().filter((r) => typeof r !== 'boolean');
   if (bad.length) throw new Error(`non-boolean matchMedia results: ${bad.slice(0, 5).join(', ')}`);
   const body = {

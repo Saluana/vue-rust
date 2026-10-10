@@ -137,7 +137,7 @@ fn before_unmount_code(rt: &Rt, c: &Call<'_>) -> Res<Value> {
 /// The `vShow` directive object of the runtime's `vue` module.
 pub fn exports(rt: &Rt) -> Vec<(&'static str, Value)> {
     let obj = rt.new_object();
-    let _ = rt.define_data(obj, vn_value::PropKey::from_str("name"), Value::String(vn_value::JsStr::from_str("show")), vn_value::Flags::ALL);
+    let _ = rt.define_data(obj, vn_value::PropKey::lit("name"), Value::String(vn_value::JsStr::from_str("show")), vn_value::Flags::ALL);
     rt.define_native_method(obj, "beforeMount", before_mount_code, 3);
     rt.define_native_method(obj, "mounted", mounted_code, 3);
     rt.define_native_method(obj, "updated", updated_code, 3);

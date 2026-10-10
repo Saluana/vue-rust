@@ -126,7 +126,7 @@ pub(crate) fn create_app(rt: &Rt, root: Value, props: Value) -> Res<Value> {
     set("version", Value::String(vn_value::JsStr::from_str("3.5.43")))?;
     let config = rt.get_str(&Value::Object(context), "config")?;
     set("config", config)?;
-    rt.define_data(context, PropKey::from_str("app"), Value::Object(app), Flags::ALL)?;
+    rt.define_data(context, PropKey::lit("app"), Value::Object(app), Flags::ALL)?;
     let methods: [(&str, vn_value::CodeFn, u32); 9] = [
         ("mount", app_mount, 1),
         ("unmount", app_unmount, 0),

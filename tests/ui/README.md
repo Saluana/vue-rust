@@ -73,6 +73,8 @@ reflecting elements) only when the property differs from the value the attribute
 - `.middle` and `.right` compile to `mouseup` and `contextmenu`; `.left` to `click`.
 - KeepAlive with `max` 1 unmounts the evicted instance without a deactivated hook.
 - A `v-model` reads its array at the time of the change; synchronous calls with no flush in between see stale arrays.
+- `v-bind` of a `mergeProps` result sets one class (`a b c`), one style (`color: red; margin: 0px;`) and calls both listeners of a key in order (`render/merge-props`).
+- `getCurrentInstance()` is one handle per component during setup, a different handle for its child, and `null` outside setup (`render/get-current-instance`).
 
 ## Not covered and why
 

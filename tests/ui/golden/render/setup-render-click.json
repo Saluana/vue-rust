@@ -1,0 +1,1 @@
+{"scenario":"render/setup-render-click","result":"ok","error":null,"entries":[{"label":"start","values":["<button type=\"button\" id=\"inc\">clicks 0</button>"]},{"label":"after-one-click","values":["<button type=\"button\" id=\"inc\">clicks 1</button>"]},{"label":"after-three-clicks","values":["<button type=\"button\" id=\"inc\">clicks 3</button>"]}],"unhandledRejections":[]}
