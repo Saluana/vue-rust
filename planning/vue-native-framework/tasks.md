@@ -3,7 +3,7 @@
 ## 1. Execution rules and dependencies
 
 <!-- impl-note -->
-> **Implementation progress (2026-10-10 (sections 2–5 follow-up)).** Annotations below were added during implementation. A box is ticked only when the task's acceptance criteria are met and a test command plus evidence artifact are linked; the workspace is not a version-control repository, so there is no commit to link (evidence = commands that pass in this checkout + artifact paths). Partly finished work is annotated, not ticked. Totals: 15 done, 22 partial, 7 blocked, 26 not started of 70 tasks. Source of truth for the annotations: `docs/dev/tasks-progress.json` (regenerate with `node tooling/status/update-tasks.mjs`); narrative status in `docs/dev/STATUS.md`.
+> **Implementation progress (2026-10-10 (sections 2–5 follow-up)).** Annotations below were added during implementation. A box is ticked only when the task's acceptance criteria are met and a test command plus evidence artifact are linked; the workspace is not a version-control repository, so there is no commit to link (evidence = commands that pass in this checkout + artifact paths). Partly finished work is annotated, not ticked. Totals: 16 done, 21 partial, 7 blocked, 26 not started of 70 tasks. Source of truth for the annotations: `docs/dev/tasks-progress.json` (regenerate with `node tooling/status/update-tasks.mjs`); narrative status in `docs/dev/STATUS.md`.
 <!-- /impl-note -->
 
 
@@ -293,9 +293,9 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **5.5 Implement ESM and bundled dynamic modules.**
   <!-- progress:5.5 -->
-  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — Static ESM across multiple files, live bindings, cycles, re-exports, namespace objects, native module imports and `.vue` imports compile and run.
-  - **Evidence:** `node tooling/harness/run-projects.mjs` (10/10); `cargo test -p vn-value --test modules_graph` etc.
-  - **Not yet done:** Dynamic `import()` lowering (still VN9001), chunk graph and web chunk loading.
+  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — Static ESM across multiple files, live bindings, cycles, re-exports, namespace objects, native module imports and `.vue` imports compile and run. Literal `import()` (string or no-substitution template) joins the prelinked project graph, defers the target's first evaluation, resolves to the shared namespace, evaluates once and caches rejections; settlement runs on host turns that start when the promise job queue is empty, matched to the Node project oracle. Computed specifiers (VN2019), import options (new VN2031) and unresolvable or native targets are rejected at compile time with spans.
+  - **Evidence:** `node tooling/harness/run-projects.mjs` (14/14, incl. dyn-basic, dyn-throw, dyn-cycle, dyn-order); `cargo test -p vn-value --test modules_dynamic` (10 tests); `node --test tests/compiler/project/dynamic.test.mjs`; artifact `docs/evidence/dynamic-import.md`.
+  - **Not yet done:** Dynamic import on the web target (no browser run), chunk graph output, and calibration of several cases (repeated requests of one module, cycles among unloaded modules, link errors of unloaded targets). Settlement timing follows the hook-based project oracle, not plain Node.
   <!-- /progress -->
   - **Build / why / files:** `compiler/modules/`, `crates/value/modules.rs`, `tooling/build/graph/`; L16–L17 with live bindings and prelinked module graph, including deferred dynamic-import evaluation.
   - **Depends:** 5.4. **Requirements:** R02, R10–R12, R18.
@@ -304,11 +304,10 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
   - **Risk / decision:** native and first web profile prelink app modules; physical WASM code splitting is excluded from this estimate and requires K19 gate if loading budgets fail.
   - **Estimate:** 2–5 pw; **M**; module linker/build systems engineer.
 
-- [ ] **5.6 Harden the chosen heap and host-resource model.**
+- [x] **5.6 Harden the chosen heap and host-resource model.**
   <!-- progress:5.6 -->
-  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — Heap limit and execution-budget watchdogs, GC safepoint discipline and stress tests exist.
-  - **Evidence:** `cargo test -p vn-value` (kernel_gc, kernel_jobs).
-  - **Not yet done:** Miri/ASan/FFI audit, long-churn latency tails, native-resource disposal.
+  - **Status (2026-10-10 (sections 2–5 follow-up)): DONE** — Heap limit and execution-budget watchdogs, GC safepoint discipline and stress tests. Long churn keeps async/module/effect roots correct against an independent model with steady heap size; exceeding the heap limit mid-churn is a catchable RangeError (no panic) and the runtime is usable afterwards; host handles registered under an effect scope close exactly once on stop, never while the scope is live across GC, and close callbacks run with the heap open. Allocation and pause tails are reported (they miss the 2 ms budget; see 3.2). Miri/ASan/FFI audit: not applicable, `vn-value` and `vn-runtime` forbid unsafe code.
+  - **Evidence:** `cargo test -p vn-value --test gc_churn --test gc_exhaustion`; `cargo test -p vn-runtime --test realm_scope_handles` (9 tests; mutation runs recorded); `cargo run --release -p vn-value --example gc_churn_bench`; artifact `docs/evidence/gc-latency.md`.
   <!-- /progress -->
   - **Build / why / files:** `crates/value/heap/`, `crates/runtime/resources.rs`; convert experiment to audited collector integration with quotas, traceable roots and explicit native-resource disposal.
   - **Depends:** 5.2, 5.4–5.5. **Requirements:** R02, R05, R22–R23.
@@ -319,9 +318,9 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **5.7 Complete SFC and TypeScript lowering.**
   <!-- progress:5.7 -->
-  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — SFC frontend wraps the official compileScript/compileTemplate/compileStyle with profile checks, native template validation and `.vue` spans; macros come from Vue itself; TypeScript is erased at lowering; all 37 real SFC fixtures lower to Rust that passes `cargo check`.
-  - **Evidence:** `node --test "tests/compiler/sfc/*.test.mjs"` (210 tests, 31 components rendered in real Vue in Chrome); `node tooling/harness/check-sfc-lowering.mjs` (37/37).
-  - **Not yet done:** Type checking via a pinned TypeScript 6 + Vue virtual-file pair, imported-type props, `<style module>` (async CSS modules).
+  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — SFC frontend wraps the official compileScript/compileTemplate/compileStyle with profile checks, native template validation and `.vue` spans; macros come from Vue itself; TypeScript is erased at lowering. `vue-native check` type-checks .vue/.ts modules with the pinned TypeScript 6.0.3 + vue-tsc 3.3.12 pair (VN7001 at .vue spans; `--no-types` skips it). Imported prop types resolve through compileScript with an fs adapter rooted at the project; type imports a macro reads but compileScript cannot resolve (bare packages, names a file does not export) are VN6017 in build too. TS-only runtime constructs (enum, namespace, using) stay rejected with the checker on.
+  - **Evidence:** `node --test tests/compiler/types/check.test.mjs tests/compiler/sfc/imported-types.test.mjs tests/cli/check-types.test.mjs`; `node tooling/harness/check-sfc-lowering.mjs` (45/45); `node tooling/cli/vue-native.mjs check examples/quick-quote`; artifact `docs/evidence/typescript-tooling.md`.
+  - **Not yet done:** `<style module>` (CSS modules need the `postcss-modules` package, not yet approved); build-time detection of names no file declares (check-only, TS2304); compileScript's own approximation of conditional/utility prop types.
   <!-- /progress -->
   - **Build / why / files:** `compiler/sfc/`, `compiler/types/`, `compiler/macros/`; S01–S25 with official macro behavior and exact virtual-file checker pair.
   - **Depends:** 5.5, 3.7. **Requirements:** R03, R10–R11.

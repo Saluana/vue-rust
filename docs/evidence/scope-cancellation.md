@@ -1,6 +1,6 @@
 # Scope-owned cancellation and stale-completion rejection (task 3.3) — 2026-10-10
 
-Branch claude/w33-cancel, uncommitted. Built on 554b716. Private target dir `/home/claude/targets/w33-cancel`.
+Built on branch claude/w33-cancel. Built on 554b716. Private target dir `/home/claude/targets/w33-cancel`.
 
 ## What was built
 

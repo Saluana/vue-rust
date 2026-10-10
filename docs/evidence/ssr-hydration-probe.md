@@ -10,7 +10,7 @@ crates/runtime/src/ssr.rs (433 lines) is a string renderer over the runtime's vn
 
 crates/runtime/src/hydrate.rs (518 lines) ports createHydrationFunctions of runtime-core 3.5.43, production build: hydrate, hydrateNode, hydrateElement, hydrateChildren, hydrateFragment, handleMismatch and locateClosingAnchor. It reads the DOM through Host::first_child, next_sibling, node_type and node_value, and it records each recovered mismatch in the realm's log. A component's first mount hydrates its subtree while the renderer is in hydration mode (component.rs). createSSRApp(...).mount(container) keeps the server markup (app.rs). vModelText has a getSSRProps hook (vmodel.rs). The reactive style branch of hydrateElement (prod:1683-1684) is ported.
 
-Changes to shared surfaces, all uncommitted:
+Changes to shared surfaces:
 
 - host.rs: first_child, node_type and node_value are defaulted methods of the Host trait. Their defaults return HostError::Unsupported, so a host without them fails loudly. Every host implements this interface (docs/dev/ARCHITECTURE.md:62-66), so the additions need maintainer sign-off.
 - host_doc.rs: DocHost implements the three. set_element_text now gives a handle to each text node it creates (the host could not see those nodes before) and counts them. DocHost::created_nodes() exposes the count to the identity tests.
