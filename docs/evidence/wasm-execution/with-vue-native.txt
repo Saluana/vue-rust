@@ -1,0 +1,10 @@
+$ node tooling/harness/run-language.mjs --with-vue
+group       total  pass  blocked  FAIL  compile-error
+computed       12    12        0     0              0
+effect         15    15        0     0              0
+reactive       25    25        0     0              0
+ref            22    22        0     0              0
+scheduler      12    12        0     0              0
+watch          29    29        0     0              0
+scenarios 115: pass 115, FAIL 0, blocked 0, compile-error 0; 0 unexpected
+exit=0

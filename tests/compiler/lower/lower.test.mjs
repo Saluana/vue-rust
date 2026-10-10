@@ -80,7 +80,7 @@ test('HIR resolves identifiers and marks captured bindings as cells', () => {
   const { ast, analysis } = checkSource(src, { filename: 'h.js', lang: 'js' });
   const { hir, diagnostics } = lowerToHir(ast, analysis, { source: src, filename: 'h.js', specifier: 'h' });
   assert.equal(diagnostics.length, 0);
-  assert.equal(hir.hirVersion, 1);
+  assert.equal(hir.hirVersion, 2);
   assert.deepEqual(hir.requests, []);
   assert.equal(hir.slots[0].name, 'n');
   const inc = hir.fns.find((f) => f && f.kind === 'arrow');

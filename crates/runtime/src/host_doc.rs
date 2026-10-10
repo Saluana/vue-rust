@@ -236,6 +236,12 @@ impl DocHost {
         self.shared.nodes.borrow().handle(id)
     }
 
+    /// Diagnostics (tests and tooling): the host handles that still name a node. Releasing a subtree frees its handles;
+    /// indices are not reused, so only this count goes back down.
+    pub fn live_handles(&self) -> usize {
+        self.shared.nodes.borrow().by_host.iter().filter(|h| h.is_some()).count()
+    }
+
     fn id(&self, h: HostNode) -> HostResult<NodeId> {
         let id = self.shared.nodes.borrow().get(h).ok_or(HostError::NotFound)?;
         if self.shared.doc.borrow().kind(id).is_none() {

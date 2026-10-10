@@ -9,6 +9,7 @@ mod api;
 mod array_inst;
 mod collection_inst;
 mod computed;
+mod diag;
 mod effect;
 mod graph;
 mod handlers;
@@ -23,6 +24,7 @@ pub mod testing;
 mod watch;
 
 pub use api::{exports, internal_exports};
+pub use diag::{debug_stats, dep_subscriber_count, ReactivityStats};
 pub use state::{set_reactive_hooks, ReactiveHooks};
 pub use target::{track, trigger, TriggerOp};
 pub use watch::{watch_base, WatchHandle, WatchOptions};

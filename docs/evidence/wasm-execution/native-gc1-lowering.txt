@@ -1,0 +1,3 @@
+$ VN_GC_THRESHOLD=1 node tooling/harness/run-language.mjs --dir tests/language/lowering
+scenarios 166: pass 166, FAIL 0, blocked 0, compile-error 0; 0 unexpected
+exit=0

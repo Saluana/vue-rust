@@ -6,6 +6,7 @@ import { emitExpr } from './expr.mjs';
 import { emitStatements, emitHoist } from './stmt.mjs';
 import { declareScope, bindPattern, initVar, readVar } from './vars.mjs';
 import { localName, rstr, fnName, owned } from './names.mjs';
+import { HIR_VERSION } from '../hir/context.mjs';
 
 // Runs body() with a fresh line buffer and returns the function text `header { ... }`.
 function withBody(em, header, body) {
@@ -191,7 +192,7 @@ function emitEvaluate(em, hir) {
 
 // Rust source of one module. Throws on an internal inconsistency (never silently skipped).
 export function emitModule(hir) {
-  if (hir.hirVersion !== 1) throw new Error(`emitModule: unsupported HIR version ${hir.hirVersion}`);
+  if (hir.hirVersion !== HIR_VERSION) throw new Error(`emitModule: unsupported HIR version ${hir.hirVersion}`);
   const em = new Emitter(hir);
   em.expr = (n) => emitExpr(em, n);
   const phases = [emitDeclare(em, hir), emitBind(em, hir), emitEvaluate(em, hir)];

@@ -9,6 +9,8 @@ use std::rc::Rc;
 
 use vn_value::{payload_ref, Intrinsic, JsStr, NativeObject, ObjRef, Prop, PropKey, Res, Rt, Sym, Tracer, Value};
 
+use crate::node::Live;
+
 const REGISTRY: &str = "vn-reactivity";
 
 /// Prototypes of the JS-visible reactivity objects (set once per realm by `api::install_protos`).
@@ -62,6 +64,8 @@ pub(crate) struct State {
     /// Cached JS exports (`api::exports`, `api::internal_exports`); traced.
     pub(crate) exports: RefCell<Option<Vec<(&'static str, Value)>>>,
     pub(crate) internal: RefCell<Option<Vec<(&'static str, Value)>>>,
+    /// Live counts of the reactivity objects (`debug_stats`). They hold no ObjRef, so nothing is traced.
+    pub(crate) live: Rc<Live>,
 }
 
 impl State {
@@ -145,6 +149,7 @@ fn init(rt: &Rt) -> ObjRef {
         obj_to_string,
         exports: RefCell::new(None),
         internal: RefCell::new(None),
+        live: Rc::new(Live::default()),
     };
     let payload: Rc<dyn NativeObject> = Rc::new(st);
     let obj = rt.new_native_object(None, payload);

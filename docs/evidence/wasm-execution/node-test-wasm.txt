@@ -1,0 +1,15 @@
+$ node --test --test-reporter=spec tests/language/wasm.test.mjs
+✔ a target that rustc does not know is a skip reason, not a pass (77.675662ms)
+✔ the subset runs on wasm32 and every document equals its golden (791.785863ms)
+✔ the subset under GC stress (a collection at every safepoint) equals the goldens (240.224487ms)
+✔ negative controls: a mutated golden and a deliberate panic are reported as failures (688.920798ms)
+✔ deep recursion to the call-depth limit runs on wasm32 and matches the Node oracle (559.413319ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2715.587443
+exit=0

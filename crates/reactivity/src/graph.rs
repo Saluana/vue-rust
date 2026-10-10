@@ -129,6 +129,8 @@ pub(crate) fn add_sub(rt: &Rt, link: ObjRef) {
         if let Some(t) = current_tail {
             node(rt, t).link().next_sub.set(Some(link));
         }
+        let st = state(rt);
+        st.live.subscriber_edges.set(st.live.subscriber_edges.get() + 1);
     }
     d.subs.set(Some(link));
 }
@@ -141,6 +143,11 @@ pub(crate) fn remove_sub(rt: &Rt, link: ObjRef, soft: bool) {
     let d = dn.dep();
     let prev = l.prev_sub.get();
     let next = l.next_sub.get();
+    // Only a link that is in the subscriber list counts as a dependency subscriber (a soft-removed one is not listed).
+    if prev.is_some() || next.is_some() || d.subs.get() == Some(link) {
+        let st = state(rt);
+        st.live.subscriber_edges.set(st.live.subscriber_edges.get() - 1);
+    }
     if let Some(p) = prev {
         node(rt, p).link().next_sub.set(next);
         l.prev_sub.set(None);

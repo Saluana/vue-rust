@@ -1,0 +1,1173 @@
+$ cargo test -p vn-testkit -p vn-value --no-fail-fast
+   Compiling vn-testkit v0.0.1 (/home/claude/wt/w42-wasm/crates/testkit)
+    Finished `test` profile [unoptimized] target(s) in 1.51s
+     Running unittests src/lib.rs (/home/claude/targets/w42-wasm/debug/deps/vn_testkit-d2b247ef4e90b0b3)
+
+running 5 tests
+test json_in::tests::decodes_escapes_and_lone_surrogates_to_code_units ... ok
+test json_in::tests::reads_nested_values_and_keeps_number_text ... ok
+test json_in::tests::rejects_malformed_input_with_an_offset ... ok
+test trace::tests::number_forms ... ok
+test json_in::tests::refuses_nesting_past_the_limit ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/cross_check.rs (/home/claude/targets/w42-wasm/debug/deps/cross_check-7d5d29edc35c05c5)
+
+running 3 tests
+test negative_control_a_mutated_input_is_reported ... ok
+test negative_control_a_doctored_expectation_is_reported ... ok
+test rust_encoder_matches_the_node_oracle_on_every_graph ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/decode.rs (/home/claude/targets/w42-wasm/debug/deps/decode-0f4290ec9b445b7f)
+
+running 4 tests
+test negative_control_dropping_integrity_is_detected_by_the_round_trip ... ok
+test hand_written_encodings_round_trip ... ok
+test inputs_the_decoder_must_refuse_are_errors ... ok
+test the_first_call_of_every_cross_check_graph_round_trips ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.08s
+
+     Running tests/encode_table.rs (/home/claude/targets/w42-wasm/debug/deps/encode_table-c732283cebc39a3d)
+
+running 29 tests
+test accessors_are_markers_and_getters_never_run ... ok
+test arrays_list_props_then_elems_and_len_with_holes ... ok
+test a_ref_carries_no_integrity_and_functions_carry_none_either ... ok
+test delete_and_line_separator_are_written_raw_like_json_stringify ... ok
+test empty_object_after_preventextensions_is_frozen ... ok
+test cycles_are_refs_to_the_enclosing_object ... ok
+test extensible_object_has_no_integrity_field ... ok
+test finite_numbers_are_written_as_string_of_n ... ok
+test errors_carry_name_and_message ... ok
+test frozen_error_keeps_name_and_message ... ok
+test frozen_object_has_integrity_after_proto_and_before_props ... ok
+test host_payloads_are_untraceable_type_errors ... ok
+test integrity_is_read_at_encode_time ... ok
+test frozen_array_has_integrity_before_props_elems_and_len ... ok
+test functions_are_fn_entries_and_take_no_ordinal ... ok
+test negative_control_a_doctored_expectation_is_reported ... ok
+test negative_control_a_missing_field_is_reported ... ok
+test plain_object_props_follow_own_key_order ... ok
+test negative_zero_nan_and_infinities_have_tagged_forms ... ok
+test preventextensions_object_has_integrity_nonextensible ... ok
+test ordinals_are_global_and_a_rejected_call_keeps_the_ordinals_it_took ... ok
+test sealed_and_nonextensible_arrays ... ok
+test proto_is_null_object_prototype_or_other ... ok
+test repeats_in_one_call_are_refs_and_the_next_call_expands_again ... ok
+test sealed_object_has_integrity_sealed ... ok
+test strings_escape_like_json_stringify ... ok
+test standalone_encodings_use_a_fresh_expansion_set ... ok
+test symbols_are_numbered_in_first_encounter_order ... ok
+test undefined_null_and_booleans ... ok
+
+test result: ok. 29 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/host.rs (/home/claude/targets/w42-wasm/debug/deps/host-867dfe4a54a119f1)
+
+running 13 tests
+test a_throwing_callback_ends_the_advance_and_its_error_is_returned ... ok
+test a_callback_can_schedule_a_timer_that_fires_within_the_same_advance ... ok
+test advance_and_tick_return_promises_that_settle_once_the_queue_drains ... ok
+test advance_rejects_when_a_callback_throws_and_the_clock_stays_at_its_due_time ... ok
+test an_async_advance_fires_a_timer_scheduled_inside_it_when_it_is_due ... ok
+test an_async_advance_drains_the_job_queue_after_each_callback ... ok
+test clear_timeout_cancels_numbers_and_ignores_other_values ... ok
+test testhost_has_the_oracle_shape ... ok
+test the_host_survives_a_collection_with_no_scenario_references ... ok
+test set_timeout_checks_its_callback_and_converts_delays_with_number ... ok
+test trace_requires_a_string_label_at_the_global ... ok
+test timers_fire_in_due_time_then_creation_order ... ok
+test timer_callbacks_and_their_data_survive_collections_between_steps ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/presets.rs (/home/claude/targets/w42-wasm/debug/deps/presets-a6d9661b3112f549)
+
+running 2 tests
+test negative_control_a_changed_log_entry_is_detected ... ok
+test every_preset_sequence_matches_the_oracle ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/promise_programs.rs (/home/claude/targets/w42-wasm/debug/deps/promise_programs-e54c2932ce23908b)
+
+running 3 tests
+test a_corrupted_expectation_is_reported_as_a_mismatch ... ok
+test the_corpus_has_at_least_400_programs_with_documented_hand_designed_ones ... ok
+test every_program_matches_node_v8 ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.67s
+
+     Running tests/replay.rs (/home/claude/targets/w42-wasm/debug/deps/replay-dcbe7d08a572bdcb)
+
+running 5 tests
+test a_malformed_suite_is_one_failure_with_no_cases ... ok
+test a_missing_target_is_reported_and_is_not_a_failure ... ok
+test the_report_is_one_line_of_json ... ok
+test negative_controls_are_reported_as_failures_with_both_texts ... ok
+test a_correct_mini_suite_replays_clean ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/replay_b1.rs (/home/claude/targets/w42-wasm/debug/deps/replay_b1-3c9ee03e4fea6877)
+
+running 6 tests
+test globals_suite_replays_clean ... ok
+test function_proto_suite_replays_clean ... ok
+test symbol_suite_replays_clean ... ok
+test boolean_suite_replays_clean ... ok
+test object_own_suite_replays_clean ... ok
+test object_proto_suite_replays_clean ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.28s
+
+     Running tests/replay_b2.rs (/home/claude/targets/w42-wasm/debug/deps/replay_b2-f0367bdd475fb843)
+
+running 4 tests
+test array_statics_replay_clean ... ok
+test negative_control_corrupted_expectation_is_reported ... ok
+test array_callbacks_replay_clean ... ok
+test array_methods_replay_clean ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.38s
+
+     Running tests/replay_b3.rs (/home/claude/targets/w42-wasm/debug/deps/replay_b3-424dd17ae75916cd)
+
+running 5 tests
+test a_corrupted_expectation_is_reported ... ok
+test an_absent_method_is_reported_missing ... ok
+test tan_cases_match_v8_bit_for_bit ... ok
+test o2_math_and_number_suites_replay_with_no_failures ... ok
+test b3_generated_suites_replay_with_no_failures_and_no_missing_targets ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 8.44s
+
+     Running tests/replay_b4.rs (/home/claude/targets/w42-wasm/debug/deps/replay_b4-c2f76e0a604d1720)
+
+running 5 tests
+test groupby_suite_replays_clean ... ok
+test map_suite_replays_clean ... ok
+test negative_control_reports_a_corrupted_expectation ... ok
+test set_suite_replays_clean ... ok
+test suites_have_at_least_250_cases ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 4.68s
+
+     Running tests/replay_b6.rs (/home/claude/targets/w42-wasm/debug/deps/replay_b6-46f94918603c03e1)
+
+running 3 tests
+test json_parse_suite_replays_clean ... ok
+test a_corrupted_expectation_is_reported_as_the_only_failure ... ok
+test json_stringify_suite_replays_clean ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.00s
+
+     Running tests/runner.rs (/home/claude/targets/w42-wasm/debug/deps/runner-f8746ce5cafdd76a)
+
+running 15 tests
+test a_module_throw_is_the_result_and_run_is_not_called ... ok
+test a_promise_is_traced_as_an_opaque_object ... ok
+test a_rejection_with_a_handler_is_not_listed ... ok
+test a_run_export_that_is_not_a_function_is_a_harness_panic ... ok
+test a_run_throw_is_the_result_after_the_earlier_entries ... ok
+test a_rejection_returned_by_run_is_the_result_after_the_earlier_entries ... ok
+test a_value_returned_by_run_that_never_settles_is_a_harness_panic ... ok
+test an_ok_scenario_records_module_and_run_entries_in_order ... ok
+test a_thrown_value_that_cannot_be_encoded_is_a_panic_document_not_a_crash ... ok
+test run_waits_for_the_queue_so_the_tick_continuation_is_in_the_document ... ok
+test deep_recursion_is_a_range_error_on_the_isolated_thread ... ok
+test unhandled_rejections_are_encoded_in_rejection_order ... ok
+test the_isolated_runner_and_the_plain_runner_give_the_same_document ... ok
+test collecting_at_every_safepoint_does_not_change_the_document ... ok
+test an_isolated_panic_is_a_document_with_the_message_and_the_earlier_entries ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+
+     Running tests/scenario_setup.rs (/home/claude/targets/w42-wasm/debug/deps/scenario_setup-085fdba1750a581a)
+
+running 2 tests
+test negative_control_without_setup_throws ... ok
+test setup_runs_before_module_evaluation ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/wasm_entry.rs (/home/claude/targets/w42-wasm/debug/deps/wasm_entry-fd134e713dad49cd)
+
+running 6 tests
+test names_count_and_bounds ... ok
+test documents_equal_the_runner_at_threshold_one ... ok
+test negative_control_a_different_entry_is_detected ... ok
+test the_threshold_reaches_the_collector ... ok
+test panic_is_a_panic_document_on_native ... ok
+test documents_equal_the_isolated_runner ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running unittests src/lib.rs (/home/claude/targets/w42-wasm/debug/deps/vn_value-762178894ce0600f)
+
+running 28 tests
+test jsstr::tests::code_point_at_pairs_and_bounds ... ok
+test jsstr::tests::code_points_yield_pairs_and_lone_surrogates ... ok
+test jsstr::tests::conversions_to_rust_strings ... ok
+test jsstr::tests::default_and_code_unit_ordering ... ok
+test jsstr::tests::array_index_is_canonical_only ... ok
+test jsstr::tests::case_mapping_special_casing_and_lone_surrogates ... ok
+test jsstr::tests::from_code_point_bounds ... ok
+test jsstr::tests::pad_repeat_and_limits ... ok
+test jsstr::tests::lone_surrogates_are_kept_and_detected ... ok
+test jsstr::tests::replace_applies_get_substitution_without_captures ... ok
+test jsstr::tests::search_with_empty_and_out_of_range_positions ... ok
+test jsstr::tests::replace_all_with_empty_pattern_matches_every_boundary ... ok
+test jsstr::tests::trim_uses_js_whitespace_only ... ok
+test jsstr::tests::split_limits_and_empty_cases ... ok
+test number::tests::js_argument_checks_follow_the_spec_order ... ok
+test number::tests::radix_conversion_matches_v8_samples ... ok
+test number::tests::exponential_and_precision_rounding ... ok
+test number::tests::same_value_and_integers ... ok
+test number::tests::parse_float_takes_the_longest_prefix ... ok
+test number::tests::parse_int_radixes_and_prefixes ... ok
+test number::tests::string_to_number_literals ... ok
+test number::tests::remainder_power_round_min_max ... ok
+test number::tests::to_string_formats_match_ecma_thresholds ... ok
+test value::tests::lit_is_from_str_for_every_kind_of_name ... ok
+test number::tests::to_fixed_rounds_on_the_exact_binary_value ... ok
+test number::tests::to_integer_family_wraps_modulo ... ok
+test value::tests::lit_turns_canonical_indices_into_index_keys ... ok
+test value::tests::lit_keys_of_equal_text_from_different_literals_are_equal ... ok
+
+test result: ok. 28 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/builtins_b1_boolean.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b1_boolean-99630076612179b5)
+
+running 8 tests
+test boolean_prototype_is_a_false_boolean_wrapper ... ok
+test boolean_call_is_truthiness ... ok
+test boolean_constructor_attributes ... ok
+test boolean_construct_defaults_to_the_boolean_prototype ... ok
+test new_boolean_makes_a_wrapper_with_boolean_prototype ... ok
+test to_string_and_value_of_reject_other_receivers ... ok
+test kernel_operators_see_boolean_wrappers_correctly ... ok
+test to_string_and_value_of_accept_primitives_and_wrappers ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/builtins_b1_function.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b1_function-942ff45f27417ca5)
+
+running 24 tests
+test bind_name_defaults_to_the_bound_prefix_when_the_target_name_is_not_a_string ... ok
+test apply_rejects_non_object_argument_lists_and_huge_lengths ... ok
+test bind_length_follows_the_target_length_property ... ok
+test bind_sets_name_and_length_from_the_target ... ok
+test bound_function_calls_the_target_with_bound_this_and_arguments ... ok
+test bound_function_of_a_non_constructor_is_not_a_constructor ... ok
+test apply_spreads_an_array_like_and_nullish_gives_no_arguments ... ok
+test bound_function_prototype_is_the_target_prototype ... ok
+test bound_function_of_a_three_argument_native_is_a_plain_function ... ok
+test bound_function_construct_uses_the_target_as_new_target ... ok
+test bound_function_record_survives_a_collection ... ok
+test bind_requires_a_callable_this ... ok
+test bound_function_target_survives_a_collection ... ok
+test call_and_apply_on_a_non_callable_this_throw_type_error ... ok
+test call_forwards_this_and_the_remaining_arguments ... ok
+test function_constructor_and_constructor_property_are_absent ... ok
+test has_instance_throws_when_prototype_is_not_an_object ... ok
+test function_prototype_is_callable_and_empty ... ok
+test has_instance_follows_the_prototype_chain ... ok
+test prototype_methods_have_spec_lengths_names_and_attributes ... ok
+test instanceof_operator_for_ordinary_functions ... ok
+test has_instance_of_a_bound_function_asks_its_target ... ok
+test to_string_prints_the_native_shape ... ok
+test to_string_rejects_non_functions ... ok
+
+test result: ok. 24 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/builtins_b1_global.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b1_global-c5e649f3efd93cfb)
+
+running 11 tests
+test global_functions_have_spec_lengths_names_and_attributes ... ok
+test is_nan_coerces_with_to_number ... ok
+test global_this_is_the_global_object_with_hidden_attributes ... ok
+test is_finite_coerces_with_to_number ... ok
+test parse_functions_are_registered_for_number ... ok
+test parse_float_follows_the_spec_and_v8 ... ok
+test parse_functions_still_work_after_a_collection ... ok
+test only_the_listed_global_functions_exist ... ok
+test parse_int_follows_the_spec_and_v8 ... ok
+test value_properties_are_read_only_permanent_and_correct ... ok
+test parse_int_converts_the_string_before_the_radix ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/builtins_b1_object.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b1_object-495e245fe1591f3e)
+
+running 40 tests
+test assign_coerces_the_target_and_throws_on_nullish ... ok
+test assign_copies_enumerable_props_including_symbols_and_skips_nullish ... ok
+test assign_throws_when_a_target_property_is_read_only ... ok
+test create_rejects_a_non_object_prototype_and_any_properties_argument ... ok
+test descriptor_reads_data_accessor_missing_and_array_length ... ok
+test create_with_null_or_object_prototype ... ok
+test freeze_seal_and_prevent_extensions_round_trip ... ok
+test from_entries_accepts_symbol_keys ... ok
+test from_entries_builds_an_object_from_key_value_pairs ... ok
+test freeze_fixes_array_elements_and_length ... ok
+test descriptors_for_every_own_key ... ok
+test from_entries_closes_the_iterator_when_an_item_is_not_an_object ... ok
+test from_entries_closes_the_iterator_when_reading_an_entry_throws ... ok
+test from_entries_later_duplicates_win_and_keys_are_property_keys ... ok
+test group_by_closes_the_iterator_when_the_key_conversion_throws ... ok
+test from_entries_refuses_nullish_and_non_iterable_arguments ... ok
+test group_by_checks_the_callback_before_it_reads_items ... ok
+test group_by_of_nothing_is_an_empty_null_prototype_object ... ok
+test group_by_keys_may_be_symbols ... ok
+test group_by_closes_the_iterator_when_the_callback_throws ... ok
+test group_by_passes_the_index_and_coerces_keys_with_to_property_key ... ok
+test group_by_groups_in_first_seen_order_with_a_null_prototype ... ok
+test integrity_functions_on_primitives_follow_the_spec ... ok
+test keys_of_primitives_and_arrays ... ok
+test is_has_own_and_get_prototype_of ... ok
+test keys_values_entries_follow_own_key_order ... ok
+test object_call_and_construct_coerce_like_the_spec ... ok
+test keys_values_entries_throw_on_nullish ... ok
+test keys_skip_symbols_and_hidden_properties ... ok
+test object_prototype_has_own_property_coerces_key_before_this ... ok
+test object_prototype_is_prototype_of ... ok
+test object_prototype_property_is_enumerable ... ok
+test object_prototype_methods_and_statics_have_spec_attributes ... ok
+test object_constructor_shape ... ok
+test object_prototype_value_of_boxes_this ... ok
+test own_property_symbols_list_only_symbol_keys ... ok
+test object_prototype_to_locale_string_invokes_to_string ... ok
+test object_to_string_tags_follow_the_builtin_kinds_and_to_string_tag ... ok
+test values_recheck_enumerability_after_an_earlier_getter ... ok
+test own_property_names_include_hidden_properties_and_length ... ok
+
+test result: ok. 40 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/builtins_b1_symbol.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b1_symbol-58ae39ebb3427f69)
+
+running 12 tests
+test prototype_to_string_and_value_of ... ok
+test description_getter_reads_the_description_and_is_configurable_only ... ok
+test operators_typeof_instanceof_and_conversions ... ok
+test symbol_description_matches_the_host_text ... ok
+test symbol_rejects_a_symbol_description ... ok
+test symbol_for_and_key_for_form_the_global_registry ... ok
+test symbol_is_a_function_and_not_a_constructor ... ok
+test to_string_tag_and_object_to_string ... ok
+test symbol_creates_fresh_symbols_with_optional_descriptions ... ok
+test to_primitive_method_returns_the_symbol ... ok
+test well_known_symbols_are_the_five_listed_and_nothing_else ... ok
+test the_registry_survives_collection ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/builtins_b2_callbacks.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b2_callbacks-73dde7c331aab0f6)
+
+running 32 tests
+test a_collected_result_survives_a_collection_while_rooted ... ok
+test array_from_with_a_mapper_receives_the_index ... ok
+test array_from_closes_the_iterator_when_the_mapper_throws ... ok
+test filter_that_shrinks_the_array_skips_the_missing_indices ... ok
+test filter_skips_holes_and_keeps_order ... ok
+test array_from_reads_its_iterable_live ... ok
+test find_index_reads_holes_as_undefined ... ok
+test find_keeps_the_length_it_started_with ... ok
+test find_last_and_find_last_index_scan_from_the_end ... ok
+test flat_map_keeps_the_length_it_started_with ... ok
+test flat_map_drops_holes_of_the_mapper_result ... ok
+test find_last_reads_removed_elements_as_undefined ... ok
+test for_each_skips_an_element_deleted_before_its_visit ... ok
+test for_each_ignores_elements_pushed_during_the_loop ... ok
+test flat_map_flattens_one_level ... ok
+test for_each_error_stops_the_loop_and_propagates ... ok
+test map_callbacks_receive_the_this_argument ... ok
+test for_each_visits_present_indices_in_order_and_skips_holes ... ok
+test map_result_keeps_the_holes_of_the_source ... ok
+test reduce_over_only_holes_returns_the_initial_value ... ok
+test reduce_reads_each_element_when_it_is_visited ... ok
+test map_reads_each_element_when_it_is_visited ... ok
+test map_with_a_shrinking_array_keeps_holes_and_stops_early ... ok
+test reduce_right_follows_the_array_shortened_during_the_loop ... ok
+test reduce_with_no_elements_and_no_initial_value_is_a_type_error ... ok
+test some_treats_an_element_removed_during_the_loop_as_absent ... ok
+test some_and_every_stop_at_the_deciding_element ... ok
+test reduce_right_skips_holes ... ok
+test sort_leaves_the_array_unchanged_when_the_comparator_throws ... ok
+test to_sorted_sorts_a_snapshot_of_the_source ... ok
+test sort_writes_back_within_the_length_it_started_with ... ok
+test reduce_without_initial_value_starts_at_the_first_present_element ... ok
+
+test result: ok. 32 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/builtins_b2_construct.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b2_construct-3cf5d055fafaa183)
+
+running 11 tests
+test call_and_construct_build_the_same_holey_array ... ok
+test array_from_array_like_uses_the_constructor_it_is_called_on ... ok
+test array_of_uses_the_constructor_it_is_called_on ... ok
+test array_prototype_is_an_empty_array ... ok
+test invalid_length_arguments_are_range_errors ... ok
+test method_names_and_lengths_match_the_spec ... ok
+test methods_are_writable_non_enumerable_and_configurable ... ok
+test is_array_is_true_for_the_array_prototype_and_false_for_objects ... ok
+test constructor_and_prototype_are_linked_with_their_attributes ... ok
+test prototype_has_exactly_the_wp_names_and_one_symbol ... ok
+test new_target_chooses_the_prototype_of_the_new_array ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/builtins_b2_iter.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b2_iter-3b15e77656ecef46)
+
+running 10 tests
+test array_from_string_iterates_by_code_point ... ok
+test array_iterator_has_the_array_iterator_tag ... ok
+test entries_yield_index_value_pairs ... ok
+test a_rooted_iterator_keeps_its_array_alive_across_a_collection ... ok
+test array_from_iterable_fills_holes_with_undefined ... ok
+test next_on_a_foreign_receiver_is_a_type_error ... ok
+test values_iterator_steps_and_stays_done_after_growth ... ok
+test keys_iterator_after_shrink_is_not_done_at_index_zero ... ok
+test symbol_iterator_is_values_with_its_own_name_and_length ... ok
+test values_iterator_sees_elements_pushed_before_it_ends ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+     Running tests/builtins_b2_limits.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b2_limits-803a3fda09608759)
+
+running 10 tests
+test join_of_a_cyclic_element_is_empty_for_the_cycle ... ok
+test growing_an_array_past_the_dense_limit_is_a_range_error ... ok
+test last_index_of_with_an_explicit_undefined_from_index_starts_at_zero ... ok
+test pop_and_at_read_string_keys_above_the_index_range ... ok
+test flat_of_a_cyclic_array_is_a_stack_overflow_range_error ... ok
+test push_at_the_limit_minus_one_writes_a_string_key ... ok
+test unshift_past_the_limit_is_a_type_error ... ok
+test slice_of_a_huge_array_like_is_a_range_error_beyond_the_dense_limit ... ok
+test sort_of_a_single_element_frozen_array_writes_nothing ... ok
+test push_past_two_to_the_53_minus_one_is_a_type_error ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/builtins_b3_math.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b3_math-b768c8ee3214743a)
+
+running 3 tests
+test lengths_constants_and_absent_members ... ok
+test special_values_and_argument_order ... ok
+test table_matches_v8_with_the_approx_rule ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/builtins_b3_number.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b3_number-81b8792ec52db10b)
+
+running 5 tests
+test parse_functions_are_installed ... ok
+test lengths_names_constants_and_attributes ... ok
+test static_and_constructor_calls_match_v8 ... ok
+test wrappers_symbols_and_argument_order ... ok
+test method_table_matches_v8 ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/builtins_b3_string.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b3_string-7bd41967a4b9c8f7)
+
+running 9 tests
+test callbacks_match_v8 ... ok
+test conversion_order_matches_v8 ... ok
+test lengths_names_attributes_and_absent_members ... ok
+test method_table_matches_v8 ... ok
+test string_iterator_yields_code_points ... ok
+test symbols_and_wrappers ... ok
+test results_survive_collection_between_calls ... ok
+test static_and_constructor_calls_match_v8 ... ok
+test surrogates_and_limits ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/builtins_b4_iter.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b4_iter-f14544b0e1eef1e7)
+
+running 14 tests
+test exhausted_walk_stays_done_after_later_additions ... ok
+test entries_yield_pairs_and_sets_repeat_the_value ... ok
+test iterate_driver_walks_a_set_and_a_map ... ok
+test a_walk_in_progress_keeps_its_map_and_keys_alive ... ok
+test map_walk_ends_after_clear_when_nothing_is_added ... ok
+test iterator_prototypes_have_tags_and_inherit_iterator_prototype ... ok
+test map_walk_sees_entries_added_after_clear ... ok
+test map_walk_skips_an_entry_deleted_before_it_is_reached ... ok
+test map_walk_visits_entries_added_during_the_walk ... ok
+test next_rejects_iterators_of_another_family_and_other_receivers ... ok
+test set_walk_mutations_match_the_map_walk ... ok
+test walk_cursor_survives_compaction ... ok
+test map_delete_then_readd_is_visited_again_at_the_end ... ok
+test walk_started_before_deletions_continues_after_the_cursor ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/builtins_b4_map.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b4_map-6ebdc906c623f3d3)
+
+running 22 tests
+test builtin_shapes_and_absent_members ... ok
+test constructor_adder_error_closes_the_iterator_and_propagates ... ok
+test collection_keeps_its_object_keys_alive ... ok
+test constructor_closes_the_iterator_on_a_non_object_entry ... ok
+test enumeration_helpers_follow_insertion_order ... ok
+test constructor_reads_set_once_before_iterating ... ok
+test foreach_clear_then_add_visits_the_added_entry ... ok
+test foreach_delete_then_readd_moves_the_entry_to_the_end ... ok
+test constructor_reads_entry_key_then_value ... ok
+test constructor_requires_new_and_nullish_iterables_are_empty ... ok
+test foreach_passes_value_key_collection_and_this_arg ... ok
+test foreach_visits_entries_added_during_the_walk ... ok
+test groupby_normalises_negative_zero_and_groups_nan_together ... ok
+test foreach_skips_an_entry_deleted_before_it_is_reached ... ok
+test groupby_groups_in_first_seen_order ... ok
+test insertion_order_and_overwrite_keeps_position ... ok
+test groupby_passes_value_and_index_and_closes_the_iterator_on_a_throw ... ok
+test groupby_argument_errors_are_type_errors ... ok
+test size_and_methods_reject_other_receivers ... ok
+test same_value_zero_keys ... ok
+test iterate_driver_walks_a_map_as_entries ... ok
+test set_foreach_clear_then_add ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/builtins_b4_set.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b4_set-f8e6e2bc02413d39)
+
+running 19 tests
+test errors_from_next_do_not_close_the_iterator ... ok
+test difference_walks_a_copy_on_the_has_path ... ok
+test difference_copies_this_before_keys_on_the_keys_path ... ok
+test add_has_delete_and_zero_normalisation ... ok
+test getsetrecord_reads_size_has_keys_in_that_order ... ok
+test intersection_walks_this_live_when_it_is_no_larger_than_other ... ok
+test next_results_must_be_objects ... ok
+test other_must_be_an_object_and_this_must_be_a_set ... ok
+test set_algebra_on_plain_sets_matches_v8 ... ok
+test set_prototype_shapes ... ok
+test has_and_keys_must_be_callable_and_keys_must_return_an_object ... ok
+test set_constructor_and_iterable_protocol ... ok
+test subset_and_disjoint_walk_the_live_set ... ok
+test superset_closes_the_keys_iterator_at_the_first_missing_key ... ok
+test size_validation_happens_before_has_and_keys ... ok
+test intersection_keys_path_sees_deletions_made_by_next ... ok
+test symmetric_difference_copies_this_after_keys ... ok
+test zero_is_normalised_in_results_and_has_arguments ... ok
+test union_reads_keys_before_copying_this ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/builtins_b5_async.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b5_async-334d8466c335612e)
+
+running 13 tests
+test a_rejected_await_is_caught_by_try_catch_and_finally_runs ... ok
+test a_rejected_await_without_try_rejects_the_result ... ok
+test a_task_awaiting_a_pending_promise_survives_collections_until_it_is_resolved ... ok
+test a_task_awaiting_a_pending_promise_that_is_unreachable_is_collected ... ok
+test a_throw_rejects_the_result_and_an_unhandled_result_is_listed ... ok
+test a_value_stored_in_a_frame_survives_suspension ... ok
+test an_async_call_runs_up_to_its_first_await_synchronously ... ok
+test await_of_a_non_promise_costs_one_tick ... ok
+test await_of_a_native_promise_costs_one_tick_and_return_completes_the_result ... ok
+test returning_a_promise_adopts_it_with_two_extra_ticks ... ok
+test await_of_a_thenable_adopts_it_in_a_job ... ok
+test a_task_stays_alive_across_collections_between_jobs ... ok
+test a_long_chain_of_awaits_runs_without_deep_recursion ... ok
+
+test result: ok. 13 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+
+     Running tests/builtins_b5_promise.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b5_promise-2054b833e7ac07a8)
+
+running 23 tests
+test a_thenable_is_adopted_by_a_job_that_calls_its_then ... ok
+test a_rejection_handled_before_the_drain_is_never_listed ... ok
+test aggregate_error_has_the_v8_shape ... ok
+test a_rejection_from_a_derived_promise_is_listed ... ok
+test any_of_nothing_rejects_with_an_empty_aggregate_error_and_all_of_nothing_fulfils ... ok
+test all_rejects_with_the_first_rejection_in_time ... ok
+test catch_and_finally_need_an_object_receiver ... ok
+test all_resolves_with_the_values_in_input_order ... ok
+test all_settled_reports_a_status_record_per_input ... ok
+test finally_takes_two_extra_ticks_like_v8 ... ok
+test finally_passes_the_outcome_through_and_a_throwing_callback_replaces_it ... ok
+test any_takes_the_first_fulfilment_and_otherwise_an_aggregate_error ... ok
+test promise_without_new_is_a_type_error_and_the_executor_must_be_callable ... ok
+test promise_surface_matches_v8_lengths_and_names ... ok
+test reactions_run_as_jobs_after_the_synchronous_code ... ok
+test resolving_with_a_native_promise_takes_two_extra_ticks_like_v8 ... ok
+test race_settles_with_the_first_settled_input ... ok
+test finally_with_a_non_callable_passes_through ... ok
+test combinator_resolution_takes_the_ticks_v8_takes ... ok
+test unhandled_rejections_are_listed_in_order_until_a_handler_is_attached ... ok
+test then_chains_interleave_in_registration_order_like_v8 ... ok
+test with_resolvers_hands_out_a_promise_and_its_resolver ... ok
+test ten_thousand_chained_thens_run_without_deep_recursion ... ok
+
+test result: ok. 23 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.25s
+
+     Running tests/builtins_b6_parse.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b6_parse-d696c5a13b6b9ed5)
+
+running 10 tests
+test a_repeated_key_keeps_its_first_position_and_the_last_value ... ok
+test a_to_string_method_decides_the_text ... ok
+test array_index_keys_come_first_in_ascending_order ... ok
+test grammar_accepts_strict_json_and_rejects_the_rest ... ok
+test nesting_up_to_1000_levels_is_accepted_and_1001_is_a_range_error ... ok
+test numbers_are_correctly_rounded_and_keep_negative_zero ... ok
+test strings_keep_pairs_and_lone_surrogates_as_code_units ... ok
+test the_text_argument_is_converted_with_tostring ... ok
+test proto_is_an_own_key_and_the_prototype_is_unchanged ... ok
+test an_array_longer_than_the_dense_limit_is_a_range_error ... ok
+
+test result: ok. 10 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.17s
+
+     Running tests/builtins_b6_stringify.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b6_stringify-ead51333f47d36fe)
+
+running 17 tests
+test a_boxed_boolean_serializes_as_its_primitive ... ok
+test a_non_callable_replacer_is_ignored ... ok
+test a_replacer_can_omit_members_replace_values_and_throw ... ok
+test a_replacer_function_is_called_for_every_value_in_order_with_the_holder_as_this ... ok
+test an_array_replacer_is_the_property_list_of_every_object_below ... ok
+test cycles_throw_a_type_error_and_shared_references_do_not ... ok
+test arrays_write_null_for_undefined_functions_symbols_and_holes ... ok
+test object_keys_that_are_lone_surrogates_are_escaped ... ok
+test getters_run_in_order_once_and_a_member_deleted_by_a_getter_is_skipped ... ok
+test primitives_serialize_as_json_text ... ok
+test a_stringified_value_survives_a_collection_while_it_is_rooted ... ok
+test space_gives_indentation_with_the_spec_clamping ... ok
+test strings_escape_quotes_controls_and_lone_surrogates ... ok
+test objects_leave_out_undefined_functions_symbols_and_hidden_members ... ok
+test undefined_functions_and_symbols_at_the_top_level_give_undefined ... ok
+test to_json_is_called_with_the_key_and_the_object_as_this ... ok
+test a_very_deep_array_is_written_without_recursion_limits ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.63s
+
+     Running tests/builtins_b6_surface.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b6_surface-ad39e7d91e4d7553)
+
+running 7 tests
+test json_has_only_parse_stringify_and_the_tag ... ok
+test parse_and_stringify_have_spec_lengths_names_and_attributes ... ok
+test the_this_value_is_ignored_and_missing_arguments_behave_as_undefined ... ok
+test json_is_a_plain_object_on_the_global_object ... ok
+test parse_results_survive_a_collection_between_calls ... ok
+test parse_and_stringify_are_not_constructors ... ok
+test to_string_tag_is_json_and_read_only ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/builtins_b6_walk.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_b6_walk-b63eb5a032e72f80)
+
+running 11 tests
+test a_revived_value_replaces_the_member_and_is_not_walked_again ... ok
+test a_reviver_may_delete_a_later_sibling_and_the_walk_sees_undefined ... ok
+test a_reviver_sees_children_already_revived ... ok
+test a_reviver_that_is_not_callable_is_ignored ... ok
+test a_throwing_reviver_propagates_its_error ... ok
+test the_holder_is_this_and_the_root_holder_owns_the_empty_key ... ok
+test children_are_revived_before_their_parent_in_key_order ... ok
+test the_root_is_revived_last_with_the_empty_key ... ok
+test undefined_deletes_a_member_and_leaves_a_hole_in_an_array ... ok
+test index_keys_reach_the_reviver_as_strings ... ok
+test members_are_visited_in_own_key_order_with_index_keys_first ... ok
+
+test result: ok. 11 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/builtins_iterator.rs (/home/claude/targets/w42-wasm/debug/deps/builtins_iterator-7dd6b1b065efceee)
+
+running 53 tests
+test a_family_prototype_has_the_array_iterator_attributes ... ok
+test a_body_error_closes_the_iterator_and_is_the_error_that_propagates ... ok
+test a_native_iterator_drives_iterate_and_its_own_iterator_method_returns_it ... ok
+test a_missing_next_fails_at_the_first_step_without_calling_return ... ok
+test a_native_iterator_stays_exhausted_without_calling_its_state_again ... ok
+test a_new_iterator_object_uses_the_prototype_registered_under_its_family ... ok
+test a_native_iterator_error_propagates_once_and_finishes_the_iterator ... ok
+test a_non_callable_next_is_stored_and_only_fails_when_stepped ... ok
+test a_non_callable_return_is_a_type_error_on_a_normal_completion ... ok
+test a_native_iterator_that_returns_none_once_stays_done ... ok
+test a_non_object_return_result_is_a_type_error_on_a_normal_completion ... ok
+test a_non_callable_return_is_swallowed_on_a_throw_completion ... ok
+test a_non_object_return_result_is_not_checked_on_a_throw_completion ... ok
+test a_null_or_absent_return_means_no_return_call ... ok
+test a_non_object_from_symbol_iterator_is_a_type_error ... ok
+test a_re_entrant_next_on_a_native_iterator_sees_consistent_state ... ok
+test a_throw_in_next_marks_the_record_done_so_it_is_not_stepped_again ... ok
+test a_throwing_next_marks_the_iterator_done_and_does_not_call_return ... ok
+test a_throwing_return_getter_is_swallowed_on_a_throw_completion ... ok
+test a_throwing_return_getter_propagates_on_a_normal_completion ... ok
+test a_throwing_return_propagates_on_a_normal_completion ... ok
+test a_result_that_is_not_an_object_is_a_type_error_and_does_not_close ... ok
+test a_throwing_value_getter_does_not_call_return ... ok
+test an_early_exit_calls_return_once ... ok
+test a_throwing_return_is_swallowed_on_a_throw_completion ... ok
+test an_iterator_object_prints_its_tag_through_object_prototype_to_string ... ok
+test an_unrooted_iterator_and_what_it_holds_are_collected_together ... ok
+test done_is_coerced_with_to_boolean ... ok
+test done_true_ends_the_loop_without_calling_return ... ok
+test create_iter_result_has_value_then_done_as_plain_data_properties ... ok
+test iter_close_on_a_normal_completion_propagates_return_errors ... ok
+test get_iterator_reads_symbol_iterator_once_and_calls_it_with_no_arguments_and_the_iterable_as_this ... ok
+test iter_close_on_a_throw_completion_ignores_a_non_object_result ... ok
+test iter_close_on_a_throw_completion_swallows_return_errors ... ok
+test iter_close_without_a_return_method_does_nothing ... ok
+test iter_step_yields_values_then_none_and_a_done_record_never_calls_next_again ... ok
+test native_next_rejects_receivers_that_are_not_iterators_of_its_family ... ok
+test iter_close_on_a_normal_completion_accepts_an_object_result ... ok
+test iter_close_on_a_normal_completion_rejects_a_non_object_result ... ok
+test negative_control_a_payload_that_forgets_to_trace_loses_its_objects ... ok
+test nested_loops_close_only_the_inner_iterator_on_break ... ok
+test negative_control_a_swapped_read_order_is_reported_as_a_mismatch ... ok
+test next_is_read_once_and_the_record_keeps_that_function ... ok
+test protocol_order_reads_done_before_value_and_skips_value_when_done ... ok
+test objects_held_by_a_native_iterator_survive_collection_between_steps ... ok
+test nested_iteration_over_the_same_iterable_uses_independent_iterators ... ok
+test the_iterator_prototype_method_has_the_javascript_attributes ... ok
+test the_iterator_prototype_is_registered_under_its_name ... ok
+test return_gets_no_arguments_and_the_iterator_as_this ... ok
+test values_that_are_not_iterable_are_type_errors_with_the_is_not_iterable_message ... ok
+test the_iterator_prototype_method_returns_its_receiver_unchanged ... ok
+test the_value_is_not_read_when_the_result_is_done ... ok
+test a_new_iterator_object_for_an_unknown_family_is_a_framework_bug - should panic ... ok
+
+test result: ok. 53 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.17s
+
+     Running tests/kernel_arrays.rs (/home/claude/targets/w42-wasm/debug/deps/kernel_arrays-fd707fa2127fc62a)
+
+running 29 tests
+test a_hole_reads_through_to_the_prototype_chain ... ok
+test a_read_only_length_on_a_non_extensible_empty_array_is_still_frozen ... ok
+test an_extensible_array_is_never_frozen_or_sealed_even_with_a_read_only_length ... ok
+test a_new_element_with_non_default_attributes_is_refused_as_unsupported ... ok
+test an_accessor_on_an_array_index_is_refused_as_unsupported ... ok
+test array_is_array_is_true_only_for_arrays ... ok
+test freezing_an_array_keeps_its_length_and_values_readable ... ok
+test delete_of_an_element_leaves_a_hole_and_keeps_length ... ok
+test freeze_still_makes_length_read_only_and_seal_leaves_it_writable ... ok
+test length_coerces_strings_like_to_number ... ok
+test frozen_array_refuses_element_writes_and_new_indices ... ok
+test dense_limit_refuses_growth_with_a_range_error ... ok
+test length_extension_creates_holes_that_are_not_own_properties ... ok
+test frozen_array_length_is_read_only ... ok
+test length_define_refuses_enumerable_or_configurable_attributes ... ok
+test named_properties_of_arrays_still_count_toward_integrity ... ok
+test length_truncation_drops_trailing_elements ... ok
+test length_rejects_negative_and_fractional_values_with_range_error ... ok
+test own_keys_are_indices_then_length_then_named_properties ... ok
+test length_is_an_own_non_enumerable_non_configurable_data_property ... ok
+test sealed_array_keeps_writable_values_and_refuses_truncation_and_delete ... ok
+test truncating_a_sealed_array_stops_at_its_non_configurable_elements ... ok
+test non_writable_length_blocks_growth_but_not_reads ... ok
+test plain_objects_keep_the_spec_integrity_rule ... ok
+test v8_integrity_of_a_non_extensible_array_of_holes_is_frozen_and_sealed ... ok
+test v8_integrity_of_one_element_arrays_follows_the_element ... ok
+test v8_integrity_of_empty_arrays_ignores_the_writable_length ... ok
+test writes_to_existing_elements_update_in_place ... ok
+test writing_past_the_end_extends_with_holes ... ok
+
+test result: ok. 29 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/kernel_cells_errors.rs (/home/claude/targets/w42-wasm/debug/deps/kernel_cells_errors-9939747f4f0233d3)
+
+running 31 tests
+test a_symbol_key_addresses_only_its_own_property ... ok
+test a_thrown_value_round_trips_through_a_native_call ... ok
+test an_error_without_a_message_has_only_a_stack_and_no_colon_in_it ... ok
+test assigning_after_initialisation_writes_through_the_checked_form ... ok
+test cause_is_absent_when_the_options_do_not_have_it ... ok
+test assigning_before_initialisation_is_a_reference_error ... ok
+test constructor_converts_a_non_string_message ... ok
+test cause_option_creates_an_own_non_enumerable_cause ... ok
+test cell_set_then_get_round_trips ... ok
+test constructor_uses_new_target_prototype_when_present ... ok
+test checked_read_of_an_uninitialised_binding_is_a_reference_error ... ok
+test descriptions_round_trip_and_absent_descriptions_are_none ... ok
+test error_constructor_works_without_new ... ok
+test distinct_cells_do_not_alias ... ok
+test error_prototype_to_string_formats_like_v8 ... ok
+test error_prototype_to_string_rejects_a_non_object_receiver ... ok
+test initialising_then_reading_checked_succeeds ... ok
+test error_constructor_length_is_one_and_name_matches ... ok
+test make_error_builds_name_message_and_stack ... ok
+test error_constructor_works_with_new ... ok
+test error_own_message_is_not_enumerable ... ok
+test new_symbols_are_unique_even_with_the_same_description ... ok
+test prototype_chain_runs_from_each_kind_to_error_prototype ... ok
+test prototypes_carry_name_and_empty_message_and_link_back_to_constructors ... ok
+test symbol_for_is_separate_from_new_symbol ... ok
+test the_error_constructors_are_installed_on_the_global_object ... ok
+test symbol_for_returns_one_symbol_per_key ... ok
+test the_throw_helpers_build_the_matching_error_kinds ... ok
+test well_known_symbols_are_distinct_and_carry_their_spec_names ... ok
+test well_known_symbols_are_not_registered_under_symbol_for ... ok
+test undefined_message_creates_no_own_message_property ... ok
+
+test result: ok. 31 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.11s
+
+     Running tests/kernel_exotic.rs (/home/claude/targets/w42-wasm/debug/deps/kernel_exotic-3df990fbddd34e15)
+
+running 14 tests
+test a_define_hook_can_refuse_definitions_and_ordinary_keys_still_work ... ok
+test a_delete_hook_can_refuse_deletion ... ok
+test a_get_hook_sees_the_receiver ... ok
+test a_non_callable_symbol_to_primitive_is_a_type_error ... ok
+test a_get_hook_overrides_stored_properties ... ok
+test a_has_hook_answers_has_property_without_storage ... ok
+test an_object_with_no_conversion_methods_cannot_become_a_primitive ... ok
+test an_error_from_a_hook_propagates_as_a_throw ... ok
+test get_own_property_hook_is_used_by_get_and_has_own_property ... ok
+test a_set_hook_can_refuse_assignment_and_strict_mode_throws ... ok
+test an_ordinary_result_falls_back_to_storage ... ok
+test an_own_keys_hook_replaces_the_stored_keys ... ok
+test symbol_to_primitive_receives_the_hint ... ok
+test symbol_to_primitive_returning_an_object_is_a_type_error ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s
+
+     Running tests/kernel_exotic_integrity.rs (/home/claude/targets/w42-wasm/debug/deps/kernel_exotic_integrity-03fdb57b39c21de3)
+
+running 6 tests
+test ordinary_objects_unchanged ... ok
+test refused_prevent_extensions_refuses_freeze ... ok
+test prevent_extensions_through_exotic_reaches_target ... ok
+test seal_through_exotic_seals_target ... ok
+test throwing_hook_propagates ... ok
+test freeze_through_exotic_freezes_target ... ok
+
+test result: ok. 6 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/kernel_functions.rs (/home/claude/targets/w42-wasm/debug/deps/kernel_functions-c9ab74d39aa7a60c)
+
+running 21 tests
+test a_native_error_propagates_as_a_value_with_its_message ... ok
+test a_function_value_is_not_a_constructor_even_with_a_native_code_pointer ... ok
+test a_thrown_recursion_error_leaves_the_runtime_usable ... ok
+test a_lowered_call_limit_is_honoured_exactly ... ok
+test call_depth_is_one_inside_a_top_level_call_and_zero_after ... ok
+test calling_a_function_returns_the_code_value_unchanged ... ok
+test construct_passes_new_target_and_calls_the_constructor_code ... ok
+test captured_cells_are_visible_inside_the_function ... ok
+test construct_rejects_a_non_constructor_new_target ... ok
+test fn_info_name_and_kind_are_recorded ... ok
+test function_length_and_name_are_zero_and_empty_for_function_prototype ... ok
+test length_precedes_name_in_own_key_order ... ok
+test missing_arguments_read_as_undefined ... ok
+test name_and_length_are_not_writable_but_can_be_redefined ... ok
+test calling_a_non_callable_throws_type_error ... ok
+test call_passes_this_and_arguments_through ... ok
+test the_default_call_limit_is_1500_nested_calls ... ok
+test native_closure_data_is_visible_inside_the_function ... ok
+test name_and_length_are_own_read_only_configurable_properties ... ok
+test plain_call_has_undefined_new_target ... ok
+test user_functions_and_plain_natives_are_not_constructors ... ok
+
+test result: ok. 21 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.03s
+
+     Running tests/kernel_gc.rs (/home/claude/targets/w42-wasm/debug/deps/kernel_gc-741c20faabfce5d6)
+
+running 29 tests
+test a_global_binding_keeps_its_object_alive ... ok
+test a_captured_cell_keeps_its_value_alive_and_frees_with_the_function ... ok
+test a_native_payload_can_be_read_back_and_downcast ... ok
+test a_persistent_root_table_keeps_other_roots_intact_when_ids_are_recycled ... ok
+test a_persistent_root_keeps_its_object_alive ... ok
+test a_reused_slot_does_not_revive_the_old_handle ... ok
+test a_property_chain_survives_while_its_head_is_rooted ... ok
+test a_root_provider_keeps_objects_alive_until_it_is_removed ... ok
+test a_native_payload_trace_keeps_its_objects_alive ... ok
+test an_intrinsic_prototype_member_is_a_root ... ok
+test an_unreachable_cycle_is_freed_by_collect ... ok
+test array_elements_keep_their_objects_alive ... ok
+test collect_frees_only_the_unreachable_part_of_a_mixed_graph ... ok
+test exotic_hook_trace_keeps_its_objects_alive ... ok
+test heap_stats_count_allocations_frees_and_collections ... ok
+test maybe_collect_waits_for_the_allocation_threshold ... ok
+test native_function_closure_data_keeps_its_objects_alive ... ok
+test negative_control_a_provider_that_forgets_to_trace_is_detected ... ok
+test negative_control_a_stress_run_with_a_forgetful_root_provider_fails ... ok
+test positive_control_a_tracing_provider_keeps_its_objects ... ok
+test a_stale_handle_panics_instead_of_reading_another_object - should panic ... ok
+test collect_inside_running_code_is_a_framework_bug - should panic ... ok
+test the_extension_slot_is_traced_and_dies_with_its_object ... ok
+test try_collect_is_refused_while_code_runs_and_allowed_at_depth_zero ... ok
+test the_byte_estimate_grows_with_contents_and_returns_to_baseline ... ok
+test unrooting_makes_the_object_collectable ... ok
+test unrooting_the_same_id_twice_is_a_framework_bug - should panic ... ok
+test a_deep_chain_is_marked_without_recursion ... ok
+test random_graphs_agree_with_the_reference_model ... ok
+
+test result: ok. 29 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.18s
+
+     Running tests/kernel_jobs.rs (/home/claude/targets/w42-wasm/debug/deps/kernel_jobs-bc0e087b7d2cc919)
+
+running 16 tests
+test a_job_that_is_not_callable_is_recorded_as_a_type_error ... ok
+test a_job_can_read_and_write_properties_of_objects_it_was_given ... ok
+test heap_limit_is_exact_at_the_estimate_boundary ... ok
+test execution_budget_stops_a_job_after_the_allowed_ticks ... ok
+test clearing_the_budget_removes_the_limit ... ok
+test a_throwing_job_does_not_stop_the_drain_and_its_error_is_kept ... ok
+test jobs_queued_while_draining_run_in_the_same_drain ... ok
+test heap_limit_refuses_ticks_while_the_estimate_is_above_it ... ok
+test jobs_run_in_fifo_order ... ok
+test queued_values_are_roots_until_their_job_runs ... ok
+test taking_uncaught_errors_empties_the_list ... ok
+test run_jobs_never_collects_so_objects_survive_until_the_host_collects ... ok
+test run_jobs_on_an_empty_queue_runs_nothing ... ok
+test the_execution_budget_resets_before_each_job ... ok
+test ticks_outside_jobs_accumulate_until_the_next_job_resets_them ... ok
+test run_jobs_inside_running_code_is_a_framework_bug - should panic ... ok
+
+test result: ok. 16 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.12s
+
+     Running tests/kernel_props.rs (/home/claude/targets/w42-wasm/debug/deps/kernel_props-e12a19ac7402fed6)
+
+running 42 tests
+test canonical_index_strings_normalise_to_index_keys ... ok
+test accessor_without_setter_refuses_assignment ... ok
+test deleting_then_reinserting_moves_a_key_to_the_end ... ok
+test empty_non_extensible_object_is_vacuously_frozen_and_sealed ... ok
+test freeze_makes_every_property_read_only_and_fixed ... ok
+test define_reports_attributes_through_get_own_property ... ok
+test configurable_property_can_change_kind ... ok
+test get_v_on_strings_reads_length_index_and_prototype ... ok
+test delete_respects_configurable ... ok
+test get_v_on_undefined_and_null_throws_the_v8_message ... ok
+test get_str_and_set_str_use_the_same_key_normalisation ... ok
+test getter_throw_propagates_as_an_error_value ... ok
+test inherited_read_only_property_blocks_assignment ... ok
+test getter_receives_the_receiver_as_this ... ok
+test getter_that_reads_its_own_object_reenters_cleanly ... ok
+test many_properties_stay_findable_past_the_index_threshold ... ok
+test inherited_setter_runs_with_the_assigned_object_as_receiver ... ok
+test integer_keys_ascend_regardless_of_insertion_order ... ok
+test get_walks_the_prototype_chain ... ok
+test non_canonical_numeric_strings_stay_string_keys ... ok
+test non_configurable_read_only_refuses_a_different_value ... ok
+test own_keys_orders_indices_strings_then_symbols ... ok
+test missing_property_reads_undefined_and_define_reads_back ... ok
+test non_configurable_writable_allows_value_change_then_read_only ... ok
+test same_value_separates_signed_zero_and_joins_nan ... ok
+test non_configurable_refuses_becoming_an_accessor_or_configurable ... ok
+test seal_keeps_values_writable_but_blocks_delete_and_add ... ok
+test prevent_extensions_blocks_new_keys_and_allows_existing_writes ... ok
+test set_creates_own_property_and_leaves_the_prototype_alone ... ok
+test set_prototype_of_rejects_cycles_and_non_extensible_targets ... ok
+test strict_assignment_to_read_only_throws_with_the_spec_message ... ok
+test set_v_on_undefined_throws_and_on_primitives_is_refused ... ok
+test strict_writes_to_string_indices_and_length_name_the_string ... ok
+test symbol_keys_round_trip_and_follow_strings ... ok
+test to_number_follows_string_to_number_for_primitives ... ok
+test to_primitive_prefers_value_of_for_default_and_to_string_for_string_hint ... ok
+test setter_that_writes_its_own_object_reenters_cleanly ... ok
+test symbol_to_string_and_number_throw_type_errors ... ok
+test strict_add_to_non_extensible_object_throws_add_message ... ok
+test to_primitive_uses_value_of_first_when_it_yields_a_primitive ... ok
+test typeof_and_to_boolean_follow_the_spec_tables ... ok
+test to_property_key_normalises_numbers_and_keeps_symbols ... ok
+
+test result: ok. 42 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.07s
+
+     Running tests/modules_bindings.rs (/home/claude/targets/w42-wasm/debug/deps/modules_bindings-a993d7cc965abf8b)
+
+running 20 tests
+test closure_created_in_bind_sees_the_value_written_in_evaluate ... ok
+test ambiguous_star_name_is_missing_from_the_namespace_and_from_export_lookup ... ok
+test collection_after_load_keeps_bindings_and_frees_garbage ... ok
+test collections_between_the_phases_keep_records_locals_and_closures ... ok
+test export_star_cycle_terminates ... ok
+test export_star_never_re_exports_default ... ok
+test live_binding_reads_the_value_the_exporter_wrote ... ok
+test locals_are_set_read_and_initialised_across_the_phases ... ok
+test duplicate_export_name_panics - should panic ... ok
+test module_local_past_the_table_panics - should panic ... ok
+test duplicate_reexport_name_panics - should panic ... ok
+test module_request_returns_the_record_of_a_listed_request ... ok
+test module_local_before_the_table_is_set_panics - should panic ... ok
+test module_set_locals_twice_panics - should panic ... ok
+test module_request_of_an_unlisted_specifier_panics - should panic ... ok
+test reexport_from_an_unlisted_request_panics - should panic ... ok
+test reexport_rename_resolves_to_the_exporters_own_cell ... ok
+test re_export_cycle_terminates_and_the_name_is_missing ... ok
+test reexport_chain_resolves_through_every_module ... ok
+test star_exports_of_one_binding_through_two_paths_are_not_ambiguous ... ok
+
+test result: ok. 20 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.14s
+
+     Running tests/modules_common.rs (/home/claude/targets/w42-wasm/debug/deps/modules_common-9ec90b61c91364c9)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running tests/modules_graph.rs (/home/claude/targets/w42-wasm/debug/deps/modules_graph-cadf343ecc63ef6a)
+
+running 22 tests
+test chain_evaluates_dependencies_first ... ok
+test cycle_function_export_is_usable_before_its_module_evaluates ... ok
+test ambiguous_star_import_is_a_link_error_and_the_sources_stay_loadable ... ok
+test dependents_of_a_failed_module_rethrow_the_same_value ... ok
+test diamond_evaluates_the_shared_dependency_once ... ok
+test cycle_let_read_before_initialisation_throws_and_the_error_is_cached ... ok
+test evaluation_error_is_cached_and_rethrown_with_the_same_identity ... ok
+test cycle_let_read_before_initialisation_can_be_caught_inside_the_module ... ok
+test loading_a_module_while_modules_are_being_linked_throws ... ok
+test missing_module_throws_and_no_code_of_the_graph_runs ... ok
+test missing_request_is_found_before_any_declare_runs ... ok
+test missing_export_is_a_link_error_and_the_other_modules_stay_loadable ... ok
+test module_status_follows_the_lifecycle ... ok
+test native_module_is_registered_evaluated_and_imported ... ok
+test negative_control_a_reversed_expectation_is_reported ... ok
+test collection_inside_module_code_panics - should panic ... ok
+test importing_from_an_unlisted_request_panics - should panic ... ok
+test sibling_after_a_failed_module_is_not_run_and_loads_later ... ok
+test module_new_for_an_existing_specifier_panics - should panic ... ok
+test registering_a_different_definition_for_the_same_specifier_panics - should panic ... ok
+test registering_the_same_definition_twice_is_a_no_op ... ok
+test single_module_runs_once_and_reloads_without_running ... ok
+
+test result: ok. 22 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+     Running tests/modules_namespace.rs (/home/claude/targets/w42-wasm/debug/deps/modules_namespace-1b9eca97ebb5ba5d)
+
+running 9 tests
+test namespace_contents_and_probes_match_node ... ok
+test namespace_read_before_the_export_is_initialised_is_a_reference_error ... ok
+test namespace_is_created_once_and_has_null_prototype_and_no_extensions ... ok
+test namespace_keys_list_index_names_first_then_the_rest_in_code_unit_order ... ok
+test namespace_refuses_writes_defines_and_deletes_of_exports ... ok
+test namespace_read_while_modules_are_being_linked_is_refused ... ok
+test negative_control_reversed_namespace_probes_are_reported ... ok
+test namespace_read_of_a_missing_name_is_undefined_and_absent ... ok
+test namespace_to_string_tag_is_module_and_read_only ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/number_corpus.rs (/home/claude/targets/w42-wasm/debug/deps/number_corpus-007306bbdab69c04)
+
+running 18 tests
+test math_round_matches_v8 ... ok
+test math_min_matches_v8 ... ok
+test exponentiation_matches_v8 ... ok
+test math_max_matches_v8 ... ok
+test negative_control_mutated_corpus_rows_are_reported ... ok
+test positive_control_passes_on_correct_expectations ... ok
+test number_is_integer_matches_v8 ... ok
+test parse_float_matches_v8 ... ok
+test remainder_matches_v8 ... ok
+test parse_int_matches_v8 ... ok
+test same_value_and_same_value_zero_match_v8 ... ok
+test string_to_number_matches_v8 ... ok
+test to_int_family_matches_v8 ... ok
+test to_string_matches_v8 ... ok
+test to_string_with_radix_matches_v8 ... ok
+test to_exponential_matches_v8 ... ok
+test to_precision_matches_v8 ... ok
+test to_fixed_matches_v8 ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.19s
+
+     Running tests/ops_conv.rs (/home/claude/targets/w42-wasm/debug/deps/ops_conv-38e2778e5cbad752)
+
+running 14 tests
+test object_prototype_to_string_reports_builtin_and_to_string_tags ... ok
+test to_boolean_follows_the_spec_table ... ok
+test to_length_clamps_into_zero_to_two_to_the_53_minus_one ... ok
+test to_index_accepts_zero_to_two_to_the_53_minus_one_and_rejects_the_rest ... ok
+test to_int32_and_to_uint32_wrap_modulo_two_to_the_32 ... ok
+test to_integer_or_infinity_truncates_and_never_returns_negative_zero ... ok
+test to_string_of_an_error_goes_through_method_lookup ... ok
+test to_string_of_an_object_calls_to_string_first_and_stops_at_a_primitive ... ok
+test to_string_of_an_object_with_no_conversion_methods_is_a_type_error ... ok
+test to_string_of_primitives_matches_number_to_string_and_the_keywords ... ok
+test to_property_key_canonicalises_numbers_symbols_and_objects ... ok
+test to_string_of_a_symbol_is_a_type_error ... ok
+test typeof_names_each_kind_of_value ... ok
+test to_numeric_is_to_number_and_a_symbol_throws ... ok
+
+test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.06s
+
+     Running tests/ops_corpus.rs (/home/claude/targets/w42-wasm/debug/deps/ops_corpus-fa96530b189a5812)
+
+running 4 tests
+test negative_control_a_doctored_expectation_is_reported ... ok
+test negative_control_a_mutated_operand_is_reported ... ok
+test binary_operators_match_v8_for_every_ordered_pair ... ok
+test unary_operators_and_conversions_match_v8_for_every_operand ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.20s
+
+     Running tests/ops_kernel.rs (/home/claude/targets/w42-wasm/debug/deps/ops_kernel-f44199967e66baeb)
+
+running 4 tests
+test a_string_wrapper_has_read_only_length_and_character_properties ... ok
+test class_of_names_every_object_kind ... ok
+test exotic_is_array_hook_answers_is_array_and_nothing_else ... ok
+test to_object_wraps_each_primitive_with_its_intrinsic_prototype ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+     Running tests/ops_ops.rs (/home/claude/targets/w42-wasm/debug/deps/ops_ops-b5261fff2e97124c)
+
+running 19 tests
+test add_concatenates_when_a_primitive_is_a_string_and_adds_otherwise ... ok
+test a_throwing_value_of_stops_the_operator_before_the_right_operand ... ok
+test arithmetic_operators_use_the_number_hint_for_objects ... ok
+test add_uses_the_default_hint_so_value_of_wins_for_objects ... ok
+test bitwise_and_shift_operators_mask_their_counts_and_wrap ... ok
+test in_operator_checks_the_right_side_before_converting_the_key ... ok
+test inc_and_dec_return_the_new_numeric_value ... ok
+test instance_of_rejects_a_right_side_that_is_not_a_function_object ... ok
+test instance_of_walks_the_prototype_chain_of_a_constructor ... ok
+test loose_equality_converts_an_object_with_the_default_hint ... ok
+test operands_are_converted_left_to_right_for_every_operator_family ... ok
+test relational_comparison_of_strings_uses_code_units ... ok
+test arithmetic_special_values_follow_ieee_and_ecmascript ... ok
+test strict_equality_and_the_two_same_value_relations_differ_on_zero_and_nan ... ok
+test in_operator_looks_up_own_and_inherited_keys ... ok
+test relational_operators_are_false_when_a_nan_is_involved ... ok
+test unary_operators_convert_their_operand_once ... ok
+test in_operator_throws_for_a_primitive_right_side_with_v8_messages ... ok
+test symbol_operands_throw_type_errors_except_in_equality_and_logic ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests/string_corpus.rs (/home/claude/targets/w42-wasm/debug/deps/string_corpus-9d9a43552b187bda)
+
+running 15 tests
+test concat_and_compare_match_v8 ... ok
+test code_points_iterator_matches_v8 ... ok
+test code_unit_and_code_point_at_match_v8 ... ok
+test array_index_matches_v8 ... ok
+test positive_control_lone_surrogates_round_trip ... ok
+test from_char_code_and_from_code_point_match_v8 ... ok
+test negative_control_mutated_corpus_rows_are_reported ... ok
+test padding_and_repeat_match_v8 ... ok
+test replace_and_replace_all_match_v8 ... ok
+test search_methods_match_v8 ... ok
+test split_matches_v8 ... ok
+test well_formedness_matches_v8 ... ok
+test substring_matches_v8 ... ok
+test to_lower_and_upper_case_match_v8 ... ok
+test trim_variants_match_v8 ... ok
+
+test result: ok. 15 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.22s
+
+   Doc-tests vn_testkit
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+   Doc-tests vn_value
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+exit=0

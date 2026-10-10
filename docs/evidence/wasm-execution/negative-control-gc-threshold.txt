@@ -1,0 +1,8 @@
+$ VN_GC_THRESHOLD=abc vn-scenarios numbers/remainder-bitwise  (a malformed threshold is an error, exit 2)
+vn-testkit: VN_GC_THRESHOLD must be a number of allocations, not "abc"
+exit=2
+$ vn-scenarios numbers/remainder-bitwise  and  VN_GC_THRESHOLD=1 vn-scenarios numbers/remainder-bitwise  (documents compared)
+identical documents, 283 bytes
+$ node tooling/harness/run-language-wasm.mjs --gc-threshold abc  (a malformed threshold is an error, exit 1)
+ERROR: gcThreshold must be an integer from 0 to 2^32-1, not NaN
+exit=1

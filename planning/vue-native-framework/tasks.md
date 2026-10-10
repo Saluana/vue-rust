@@ -3,7 +3,7 @@
 ## 1. Execution rules and dependencies
 
 <!-- impl-note -->
-> **Implementation progress (2026-10-10 (sections 2–5 follow-up)).** Annotations below were added during implementation. A box is ticked only when the task's acceptance criteria are met and a test command plus evidence artifact are linked; the workspace is not a version-control repository, so there is no commit to link (evidence = commands that pass in this checkout + artifact paths). Partly finished work is annotated, not ticked. Totals: 12 done, 25 partial, 7 blocked, 26 not started of 70 tasks. Source of truth for the annotations: `docs/dev/tasks-progress.json` (regenerate with `node tooling/status/update-tasks.mjs`); narrative status in `docs/dev/STATUS.md`.
+> **Implementation progress (2026-10-10 (sections 2–5 follow-up)).** Annotations below were added during implementation. A box is ticked only when the task's acceptance criteria are met and a test command plus evidence artifact are linked; the workspace is not a version-control repository, so there is no commit to link (evidence = commands that pass in this checkout + artifact paths). Partly finished work is annotated, not ticked. Totals: 15 done, 22 partial, 7 blocked, 26 not started of 70 tasks. Source of truth for the annotations: `docs/dev/tasks-progress.json` (regenerate with `node tooling/status/update-tasks.mjs`); narrative status in `docs/dev/STATUS.md`.
 <!-- /impl-note -->
 
 
@@ -179,11 +179,10 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 ## 4. Build the smallest useful vertical slice — G3
 
-- [ ] **4.1 Replace direct emission with source-located checked IR.**
+- [x] **4.1 Replace direct emission with source-located checked IR.**
   <!-- progress:4.1 -->
-  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — Source-located versioned HIR (`hirVersion: 1`), checked emitter, identifier mangling and diagnostics with `.vue`-mapped spans replace the prototype's direct string emission; the SFC frontend reuses the official compiler so dynamic event arguments are compiled by Vue itself.
-  - **Evidence:** `node --test "tests/compiler/**/*.test.mjs"` (474 tests); `node tooling/harness/run-language.mjs --dir tests/language/lowering`; `compiler/hir/README.md`, `compiler/ABI.md`.
-  - **Not yet done:** Explicit regression fixture showing the old `@[click]` defect is fixed through the new pipeline; IR schema content hashes.
+  - **Status (2026-10-10 (sections 2–5 follow-up)): DONE** — Source-located versioned HIR (`hirVersion: 1`), checked emitter, identifier mangling and diagnostics with `.vue`-mapped spans replace the prototype's direct string emission. The prototype's `@[click]` defect has an explicit regression test through the new pipeline: an undeclared name is rejected with a spanned VN4016, and a declared one binds the handler under the runtime event name (checked headless; the prototype output fails both assertions). Dynamic argument names are now checked for every directive. The HIR schema (69 node kinds, 16 records) has a committed sha256 and a walker checks every lowering fixture against it.
+  - **Evidence:** `node --test tests/compiler/sfc/dynamic-event-arg.test.mjs tests/compiler/lower/hir-schema.test.mjs` (15 tests); `node --test "tests/compiler/**/*.test.mjs"`; `node tooling/harness/run-language.mjs --dir tests/language/lowering` (166/166); `compiler/hir/schema.mjs`; artifact `docs/evidence/ir-regression.md`.
   <!-- /progress -->
   - **Build / why / files:** refactor `compiler/compile.mjs` into parsing/binding/HIR/MIR/emitter modules; preserve counter fixture and exact unsupported-syntax errors.
   - **Depends:** 3.8 passing. **Requirements:** R02–R03, R10.
@@ -192,11 +191,10 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
   - **Risk / decision:** source locations through macros; avoid a rewrite without behavioral checkpoints.
   - **Estimate:** 2–4 pw; **M**; compiler/frontend engineer.
 
-- [ ] **4.2 Turn proven primitive/closure semantics into a reusable runtime.**
+- [x] **4.2 Turn proven primitive/closure semantics into a reusable runtime.**
   <!-- progress:4.2 -->
-  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — Primitive math/strings/booleans, mutable captured aliases and JS decimal formatting execute correctly natively with automatic GC roots.
-  - **Evidence:** `node tooling/harness/run-language.mjs --dir tests/language/lowering` (164/164).
-  - **Not yet done:** Execution of compiled scenarios on wasm32 (the crates compile to wasm and the host is tested, but compiled-app execution in the browser is still being wired).
+  - **Status (2026-10-10 (sections 2–5 follow-up)): DONE** — Primitive math/strings/booleans, mutable captured aliases and JS decimal formatting execute correctly natively and on wasm32 with automatic GC roots: the same generated scenario modules run as a wasm32-unknown-unknown cdylib against the same Node goldens, byte-identical to native, also with a collection at every safepoint. Deep recursion needed an 8 MiB wasm shadow stack.
+  - **Evidence:** `node tooling/harness/run-language-wasm.mjs` (79/79) and `--dir tests/language/lowering` (166/166), also `--gc-threshold 1`; `node --test tests/language/wasm.test.mjs` (subset with mutated-golden and trap controls); `cargo test -p vn-testkit --test wasm_entry`; artifact `docs/evidence/wasm-execution.md`.
   <!-- /progress -->
   - **Build / why / files:** `crates/value/`, generated function ABI; replace app-specific Rust field substitutions with Value/cell operations for the slice.
   - **Depends:** 4.1, 3.2. **Requirements:** R02, R10.
@@ -205,11 +203,10 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
   - **Risk / decision:** premature unboxing; keep dynamic implementation until qualified.
   - **Estimate:** 1–3 pw; **M**; Rust runtime/compiler engineer.
 
-- [ ] **4.3 Implement minimal component/effect ownership.**
+- [x] **4.3 Implement minimal component/effect ownership.**
   <!-- progress:4.3 -->
-  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — Reactivity ownership model complete (cached computed, scopes, watchers with cleanup, dependency release on stop); component instance record exists; component mounting/unmounting is being written.
-  - **Evidence:** `cargo test -p vn-reactivity` (240+ tests); `node tooling/harness/run-language.mjs --with-vue`.
-  - **Not yet done:** Props/emit components, keyed child removal stopping watchers, unmount/recreate leak counts through the renderer.
+  - **Status (2026-10-10 (sections 2–5 follow-up)): DONE** — Components with props/emits, keyed children and unmount run through the real renderer on DocHost. Acceptance tests show: two instances of one component stay independent; a computed read twice evaluates once; removing a keyed child stops its watcher and releases its effects, computed, scope, listener and subscriber edges; 50 unmount/recreate cycles of 20 children return effects, computeds, scopes, watchers, deps, links, subscriber edges, host handles, listeners and GC live objects to a measured baseline. Unmount ordering is recorded from vue@3.5.43; leaking variants are negative controls.
+  - **Evidence:** `cargo test -p vn-runtime --test ownership` (11 tests); oracle `tests/ownership-oracle/record.mjs`; `node tooling/harness/run-language.mjs --with-vue --ui` (174/174, also `--gc-stress`); artifact `docs/evidence/component-ownership.md`.
   <!-- /progress -->
   - **Build / why / files:** `crates/{reactivity,runtime}/`; cached computed, one watcher, prop/event field component and stable keyed children.
   - **Depends:** 4.2, 3.3. **Requirements:** R04–R06.
@@ -233,9 +230,9 @@ Dependencies listed per task are authoritative; phase grouping alone is not perm
 
 - [ ] **4.5 Deliver the slice build/check/dev workflow and G3 report.**
   <!-- progress:4.5 -->
-  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — vue-native CLI check/build/create/doctor and headless apps work. Web builds now compile .vue projects into Rust/WASM, install WebHost and mount the root component. Counter and Quick Quote run full browser interactions, including defineModel, validation, watch, keyed rows and editor recreation. Browser delivery supplies event identities/kinds and drains Rust jobs in a microtask. Repeated unmount/recreate cycles keep host handles and listeners flat.
-  - **Evidence:** `node --test "tests/cli/*.test.mjs"` (40/40); `node --test "tests/platform/web/*.test.mjs"` (298 pass / 109 explicit skips / 0 fail); tests/platform/web/e2e-vue-apps.test.mjs (3/3); docs/evidence/resume-web-apps.md.
-  - **Not yet done:** Native desktop host and keyboard/AT qualification; measured memory/edit latency; startup distributions and optimized app size; G3 report. Browser qualification remains Chrome only.
+  - **Status (2026-10-10 (sections 2–5 follow-up)): PARTIAL** — vue-native check/build/create/doctor/dev and headless apps work; web builds compile .vue projects into Rust/WASM and run Counter and Quick Quote in Chrome. Measured (headless release, 4 vCPU container): main() to mounted p50 1.4 ms (Counter) / 3.4 ms (Quick Quote); peak RSS about 5.2 / 6.1 MiB; event dispatch to drained queue p50 63 µs (Counter click) and 234 µs (Quick Quote input); sizes in the 3.1 report. The G3 report is written and records G3 as not passed.
+  - **Evidence:** `node tooling/report/slice-measure.mjs [--json]`; `node --test "tests/cli/*.test.mjs" "tests/tooling/**/*.test.mjs"`; `node --test "tests/platform/web/*.test.mjs"` (CI, Chrome); artifacts `docs/evidence/slice-measurements.md`, `docs/decisions/g3-slice-report.md`.
+  - **Not yet done:** Native desktop host and keyboard/AT qualification (G3 blockers); startup and latency on real hardware including layout and paint. Browser qualification remains Chrome only.
   <!-- /progress -->
   - **Build / why / files:** extend `compiler/cli.mjs` into initial `tooling/cli/`, `examples/quick-quote-slice/`, `docs/getting-started.md`; make architecture reviewable by an app author.
   - **Depends:** 4.4, 3.7. **Requirements:** R10–R11, R23–R26.

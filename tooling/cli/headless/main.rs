@@ -21,6 +21,19 @@
 // `--stats` (one-shot only; WP 3.1, the release size and allocation report): the heap is collected at each safepoint (after
 // each step), as the web host's vn_flush does, and one JSON line with the vn-value heap counters is printed to stderr after
 // the mount ("afterMount") and at the end ("end"). The results printed on stdout do not change.
+//
+// --timing (one-shot only; task 4.5) also measures the run. It writes one line per measurement to stderr,
+// "vn-timing " followed by a JSON object. The stdout result is the same with or without the flag, and without the flag the
+// runner prints nothing extra and runs no collection. With the flag, a full collection runs after the mount and after every
+// step, outside the timed windows, as the web host runs one at the end of each event. The phases:
+//   {"phase":"mounted","main_to_mounted_ns":N,"live_objects":N,"bytes_estimate":N,"allocated_total":N,"vm_rss_kib":N,"vm_hwm_kib":N}
+//   {"phase":"step","step":I,"op":"click"|"input","selector":S,"ns":N,"collect_ns":N}   (one per click and input step)
+//   {"phase":"exit","steps":N,"main_to_end_ns":N,"live_objects":N,"bytes_estimate":N,"allocated_total":N,"vm_rss_kib":N,"vm_hwm_kib":N}
+// main_to_mounted_ns runs from the first statement of main to the drained mount; process creation and loading before main
+// are not included. A step's ns runs from the dispatch of the click or input to the end of the scheduler flush (settle ends
+// when the job queue is empty); collect_ns is the collection after the step and is not part of ns. live_objects and
+// bytes_estimate are read after a full collection; bytes_estimate is the runtime's per-object estimate, not allocator usage.
+// vm_rss_kib and vm_hwm_kib are VmRSS and VmHWM (the peak) from /proc/self/status: Linux only, null elsewhere.
 #![allow(dead_code)]
 
 mod project;
@@ -193,15 +206,19 @@ impl Session {
     }
 }
 
+const TIMING_FLAG: &str = "--timing";
+
 fn main() {
+    let started = std::time::Instant::now();
     let args: Vec<String> = std::env::args().collect();
     if args.get(1).map(String::as_str) == Some("--serve") {
         serve();
         return;
     }
     let stats = args.iter().skip(1).any(|a| a == "--stats");
+    let timing = args.iter().skip(1).any(|a| a.as_str() == TIMING_FLAG);
     let Some(path) = args.iter().skip(1).find(|a| !a.starts_with("--")) else {
-        eprintln!("usage: {} <script.json> [--stats] | --serve", args.first().map(String::as_str).unwrap_or("app"));
+        eprintln!("usage: {} [--timing] <script.json> [--stats] | --serve", args.first().map(String::as_str).unwrap_or("app"));
         std::process::exit(2);
     };
     let script = match std::fs::read_to_string(path) {
@@ -211,7 +228,7 @@ fn main() {
             std::process::exit(2);
         }
     };
-    match run(&script, stats) {
+    match run(&script, stats, timing.then_some(started)) {
         Ok(out) => println!("{out}"),
         Err(Failure::Script(message)) => {
             eprintln!("script error: {message}");
@@ -224,7 +241,7 @@ fn main() {
     }
 }
 
-fn run(script: &str, stats: bool) -> Result<String, Failure> {
+fn run(script: &str, stats: bool, started: Option<std::time::Instant>) -> Result<String, Failure> {
     let spec = parse(script).map_err(|e| Failure::Script(format!("not JSON: {e:?}")))?;
     let steps = spec
         .field("steps")
@@ -233,8 +250,17 @@ fn run(script: &str, stats: bool) -> Result<String, Failure> {
     let mut session = Session::start()?;
     session.mount()?;
     let after_mount = session.rt.heap_stats();
-    let results = session.run_steps_with(steps, |rt, _, _, _| {
-        if stats {
+    if let Some(t0) = started {
+        // Read before heap_fields collects, so the figure ends at the drained mount.
+        let mounted_ns = t0.elapsed().as_nanos() as u64;
+        let mut fields = vec![("phase", Json::text("mounted")), ("main_to_mounted_ns", Json::int(mounted_ns))];
+        fields.extend(heap_fields(&session.rt));
+        timing_line(fields);
+    }
+    let results = session.run_steps_with(steps, |rt, i, step, elapsed| {
+        if started.is_some() {
+            timed_step(rt, i, step, elapsed)?;
+        } else if stats {
             rt.collect();
         }
         Ok(())
@@ -242,6 +268,16 @@ fn run(script: &str, stats: bool) -> Result<String, Failure> {
     if stats {
         let line = Json::obj([("afterMount", heap_json(after_mount)), ("end", heap_json(session.rt.heap_stats()))]);
         eprintln!("{}", line.to_json());
+    }
+    if let Some(t0) = started {
+        let main_to_end_ns = t0.elapsed().as_nanos() as u64;
+        let mut fields = vec![
+            ("phase", Json::text("exit")),
+            ("steps", Json::int(steps.len() as u64)),
+            ("main_to_end_ns", Json::int(main_to_end_ns)),
+        ];
+        fields.extend(heap_fields(&session.rt));
+        timing_line(fields);
     }
     Ok(Json::Arr(results).to_json())
 }
@@ -434,4 +470,59 @@ fn message_of(rt: &Rt, value: &Value) -> String {
 
 fn js<T>(rt: &Rt, r: Res<T>) -> Result<T, Failure> {
     r.map_err(|Throw(value)| Failure::App(message_of(rt, &value)))
+}
+
+// --timing: the timed window of one step has closed after `elapsed`. Checks that no job was left for after the window,
+// collects the way the web host does after an event, and prints the step's line for a click or an input.
+fn timed_step(rt: &Rt, i: usize, step: &Json, elapsed: std::time::Duration) -> Result<(), Failure> {
+    // settle ends with run_jobs, which runs the queue until it is empty; a job run now would be timed nowhere.
+    if rt.run_jobs() != 0 {
+        return Err(Failure::App(format!("step {i}: jobs ran after the timed window")));
+    }
+    let collect_started = std::time::Instant::now();
+    rt.collect();
+    let collect_ns = collect_started.elapsed().as_nanos() as u64;
+    let op = text_field(step, "op").unwrap_or_default();
+    if op == "click" || op == "input" {
+        let selector = text_field(step, "selector").unwrap_or_default();
+        timing_line(vec![
+            ("phase", Json::text("step")),
+            ("step", Json::int(i as u64)),
+            ("op", Json::text(&op)),
+            ("selector", Json::text(&selector)),
+            ("ns", Json::int(elapsed.as_nanos() as u64)),
+            ("collect_ns", Json::int(collect_ns)),
+        ]);
+    }
+    Ok(())
+}
+
+// One --timing line on stderr: "vn-timing " and a JSON object.
+fn timing_line(fields: Vec<(&str, Json)>) {
+    eprintln!("vn-timing {}", Json::obj(fields).to_json());
+}
+
+// The heap counters after a full collection, and the process memory. The collection runs at a safepoint: no code is running
+// between steps, and after the mount the runner uses no Value except the app, which is rooted.
+fn heap_fields(rt: &Rt) -> Vec<(&'static str, Json)> {
+    rt.collect();
+    let heap = rt.heap_stats();
+    vec![
+        ("live_objects", Json::int(heap.live_objects as u64)),
+        ("bytes_estimate", Json::int(heap.bytes_estimate as u64)),
+        ("allocated_total", Json::int(heap.allocated_total)),
+        ("vm_rss_kib", kib(proc_status_kib("VmRSS:"))),
+        ("vm_hwm_kib", kib(proc_status_kib("VmHWM:"))),
+    ]
+}
+
+fn kib(value: Option<u64>) -> Json {
+    value.map_or(Json::Null, Json::int)
+}
+
+// A field of /proc/self/status in KiB, e.g. "VmHWM:". None where the file does not exist (not Linux).
+fn proc_status_kib(key: &str) -> Option<u64> {
+    let status = std::fs::read_to_string("/proc/self/status").ok()?;
+    let rest = status.lines().find_map(|line| line.strip_prefix(key))?;
+    rest.trim().strip_suffix("kB")?.trim().parse().ok()
 }

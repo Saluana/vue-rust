@@ -97,6 +97,22 @@ describe('headless: Counter (examples/counter)', () => {
     assert.equal(r.status, 1);
     assert.match(r.stderr, /no element matches #no-such-button/);
   });
+
+  test('--timing keeps the result and adds only vn-timing lines to stderr; without it there are none', () => {
+    const dir = scratch('timing-flag');
+    const script = path.join(dir, 'script.json');
+    fs.writeFileSync(script, JSON.stringify({ steps: [{ op: 'click', selector: '#increment' }, { op: 'html', selector: '#count' }, { op: 'snapshot', name: 'two' }] }));
+    const plain = spawnSync(binary, [script], { encoding: 'utf8' });
+    const timed = spawnSync(binary, ['--timing', script], { encoding: 'utf8' });
+    assert.equal(plain.status, 0, plain.stderr);
+    assert.equal(timed.status, 0, timed.stderr);
+    assert.equal(timed.stdout, plain.stdout);
+    // negative control: the default run prints no timing line
+    assert.doesNotMatch(plain.stderr, /vn-timing/);
+    // one line for the mount, one for the click (the html and snapshot steps are not timed) and one for the exit
+    const phases = timed.stderr.split('\n').filter((line) => line.startsWith('vn-timing ')).map((line) => JSON.parse(line.slice('vn-timing '.length)).phase);
+    assert.deepEqual(phases, ['mounted', 'step', 'exit']);
+  });
 });
 
 describe('headless: script and usage errors', () => {

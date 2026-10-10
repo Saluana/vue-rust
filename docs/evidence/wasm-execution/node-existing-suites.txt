@@ -1,0 +1,696 @@
+$ node --test tests/upstream/harness.test.mjs tests/language/oracle.test.mjs tests/language/builtin-corpus.test.mjs
+TAP version 13
+# Subtest: callback presets: names and declared arity match the case format
+ok 1 - callback presets: names and declared arity match the case format
+  ---
+  duration_ms: 4.090594
+  type: 'test'
+  ...
+# Subtest: callback presets: hand-written return values
+ok 2 - callback presets: hand-written return values
+  ---
+  duration_ms: 0.863955
+  type: 'test'
+  ...
+# Subtest: callback presets: hand-written log entries (primitives as themselves; objects as their index or -1)
+ok 3 - callback presets: hand-written log entries (primitives as themselves; objects as their index or -1)
+  ---
+  duration_ms: 0.352644
+  type: 'test'
+  ...
+# Subtest: callback presets: cmpThrow throws on its second call; throwAt2 throws at index 2, after logging
+ok 4 - callback presets: cmpThrow throws on its second call; throwAt2 throws at index 2, after logging
+  ---
+  duration_ms: 0.994277
+  type: 'test'
+  ...
+# Subtest: targets: the standard-library manifest decides, with its hint (hand-written expectations)
+ok 5 - targets: the standard-library manifest decides, with its hint (hand-written expectations)
+  ---
+  duration_ms: 2.431926
+  type: 'test'
+  ...
+# Subtest: callback targets: the only cbs-capable targets, with hand-written arity
+ok 6 - callback targets: the only cbs-capable targets, with hand-written arity
+  ---
+  duration_ms: 0.535461
+  type: 'test'
+  ...
+# Subtest: defineSuite rejects targets and case shapes outside the format
+ok 7 - defineSuite rejects targets and case shapes outside the format
+  ---
+  duration_ms: 2.106798
+  type: 'test'
+  ...
+# Subtest: compileSuite rejects a static case that gives a this value
+ok 8 - compileSuite rejects a static case that gives a this value
+  ---
+  duration_ms: 0.75764
+  type: 'test'
+  ...
+# Subtest: compileSuite carries integrity (trace-format v1.1): a frozen input replays
+ok 9 - compileSuite carries integrity (trace-format v1.1): a frozen input replays
+  ---
+  duration_ms: 5.871024
+  type: 'test'
+  ...
+# Subtest: compileSuite replays sealed and non-extensible inputs (integrity "sealed", "nonextensible")
+ok 10 - compileSuite replays sealed and non-extensible inputs (integrity "sealed", "nonextensible")
+  ---
+  duration_ms: 1.378023
+  type: 'test'
+  ...
+# Subtest: compileSuite rejects what the format cannot carry: accessors, and hidden state that a call observes
+ok 11 - compileSuite rejects what the format cannot carry: accessors, and hidden state that a call observes
+  ---
+  duration_ms: 0.971916
+  type: 'test'
+  ...
+# Subtest: spot check: Array.prototype.slice keeps holes in pre, ret and state (trace-format encoding)
+ok 12 - spot check: Array.prototype.slice keeps holes in pre, ret and state (trace-format encoding)
+  ---
+  duration_ms: 0.488501
+  type: 'test'
+  ...
+# Subtest: spot check: Object.assign(o, o) shares ids within one pass (ref after the first expansion)
+ok 13 - spot check: Object.assign(o, o) shares ids within one pass (ref after the first expansion)
+  ---
+  duration_ms: 0.546448
+  type: 'test'
+  ...
+# Subtest: spot check: a cycle in the pre encoding is a ref to the object itself, and replays
+ok 14 - spot check: a cycle in the pre encoding is a ref to the object itself, and replays
+  ---
+  duration_ms: 0.586399
+  type: 'test'
+  ...
+# Subtest: spot check: a throwing call records ret as null and the error name only
+ok 15 - spot check: a throwing call records ret as null and the error name only
+  ---
+  duration_ms: 0.420083
+  type: 'test'
+  ...
+# Subtest: spot check: Math.PI is a get case (nothing is called, pre is empty)
+ok 16 - spot check: Math.PI is a get case (nothing is called, pre is empty)
+  ---
+  duration_ms: 0.355719
+  type: 'test'
+  ...
+# Subtest: spot check: callbacks are substituted by name, encoded as fn, and their calls logged
+ok 17 - spot check: callbacks are substituted by name, encoded as fn, and their calls logged
+  ---
+  duration_ms: 1.498306
+  type: 'test'
+  ...
+# Subtest: describeCase summarizes a written case on one line
+ok 18 - describeCase summarizes a written case on one line
+  ---
+  duration_ms: 0.277268
+  type: 'test'
+  ...
+# Subtest: renderSuite is deterministic for the same compiled suite
+ok 19 - renderSuite is deterministic for the same compiled suite
+  ---
+  duration_ms: 0.550603
+  type: 'test'
+  ...
+# Subtest: seed suites: at least 600 cases in total; ids unique per suite; only TypeError and RangeError throws
+ok 20 - seed suites: at least 600 cases in total; ids unique per suite; only TypeError and RangeError throws
+  ---
+  duration_ms: 12.335691
+  type: 'test'
+  ...
+# Subtest: seed suites: the target list is the WP-O2 list (every target present, no others)
+ok 21 - seed suites: the target list is the WP-O2 list (every target present, no others)
+  ---
+  duration_ms: 17.10152
+  type: 'test'
+  ...
+# Subtest: seed suites: approx marks the libm-dependent functions and nothing exact
+ok 22 - seed suites: approx marks the libm-dependent functions and nothing exact
+  ---
+  duration_ms: 18.425262
+  type: 'test'
+  ...
+# Subtest: seed suites: the first math cases match hand-derived values
+ok 23 - seed suites: the first math cases match hand-derived values
+  ---
+  duration_ms: 31.895895
+  type: 'test'
+  ...
+# Subtest: seed suites: the number cases match hand-derived values
+ok 24 - seed suites: the number cases match hand-derived values
+  ---
+  duration_ms: 1.935932
+  type: 'test'
+  ...
+# Subtest: seed suites: the object cases match hand-derived values
+ok 25 - seed suites: the object cases match hand-derived values
+  ---
+  duration_ms: 1.382314
+  type: 'test'
+  ...
+# Subtest: seed suites: every suite regenerates byte-identically (in process)
+ok 26 - seed suites: every suite regenerates byte-identically (in process)
+  ---
+  duration_ms: 203.81631
+  type: 'test'
+  ...
+# Subtest: seed suites: the generator is deterministic across processes (two child runs, identical bytes)
+ok 27 - seed suites: the generator is deterministic across processes (two child runs, identical bytes)
+  ---
+  duration_ms: 582.174257
+  type: 'test'
+  ...
+# Subtest: seed suites: each case replays from its pre encoding in a fresh child process
+ok 28 - seed suites: each case replays from its pre encoding in a fresh child process
+  ---
+  duration_ms: 383.446906
+  type: 'test'
+  ...
+# Subtest: negative control: a mutated expectation in a written suite is reported at its case and path
+ok 29 - negative control: a mutated expectation in a written suite is reported at its case and path
+  ---
+  duration_ms: 116.857583
+  type: 'test'
+  ...
+# Subtest: negative control: a written target outside the manifest gate is reported, not replayed
+ok 30 - negative control: a written target outside the manifest gate is reported, not replayed
+  ---
+  duration_ms: 128.016649
+  type: 'test'
+  ...
+# Subtest: negative control: a written target absent from the manifest is reported, not replayed
+ok 31 - negative control: a written target absent from the manifest is reported, not replayed
+  ---
+  duration_ms: 70.079341
+  type: 'test'
+  ...
+# Subtest: negative control: the CLI exits 1 on a mismatch
+ok 32 - negative control: the CLI exits 1 on a mismatch
+  ---
+  duration_ms: 147.792186
+  type: 'test'
+  ...
+# Subtest: undefined encodes as {"$":"undef"}
+ok 33 - undefined encodes as {"$":"undef"}
+  ---
+  duration_ms: 4.166958
+  type: 'test'
+  ...
+# Subtest: null and booleans encode as JSON literals
+ok 34 - null and booleans encode as JSON literals
+  ---
+  duration_ms: 0.417753
+  type: 'test'
+  ...
+# Subtest: finite numbers encode as JSON numbers printed like String(n)
+ok 35 - finite numbers encode as JSON numbers printed like String(n)
+  ---
+  duration_ms: 0.20699
+  type: 'test'
+  ...
+# Subtest: negative zero encodes as {"$":"num","v":"-0"}; positive zero stays a number
+ok 36 - negative zero encodes as {"$":"num","v":"-0"}; positive zero stays a number
+  ---
+  duration_ms: 0.309314
+  type: 'test'
+  ...
+# Subtest: NaN and infinities encode as {"$":"num"} markers
+ok 37 - NaN and infinities encode as {"$":"num"} markers
+  ---
+  duration_ms: 0.225952
+  type: 'test'
+  ...
+# Subtest: strings are JSON strings; lone surrogates are escaped in lowercase like JSON.stringify
+ok 38 - strings are JSON strings; lone surrogates are escaped in lowercase like JSON.stringify
+  ---
+  duration_ms: 0.193905
+  type: 'test'
+  ...
+# Subtest: symbols get per-run ordinals and their description, or null when there is none
+ok 39 - symbols get per-run ordinals and their description, or null when there is none
+  ---
+  duration_ms: 0.368486
+  type: 'test'
+  ...
+# Subtest: functions encode as {"$":"fn",name,length} and get no object id
+ok 40 - functions encode as {"$":"fn",name,length} and get no object id
+  ---
+  duration_ms: 0.288268
+  type: 'test'
+  ...
+# Subtest: plain objects: ids from 1, proto marker, own enumerable props in integer-then-insertion order
+ok 41 - plain objects: ids from 1, proto marker, own enumerable props in integer-then-insertion order
+  ---
+  duration_ms: 1.260086
+  type: 'test'
+  ...
+# Subtest: null-prototype objects report proto "null"
+ok 42 - null-prototype objects report proto "null"
+  ---
+  duration_ms: 0.57452
+  type: 'test'
+  ...
+# Subtest: arrays: elems with holes, len, and non-index own keys in props
+ok 43 - arrays: elems with holes, len, and non-index own keys in props
+  ---
+  duration_ms: 0.340382
+  type: 'test'
+  ...
+# Subtest: Map encodes entries in insertion order and Set encodes values
+ok 44 - Map encodes entries in insertion order and Set encodes values
+  ---
+  duration_ms: 0.261975
+  type: 'test'
+  ...
+# Subtest: Error encodes name and message only; the stack is never traced
+ok 45 - Error encodes name and message only; the stack is never traced
+  ---
+  duration_ms: 0.360286
+  type: 'test'
+  ...
+# Subtest: Promise encodes as an opaque object with no props
+ok 46 - Promise encodes as an opaque object with no props
+  ---
+  duration_ms: 0.145275
+  type: 'test'
+  ...
+# Subtest: accessor properties are markers and getters are never invoked
+ok 47 - accessor properties are markers and getters are never invoked
+  ---
+  duration_ms: 0.421437
+  type: 'test'
+  ...
+# Subtest: aliases inside one trace call: first occurrence expanded, later ones are refs with the same id
+ok 48 - aliases inside one trace call: first occurrence expanded, later ones are refs with the same id
+  ---
+  duration_ms: 0.280798
+  type: 'test'
+  ...
+# Subtest: cycles are visible as refs to the ancestor id
+ok 49 - cycles are visible as refs to the ancestor id
+  ---
+  duration_ms: 0.161363
+  type: 'test'
+  ...
+# Subtest: ordinals are global across trace calls; a later call expands the object again with its current state
+ok 50 - ordinals are global across trace calls; a later call expands the object again with its current state
+  ---
+  duration_ms: 0.163293
+  type: 'test'
+  ...
+# Subtest: Date, RegExp, typed arrays, WeakMap, WeakSet and BigInt are untraceable: trace throws TypeError
+ok 51 - Date, RegExp, typed arrays, WeakMap, WeakSet and BigInt are untraceable: trace throws TypeError
+  ---
+  duration_ms: 0.880245
+  type: 'test'
+  ...
+# Subtest: symbol-keyed properties are not traced
+ok 52 - symbol-keyed properties are not traced
+  ---
+  duration_ms: 0.1537
+  type: 'test'
+  ...
+# Subtest: encodeAll is one encoding call: a shared object is expanded once, then referenced
+ok 53 - encodeAll is one encoding call: a shared object is expanded once, then referenced
+  ---
+  duration_ms: 0.213765
+  type: 'test'
+  ...
+# Subtest: compareDocs: equal documents with different object key order compare equal
+ok 54 - compareDocs: equal documents with different object key order compare equal
+  ---
+  duration_ms: 0.398836
+  type: 'test'
+  ...
+# Subtest: compareDocs: array order is significant and the first differing path is reported
+ok 55 - compareDocs: array order is significant and the first differing path is reported
+  ---
+  duration_ms: 0.15573
+  type: 'test'
+  ...
+# Subtest: compareDocs: numbers are exact, so -0 differs from 0 and an encoded -0 differs from a number
+ok 56 - compareDocs: numbers are exact, so -0 differs from 0 and an encoded -0 differs from a number
+  ---
+  duration_ms: 0.219195
+  type: 'test'
+  ...
+# Subtest: compareDocs: array length and missing keys are reported at their own paths
+ok 57 - compareDocs: array length and missing keys are reported at their own paths
+  ---
+  duration_ms: 0.260719
+  type: 'test'
+  ...
+# Subtest: module code runs before run(): the job queue drains first (async/init-before-run)
+ok 58 - module code runs before run(): the job queue drains first (async/init-before-run)
+  ---
+  duration_ms: 128.232038
+  type: 'test'
+  ...
+# Subtest: a module that throws at evaluation is result "throw" with the thrown value; run() is never called
+ok 59 - a module that throws at evaluation is result "throw" with the thrown value; run() is never called
+  ---
+  duration_ms: 70.364741
+  type: 'test'
+  ...
+# Subtest: a scenario-created Error thrown at module level is encoded with its name and message
+ok 60 - a scenario-created Error thrown at module level is encoded with its name and message
+  ---
+  duration_ms: 66.245785
+  type: 'test'
+  ...
+# Subtest: a rejected run() is result "throw"; entries traced before the rejection are kept
+ok 61 - a rejected run() is result "throw"; entries traced before the rejection are kept
+  ---
+  duration_ms: 78.317524
+  type: 'test'
+  ...
+# Subtest: a run() rejecting with a plain object keeps the object as the error value
+ok 62 - a run() rejecting with a plain object keeps the object as the error value
+  ---
+  duration_ms: 70.880575
+  type: 'test'
+  ...
+# Subtest: a non-async run() that throws synchronously is also result "throw"
+ok 63 - a non-async run() that throws synchronously is also result "throw"
+  ---
+  duration_ms: 75.314907
+  type: 'test'
+  ...
+# Subtest: fake timers fire by (due time, creation order), and the clock reads each due time
+ok 64 - fake timers fire by (due time, creation order), and the clock reads each due time
+  ---
+  duration_ms: 89.83198
+  type: 'test'
+  ...
+# Subtest: the job queue drains after each timer callback, before the next timer fires
+ok 65 - the job queue drains after each timer callback, before the next timer fires
+  ---
+  duration_ms: 85.180933
+  type: 'test'
+  ...
+# Subtest: a zero-delay timer created in a callback runs in the same advance, after timers already due
+ok 66 - a zero-delay timer created in a callback runs in the same advance, after timers already due
+  ---
+  duration_ms: 88.067455
+  type: 'test'
+  ...
+# Subtest: unhandled rejections are captured without crashing, in rejection order
+ok 67 - unhandled rejections are captured without crashing, in rejection order
+  ---
+  duration_ms: 69.986699
+  type: 'test'
+  ...
+# Subtest: a rejection handled before the final drain is not reported
+ok 68 - a rejection handled before the final drain is not reported
+  ---
+  duration_ms: 65.001263
+  type: 'test'
+  ...
+# Subtest: await and then interleave in queue order (promises/await-vs-then-interleave)
+ok 69 - await and then interleave in queue order (promises/await-vs-then-interleave)
+  ---
+  duration_ms: 71.701269
+  type: 'test'
+  ...
+# Subtest: then reactions run in registration order and chained steps after their predecessor (promises/then-chain-order)
+ok 70 - then reactions run in registration order and chained steps after their predecessor (promises/then-chain-order)
+  ---
+  duration_ms: 76.921362
+  type: 'test'
+  ...
+# Subtest: each scenario runs in a fresh child: ordinals restart at 1 and repeated runs are identical
+ok 71 - each scenario runs in a fresh child: ordinals restart at 1 and repeated runs are identical
+  ---
+  duration_ms: 227.466679
+  type: 'test'
+  ...
+# Subtest: every case is deterministic: two child runs produce byte-identical output
+ok 72 - every case is deterministic: two child runs produce byte-identical output
+  ---
+  duration_ms: 11287.116485
+  type: 'test'
+  ...
+# Subtest: the document scenario name is the case path without .js, or the basename outside the cases root
+ok 73 - the document scenario name is the case path without .js, or the basename outside the cases root
+  ---
+  duration_ms: 0.636884
+  type: 'test'
+  ...
+# Subtest: a run() that never settles fails loudly: exit 3 and no partial document
+ok 74 - a run() that never settles fails loudly: exit 3 and no partial document
+  ---
+  duration_ms: 81.343916
+  type: 'test'
+  ...
+# Subtest: golden check: every seed scenario matches its golden structurally and byte for byte
+ok 75 - golden check: every seed scenario matches its golden structurally and byte for byte
+  ---
+  duration_ms: 2009.424937
+  type: 'test'
+  ...
+# Subtest: negative control: a doctored golden is reported at the first differing path
+ok 76 - negative control: a doctored golden is reported at the first differing path
+  ---
+  duration_ms: 78.803789
+  type: 'test'
+  ...
+# Subtest: negative control: a byte-level change and a missing golden are both reported
+ok 77 - negative control: a byte-level change and a missing golden are both reported
+  ---
+  duration_ms: 61.957168
+  type: 'test'
+  ...
+# Subtest: golden files sit at golden/<case path>.json, e.g. golden/lexical/tdz-reference-error.js.json
+ok 78 - golden files sit at golden/<case path>.json, e.g. golden/lexical/tdz-reference-error.js.json
+  ---
+  duration_ms: 0.287633
+  type: 'test'
+  ...
+# Subtest: the corpus has 3 module-level throws and 3 run() throws or rejections (from the goldens)
+ok 79 - the corpus has 3 module-level throws and 3 run() throws or rejections (from the goldens)
+  ---
+  duration_ms: 23.911308
+  type: 'test'
+  ...
+# Subtest: every case has the two header tags, and the covered requirement IDs are the expected set
+ok 80 - every case has the two header tags, and the covered requirement IDs are the expected set
+  ---
+  duration_ms: 25.696807
+  type: 'test'
+  ...
+# Subtest: lint detects a class declaration (negative control for the lint itself)
+ok 81 - lint detects a class declaration (negative control for the lint itself)
+  ---
+  duration_ms: 4.900563
+  type: 'test'
+  ...
+# Subtest: lint rejects each forbidden construct with its code
+ok 82 - lint rejects each forbidden construct with its code
+  ---
+  duration_ms: 13.67364
+  type: 'test'
+  ...
+# Subtest: lint: engine error messages are not traced from catch; name, instanceof and scenario-made messages are allowed
+ok 83 - lint: engine error messages are not traced from catch; name, instanceof and scenario-made messages are allowed
+  ---
+  duration_ms: 2.389061
+  type: 'test'
+  ...
+# Subtest: lint: every seed case is clean
+ok 84 - lint: every seed case is clean
+  ---
+  duration_ms: 167.612639
+  type: 'test'
+  ...
+# Subtest: lint: a source without header tags is rejected
+ok 85 - lint: a source without header tags is rejected
+  ---
+  duration_ms: 0.477607
+  type: 'test'
+  ...
+# Subtest: integrity: frozen, sealed and non-extensible plain objects carry the marker
+ok 86 - integrity: frozen, sealed and non-extensible plain objects carry the marker
+  ---
+  duration_ms: 0.288097
+  type: 'test'
+  ...
+# Subtest: integrity: an empty object after preventExtensions is "frozen" (Object.isFrozen is true)
+ok 87 - integrity: an empty object after preventExtensions is "frozen" (Object.isFrozen is true)
+  ---
+  duration_ms: 0.12087
+  type: 'test'
+  ...
+# Subtest: integrity: an extensible object has no integrity field
+ok 88 - integrity: an extensible object has no integrity field
+  ---
+  duration_ms: 0.133659
+  type: 'test'
+  ...
+# Subtest: integrity: the field sits right after proto, before props
+ok 89 - integrity: the field sits right after proto, before props
+  ---
+  duration_ms: 0.130006
+  type: 'test'
+  ...
+# Subtest: integrity: arrays follow the same rule
+ok 90 - integrity: arrays follow the same rule
+  ---
+  duration_ms: 0.200584
+  type: 'test'
+  ...
+# Subtest: integrity: Map, Set, Error and Promise get the marker too
+ok 91 - integrity: Map, Set, Error and Promise get the marker too
+  ---
+  duration_ms: 0.323073
+  type: 'test'
+  ...
+# Subtest: integrity: a frozen object nested in an extensible one carries the marker only on the nested object
+ok 92 - integrity: a frozen object nested in an extensible one carries the marker only on the nested object
+  ---
+  duration_ms: 0.162652
+  type: 'test'
+  ...
+# Subtest: integrity follows the current state, and never applies to functions or ref forms
+ok 93 - integrity follows the current state, and never applies to functions or ref forms
+  ---
+  duration_ms: 0.27078
+  type: 'test'
+  ...
+# Subtest: objects/frozen-assignment: the frozen root is marked "frozen"; the unfrozen inner object is not
+ok 94 - objects/frozen-assignment: the frozen root is marked "frozen"; the unfrozen inner object is not
+  ---
+  duration_ms: 68.385584
+  type: 'test'
+  ...
+# Subtest: objects/integrity-freeze-seal: frozen and sealed markers, a shallow freeze, and a frozen array
+ok 95 - objects/integrity-freeze-seal: frozen and sealed markers, a shallow freeze, and a frozen array
+  ---
+  duration_ms: 68.992612
+  type: 'test'
+  ...
+# Subtest: objects/integrity-prevent-extensions: nonextensible and empty-frozen markers; nested frozen only where frozen
+ok 96 - objects/integrity-prevent-extensions: nonextensible and empty-frozen markers; nested frozen only where frozen
+  ---
+  duration_ms: 70.001832
+  type: 'test'
+  ...
+# Subtest: lint accepts builtins the manifest supports for test, including Object.is
+ok 97 - lint accepts builtins the manifest supports for test, including Object.is
+  ---
+  duration_ms: 1.459827
+  type: 'test'
+  ...
+# Subtest: lint allows methods the case defines and host timer methods, and rejects an unknown method
+ok 98 - lint allows methods the case defines and host timer methods, and rejects an unknown method
+  ---
+  duration_ms: 1.329644
+  type: 'test'
+  ...
+# Subtest: lint rejects builtins the manifest does not support for test (negative controls)
+ok 99 - lint rejects builtins the manifest does not support for test (negative controls)
+  ---
+  duration_ms: 0.970688
+  type: 'test'
+  ...
+# Subtest: matchers pass on equal values and fail with the reason the report shows
+ok 100 - matchers pass on equal values and fail with the reason the report shows
+  ---
+  duration_ms: 2.559089
+  type: 'test'
+  ...
+# Subtest: dev-only warning matchers are unsupported, not failures
+ok 101 - dev-only warning matchers are unsupported, not failures
+  ---
+  duration_ms: 0.343872
+  type: 'test'
+  ...
+# Subtest: vi.fn records its calls, forwards the receiver and returns the implementation value
+ok 102 - vi.fn records its calls, forwards the receiver and returns the implementation value
+  ---
+  duration_ms: 0.629485
+  type: 'test'
+  ...
+# Subtest: importPlan keeps the names a Vue package exports and marks the rest missing
+ok 103 - importPlan keeps the names a Vue package exports and marks the rest missing
+  ---
+  duration_ms: 11.039937
+  type: 'test'
+  ...
+# Subtest: static marks: a read of a name the port lacks, a Vue internal, a profile-excluded method or a debugger hook
+ok 104 - static marks: a read of a name the port lacks, a Vue internal, a profile-excluded method or a debugger hook
+  ---
+  duration_ms: 11.05691
+  type: 'test'
+  ...
+# Subtest: static marks: a describe or the top level that reads a missing name marks every test under it
+ok 105 - static marks: a describe or the top level that reads a missing name marks every test under it
+  ---
+  duration_ms: 1.710441
+  type: 'test'
+  ...
+# Subtest: a test the compiler rejects is refused by name, and the rest of its describe still runs
+ok 106 - a test the compiler rejects is refused by name, and the rest of its describe still runs
+  ---
+  duration_ms: 28.338352
+  type: 'test'
+  ...
+# Subtest: compileText compiles through the same checks as compileModule, including the stdlib manifest
+ok 107 - compileText compiles through the same checks as compileModule, including the stdlib manifest
+  ---
+  duration_ms: 6.122112
+  type: 'test'
+  ...
+# Subtest: rewriteSpec leaves the Vue imports of a spec as the native module and refuses the reads it cannot satisfy
+ok 108 - rewriteSpec leaves the Vue imports of a spec as the native module and refuses the reads it cannot satisfy
+  ---
+  duration_ms: 1.116889
+  type: 'test'
+  ...
+# Subtest: ratchet fails only when a test the ledger marks pass is not pass now, and only for the selected specs
+ok 109 - ratchet fails only when a test the ledger marks pass is not pass now, and only for the selected specs
+  ---
+  duration_ms: 2.115361
+  type: 'test'
+  ...
+# Subtest: interpretRun maps the trace to per-test outcomes, including a panic and a module that throws
+ok 110 - interpretRun maps the trace to per-test outcomes, including a panic and a module that throws
+  ---
+  duration_ms: 0.489343
+  type: 'test'
+  ...
+# Subtest: negative control: a deliberately failing expect is reported as fail, and the tests after it still run
+ok 111 - negative control: a deliberately failing expect is reported as fail, and the tests after it still run
+  ---
+  duration_ms: 0.690882
+  type: 'test'
+  ...
+# Subtest: the ledger holds only the four outcome names
+ok 112 - the ledger holds only the four outcome names
+  ---
+  duration_ms: 1.017129
+  type: 'test'
+  ...
+# Subtest: the checkout holds the reactivity specs, and the ledger has an entry for every one of them
+ok 113 - the checkout holds the reactivity specs, and the ledger has an entry for every one of them # SKIP no vue-core checkout with packages/reactivity/__tests__: set VUE_CORE_DIR or clone https://github.com/vuejs/core at v3.5.43
+  ---
+  duration_ms: 0.073711
+  type: 'test'
+  ...
+# Subtest: every spec of the checkout is prepared without an exception
+ok 114 - every spec of the checkout is prepared without an exception # SKIP no vue-core checkout with packages/reactivity/__tests__: set VUE_CORE_DIR or clone https://github.com/vuejs/core at v3.5.43
+  ---
+  duration_ms: 0.075729
+  type: 'test'
+  ...
+1..114
+# tests 114
+# suites 0
+# pass 112
+# fail 0
+# cancelled 0
+# skipped 2
+# todo 0
+# duration_ms 15521.980607
+exit=0

@@ -14,6 +14,7 @@ use crate::effect::Effect;
 use crate::graph::{Dep, Link};
 use crate::refs::{CustomRef, GetterRef, PropRef, RefImpl};
 use crate::scope::Scope;
+use crate::state::state;
 use crate::watch::Watch;
 
 // Subscriber flags, as in @vue/reactivity 3.5.43 (EffectFlags).
@@ -90,6 +91,41 @@ impl NativeObject for Node {
     }
 }
 
+/// Live counts of the reactivity objects of one realm, by kind (read by `debug_stats`). A counted payload adds one to
+/// its kind while it exists and takes it away when the collector frees it.
+#[derive(Default)]
+pub(crate) struct Live {
+    pub(crate) effects: Cell<usize>,
+    pub(crate) computeds: Cell<usize>,
+    pub(crate) scopes: Cell<usize>,
+    pub(crate) watchers: Cell<usize>,
+    pub(crate) deps: Cell<usize>,
+    pub(crate) links: Cell<usize>,
+    /// Links in the subscriber list of a dep (kept by `graph::add_sub` and `graph::remove_sub`).
+    pub(crate) subscriber_edges: Cell<usize>,
+}
+
+/// The payload of every reactivity heap object: the node and the counters of its realm. Freeing the object drops the
+/// payload, and the drop only updates a counter (it never calls back into the runtime, see ABI.md).
+pub(crate) struct Tracked {
+    node: Node,
+    live: Rc<Live>,
+}
+
+impl Drop for Tracked {
+    fn drop(&mut self) {
+        if let Some(c) = self.node.counter(&self.live) {
+            c.set(c.get() - 1);
+        }
+    }
+}
+
+impl NativeObject for Tracked {
+    fn trace(&self, t: &mut Tracer) {
+        self.node.trace(t);
+    }
+}
+
 macro_rules! variant {
     ($name:ident, $ty:ty, $var:ident) => {
         pub(crate) fn $name(&self) -> &$ty {
@@ -102,6 +138,19 @@ macro_rules! variant {
 }
 
 impl Node {
+    /// The live count of this node's kind, or None for the kinds that are not counted.
+    fn counter<'a>(&self, live: &'a Live) -> Option<&'a Cell<usize>> {
+        match self {
+            Node::Effect(_) => Some(&live.effects),
+            Node::Computed(_) => Some(&live.computeds),
+            Node::Scope(_) => Some(&live.scopes),
+            Node::Watch(_) => Some(&live.watchers),
+            Node::Dep(_) => Some(&live.deps),
+            Node::Link(_) => Some(&live.links),
+            _ => None,
+        }
+    }
+
     variant!(dep, Dep, Dep);
     variant!(link, Link, Link);
     variant!(effect, Effect, Effect);
@@ -152,7 +201,7 @@ pub(crate) struct NodeRef(Rc<dyn NativeObject>);
 impl Deref for NodeRef {
     type Target = Node;
     fn deref(&self) -> &Node {
-        payload_ref::<Node>(&*self.0).expect("reactivity node (framework bug)")
+        &payload_ref::<Tracked>(&*self.0).expect("reactivity node (framework bug)").node
     }
 }
 
@@ -164,15 +213,20 @@ pub(crate) fn node(rt: &Rt, o: ObjRef) -> NodeRef {
 /// The node behind `o`, or `None` for other objects and primitives' handles.
 pub(crate) fn try_node(rt: &Rt, o: ObjRef) -> Option<NodeRef> {
     let p = rt.native_payload(o)?;
-    if payload_ref::<Node>(&*p).is_none() {
+    if payload_ref::<Tracked>(&*p).is_none() {
         return None;
     }
     Some(NodeRef(p))
 }
 
-/// Allocates a node object with the given prototype (None for internal nodes).
+/// Allocates a node object with the given prototype (None for internal nodes). The payload is counted in its realm's
+/// live counts until the collector frees it.
 pub(crate) fn alloc(rt: &Rt, proto: Option<ObjRef>, n: Node) -> ObjRef {
-    let payload: Rc<dyn NativeObject> = Rc::new(n);
+    let live = Rc::clone(&state(rt).live);
+    if let Some(c) = n.counter(&live) {
+        c.set(c.get() + 1);
+    }
+    let payload: Rc<dyn NativeObject> = Rc::new(Tracked { node: n, live });
     rt.new_native_object(proto, payload)
 }
 

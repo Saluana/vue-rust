@@ -54,10 +54,16 @@ pub fn run_scenario_isolated(name: &str, entry: ScenarioFn) -> String {
 
 /// Like `run_scenario_isolated`, with `setup` run on the fresh realm first (see RealmSetup).
 pub fn run_scenario_isolated_with_setup(name: &str, entry: ScenarioFn, setup: RealmSetup) -> String {
+    run_scenario_isolated_with_gc_threshold(name, entry, setup, DEFAULT_GC_THRESHOLD)
+}
+
+/// Like `run_scenario_isolated_with_setup`, with `threshold` (see `run_scenario_with_gc_threshold`). The scenario binary
+/// takes it from VN_GC_THRESHOLD (task 4.2: a stress run uses 1).
+fn run_scenario_isolated_with_gc_threshold(name: &str, entry: ScenarioFn, setup: RealmSetup, threshold: usize) -> String {
     let owned = name.to_string();
     let worker = std::thread::Builder::new().stack_size(STACK_BYTES).spawn(move || {
         let rec = Rc::new(RefCell::new(Recorder::new()));
-        match catch_unwind(AssertUnwindSafe(|| scenario_document(&owned, entry, setup, DEFAULT_GC_THRESHOLD, &rec))) {
+        match catch_unwind(AssertUnwindSafe(|| scenario_document(&owned, entry, setup, threshold, &rec))) {
             Ok(doc) => doc,
             Err(payload) => panic_document(&owned, &payload_text(payload), &rec),
         }
@@ -75,6 +81,45 @@ pub fn run_scenario_isolated_with_setup(name: &str, entry: ScenarioFn, setup: Re
             }
         },
     }
+}
+
+/// Like `run_scenario_isolated_with_setup`, on the current thread. The wasm32-unknown-unknown target has no threads, so
+/// the wasm entry (`crate::wasm`) runs each scenario here, in its own instance. The document is the same. A panic becomes
+/// a `panic` document only where panics unwind: that target aborts (panic = "abort"), so a panic there is a trap.
+pub fn run_scenario_on_current_thread_with_setup(name: &str, entry: ScenarioFn, setup: RealmSetup) -> String {
+    run_scenario_on_current_thread_with_gc_threshold(name, entry, setup, DEFAULT_GC_THRESHOLD)
+}
+
+/// Like `run_scenario_on_current_thread_with_setup`, with `threshold` (see `run_scenario_with_gc_threshold`). The wasm
+/// entry takes it from the host (task 4.2: a stress run uses 1).
+pub fn run_scenario_on_current_thread_with_gc_threshold(
+    name: &str,
+    entry: ScenarioFn,
+    setup: RealmSetup,
+    threshold: usize,
+) -> String {
+    let rec = Rc::new(RefCell::new(Recorder::new()));
+    match catch_unwind(AssertUnwindSafe(|| scenario_document(name, entry, setup, threshold, &rec))) {
+        Ok(doc) => doc,
+        Err(payload) => panic_document(name, &payload_text(payload), &rec),
+    }
+}
+
+/// The collection threshold of a scenario binary: `VN_GC_THRESHOLD` when set (task 4.2: 1 collects at every safepoint, the
+/// stress run of the language scenarios), else the kernel default. A value that is not a number exits 2.
+fn gc_threshold_from_env() -> usize {
+    let text = match std::env::var("VN_GC_THRESHOLD") {
+        Ok(text) => text,
+        Err(std::env::VarError::NotPresent) => return DEFAULT_GC_THRESHOLD,
+        Err(e) => {
+            eprintln!("vn-testkit: VN_GC_THRESHOLD: {e}");
+            std::process::exit(2)
+        }
+    };
+    text.trim().parse().unwrap_or_else(|_| {
+        eprintln!("vn-testkit: VN_GC_THRESHOLD must be a number of allocations, not {text:?}");
+        std::process::exit(2)
+    })
 }
 
 /// Process entry point of a generated scenario binary. `argv[1]` names the scenario, and `--list` prints the
@@ -112,7 +157,10 @@ pub fn scenario_main_with_setup(table: &[(&str, ScenarioFn)], setup: RealmSetup)
             }
         }
         Some(name) => match table.iter().find(|(n, _)| *n == name) {
-            Some((n, entry)) => println!("{}", run_scenario_isolated_with_setup(n, *entry, setup)),
+            Some((n, entry)) => {
+                let threshold = gc_threshold_from_env();
+                println!("{}", run_scenario_isolated_with_gc_threshold(n, *entry, setup, threshold));
+            }
             None => {
                 eprintln!("vn-testkit: unknown scenario {name:?} (try --list)");
                 std::process::exit(2);

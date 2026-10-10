@@ -59,9 +59,14 @@ class Walker {
   }
 
   // The AST offsets of this file (absolute for the component file, relative to the template text for src files).
-  expr(exp, kind) {
+  expr(exp, kind, base) {
     if (!exp || exp.content === undefined) return;
-    checkFragment(this.ctx, { file: this.file, base: exp.loc.start.offset, text: exp.content, kind, lang: this.lang, decl: this.decl, scriptBroken: this.scriptBroken });
+    checkFragment(this.ctx, { file: this.file, base: base ?? exp.loc.start.offset, text: exp.content, kind, lang: this.lang, decl: this.decl, scriptBroken: this.scriptBroken });
+  }
+
+  // A dynamic argument's location covers its brackets ("[click]"), so its content starts one character after loc.start.
+  argExpr(arg) {
+    this.expr(arg, 'expr', arg.loc.start.offset + 1);
   }
 
   node(n) {
@@ -213,6 +218,9 @@ class Walker {
       this.report('VN1000', ...this.span(prop.arg), { message: 'empty dynamic argument' });
       return;
     }
+    // The name of a dynamic argument is an expression of the setup scope, whatever the directive (@[click], :[attr],
+    // v-model:[name] on a component, ...). Checked once here, so no directive branch can skip it.
+    if (prop.arg && !prop.arg.isStatic) this.argExpr(prop.arg);
     if (!BUILTIN_DIRECTIVES.has(name)) {
       const vName = `v${capitalize(camelize(name))}`;
       if (!this.scriptBroken && !this.names.has(vName)) {
@@ -220,17 +228,14 @@ class Walker {
           message: `custom directive 'v-${name}' is not bound in <script setup> as '${vName}'`,
         });
       }
-      if (prop.arg && !prop.arg.isStatic) this.expr(prop.arg, 'expr');
       this.expr(prop.exp, 'expr');
       return;
     }
     if (name === 'bind') {
       this.modifiers(prop, 'bind');
-      if (prop.arg && !prop.arg.isStatic) this.expr(prop.arg, 'expr');
       this.expr(prop.exp, 'expr');
     } else if (name === 'on') {
       this.modifiers(prop, 'on');
-      if (prop.arg && !prop.arg.isStatic) this.expr(prop.arg, 'expr');
       if (prop.exp) {
         const text = prop.exp.content;
         checkFragment(this.ctx, {
@@ -274,7 +279,6 @@ class Walker {
         return aliases;
       }
     } else if (name === 'slot') {
-      if (prop.arg && !prop.arg.isStatic) this.expr(prop.arg, 'expr');
       if (prop.exp) {
         return checkFragment(this.ctx, {
           file: this.file,
