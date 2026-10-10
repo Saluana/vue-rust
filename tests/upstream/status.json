@@ -228,7 +228,7 @@
  "effectScope :: reactivity/effect/scope > should resume effects when a watcher stops a sibling watcher": "unsupported",
  "effectScope :: reactivity/effect/scope > should return run value": "pass",
  "effectScope :: reactivity/effect/scope > should run": "pass",
- "effectScope :: reactivity/effect/scope > should still trigger updates after stopping scope stored in reactive object": "fail",
+ "effectScope :: reactivity/effect/scope > should still trigger updates after stopping scope stored in reactive object": "pass",
  "effectScope :: reactivity/effect/scope > should stop child scopes when cleanup stops a sibling scope": "pass",
  "effectScope :: reactivity/effect/scope > should warn onScopeDispose() is called when there is no active effect scope": "unsupported",
  "effectScope :: reactivity/effect/scope > should work w/ active property": "pass",

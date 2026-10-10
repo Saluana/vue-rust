@@ -69,7 +69,7 @@ collections/WeakSet                         9     0     0              9        
 collections/shallowReadonly                 8     0     0              3            5
 computed                                   49    32     0              3           14
 effect                                     70    46     0              7           17
-effectScope                                22    10     1              0           11
+effectScope                                22    11     0              0           11
 gc                                          4     0     0              4            0
 reactive                                   37    31     0              5            1
 reactiveArray                              40    35     0              4            1
@@ -78,7 +78,7 @@ ref                                        38    32     0              1        
 shallowReactive                            18    16     0              0            2
 shallowReadonly                            14     2     0              3            9
 watch                                      11     0     0              0           11
-TOTAL                                     440   285     2             60           93
+TOTAL                                     440   286     1             60           93
 ```
 
 The 93 unsupported are: 37 `unsupported-import`, 36 dev-only warning checks (`toHaveBeenWarned` and its forms) plus 2
@@ -88,10 +88,6 @@ weak collections (36), classes (7), Node globals `global` and `process` (6), sta
 
 ## Real failures
 
-- `effectScope > should still trigger updates after stopping scope stored in reactive object` (`Illegal invocation:
-  receiver is not a reactivity object`): port defect. `EffectScope.run` reached through the reactive proxy that stores the
-  scope fails its receiver check (`crates/reactivity/src/scope.rs`, `this_scope`). Vue's scope is a plain object, so its
-  proxy works.
 - `readonly > should be able to trigger with triggerRef` (`undefined is not a function`): port defect. `readonly()` wraps
   the ref's `dep` in a readonly proxy, which `js_trigger_ref` (`crates/reactivity/src/refs.rs`) does not recognise as a dep
   node, so it calls the proxy's missing `trigger` method.
