@@ -218,18 +218,6 @@
       "origin": "zip"
     },
     {
-      "path": "quick-quote/quote-compiler-tests.log",
-      "sha256": "f450053e2d194ffa54df1dbc5a222c0c73a91a84aab9a62a3067e9902e885dc7",
-      "bytes": 2159,
-      "origin": "zip"
-    },
-    {
-      "path": "quick-quote/quote-tests.log",
-      "sha256": "22e130fb898d75e27465fd44fcd779ae7fd5e01b4bc10cf82f5547e7467d1097",
-      "bytes": 2641,
-      "origin": "zip"
-    },
-    {
       "path": "quick-quote/tests/compiler.test.mjs",
       "sha256": "58011746e558d8983537b60ef5d70b1d7fcfc48c88eade7b563374c354220441",
       "bytes": 4095,
