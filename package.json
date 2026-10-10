@@ -8,7 +8,8 @@
     "vue-native": "node tooling/cli/vue-native.mjs",
     "test:rust": "cargo test --workspace --no-fail-fast",
     "test:language": "node tooling/harness/run-language.mjs",
-    "test:vue": "node tooling/harness/run-language.mjs --with-vue"
+    "test:vue": "node tooling/harness/run-language.mjs --with-vue",
+    "test:upstream": "node tooling/harness/run-upstream.mjs"
   },
   "dependencies": {
     "@babel/parser": "7.29.9",
