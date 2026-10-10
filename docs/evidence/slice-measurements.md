@@ -1,6 +1,6 @@
 # Slice measurements (task 4.5) — 2026-10-10
 
-Branch `claude/w45-measure`, uncommitted. Measured in this container only: 4 vCPU, shared with other jobs. These are the startup, memory and edit-latency measurements that task 4.5 lists as missing for the Counter and Quick Quote slice apps. They do not qualify any device, and the G3 decision and the progress ledger stay with the maintainer.
+Measured on branch `claude/w45-measure` before it was merged. Measured in this container only: 4 vCPU, shared with other jobs. These are the startup, memory and edit-latency measurements that task 4.5 lists as missing for the Counter and Quick Quote slice apps. They do not qualify any device, and the G3 decision and the progress ledger stay with the maintainer.
 
 ## What was built
 

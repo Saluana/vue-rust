@@ -60,22 +60,19 @@
    "missing": "Owner sign-off on the recommendations; 3.4 and 3.5 evidence; a named reference workload for the 2 ms budget."
   },
   "4.1": {
-   "status": "partial",
-   "summary": "Source-located versioned HIR (`hirVersion: 1`), checked emitter, identifier mangling and diagnostics with `.vue`-mapped spans replace the prototype's direct string emission; the SFC frontend reuses the official compiler so dynamic event arguments are compiled by Vue itself.",
-   "evidence": "`node --test \"tests/compiler/**/*.test.mjs\"` (474 tests); `node tooling/harness/run-language.mjs --dir tests/language/lowering`; `compiler/hir/README.md`, `compiler/ABI.md`.",
-   "missing": "Explicit regression fixture showing the old `@[click]` defect is fixed through the new pipeline; IR schema content hashes."
+   "status": "done",
+   "summary": "Source-located versioned HIR (`hirVersion: 1`), checked emitter, identifier mangling and diagnostics with `.vue`-mapped spans replace the prototype's direct string emission. The prototype's `@[click]` defect has an explicit regression test through the new pipeline: an undeclared name is rejected with a spanned VN4016, and a declared one binds the handler under the runtime event name (checked headless; the prototype output fails both assertions). Dynamic argument names are now checked for every directive. The HIR schema (69 node kinds, 16 records) has a committed sha256 and a walker checks every lowering fixture against it.",
+   "evidence": "`node --test tests/compiler/sfc/dynamic-event-arg.test.mjs tests/compiler/lower/hir-schema.test.mjs` (15 tests); `node --test \"tests/compiler/**/*.test.mjs\"`; `node tooling/harness/run-language.mjs --dir tests/language/lowering` (166/166); `compiler/hir/schema.mjs`; artifact `docs/evidence/ir-regression.md`."
   },
   "4.2": {
-   "status": "partial",
-   "summary": "Primitive math/strings/booleans, mutable captured aliases and JS decimal formatting execute correctly natively with automatic GC roots.",
-   "evidence": "`node tooling/harness/run-language.mjs --dir tests/language/lowering` (164/164).",
-   "missing": "Execution of compiled scenarios on wasm32 (the crates compile to wasm and the host is tested, but compiled-app execution in the browser is still being wired)."
+   "status": "done",
+   "summary": "Primitive math/strings/booleans, mutable captured aliases and JS decimal formatting execute correctly natively and on wasm32 with automatic GC roots: the same generated scenario modules run as a wasm32-unknown-unknown cdylib against the same Node goldens, byte-identical to native, also with a collection at every safepoint. Deep recursion needed an 8 MiB wasm shadow stack.",
+   "evidence": "`node tooling/harness/run-language-wasm.mjs` (79/79) and `--dir tests/language/lowering` (166/166), also `--gc-threshold 1`; `node --test tests/language/wasm.test.mjs` (subset with mutated-golden and trap controls); `cargo test -p vn-testkit --test wasm_entry`; artifact `docs/evidence/wasm-execution.md`."
   },
   "4.3": {
-   "status": "partial",
-   "summary": "Reactivity ownership model complete (cached computed, scopes, watchers with cleanup, dependency release on stop); component instance record exists; component mounting/unmounting is being written.",
-   "evidence": "`cargo test -p vn-reactivity` (240+ tests); `node tooling/harness/run-language.mjs --with-vue`.",
-   "missing": "Props/emit components, keyed child removal stopping watchers, unmount/recreate leak counts through the renderer."
+   "status": "done",
+   "summary": "Components with props/emits, keyed children and unmount run through the real renderer on DocHost. Acceptance tests show: two instances of one component stay independent; a computed read twice evaluates once; removing a keyed child stops its watcher and releases its effects, computed, scope, listener and subscriber edges; 50 unmount/recreate cycles of 20 children return effects, computeds, scopes, watchers, deps, links, subscriber edges, host handles, listeners and GC live objects to a measured baseline. Unmount ordering is recorded from vue@3.5.43; leaking variants are negative controls.",
+   "evidence": "`cargo test -p vn-runtime --test ownership` (11 tests); oracle `tests/ownership-oracle/record.mjs`; `node tooling/harness/run-language.mjs --with-vue --ui` (174/174, also `--gc-stress`); artifact `docs/evidence/component-ownership.md`."
   },
   "4.4": {
    "status": "partial",
@@ -85,9 +82,9 @@
   },
   "4.5": {
    "status": "partial",
-   "summary": "vue-native CLI check/build/create/doctor and headless apps work. Web builds now compile .vue projects into Rust/WASM, install WebHost and mount the root component. Counter and Quick Quote run full browser interactions, including defineModel, validation, watch, keyed rows and editor recreation. Browser delivery supplies event identities/kinds and drains Rust jobs in a microtask. Repeated unmount/recreate cycles keep host handles and listeners flat.",
-   "evidence": "`node --test \"tests/cli/*.test.mjs\"` (40/40); `node --test \"tests/platform/web/*.test.mjs\"` (298 pass / 109 explicit skips / 0 fail); tests/platform/web/e2e-vue-apps.test.mjs (3/3); docs/evidence/resume-web-apps.md.",
-   "missing": "Native desktop host and keyboard/AT qualification; measured memory/edit latency; startup distributions and optimized app size; G3 report. Browser qualification remains Chrome only."
+   "summary": "vue-native check/build/create/doctor/dev and headless apps work; web builds compile .vue projects into Rust/WASM and run Counter and Quick Quote in Chrome. Measured (headless release, 4 vCPU container): main() to mounted p50 1.4 ms (Counter) / 3.4 ms (Quick Quote); peak RSS about 5.2 / 6.1 MiB; event dispatch to drained queue p50 63 µs (Counter click) and 234 µs (Quick Quote input); sizes in the 3.1 report. The G3 report is written and records G3 as not passed.",
+   "evidence": "`node tooling/report/slice-measure.mjs [--json]`; `node --test \"tests/cli/*.test.mjs\" \"tests/tooling/**/*.test.mjs\"`; `node --test \"tests/platform/web/*.test.mjs\"` (CI, Chrome); artifacts `docs/evidence/slice-measurements.md`, `docs/decisions/g3-slice-report.md`.",
+   "missing": "Native desktop host and keyboard/AT qualification (G3 blockers); startup and latency on real hardware including layout and paint. Browser qualification remains Chrome only."
   },
   "5.1": {
    "status": "done",
