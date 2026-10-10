@@ -1,10 +1,12 @@
 // Script block policy and profile checks (WP-F1 steps 2, 3 and 5): lang and src rules, exports in <script setup>,
 // the Options API form of a normal <script>, imports from vue and node built-ins, type-only imports that name no file
-// (VN6017), reserved names, and the profile checks of the user's own code (checkSource: parse, scope analysis, profile
-// rules), mapped back to the .vue file.
+// (VN6017), imports that a macro's type argument cannot be read through (macro-types.mjs, VN6017), reserved names, and
+// the profile checks of the user's own code (checkSource: parse, scope analysis, profile rules), mapped back to the
+// .vue file.
 import { checkSource } from '../frontend/check.mjs';
 import { checkStdlib } from '../analysis/stdlib-check.mjs';
 import { isNodeBuiltin, manifestEntry, vueSupported } from './context.mjs';
+import { checkMacroTypes } from './macro-types.mjs';
 
 const EXPORT_TYPES = new Set(['ExportNamedDeclaration', 'ExportDefaultDeclaration', 'ExportAllDeclaration']);
 
@@ -225,6 +227,7 @@ export function checkScript(ctx, block, role, { reserveRender }) {
       out.sources.add(node.source.value);
     }
   }
+  if (role === 'setup') checkMacroTypes(ctx, body, base);
 
   const module = res.analysis.module;
   for (const id of module.bindingIds) {

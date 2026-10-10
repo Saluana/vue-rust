@@ -91,8 +91,8 @@ export const SFC_CODES = Object.freeze({
   ),
   VN6017: entry(
     'Unresolved type import',
-    'A type-only import of a relative module names no file in the project (S19). Vue would read the missing type as an untyped prop without an error, so the import is rejected here. The span is the import source.',
-    'Import the type from a .ts file inside the project root, or declare it in this file.',
+    'A type that a macro reads (defineProps, defineModel, defineEmits) comes from an import the compiler cannot read, so the build rejects the import instead of emitting an untyped prop (S19). Rejected: a type-only import of a relative module that names no file in the project; a relative module that does not export the name as a type; a name from a package or an absolute path; a namespace import; a typeof of an imported value. Payload types of defineEmits are never read and are not checked. The span is the import source, the imported name, the namespace or the typeof operand.',
+    'Import the type by name from a .ts file inside the project root, or declare it in this file.',
   ),
   VN6101: entry(
     'Unknown tag or component',

@@ -140,14 +140,16 @@ export class SfcContext {
 
   // Root-limited file access for the official compiler (type resolution of imported types). Refused files look
   // missing, so the compiler reports its own error and the frontend turns it into a diagnostic.
-  scriptFs() {
+  // `record: false` reads without making the file a dependency; macro-types.mjs uses it for its probes and records the
+  // type files it reads itself, because compiler-sfc's file cache hides the reads from a later compile in one process.
+  scriptFs({ record = true } = {}) {
     const inside = (file) => realInsideRoot(this.rootPath(file), this.rootReal);
     return {
       fileExists: (file) => inside(file) !== null,
       readFile: (file) => {
         const real = inside(file);
         if (!real) return undefined;
-        this.addDependency(real);
+        if (record) this.addDependency(real);
         return fs.readFileSync(real, 'utf8');
       },
       realpath: (file) => inside(file) ?? this.rootPath(file),

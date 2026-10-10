@@ -114,6 +114,28 @@ test('check: imported types are checked; a wrong use is VN7001 at the .vue span,
   assert.equal(missingReport.typeCheck.ran, false);
 });
 
+test('check: a macro type read through a package, or a name the file does not export, is VN6017 at its span, and the checker does not run', () => {
+  // Line 2 is `import type { Props } from 'some-lib'`: the module name is at columns 27 to 37. Each project has one entry.
+  const pkg = capture(['check', project('check-macro-package', {
+    'src/App.vue': "<script setup lang=\"ts\">\nimport type { Props } from 'some-lib'\n\ndefineProps<{ flag: Props }>()\n</script>\n\n<template><p>x</p></template>\n",
+  }), '--json']);
+  assert.equal(pkg.code, 1, pkg.stderr);
+  const pkgReport = JSON.parse(pkg.stdout);
+  assert.deepEqual(pkgReport.diagnostics.map((d) => [d.code, d.file, d.start.line, d.start.column, d.end.column]), [['VN6017', 'src/App.vue', 2, 27, 37]]);
+  assert.equal(pkgReport.typeCheck.ran, false);
+
+  // Line 2 is `import type { Missing } from './macro-types.ts'`: the name is at columns 14 to 21. macro-types.ts has a
+  // file name that no other test in this process uses (compiler-sfc caches a type file by its project-relative name).
+  const unexported = capture(['check', project('check-macro-unexported', {
+    'src/App.vue': "<script setup lang=\"ts\">\nimport type { Missing } from './macro-types.ts'\n\ndefineProps<{ flag: Missing }>()\n</script>\n\n<template><p>x</p></template>\n",
+    'src/macro-types.ts': 'export interface Props {\n  label: string\n}\n',
+  }), '--json']);
+  assert.equal(unexported.code, 1, unexported.stderr);
+  const unexportedReport = JSON.parse(unexported.stdout);
+  assert.deepEqual(unexportedReport.diagnostics.map((d) => [d.code, d.file, d.start.line, d.start.column, d.end.column]), [['VN6017', 'src/App.vue', 2, 14, 21]]);
+  assert.equal(unexportedReport.typeCheck.ran, false);
+});
+
 test('check: a JavaScript component and module are not type checked; the checker runs and passes', () => {
   const dir = project('check-js-only', {
     'src/App.vue': "<script setup>\nimport { ref } from 'vue'\nimport { n } from './util.js'\nconst count = ref(0)\ncount.value = 'three'\n</script>\n<template><p>{{ count }} {{ n }}</p></template>\n",

@@ -125,6 +125,72 @@ describe('type files are read only inside the project root', () => {
   });
 });
 
+// A type that a macro reads must come from an import the compiler can read (macro-types.mjs). Vue alone reads such a
+// name as an untyped prop (or fails at the top level), so each form below is VN6017 at its span, and the official
+// compiler's output for the same file is the untyped prop that the check prevents.
+describe('imported types that a macro reads (macro-types.mjs, VN6017)', () => {
+  test('the forms the compiler reads compile with no diagnostic: a re-export, a star re-export, an unused package type, a defineEmits payload, a type parameter that hides an import, and a @vue-ignore member', () => {
+    for (const file of ['ok-import-type-reexport.vue', 'ok-import-type-unused-package.vue', 'ok-import-type-emits-payload.vue', 'ok-import-type-shadowed.vue']) {
+      const r = compileAt(FIXTURES, file);
+      assert.deepEqual(r.diagnostics, [], file);
+      assert.equal(typeof r.code, 'string', file);
+    }
+  });
+
+  test('ok-import-type-reexport.vue: the props of the re-exported types equal the official compileScript output', () => {
+    const file = 'ok-import-type-reexport.vue';
+    assert.equal(propsOf(compileAt(FIXTURES, file).code), officialProps(path.join(FIXTURES, file)));
+  });
+
+  // Line 2 of each file is the import. The spans are the source for a package, the imported name otherwise.
+  const REJECTED = [
+    ['bad-import-type-package.vue', '2:27-2:37'],
+    ['bad-import-type-unexported.vue', '2:14-2:21'],
+    ['bad-import-type-local.vue', '2:14-2:21'],
+    ['bad-import-type-vue.vue', '2:25-2:30'],
+    ['bad-import-type-namespace.vue', '2:17-2:22'],
+  ];
+  for (const [file, span] of REJECTED) {
+    test(`${file}: VN6017 at ${span}, no code is emitted, and the official compiler would emit an untyped prop`, () => {
+      const r = compileAt(FIXTURES, file);
+      assert.deepEqual(spans(r), [`VN6017 ${span}`]);
+      assert.equal(r.code, null);
+      if (file !== 'bad-import-type-namespace.vue') {
+        assert.equal(officialProps(path.join(FIXTURES, file)), 'props: { flag: {} }');
+      }
+    });
+  }
+
+  test('negative control: the same component compiles when its file exports the name, and is VN6017 when the file does not', () => {
+    const template = fs.readFileSync(path.join(FIXTURES, 'bad-import-type-unexported.vue'), 'utf8');
+    // Each file name is used by one component only: compiler-sfc caches a type file's scope by its root-relative name
+    // for the whole process, so two contents under one name would not both be read.
+    const dir = writeProject('imported-unexported', {
+      'Without.vue': template.replace('./types-imported.ts', './types-without.ts'),
+      'With.vue': template.replace('./types-imported.ts', './types-with.ts'),
+      'types-without.ts': 'export interface Other {\n  label: string\n}\n',
+      'types-with.ts': 'export interface Other {\n  label: string\n}\nexport type Missing = boolean\n',
+    });
+    assert.deepEqual(spans(compileAt(dir, 'Without.vue')), ['VN6017 2:14-2:21']);
+    assert.equal(compileAt(dir, 'Without.vue').code, null);
+    const exported = compileAt(dir, 'With.vue');
+    assert.deepEqual(exported.diagnostics, []);
+    assert.equal(propsOf(exported.code), 'props: { flag: { type: Boolean } }');
+    assert.deepEqual(exported.dependencies, ['types-with.ts']);
+  });
+
+  test('a typeof of an imported value is VN6017 at the operand, and a package in an inline import type is VN6017 at its source; a missing name in an inline import type is VN6017 at the name', () => {
+    const dir = writeProject('imported-forms', {
+      'Typeof.vue': '<script setup lang="ts">\nimport { flag } from "./types-flags.ts"\ndefineProps<{ on: typeof flag }>()\n</script>\n<template><p>x</p></template>\n',
+      'Inline.vue': '<script setup lang="ts">\ndefineProps<{ flag: import("some-lib").Props; other: import("./types-flags.ts").Missing }>()\n</script>\n<template><p>x</p></template>\n',
+      'types-flags.ts': 'export const flag = true\n',
+    });
+    // Line 3 holds `typeof flag` (column 25); line 2 holds the package string (column 27) and `Missing` (column 80).
+    assert.deepEqual(spans(compileAt(dir, 'Typeof.vue')), ['VN6017 3:25-3:29']);
+    assert.deepEqual(spans(compileAt(dir, 'Inline.vue')), ['VN6017 2:27-2:37', 'VN6017 2:80-2:87']);
+  });
+});
+
 // Renders a compiled fixture with Vue's server renderer (vue@3.5.43, run here, no browser needed). `mutation` is an optional
 // [from, to] text replacement applied to the compiled module, for the negative controls.
 async function renderFixture(file, props, mutation = null) {
