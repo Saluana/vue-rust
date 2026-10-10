@@ -39,6 +39,10 @@ const EXPECTED = [
   ['bad-parse-unclosed.vue', [['VN6001', '2:0-2:3']]],
   ['bad-expr-syntax.vue', [['VN1000', '5:8-5:8']]],
   ['bad-define-twice.vue', [['VN6012', '1:0-1:14']]],
+  // A type-only import of a file that is not in the project: the span is the import source (S19). Vue alone would type the
+  // prop as unknown without an error. The outside file exists beside the fixtures root and is refused all the same.
+  ['bad-import-type-missing.vue', [['VN6017', '2:29-2:49']]],
+  ['bad-import-type-outside.vue', [['VN6017', '2:29-2:44']]],
   ['bad-v-else.vue', [['VN6013', '2:2-2:17']]],
   ['bad-css-syntax.vue', [['VN6014', '2:0-2:1']]],
   ['bad-tag-mark.vue', [['VN6101', '2:3-2:7']]],

@@ -132,10 +132,16 @@ export class SfcContext {
     this.deps.add(toPosix(path.relative(this.rootReal, realFile)));
   }
 
+  // The official compiler names files relative to the project root (its descriptor filename is root-relative), so a
+  // relative name is anchored at the root, never at the working directory. Absolute names are used as they are.
+  rootPath(file) {
+    return path.isAbsolute(file) ? file : path.join(this.rootReal, file);
+  }
+
   // Root-limited file access for the official compiler (type resolution of imported types). Refused files look
   // missing, so the compiler reports its own error and the frontend turns it into a diagnostic.
   scriptFs() {
-    const inside = (file) => realInsideRoot(file, this.rootReal);
+    const inside = (file) => realInsideRoot(this.rootPath(file), this.rootReal);
     return {
       fileExists: (file) => inside(file) !== null,
       readFile: (file) => {
@@ -144,8 +150,33 @@ export class SfcContext {
         this.addDependency(real);
         return fs.readFileSync(real, 'utf8');
       },
-      realpath: (file) => inside(file) ?? file,
+      realpath: (file) => inside(file) ?? this.rootPath(file),
     };
+  }
+
+  // The project file a dependency name from the official compiler stands for, or null when it is not a file in the root.
+  realDependency(dep) {
+    return realInsideRoot(this.rootPath(dep), this.rootReal);
+  }
+
+  // Project-relative file that a relative type import names, or null. Mirrors the file lookup of @vue/compiler-sfc 3.5.43
+  // (resolveExt): the specifier with a .js, .mjs or .cjs extension dropped, then .ts, .tsx and .d.ts (for .mjs first .mts
+  // and .d.mts, for .cjs first .cts and .d.cts), then the index files of a directory. Files outside the root never match.
+  resolveTypeImport(spec) {
+    const joined = path.posix.join(path.posix.dirname(this.rel), spec);
+    const moduleType = joined.endsWith('.mjs') ? 'm' : joined.endsWith('.cjs') ? 'c' : 'u';
+    const base = joined.replace(/\.[cm]?jsx?$/, '');
+    const ts = [`${base}.ts`, `${base}.tsx`, `${base}.d.ts`];
+    const mts = [`${base}.mts`, `${base}.d.mts`];
+    const cts = [`${base}.cts`, `${base}.d.cts`];
+    const candidates = [
+      base,
+      ...(moduleType === 'm' ? [...mts, ...ts] : moduleType === 'c' ? [...cts, ...ts] : [...ts, ...mts, ...cts]),
+      `${base}/index.ts`, `${base}/index.tsx`, `${base}/index.d.ts`,
+    ];
+    const fileExists = this.scriptFs().fileExists;
+    const hit = candidates.find((file) => fileExists(file));
+    return hit === undefined ? null : toPosix(path.posix.normalize(hit));
   }
 
   // Reads a block src attribute relative to the component directory. Returns { real, rel, text } or null after

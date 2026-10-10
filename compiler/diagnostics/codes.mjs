@@ -1,7 +1,7 @@
 // Frozen diagnostic code registry for the frontend.
 // Ranges: VN1 parse, VN2 unsupported JavaScript, VN3 unsupported TypeScript, VN4 unsupported or unknown
-// API/global, VN5 scope errors, VN9 internal compiler bugs. Each entry is { title, explanation, hint }.
-// Rule ids and row references live in compiler/analysis/profile-rules.mjs.
+// API/global, VN5 scope errors, VN7 type checker findings (compiler/types, pinned TypeScript 6), VN9 internal compiler
+// bugs. Each entry is { title, explanation, hint }. Rule ids and row references live in compiler/analysis/profile-rules.mjs.
 
 function entry(title, explanation, hint) {
   return Object.freeze({ title, explanation, hint });
@@ -316,6 +316,14 @@ export const CODES = Object.freeze({
     'Assignment to function expression name',
     'The name of a named function expression is immutable inside that function. Assignment throws a TypeError in strict code.',
     'Use a different local name.',
+  ),
+
+  VN7001: entry(
+    'Type error',
+    'The TypeScript checker reports this error. The project is checked by TypeScript 6.0.3 through the Vue language tools (vue-tsc 3.3.12), '
+      + 'and the span is mapped back to the .vue or .ts file. The message names the TypeScript code (TSnnnn). Type checking is part of '
+      + 'vue-native check and is skipped by --no-types (design.md sections 12.1 and 12.2).',
+    'Fix the value or the declared type at the reported span.',
   ),
 
   VN9001: entry(

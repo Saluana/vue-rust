@@ -1195,6 +1195,27 @@
       "note": "Strict checks and ESM resolution; native libraries omit DOM and Node."
     },
     {
+      "name": "typescript@6.0.3",
+      "kind": "config",
+      "row": "S23",
+      "status": "A",
+      "note": "The type checker of the tooling pair (exact devDependency): TypeScript 6.0.3 is the last 6.x and has the JavaScript compiler API. vue-native check type checks the project with it (compiler/types), and the probe in tooling/types/probe.mjs runs it on a fixture."
+    },
+    {
+      "name": "vue-tsc@3.3.12",
+      "kind": "config",
+      "row": "S23",
+      "status": "A",
+      "note": "The Vue language tools of the pair (exact devDependency), with @vue/language-core 3.3.12 and @volar/typescript 2.4.28 as pinned by vue-tsc. Maps .vue files onto the TypeScript 6 checker (design.md section 12.2). Versions are verified against node_modules by compiler/types/pair.mjs."
+    },
+    {
+      "name": "typescript@7",
+      "kind": "config",
+      "row": "S23",
+      "status": "X",
+      "note": "Not supported for tooling. TypeScript 7 is a native build without the JavaScript compiler API that Vue language-tools needs (design.md line 573; K07 at line 734). Use typescript@6.0.3, the last 6.x."
+    },
+    {
       "name": "using",
       "kind": "syntax",
       "row": "S24",

@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { findChrome } from '../chrome/chrome.mjs';
+import { typeCheckProject } from '../../compiler/types/check.mjs';
 import { toolEnv } from './build.mjs';
 import { FRAMEWORK_ROOT, UsageError, compileAt, diagnosticJson, formatDiagnostics, resolveProject } from './project.mjs';
 
@@ -10,32 +11,50 @@ export const TEMPLATES = Object.freeze(['counter', 'quick-quote']);
 const TARGETS = Object.freeze(['web', 'native']);
 const MIN_NODE_MAJOR = 20;
 
-// vue-native check <entry.vue|dir> [--target web|native] [--root <dir>] [--json]
-// Runs the SFC, profile and stdlib diagnostics of the whole project. Exit 0 when there are no errors (warnings are printed).
+// vue-native check <entry.vue|dir> [--target web|native] [--root <dir>] [--json] [--no-types]
+// Runs the SFC, profile and stdlib diagnostics of the whole project, then the type checker (compiler/types/check.mjs,
+// TypeScript 6.0.3 with vue-tsc 3.3.12) unless --no-types is given. Exit 0 when there are no errors (warnings are printed).
+// The type checker runs only on a project that compiled, as tsc skips its semantic checks after syntax errors: a module
+// that failed has no types, and its unresolved imports would only add noise.
 export function check(positionals, values, io) {
   if (positionals.length !== 1) throw new UsageError('check takes one entry .vue file or project directory');
   const target = values.target ?? 'web';
   if (!TARGETS.includes(target)) throw new UsageError(`--target must be web or native, not "${target}"`);
   const { root, entry } = resolveProject(positionals[0], { root: values.root });
-  const result = compileAt({ root, entry, target });
-  const errors = result.diagnostics.filter((d) => d.severity === 'error').length;
-  const warnings = result.diagnostics.length - errors;
+  const compiled = compileAt({ root, entry, target });
+  let diagnostics = compiled.diagnostics;
+  const typeCheck = { ran: false, typescript: null, vueTsc: null };
+  if (!values['no-types'] && compiled.ok) {
+    const types = typeCheckProject({
+      root,
+      modules: compiled.modules.map((m) => m.id),
+      entry: compiled.entryId,
+      target,
+      frameworkRoot: FRAMEWORK_ROOT,
+    });
+    diagnostics = [...diagnostics, ...types.diagnostics];
+    Object.assign(typeCheck, { ran: true, typescript: types.versions.typescript, vueTsc: types.versions['vue-tsc'] });
+  }
+  const errors = diagnostics.filter((d) => d.severity === 'error').length;
+  const warnings = diagnostics.length - errors;
+  const ok = errors === 0;
   if (values.json) {
     const report = {
-      ok: result.ok,
+      ok,
       target,
-      entry: result.entryId,
-      modules: result.modules.map((m) => ({ id: m.id, lang: m.lang, kind: m.kind, compiled: m.rust !== null })),
-      natives: result.natives,
-      diagnostics: result.diagnostics.map(diagnosticJson),
+      entry: compiled.entryId,
+      modules: compiled.modules.map((m) => ({ id: m.id, lang: m.lang, kind: m.kind, compiled: m.rust !== null })),
+      natives: compiled.natives,
+      typeCheck,
+      diagnostics: diagnostics.map(diagnosticJson),
     };
     io.out.write(`${JSON.stringify(report, null, 2)}\n`);
   } else {
-    if (result.diagnostics.length > 0) io.err.write(`${formatDiagnostics(result.diagnostics, result.sourceOf)}\n\n`);
-    const verdict = result.ok ? 'ok' : 'failed';
-    io.out.write(`${verdict}: ${result.modules.length} module(s), ${errors} error(s), ${warnings} warning(s) (${result.entryId}, target ${target})\n`);
+    if (diagnostics.length > 0) io.err.write(`${formatDiagnostics(diagnostics, compiled.sourceOf)}\n\n`);
+    const verdict = ok ? 'ok' : 'failed';
+    io.out.write(`${verdict}: ${compiled.modules.length} module(s), ${errors} error(s), ${warnings} warning(s) (${compiled.entryId}, target ${target})\n`);
   }
-  return result.ok ? 0 : 1;
+  return ok ? 0 : 1;
 }
 
 // vue-native create <dir> [--template counter|quick-quote]

@@ -51,7 +51,7 @@ Status letters: P faithful, A adaptation, W web-only, X excluded (must error), E
 | S20 | 8.2 | enums/const enums/namespaces/parameter properties | X initially | X | — | 4 | Per-construct source error; use union constants/functions instead |
 | S21 | 8.2 | classes/decorators/JSX/TSX | X production profile | X | — | 3 | Source errors even if TypeScript accepts; template SFC alternative |
 | S22 | 8.2 | type utility and augmentation APIs | P types only, limited | P | — | 8 | T03 utility inference; ComponentCustomProperties/Options cannot enable excluded Options API or arbitrary globals |
-| S23 | 8.2 | TS build config | A | A | — | 1 | Native `document` error, web import permitted only in explicit extension; unknown compiler-affecting config rejected |
+| S23 | 8.2 | TS build config | A | A | — | 4 | Native `document` error, web import permitted only in explicit extension; unknown compiler-affecting config rejected |
 | S24 | 8.2 | explicit resource management | X initial profile | X | — | 3 | T03 reject declarations with spans; use supported try/finally and explicit service disposal. See [TypeScript 5.2 resource management](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-2.html) |
 | S25 | 8.2 | additional type/module forms | P erased type features, X runtime legacy modules | P, X | — | 8 | T03 inference/narrowing/erasure fixtures and incompatible module diagnostics; newer TS runtime syntax stays excluded until manifest revision |
 | V01 | 8.3 | ref | P | P | C primitive subset | 1 | T04 same write, NaN/-0, nested refs and instance separation |
@@ -140,9 +140,9 @@ Status letters: P faithful, A adaptation, W web-only, X excluded (must error), E
 | Status | Rows by primary status | Named entries | Vue exports |
 |---|---|---|---|
 | P | 88 | 238 | 66 |
-| A | 18 | 79 | 9 |
+| A | 18 | 81 | 9 |
 | W | 5 | 8 | 4 |
-| X | 12 | 118 | 90 |
+| X | 12 | 119 | 90 |
 | E | 3 | 8 | 2 |
 
 ## Rows without a named entry

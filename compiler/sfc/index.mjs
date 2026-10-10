@@ -26,7 +26,7 @@ import { parseModule } from '../frontend/parse.mjs';
 import { formatDiagnostic } from '../diagnostics/format.mjs';
 import { SFC_CODES, sfcCodeInfo } from './codes.mjs';
 import {
-  GENERATOR, VUE_REFERENCE, SfcContext, manifestEntry, realInsideRoot, resolveOptions, vueCompilerSupported,
+  GENERATOR, VUE_REFERENCE, SfcContext, manifestEntry, resolveOptions, vueCompilerSupported,
 } from './context.mjs';
 import { checkScript } from './script.mjs';
 import { validateTemplate } from './template.mjs';
@@ -156,8 +156,9 @@ function reportCompilerException(ctx, err, block, file) {
     const span = loc ?? ctx.blockSpan(block);
     ctx.report('VN6013', file, span[0], span[1], { message });
   } else {
+    // Imported types are read from files inside the project root only (see SfcContext.scriptFs).
     const typesHint = /Failed to resolve import source/.test(message)
-      ? 'Imported types are resolved with the typescript package, which this frontend does not install. Declare the props in this file.'
+      ? 'Imported types are read from .ts files inside the project root. Check the import path, or declare the type in this file.'
       : undefined;
     ctx.report('VN6012', file, ...ctx.blockSpan(block), { message, hint: typesHint });
   }
@@ -182,7 +183,7 @@ function compileSetup(ctx, descriptor, { anyScoped }) {
     return null;
   }
   for (const dep of out.deps ?? []) {
-    const real = realInsideRoot(dep, ctx.rootReal);
+    const real = ctx.realDependency(dep);
     if (real) ctx.addDependency(real);
   }
   const parts = [headerFor(ctx), out.content];
