@@ -50,6 +50,7 @@ export const HIR_NODES = Object.freeze({
   logasgn: [['pos', 'op', 't', 'v']],
   upd: [['pos', 'prefix', 'inc', 't']],
   tmpl: [['pos', 'parts']],
+  dimport: [['pos', 'request']], // import() with a literal specifier (task 5.5)
   // targets and patterns
   tvar: [['pos', 'r', 'name', 'tdz', 'ro']],
   tglobal: [['pos', 'name']],

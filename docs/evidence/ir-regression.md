@@ -1,7 +1,7 @@
 # IR regression fixture and HIR schema hash (task 4.1, ticket w41-ir)
 
 Two items were open in the task 4.1 ledger entry: an executable regression showing that the prototype's `@[click]`
-defect is gone through the SFC pipeline, and content hashes of the HIR schema. Both are done. Changes are uncommitted
+defect is gone through the SFC pipeline, and content hashes of the HIR schema. Both are done. Changes were reviewed and committed
 on branch `claude/w41-ir`.
 
 ## What was built

@@ -153,7 +153,8 @@ function main() {
     const natives = nativesOf(dir);
     const files = readProject(dir);
     const hasVue = Object.keys(files).some((f) => f.endsWith('.vue'));
-    const c = compileProject({ entry: 'scenario.js', files });
+    // target 'test': the scenarios use the test-only globals (trace, testHost), which the native profile rejects (VN4016).
+    const c = compileProject({ entry: 'scenario.js', files, target: 'test' });
     if (!c.ok) {
       const d = c.diagnostics.find((x) => x.severity === 'error');
       outcomes.push({ name, outcome: 'compile-error', reason: d ? `${d.code} ${d.message} (${d.file})` : 'not compiled' });

@@ -14,7 +14,7 @@ export class LowerAbort extends Error {
   }
 }
 
-export const HIR_VERSION = 2;
+export const HIR_VERSION = 3;
 
 export function makeContext(ast, analysis, { source, filename }) {
   const program = ast.type === 'File' ? ast.program : ast;

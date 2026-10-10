@@ -164,6 +164,11 @@ export const CODES = Object.freeze({
     'Auto-accessor class fields are not part of the profile (S21).',
     'Use a ref or a computed value.',
   ),
+  VN2031: entry(
+    'import() with import attributes or options',
+    'import() takes one literal module specifier. A second argument (import attributes or options) is not part of the profile (L17).',
+    'Pass only the module specifier, for example import("./module.js").',
+  ),
 
   VN3001: entry(
     'TypeScript enum',

@@ -49,14 +49,26 @@ test('compilation is deterministic and independent of the working directory', ()
   assert.notEqual(first.rust, null);
 });
 
-test('unsupported constructs stop with VN9001 and a span; no Rust is produced', () => {
-  // import() passes the profile (literal specifier) but has no lowering yet (WP-C1c did not add dynamic import).
-  const src = "export function run() { return import('./x.js') }\n";
+test('unsupported constructs stop with their code and a span; no Rust is produced', () => {
+  // A computed import() specifier is outside the profile: VN2019, at the argument.
+  const src = 'export function run(name) { return import(name) }\n';
   const r = compileModule(src, { filename: 'a.js', specifier: 'a' });
   assert.equal(r.rust, null);
-  const d = r.diagnostics.find((x) => x.code === 'VN9001');
-  assert.ok(d, 'expected VN9001');
-  assert.equal(d.start.offset, src.indexOf('import('));
+  const d = r.diagnostics.find((x) => x.code === 'VN2019');
+  assert.ok(d, 'expected VN2019');
+  assert.equal(d.start.offset, src.indexOf('import(name)') + 'import('.length);
+  assert.equal(r.diagnostics.some((x) => x.code === 'VN9001'), false);
+});
+
+test('a literal import() lowers to Rt::dynamic_import; its target is not a static request', () => {
+  // WP-C1c.5.5 replaced the earlier VN9001 ("no lowering yet") for this form. The target joins the project graph
+  // (compileProject); the module's requests are the static imports only, linked before evaluation.
+  const src = "export function run() { return import('./x.js') }\n";
+  const r = compileModule(src, { filename: 'a.js', specifier: 'a', target: 'test' });
+  assert.equal(r.diagnostics.filter((d) => d.severity === 'error').length, 0);
+  assert.notEqual(r.rust, null);
+  assert.match(r.rust, /rt\.dynamic_import\("\.\/x\.js"\)/);
+  assert.doesNotMatch(r.rust, /requests: &\[[^\]]*"\.\/x\.js"/);
 });
 
 test('profile rejections are reported with their registered codes', () => {
@@ -80,7 +92,7 @@ test('HIR resolves identifiers and marks captured bindings as cells', () => {
   const { ast, analysis } = checkSource(src, { filename: 'h.js', lang: 'js' });
   const { hir, diagnostics } = lowerToHir(ast, analysis, { source: src, filename: 'h.js', specifier: 'h' });
   assert.equal(diagnostics.length, 0);
-  assert.equal(hir.hirVersion, 2);
+  assert.equal(hir.hirVersion, 3);
   assert.deepEqual(hir.requests, []);
   assert.equal(hir.slots[0].name, 'n');
   const inc = hir.fns.find((f) => f && f.kind === 'arrow');

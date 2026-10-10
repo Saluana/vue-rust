@@ -86,6 +86,8 @@ pub(crate) struct RtState {
     pub(crate) roots: RefCell<RootTable>,
     pub(crate) providers: RefCell<Vec<Option<Rc<dyn RootProvider>>>>,
     pub(crate) jobs: RefCell<VecDeque<Job>>,
+    /// Host turns (`enqueue_host_turn`): each one runs only when `jobs` is empty.
+    pub(crate) hosts: RefCell<VecDeque<Job>>,
     pub(crate) job_errors: RefCell<Vec<Throw>>,
     /// The last `throw_at` (source frames of an uncaught error, error.rs).
     pub(crate) last_throw: RefCell<Option<error::ThrowRecord>>,
@@ -131,6 +133,7 @@ impl Rt {
             roots: RefCell::new(RootTable::default()),
             providers: RefCell::new(Vec::new()),
             jobs: RefCell::new(VecDeque::new()),
+            hosts: RefCell::new(VecDeque::new()),
             job_errors: RefCell::new(Vec::new()),
             last_throw: RefCell::new(None),
             depth: Cell::new(0),
@@ -313,14 +316,28 @@ impl Rt {
         self.0.jobs.borrow_mut().push_back(Job { func, args });
     }
 
-    /// Runs queued jobs until the queue is empty, including jobs queued while draining. A job that throws
+    /// Queues a host turn: a job that runs only when the job queue is empty, one turn at a time, each followed by a
+    /// drain of the jobs it queues. It stands for a macrotask (a loader round trip), so the promise jobs queued before
+    /// it all run first. Queued values are GC roots until the turn runs.
+    pub fn enqueue_host_turn(&self, func: Value, args: Vec<Value>) {
+        self.0.hosts.borrow_mut().push_back(Job { func, args });
+    }
+
+    /// Runs queued jobs until the queue is empty, including jobs queued while draining. When the job queue is empty,
+    /// runs the next host turn (`enqueue_host_turn`) and drains again, until both queues are empty. A job that throws
     /// does not stop the drain; its error is kept for `take_uncaught_job_errors`. Never collects garbage.
     pub fn run_jobs(&self) -> usize {
         assert_eq!(self.call_depth(), 0, "run_jobs inside running code (framework bug)");
         let mut ran = 0;
         loop {
             let next = self.0.jobs.borrow_mut().pop_front();
-            let Some(job) = next else { break };
+            let job = match next {
+                Some(job) => job,
+                None => match self.0.hosts.borrow_mut().pop_front() {
+                    Some(turn) => turn,
+                    None => break,
+                },
+            };
             self.0.budget_used.set(0);
             ran += 1;
             if let Err(e) = self.call(&job.func, &Value::Undefined, &job.args) {

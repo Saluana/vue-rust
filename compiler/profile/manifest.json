@@ -3215,7 +3215,7 @@
       "kind": "module",
       "row": "L17",
       "status": "P",
-      "note": "Literal specifiers only.",
+      "note": "Literal specifiers only (a string or a no-substitution template). The target joins the project graph; import attributes or options are rejected (VN2031). Physical chunk splitting is not implemented.",
       "compilerInternal": false
     },
     {

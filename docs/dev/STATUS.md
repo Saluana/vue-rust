@@ -3,7 +3,7 @@
 Last updated: 2026-10-09. Resumed after review fixes committed as 05987fa. Scope source of truth: `planning/vue-native-framework/{requirements,design,tasks}.md`. Start with `docs/dev/HANDOFF.md` (state, traps, commands, where to begin). This file keeps the binding decisions, what is built, and the honest limits. `docs/dev/archive/` holds an old working log (history only).
 
 ## Progress-ledger rule
-After every accepted WP / milestone: edit `docs/dev/tasks-progress.json` (task id -> status done|partial|blocked|notstarted, summary, evidence command + artifacts, missing) and run `node tooling/status/update-tasks.mjs` (idempotent; `--check` verifies). A box is ticked only for status `done` (acceptance met + test command + artifact). Currently 9 done / 26 partial / 7 blocked / 28 not started.
+After every accepted WP / milestone: edit `docs/dev/tasks-progress.json` (task id -> status done|partial|blocked|notstarted, summary, evidence command + artifacts, missing) and run `node tooling/status/update-tasks.mjs` (idempotent; `--check` verifies). A box is ticked only for status `done` (acceptance met + test command + artifact). Currently 16 done / 21 partial / 7 blocked / 26 not started.
 
 ## Decisions taken (binding)
 - Toolchain installed project-locally under `toolchain/` (Rust 1.99.0 + wasm32). npm: exact pins, scripts disabled. User approved
@@ -15,6 +15,14 @@ After every accepted WP / milestone: edit `docs/dev/tasks-progress.json` (task i
 - GC runs only at job boundaries (call_depth 0); locals of async functions live in heap frames.
 - Cargo: never share a CARGO_TARGET_DIR between same-named crates; each WP uses `target/<wp>`.
 - Node tests: quoted globs (`node --test "dir/*.test.mjs"`); `npm test` runs `tests/**/*.test.mjs`.
+
+## Scoreboards (2026-10-10, tasks sections 2–5 follow-up; Linux container, Rust 1.99.0, Node 22, no Chrome)
+- Rust workspace: 1407 pass, 0 fail.
+- Language 79/79, lowering 166/166, both also on wasm32 (`run-language-wasm.mjs`); Vue 115/115; UI 174/174; projects 14/14 (incl. literal `import()`); Test262 subset 232 pass / 0 fail / 75 rejected by the profile.
+- `node --test "tests/**/*.test.mjs"`: 1142 tests, 1007 pass, 0 fail, 135 skipped (Chrome, macOS sandbox-exec, missing archives).
+- `tasks.md`: 16 done, 21 partial, 7 blocked, 26 not started.
+- Gate drafts awaiting owner sign-off: `docs/decisions/architecture-gate.md` (G1 fails on collector pause latency only; G2 not evaluable without 3.4/3.5) and `docs/decisions/g3-slice-report.md` (G3 not passed: no native desktop host or AT).
+- New dev dependencies (owner-approved): typescript 6.0.3, vue-tsc 3.3.12. Still needs approval: `postcss-modules` for `<style module>`.
 
 ## Scoreboards (2026-10-09, cleanup verification)
 - Rust workspace: 1323 pass, 0 fail, no compiler warnings. Three assertion-free debug probes were removed from the former 1326 total. Both former `vn-ui` cascade failures are repaired; unchanged Chrome goldens and negative controls pass.

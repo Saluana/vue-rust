@@ -227,7 +227,7 @@ impl Rt {
         for v in st.roots.borrow().values() {
             t.mark_value(v);
         }
-        for job in st.jobs.borrow().iter() {
+        for job in st.jobs.borrow().iter().chain(st.hosts.borrow().iter()) {
             t.mark_value(&job.func);
             for a in &job.args {
                 t.mark_value(a);

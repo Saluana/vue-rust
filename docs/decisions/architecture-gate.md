@@ -51,7 +51,7 @@ collector the next runtime work package, before broad feature expansion. The gc-
 any vertical-slice claim to web DOM plus headless, and do not start native renderer work beyond the 3.4 spike.
 
 ## Pins and interfaces selected
-- Frontend: official `@vue/compiler-sfc` 3.5.43 outputs, lowered through HIR schema hash `9d7cbb3f…` (hirVersion 2).
+- Frontend: official `@vue/compiler-sfc` 3.5.43 outputs, lowered through HIR schema hash `75101c33…` (hirVersion 3).
 - Type tooling: TypeScript 6.0.3 + vue-tsc 3.3.12 (@vue/language-core 3.3.12).
 - Runtime: `vn-value` non-moving generation-checked heap, collection only at safepoints.
 - Rejected for now: gc-arena (no pause advantage at 1M objects; branded lifetimes do not fit the generated-code ABI; see its README).

@@ -185,8 +185,22 @@ function lowerChain(cx, n) {
   return hn('chain', n, { base, links: out });
 }
 
+// import(specifier) (WP-C1c). The profile admits only a string literal or a template without substitutions; the target is
+// named through the module resolver (as static imports are) and the value is a promise (Rt::dynamic_import).
+function lowerDynamicImport(cx, n, args) {
+  const spec = args.length === 1 ? literalSpecifier(args[0]) : null;
+  if (spec === null) unsupported(cx, n, 'import() with a specifier that is not a literal, or with more than one argument');
+  return hn('dimport', n, { request: cx.resolve(spec) });
+}
+
+function literalSpecifier(a) {
+  if (a.type === 'StringLiteral') return a.value;
+  if (a.type === 'TemplateLiteral' && a.expressions.length === 0) return a.quasis[0].value.cooked ?? null;
+  return null;
+}
+
 function lowerCall(cx, n) {
-  if (n.callee.type === 'Import') unsupported(cx, n, 'import() (needs promises, WP-C1c)');
+  if (n.callee.type === 'Import') return lowerDynamicImport(cx, n, n.arguments);
   const callee = unwrapTs(n.callee);
   if (callee.type === 'OptionalMemberExpression' || callee.type === 'OptionalCallExpression') {
     // (a?.b)() keeps the reference of the chain: `this` is the object of the last member link.
@@ -291,7 +305,7 @@ export function lowerExpr(cx, n) {
     case 'MetaProperty':
       return unsupported(cx, n, 'meta property');
     case 'ImportExpression':
-      return unsupported(cx, n, 'dynamic import (WP-C1c)');
+      return lowerDynamicImport(cx, n, n.options ? [n.source, n.options] : [n.source]);
     default:
       return internal(cx, n, `expression node ${n.type} reached the lowering`);
   }

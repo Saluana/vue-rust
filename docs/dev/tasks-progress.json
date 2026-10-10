@@ -108,21 +108,20 @@
   },
   "5.5": {
    "status": "partial",
-   "summary": "Static ESM across multiple files, live bindings, cycles, re-exports, namespace objects, native module imports and `.vue` imports compile and run.",
-   "evidence": "`node tooling/harness/run-projects.mjs` (10/10); `cargo test -p vn-value --test modules_graph` etc.",
-   "missing": "Dynamic `import()` lowering (still VN9001), chunk graph and web chunk loading."
+   "summary": "Static ESM across multiple files, live bindings, cycles, re-exports, namespace objects, native module imports and `.vue` imports compile and run. Literal `import()` (string or no-substitution template) joins the prelinked project graph, defers the target's first evaluation, resolves to the shared namespace, evaluates once and caches rejections; settlement runs on host turns that start when the promise job queue is empty, matched to the Node project oracle. Computed specifiers (VN2019), import options (new VN2031) and unresolvable or native targets are rejected at compile time with spans.",
+   "evidence": "`node tooling/harness/run-projects.mjs` (14/14, incl. dyn-basic, dyn-throw, dyn-cycle, dyn-order); `cargo test -p vn-value --test modules_dynamic` (10 tests); `node --test tests/compiler/project/dynamic.test.mjs`; artifact `docs/evidence/dynamic-import.md`.",
+   "missing": "Dynamic import on the web target (no browser run), chunk graph output, and calibration of several cases (repeated requests of one module, cycles among unloaded modules, link errors of unloaded targets). Settlement timing follows the hook-based project oracle, not plain Node."
   },
   "5.6": {
-   "status": "partial",
-   "summary": "Heap limit and execution-budget watchdogs, GC safepoint discipline and stress tests exist.",
-   "evidence": "`cargo test -p vn-value` (kernel_gc, kernel_jobs).",
-   "missing": "Miri/ASan/FFI audit, long-churn latency tails, native-resource disposal."
+   "status": "done",
+   "summary": "Heap limit and execution-budget watchdogs, GC safepoint discipline and stress tests. Long churn keeps async/module/effect roots correct against an independent model with steady heap size; exceeding the heap limit mid-churn is a catchable RangeError (no panic) and the runtime is usable afterwards; host handles registered under an effect scope close exactly once on stop, never while the scope is live across GC, and close callbacks run with the heap open. Allocation and pause tails are reported (they miss the 2 ms budget; see 3.2). Miri/ASan/FFI audit: not applicable, `vn-value` and `vn-runtime` forbid unsafe code.",
+   "evidence": "`cargo test -p vn-value --test gc_churn --test gc_exhaustion`; `cargo test -p vn-runtime --test realm_scope_handles` (9 tests; mutation runs recorded); `cargo run --release -p vn-value --example gc_churn_bench`; artifact `docs/evidence/gc-latency.md`."
   },
   "5.7": {
    "status": "partial",
-   "summary": "SFC frontend wraps the official compileScript/compileTemplate/compileStyle with profile checks, native template validation and `.vue` spans; macros come from Vue itself; TypeScript is erased at lowering; all 37 real SFC fixtures lower to Rust that passes `cargo check`.",
-   "evidence": "`node --test \"tests/compiler/sfc/*.test.mjs\"` (210 tests, 31 components rendered in real Vue in Chrome); `node tooling/harness/check-sfc-lowering.mjs` (37/37).",
-   "missing": "Type checking via a pinned TypeScript 6 + Vue virtual-file pair, imported-type props, `<style module>` (async CSS modules)."
+   "summary": "SFC frontend wraps the official compileScript/compileTemplate/compileStyle with profile checks, native template validation and `.vue` spans; macros come from Vue itself; TypeScript is erased at lowering. `vue-native check` type-checks .vue/.ts modules with the pinned TypeScript 6.0.3 + vue-tsc 3.3.12 pair (VN7001 at .vue spans; `--no-types` skips it). Imported prop types resolve through compileScript with an fs adapter rooted at the project; type imports a macro reads but compileScript cannot resolve (bare packages, names a file does not export) are VN6017 in build too. TS-only runtime constructs (enum, namespace, using) stay rejected with the checker on.",
+   "evidence": "`node --test tests/compiler/types/check.test.mjs tests/compiler/sfc/imported-types.test.mjs tests/cli/check-types.test.mjs`; `node tooling/harness/check-sfc-lowering.mjs` (45/45); `node tooling/cli/vue-native.mjs check examples/quick-quote`; artifact `docs/evidence/typescript-tooling.md`.",
+   "missing": "`<style module>` (CSS modules need the `postcss-modules` package, not yet approved); build-time detection of names no file declares (check-only, TS2304); compileScript's own approximation of conditional/utility prop types."
   },
   "6.1": {
    "status": "done",
